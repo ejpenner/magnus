@@ -10,7 +10,7 @@
 
 Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
 
-## Environment Setuo
+## Environment Setup
 * clone the repo
 * run `composer update` to install all the composer packages
 * run `npm install` to install all NPM assets
