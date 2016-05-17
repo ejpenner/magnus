@@ -16,11 +16,11 @@ class Piece extends Model
     private $imageDirectory = 'images';
     private $thumbnailDirectory = 'thumbnails';
 
-    public function User() {
+    public function user() {
         return $this->belongsTo('App\User');
     }
     
-    public function Feature() {
+    public function features() {
         return $this->belongsToMany('App\Feature');
     }
 
