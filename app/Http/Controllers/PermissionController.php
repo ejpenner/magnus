@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class GalleryController extends Controller
+class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        // index of galleries is user profile
+        //
     }
 
     /**

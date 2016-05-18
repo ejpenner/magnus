@@ -31,4 +31,8 @@ class User extends Authenticatable
     public function pieces() {
         return $this->hasMany('App\Piece');
     }
+    
+    public function profile() {
+        return $this->hasOne('App\Profile');
+    }
 }

@@ -17,4 +17,24 @@ Route::get('/', function () {
 
 Route::auth();
 
+Route::resource('user', 'UserController');
+
+Route::resource('profile', 'ProfileController');
+
+// User Show
+//Route::bind('user', function($value) {
+//   return \App\User::where('name', '=', $value)->first();
+//});
+
+Route::resource('profile.gallery', 'GalleryController');
+
+//Route::bind('profile', function($value) {
+//    $userId = \App\User::where('username', '=', $value)->value('id');
+//    $profile = \App\Profile::where('id', $userId)->first();
+//
+//    return view('profiles.show', compact($profile));
+//});
+
+Route::resource('profile.gallery.piece', 'PieceController');
+
 Route::get('/home', 'HomeController@index');
