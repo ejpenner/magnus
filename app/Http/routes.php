@@ -17,7 +17,9 @@ Route::get('/', function () {
 
 Route::auth();
 
-Route::resource('user', 'UserController');
+Route::resource('users', 'UserController');
+
+Route::resource('permissions', 'PermissionController');
 
 Route::resource('profile', 'ProfileController');
 
