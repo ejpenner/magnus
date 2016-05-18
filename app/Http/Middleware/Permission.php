@@ -15,6 +15,8 @@ class Permission
      */
     public function handle($request, Closure $next)
     {
+
+        // based on the variable assigned to the middleware, evaluate if the user has permission to use the resource
         return $next($request);
     }
 }
