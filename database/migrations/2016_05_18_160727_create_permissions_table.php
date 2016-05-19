@@ -14,7 +14,18 @@ class CreatePermissionsTable extends Migration
     {
         Schema::create('permissions', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->string('schema_name');
+            $table->boolean('canCreate');
+            $table->boolean('canRead');
+            $table->boolean('canEdit');
+            $table->boolean('canDestroy');
+            $table->boolean('isAdmin');
+            $table->boolean('isReadOnly');
+        });
+
+        // add FK to users
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('permission_id')->references('id')->on('permissions');
         });
     }
 

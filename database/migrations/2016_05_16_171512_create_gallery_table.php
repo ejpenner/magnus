@@ -16,11 +16,11 @@ class CreateGalleryTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('description')->nullable();
-            $table->integer('user_id')->unsigned();
             $table->timestamps();
         });
 
         Schema::table('galleries', function (Blueprint $table) {
+            $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

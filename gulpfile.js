@@ -16,6 +16,7 @@ var assets_dir = './resources/assets/';
 var vendor_js_files = [
     assets_dir + "js/vendor/jquery.min.js",
     assets_dir + "js/vendor/angular.min.js",
+    assets_dir + "js/vendor/bootstrap.min.js",
     assets_dir + "js/vendor/ng-resource.min.js",
     assets_dir + "js/vendor/ng-table.js",
     assets_dir + "js/vendor/ng-infinite-scroll.js"

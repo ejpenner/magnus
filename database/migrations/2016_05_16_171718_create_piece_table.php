@@ -18,13 +18,13 @@ class CreatePieceTable extends Migration
             $table->string('thumbnail_path');
             $table->string('title');
             $table->string('comment')->nullable();
-            $table->integer('user_id')->unsigned();
             $table->timestamp('published_at');
             $table->timestamps();
         });
 
         Schema::table('pieces', function (Blueprint $table) {
-           $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
