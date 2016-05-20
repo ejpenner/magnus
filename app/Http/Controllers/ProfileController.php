@@ -15,7 +15,7 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        //
+        // RETURN AUTH'D USER'S PROFILE
     }
 
     /**

@@ -67,7 +67,7 @@ gulp.task('jsbeautify', function() {
 });
 
 gulp.task('less', function() {
-    return gulp.src([assets_dir + 'less/**/*.css'])
+    return gulp.src([assets_dir + 'less/**/*.less'])
         .pipe(less())
         .pipe(concat('app.css'))
         .pipe(gulp.dest('./public/css'));

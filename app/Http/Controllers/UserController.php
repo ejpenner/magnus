@@ -36,7 +36,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
-        $user->account_type = $request->account_type;
+        $user->permission_id = $request->permission_id;
         $user->save();
         return redirect()->route('users.index')->with('success', 'Your user was created.');
     }
@@ -58,7 +58,7 @@ class UserController extends Controller
             if ($request->password != "" and $request->password != null) {
                 $user->password = bcrypt($request->password);
             }
-            $user->account_type = $request->account_type;
+            $user->permission_id = $request->permission_id;
             $user->update();
             return redirect()->route('users.index')->with('success', 'User updated successfully.');
         } else {

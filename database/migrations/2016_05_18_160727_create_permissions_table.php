@@ -25,7 +25,7 @@ class CreatePermissionsTable extends Migration
 
         // add FK to users
         Schema::table('users', function (Blueprint $table) {
-            $table->foreign('permission_id')->references('id')->on('permissions');
+            //$table->foreign('permission_id')->references('id')->on('permissions');
         });
     }
 

@@ -28,7 +28,7 @@ Route::resource('profile', 'ProfileController');
 //   return \App\User::where('name', '=', $value)->first();
 //});
 
-Route::resource('profile.gallery', 'GalleryController');
+Route::resource('gallery', 'GalleryController');
 
 //Route::bind('profile', function($value) {
 //    $userId = \App\User::where('username', '=', $value)->value('id');
