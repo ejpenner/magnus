@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="pull-right">
-        @include('gallery._createModal')
-    </div>
     <div class="container">
         @foreach($galleries as $gallery)
             <div class="col-md-3 gallery-item">
@@ -11,6 +8,7 @@
                 {{ $gallery->description }}
             </div>
         @endforeach
+        <div class="pull-left"> @include('gallery._createModal') </div>
         <div class="pull-right">{!! $galleries->render() !!}</div>
     </div>
 
