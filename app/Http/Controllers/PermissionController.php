@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\Permission;
+
 class PermissionController extends Controller
 {
     /**
@@ -15,7 +17,9 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
+        $permissions = Permission::all();
+
+        return view('permission.index', compact('permissions'));
     }
 
     /**
@@ -25,7 +29,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        //
+        return view('permission.create');
     }
 
     /**
@@ -36,7 +40,11 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $permission = new Permission($request->all());
+        $permission->schema_name = strtolower(preg_replace('/\s/', '_', $request->schema_name));
+        $permission->save();
+
+        return redirect()->route('permissions.index')->with('success', 'Permission schema has been created!');
     }
 
     /**

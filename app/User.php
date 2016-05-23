@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Permission;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -51,7 +52,16 @@ class User extends Authenticatable
     // methods
     public function hasRole($role)
     {
-        if (Permission::where('schema_name', $role)->first()->value('id') == Auth::user()->permission_id) {
+        if (Permission::where('role', $role)->value('id') == Auth::user()->permission_id) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function hasPermission($permission)
+    {
+        if (Permission::where('schema_name', $permission)->value('id') == Auth::user()->permission_id) {
             return true;
         } else {
             return false;

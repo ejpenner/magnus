@@ -19,7 +19,7 @@
 <div class="jumbotron">
     <div class="container text-center">
         <h1>Gallery App</h1>
-        <p>Ayyyy lmao</p>
+        <p>The Appening</p>
     </div>
 </div>
 

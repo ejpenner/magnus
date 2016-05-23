@@ -27,8 +27,19 @@ Route::group(['middleware' => ['guest']], function () {
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('users', 'UserController');
 
-    Route::resource('permissions', 'PermissionController');
+    Route::group(['middleware'=>'permission:role,admin'], function () {
+        Route::resource('permissions', 'PermissionController');
+    });
+
+    Route::group(['middleware' => ['id']], function ($id) {
+        Route::get('users/{id}/editAccount', 'UserController@editAccount');
+        Route::patch('users/{id}/updateAccount', 'UserController@updateAccount');
+        Route::get('users/{id}/account', array('uses' => 'UserController@manageAccount', 'as' => 'user.account'));
+        Route::get('users/{id}/changeMyPassword', array('uses' => 'UserController@changeAccountPassword', 'as' => 'user.accountPassword'));
+        Route::patch('users/{id}/updatePassword', 'UserController@updatePassword');
+    });
 });
+
 
 Route::resource('profile', 'ProfileController');
 
@@ -56,10 +67,3 @@ Route::resource('profile.gallery.piece', 'PieceController');
 Route::get('/home', 'HomeController@index');
 
 
-Route::group(['middleware' => ['id']], function ($id) {
-    Route::get('users/{id}/editAccount', 'UserController@editAccount');
-    Route::patch('users/{id}/updateAccount', 'UserController@updateAccount');
-    Route::get('users/{id}/account', array('uses' => 'UserController@manageAccount', 'as' => 'user.account'));
-    Route::get('users/{id}/changeMyPassword', array('uses' => 'UserController@changeAccountPassword', 'as' => 'user.accountPassword'));
-    Route::patch('users/{id}/updatePassword', 'UserController@updatePassword');
-});
