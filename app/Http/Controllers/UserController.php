@@ -7,12 +7,17 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\User;
+use App\Permission;
 
 class UserController extends Controller
 {
     public function index()
     {
         $users = User::all();
+        
+        foreach ($users as &$user) {
+            $user->permission_id = Permission::where('id', $user->permission_id)->value('schema_name');
+        }
         return view('user.index', compact('users'));
     }
 
@@ -51,8 +56,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         if ($request->password == $request->password_confirmation) {
-            $user->first_name = $request->first_name;
-            $user->last_name = $request->last_name;
+            $user->name = $request->name;
             $user->email = $request->email;
             if ($request->password != "" and $request->password != null) {
                 $user->password = bcrypt($request->password);

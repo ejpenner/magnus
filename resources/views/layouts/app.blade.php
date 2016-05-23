@@ -42,9 +42,9 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::check())
-                    <li><a href="{{ action('ProfileController@index') }}"><span class="glyphicon glyphicon-user"></span> {{ Auth::user()->name }}</a></li>
+                    <li><a href="{{ action('ProfileController@index') }}"><span class="fa fa-user"></span> {{ Auth::user()->name }}</a></li>
                 @else
-                    <li><a href="/login"><span class="glyphicon glyphicon-user"></span> Login</a></li>
+                    <li><a href="/login"><span class="fa fa-user"></span> Login</a></li>
                 @endif
             </ul>
         </div>
