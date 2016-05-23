@@ -8951,6 +8951,9 @@ button.close {
   border-left: solid whitesmoke 2px;
   background: #EEE;
 }
+.gallery-container {
+  margin-bottom: 15px;
+}
 /* Add a gray background color and some padding to the footer */
 footer {
   background-color: #f2f2f2 !important;
