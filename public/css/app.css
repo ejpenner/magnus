@@ -8936,6 +8936,7 @@ button.close {
 }
 /* Remove the navbar's default rounded borders and increase the bottom margin */
 .navbar {
+  border-top: solid darkcyan 3px !important;
   margin-bottom: 50px !important;
   border-radius: 0 !important;
 }
