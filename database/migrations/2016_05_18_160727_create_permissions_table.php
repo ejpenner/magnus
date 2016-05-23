@@ -15,12 +15,17 @@ class CreatePermissionsTable extends Migration
         Schema::create('permissions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('schema_name');
-            $table->boolean('canCreate');
-            $table->boolean('canRead');
-            $table->boolean('canEdit');
-            $table->boolean('canDestroy');
-            $table->boolean('isAdmin');
-            $table->boolean('isReadOnly');
+            $table->boolean('create');
+            $table->boolean('read');
+            $table->boolean('edit');
+            $table->boolean('destroy');
+            $table->boolean('create_all');
+            $table->boolean('read_all');
+            $table->boolean('edit_all');
+            $table->boolean('destroy_all');
+            $table->boolean('admin');
+            $table->boolean('user');
+            $table->boolean('read_only');
         });
 
         // add FK to users
@@ -36,6 +41,10 @@ class CreatePermissionsTable extends Migration
      */
     public function down()
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign('users_permission_id_foreign');
+        });
+
         Schema::drop('permissions');
     }
 }

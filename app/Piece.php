@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Input;
 use File;
+use Illuminate\Support\Facades\Storage;
 use Image;
 
 class Piece extends Model
@@ -53,9 +54,9 @@ class Piece extends Model
      */
     public function getImage()
     {
-        if (!empty($this->image_path) && File::exists($this->image_path)) {
+        if (!empty($this->image_path) && File::exists($this->image_path)) {  // $exists = Storage::disk('images')->has(basename($this->image_path));
         // Get the filename from the full path
-            $filename = basename($this->image);
+            $filename = basename($this->image_path);
             return  $this->imageDirectory.'/'.$filename;
         }
         return 'images/missing.png';
@@ -97,6 +98,9 @@ class Piece extends Model
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         $fileName = substr(microtime(), 2, 8).'_uploaded.'.$extension; // renaming image
         $request->file('image')->move($destinationPath, $fileName); // uploading file to given path
+        
+        Storage::disk('images')->put($fileName, $request->file('image'));  // put image in storage
+        
         $fullPath = $destinationPath."/".$fileName; // set the image field to the full path
         return $fullPath;
     }

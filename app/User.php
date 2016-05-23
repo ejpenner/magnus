@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use App\Permission;
+
 class User extends Authenticatable
 {
     /**
@@ -12,7 +14,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','permission'
+        'name', 'email', 'password','permission_id'
     ];
 
     /**
@@ -38,13 +40,18 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Profile');
     }
+    
+    public function permissions()
+    {
+        return $this->hasOne('App\Permission');
+    }
 
     protected $appends = ['is_admin','is_user'];
 
     // methods
     public function hasRole($role)
     {
-        if (User::where('permission_id', $role)->value('permission_id') == Auth::user()->permission_id) {
+        if (Permission::where('schema_name', $role)->first()->value('id') == Auth::user()->permission_id) {
             return true;
         } else {
             return false;
@@ -53,7 +60,7 @@ class User extends Authenticatable
 
     public function getIsAdminAttribute()
     {
-        if ($this->attributes['permission_id'] == 'admin') {
+        if ($this->attributes['permission_id'] == Permission::where('schema_name', 'admin')->first()->value('id')) {
             return true;
         } else {
             return false;

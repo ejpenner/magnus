@@ -12,6 +12,17 @@ use Illuminate\Support\Facades\Auth;
 
 class GalleryController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(
+            'auth',
+            [
+            'only' => ['create','store','edit','update','destroy']
+            ]
+        );
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -53,12 +64,16 @@ class GalleryController extends Controller
     /**
      * Display the specified resource.
      *
+     * Show the pieces in the gallery
+     *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        $gallery = Gallery::findOrFail($id);
+
+        
     }
 
     /**
