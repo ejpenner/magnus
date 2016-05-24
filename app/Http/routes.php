@@ -55,22 +55,7 @@ Route::bind('profile', function ($value, $route) {
 
 Route::resource('gallery', 'GalleryController');
 
-
 Route::resource('profile.gallery.piece', 'PieceController');
-
-
-
-// User Show
-
-
-
-
-//Route::bind('profile', function($value) {
-//    $userId = \App\User::where('username', '=', $value)->value('id');
-//    $profile = \App\Profile::where('id', $userId)->first();
-//
-//    return view('profiles.show', compact($profile));
-//});
 
 
 Route::get('/home', 'HomeController@index');
