@@ -1,15 +1,14 @@
-<button type="button" class="btn btn-success" data-toggle="modal" data-target="#createPermissionModal">Add Schema</button>
-<div id="createPermissionModal" class="modal fade" role="form">
+<button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#editPermissionModal{{ $id }}">Edit Schema</button>
+<div id="editPermissionModal{{ $id }}" class="modal fade" role="form">
     <div class="modal-dialog">
-
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Create Schema</h4>
+                <h4 class="modal-title">Modify Schema</h4>
             </div>
 
             <div class="modal-body">
-                {!! Form::open(['action'=>['PermissionController@store']]) !!}
+                {!! Form::model($model, ['action'=>['PermissionController@update', $model->id]]) !!}
                 <div class="form-group">
                     {!! Form::label('Schema Name') !!}
                     {!! Form::text('schema_name', null, ['class' => 'form-control']) !!}
@@ -46,6 +45,5 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
-
     </div>
 </div>

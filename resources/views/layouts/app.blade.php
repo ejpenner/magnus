@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<div class="jumbotron">
+<div class="jumbotron" id="header-background">
     <div class="container text-center">
         <h1>Gallery App</h1>
         <p>The Appening</p>
@@ -41,8 +41,23 @@
                 <li @if(Request::is('gallery')) class="active" @endif ><a href="{{ action('GalleryController@index') }}">Galleries</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                @if(Auth::user()->hasRole("admin"))
+                    <li @if(Request::is('admin')) class="active dropdown" @else class="dropdown" @endif>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Panel <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ action('UserController@index') }}">Users</a></li>
+                            <li><a href="{{ action('PermissionController@index') }}">Permissions</a></li>
+                        </ul>
+                    </li>
+                @endif
                 @if(Auth::check())
-                    <li><a href="{{ action('ProfileController@index') }}"><span class="fa fa-user"></span> {{ Auth::user()->name }}</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"> {{ Auth::user()->name }} <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ action('UserController@manageAccount', Auth::user()->id) }}"><span class="fa fa-user"></span> Account</a></li>
+                                <li><a href="/logout"><i class="fa fa-sign-out"></i> Log Out</a></li>
+                            </ul>
+                        </li>
                 @else
                     <li><a href="/login"><span class="fa fa-user"></span> Login</a></li>
                 @endif

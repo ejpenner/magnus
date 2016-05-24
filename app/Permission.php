@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-
 class Permission extends Model
 {
     protected $fillable = [
@@ -14,7 +13,8 @@ class Permission extends Model
         'create_all','read_all','edit_all','destroy_all',
     ];
     
-    public function getSchemaName() {
+    public function getSchemaName()
+    {
         return $this->attributes['schema_name'];
     }
 }

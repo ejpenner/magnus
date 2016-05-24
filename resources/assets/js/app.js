@@ -13,4 +13,9 @@ $(document).ready(function() {
         return confirm('Are you sure you want to delete this?');
     });
 
+    $(window).scroll(function() {
+        var x = $(this).scrollTop();
+        $('#header-background').css('background-position', '100% ' + parseInt(-x) + 'px' + ', 0% ' + parseInt(-x) + 'px, center top');
+    });
+
 });

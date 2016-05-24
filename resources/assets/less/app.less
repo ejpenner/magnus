@@ -1,27 +1,34 @@
 @import "font-awesome/font-awesome";
 @import "bootstrap/bootstrap";
 
+/* Dropdown hover */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
 /* Remove the navbar's default rounded borders and increase the bottom margin */
 .navbar {
-  border-top: solid darkcyan 3px !important;
+  border-top: solid #c2bfc9 3px !important;
   margin-bottom: 50px !important;
   border-radius: 0 !important;
 }
 
 /* Remove the jumbotron's default bottom margin */
 .jumbotron {
+  color: #c2bfc9 !important;
   margin-bottom: 0 !important;
   background-image: url("/images/404-space.jpg");
-  background-position: center;
+  background-position: center top;
   background-repeat: no-repeat;
 }
 
 .gallery-item {
   padding-bottom: 5px;
   padding-top: 5px;
-  border-bottom: solid white 2px;
-  border-left: solid whitesmoke 2px;
+  border-bottom: solid white 5px;
+  border-left: solid whitesmoke 5px;
   background: #EEE;
+  min-height: 200px;
 }
 
 .gallery-container {
@@ -30,7 +37,11 @@
 
 /* Add a gray background color and some padding to the footer */
 footer {
-  background-color: #f2f2f2 !important;
+  background-color: #c2bfc9 !important;
   padding: 25px !important;
   margin-top: 25px !important;
+}
+
+.operations {
+  display:inline;
 }

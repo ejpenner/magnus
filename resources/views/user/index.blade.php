@@ -24,7 +24,7 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->permission_id }}</td>
                         <td>
-                            @include('partials._operations', ['model'=>$user, 'controller' => 'UserController'])
+                            @include('partials._slugOperations', ['model'=>$user, 'controller' => 'UserController'])
                         </td>
                     </tr>
                 @endforeach

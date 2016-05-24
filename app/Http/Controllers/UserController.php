@@ -27,7 +27,7 @@ class UserController extends Controller
         //$user = User::where('id', $id)->first();
         $permissions = Permission::lists('schema_name', 'id');
 
-        return view('user.edit', compact('user','permissions'));
+        return view('user.edit', compact('user', 'permissions'));
     }
 
     public function create()
@@ -57,7 +57,7 @@ class UserController extends Controller
         //$user = User::findOrFail($id);
         $permissions = Permission::lists('schema_name', 'id');
 
-        return view('user.edit', compact('user','permissions'));
+        return view('user.edit', compact('user', 'permissions'));
     }
 
     public function update(User $user, Request $request)

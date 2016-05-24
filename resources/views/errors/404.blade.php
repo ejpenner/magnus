@@ -43,7 +43,6 @@
         .subtitle {
             font-size: 50px;
             font-weight: bold;
-            font-kerning: ;
         }
     </style>
 </head>
@@ -51,7 +50,7 @@
 <div class="container">
     <div class="content">
         <div class="title">There may have been something here</div>
-        <div class="subtitle">...But it is gone now</div>
+        <div class="subtitle">But it's gone now</div>
     </div>
 </div>
 </body>

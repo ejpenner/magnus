@@ -40,7 +40,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     });
 
-    Route::bind('users', function($value, $route) {
+    Route::bind('users', function ($value, $route) {
         return \App\User::whereSlug(strtolower($value))->first();
     });
 
@@ -49,12 +49,11 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::resource('profile', 'ProfileController');
 
-Route::bind('profile', function($value, $route) {
+Route::bind('profile', function ($value, $route) {
     return \App\User::whereSlug(strtolower($value))->first();
 });
 
 Route::resource('gallery', 'GalleryController');
-
 
 
 Route::resource('profile.gallery.piece', 'PieceController');
@@ -75,5 +74,3 @@ Route::resource('profile.gallery.piece', 'PieceController');
 
 
 Route::get('/home', 'HomeController@index');
-
-

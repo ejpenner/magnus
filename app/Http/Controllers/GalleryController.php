@@ -73,7 +73,7 @@ class GalleryController extends Controller
     {
         $gallery = Gallery::findOrFail($id);
 
-        
+        return view('gallery.show', compact('gallery'));
     }
 
     /**

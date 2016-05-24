@@ -17,7 +17,7 @@ class Permission
     {
         // based on the variable assigned to the middleware, evaluate if the user has permission to use the resource
         // type is permission or role
-        if($type == 'role') {
+        if ($type == 'role') {
             if (!$request->user()->hasRole($value)) {
                 return redirect()->back()->withErrors('You do not have permission to access this resource');
             }
