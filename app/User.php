@@ -59,6 +59,13 @@ class User extends Authenticatable
             return false;
         }
     }
+
+    /**
+     *  Does the authorized user have the permission schema needed?
+     *
+     * @param $permission
+     * @return bool
+     */
     
     public function hasPermission($permission)
     {
@@ -69,6 +76,12 @@ class User extends Authenticatable
         }
     }
 
+    /**
+     *  Is this user an admin?
+     *
+     * @return bool
+     */
+
     public function getIsAdminAttribute()
     {
         if ($this->attributes['permission_id'] == Permission::where('schema_name', 'admin')->first()->value('id')) {
@@ -78,17 +91,10 @@ class User extends Authenticatable
         }
     }
 
-    public function canEdit()
-    {
-        if ($this->permission == 'admin' or $this->permission == 'user') {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     /**
-     * @return array
+     *  Is this user the owner of an object
+     *
+     * @return boolean
      */
     public function isOwner($object)
     {

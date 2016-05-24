@@ -7,7 +7,9 @@
                 {{ $gallery->name }}
                 {{ $gallery->description }}<br>
                 <a href="{{ action('ProfileController@show', $gallery->user->slug) }}">{{ $gallery->user->name }}</a>
-                <span class="pull-right"> @include('partials._operations', ['model' => $gallery, 'controller'=>'GalleryController']) </span>
+                @if(Auth::user()->hasRole('admin') or Auth::user()->isOwner($gallery))
+                    <span class="pull-right"> @include('partials._operations', ['model' => $gallery, 'controller'=>'GalleryController']) </span>
+                @endif
             </div>
         @endforeach
     </div>

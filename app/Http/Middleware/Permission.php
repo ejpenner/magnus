@@ -19,11 +19,11 @@ class Permission
         // type is permission or role
         if ($type == 'role') {
             if (!$request->user()->hasRole($value)) {
-                return redirect()->back()->withErrors('You do not have permission to access this resource');
+                return redirect()->route('home')->withErrors('You do not have permission to access this resource');
             }
         } elseif ($type == 'schema') {
             if (!$request->user()->hasPermission($value)) {
-                return redirect()->back()->withErrors('You do not have permission to access this resource');
+                return redirect()->route('home')->withErrors('You do not have permission to access this resource');
             }
         } else {
             return redirect()->route('home')->withErrors('Permission middleware is not configured correctly in the routes file');

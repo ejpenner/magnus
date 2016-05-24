@@ -8,7 +8,7 @@
             </div>
 
             <div class="modal-body">
-                {!! Form::model($model, ['action'=>['PermissionController@update', $model->id]]) !!}
+                {!! Form::model($model, ['method'=>'PATCH', 'action'=>['PermissionController@update', $model->id]]) !!}
                 <div class="form-group">
                     {!! Form::label('Schema Name') !!}
                     {!! Form::text('schema_name', null, ['class' => 'form-control']) !!}
