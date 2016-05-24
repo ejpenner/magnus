@@ -35,13 +35,13 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li @if(Request::is('home')) class="active" @endif ><a href="{{ action('HomeController@index') }}">Home</a></li>
+                <li @if(Request::is('/')) class="active" @endif ><a href="{{ action('HomeController@index') }}">Home</a></li>
                 <li @if(Request::is('featured')) class="active" @endif ><a href="#">Featured</a></li>
                 <li @if(Request::is('recent')) class="active" @endif ><a href="#">Recent</a></li>
                 <li @if(Request::is('gallery')) class="active" @endif ><a href="{{ action('GalleryController@index') }}">Galleries</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                @if(Auth::user()->hasRole("admin"))
+                @if(Auth::check() and Auth::user()->hasRole("admin"))
                     <li @if(Request::is('admin')) class="active dropdown" @else class="dropdown" @endif>
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Panel <span class="caret"></span></a>
                         <ul class="dropdown-menu">

@@ -45,7 +45,7 @@ class User extends Authenticatable
     
     public function permissions()
     {
-        return $this->hasOne('App\Permission');
+        return $this->belongsTo('App\Permission');
     }
 
     protected $appends = ['is_admin','is_user'];
@@ -67,9 +67,17 @@ class User extends Authenticatable
      * @return bool
      */
     
-    public function hasPermission($permission)
+    public function hasSchema($schema)
     {
-        if (Permission::where('schema_name', $permission)->value('id') == Auth::user()->permission_id) {
+        if (Permission::where('schema_name', $schema)->value('id') == Auth::user()->permission_id) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function hasPermission($action) {
+        if (Permission::where($action, true)->value($action) == Auth::user()->permissions[$action]) {
             return true;
         } else {
             return false;

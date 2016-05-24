@@ -10,6 +10,8 @@ use App\Gallery;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
+use App\Permission;
+
 class GalleryController extends Controller
 {
 
@@ -84,7 +86,7 @@ class GalleryController extends Controller
      */
     public function edit($id)
     {
-        //
+        return dd(Permission::findOrFail(1)->user);
     }
 
     /**

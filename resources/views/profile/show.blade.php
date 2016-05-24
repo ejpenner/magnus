@@ -11,7 +11,7 @@
                 <div class="col-md-3 gallery-item">
                     {{ $gallery->name }}
                     {{ $gallery->description }}
-                    @if(Auth::user()->hasRole('admin') or Auth::user()->isOwner($gallery))
+                    @if(Auth::check() and (Auth::user()->hasRole('admin') or Auth::user()->isOwner($gallery)))
                         <div class="container">@include('partials._operations', ['model' => $gallery, 'controller'=>'GalleryController'])</div>
                     @endif
                 </div>

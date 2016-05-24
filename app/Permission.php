@@ -20,12 +20,16 @@ class Permission extends Model
       'destroy' => 'boolean',
       'create_all' => 'boolean',
       'read_all' => 'boolean',
-      'edit_all' => 'boolean',  
+      'edit_all' => 'boolean',
       'destroy_all' => 'boolean',
     ];
     
     public function getSchemaName()
     {
         return $this->attributes['schema_name'];
+    }
+    
+    public function user() {
+        return $this->hasMany('App\User');
     }
 }
