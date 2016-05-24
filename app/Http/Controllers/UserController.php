@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\User;
+use App\Profile;
 use App\Permission;
 
 class UserController extends Controller
@@ -21,10 +22,12 @@ class UserController extends Controller
         return view('user.index', compact('users'));
     }
 
-    public function show($id)
+    public function show(User $user)
     {
-        $user = User::where('id', $id)->first();
-        return view('user.show', compact('user'));
+        //$user = User::where('id', $id)->first();
+        $permissions = Permission::lists('schema_name', 'id');
+
+        return view('user.edit', compact('user','permissions'));
     }
 
     public function create()
@@ -38,40 +41,49 @@ class UserController extends Controller
 
         $user->username = $request->username;
         $user->name = $request->name;
+        $user->profile_slug = str_slug($request->username, '-');
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->permission_id = $request->permission_id;
         $user->save();
+        
+        Profile::create(['user_id'=>$user->id]);
+        
         return redirect()->route('users.index')->with('success', 'Your user was created.');
     }
 
-    public function edit($id)
+    public function edit(User $user)
     {
-        $user = User::findOrFail($id);
-        return view('user.edit', compact('user'));
+        //$user = User::findOrFail($id);
+        $permissions = Permission::lists('schema_name', 'id');
+
+        return view('user.edit', compact('user','permissions'));
     }
 
-    public function update($id, Request $request)
+    public function update(User $user, Request $request)
     {
-        $user = User::findOrFail($id);
-
+        //$user = User::findOrFail($id);
         if ($request->password == $request->password_confirmation) {
             $user->name = $request->name;
+            $user->username = $request->username;
             $user->email = $request->email;
+            $user->slug = str_slug($request->username, '-');
             if ($request->password != "" and $request->password != null) {
                 $user->password = bcrypt($request->password);
             }
             $user->permission_id = $request->permission_id;
+
             $user->update();
+
             return redirect()->route('users.index')->with('success', 'User updated successfully.');
         } else {
             return redirect()->back()->withErrors('Password does not match the confirmation');
         }
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user = User::findOrFail($id);
+        //$user = User::findOrFail($id);
 
         if ($user->delete()) {
             return redirect()->route('users.index')->with('success', 'User Deleted!');
@@ -99,19 +111,21 @@ class UserController extends Controller
 
     public function manageAccount($id)
     {
-        $user = User::findOrFail($id);
+         $user = User::findOrFail($id);
         return view('user.account', compact('user'));
     }
 
     public function changePassword($id)
     {
         $user = User::findOrFail($id);
+
         return view('user.password', compact('user'));
     }
 
     public function changeAccountPassword($id)
     {
         $user = User::findOrFail($id);
+
         return view('user.accountPassword', compact('user'));
     }
 

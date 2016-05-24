@@ -14,10 +14,12 @@ class CreateProfilesTable extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) { 
             $table->increments('id');
+            $table->string('biography')->nullable();
+            $table->timestamps();
         });
 
         Schema::table('profiles', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned()->index();
+            $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

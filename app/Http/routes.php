@@ -11,22 +11,18 @@
 |
 */
 
-Route::get('/', function () {
+Route::model('users', 'User');
+Route::model('profile', 'Profile');
+
+//Route::model('gallery', 'Gallery');
+
+Route::auth();
+
+Route::get('/', ['as' => 'home', function () {
     return view('welcome');
-});
-
-
-
-Route::group(['middleware' => ['guest']], function () {
-    Route::auth();
-});
+}]);
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::resource('users', 'UserController');
-
-    Route::group(['middleware'=>'permission:role,admin'], function () {
-        Route::resource('permissions', 'PermissionController');
-    });
 
     Route::group(['middleware' => ['id']], function ($id) {
         Route::get('users/{id}/editAccount', 'UserController@editAccount');
@@ -35,21 +31,38 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('users/{id}/changeMyPassword', array('uses' => 'UserController@changeAccountPassword', 'as' => 'user.accountPassword'));
         Route::patch('users/{id}/updatePassword', 'UserController@updatePassword');
     });
+
+    Route::group(['middleware'=>'permission:role,admin'], function () {
+        Route::resource('permissions', 'PermissionController');
+
+        Route::resource('users', 'UserController');
+
+
+    });
+
+    Route::bind('users', function($value, $route) {
+        return \App\User::whereSlug(strtolower($value))->first();
+    });
+
 });
 
 
 Route::resource('profile', 'ProfileController');
 
+Route::bind('profile', function($value, $route) {
+    return \App\User::whereSlug(strtolower($value))->first();
+});
+
 Route::resource('gallery', 'GalleryController');
+
+
 
 Route::resource('profile.gallery.piece', 'PieceController');
 
 
 
 // User Show
-//Route::bind('user', function($value) {
-//   return \App\User::where('name', '=', $value)->first();
-//});
+
 
 
 

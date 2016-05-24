@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3>{{ $user->first_name }} {{ $user->last_name }}</h3>
+    <div class="container">
+    <h3>{{ $user->name }}</h3>
     <hr>
-    {!! Form::model($user, ['method'=>'PATCH','action'=>['UserController@update',$user->id]]) !!}
+    {!! Form::model($user, ['method'=>'PATCH','action'=>['UserController@update',$user->slug]]) !!}
     @include('user._formAdmin')
     {!! Form::close() !!}
+    </div>
 @endsection

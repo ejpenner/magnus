@@ -32,7 +32,7 @@ class GalleryController extends Controller
     {
         // index of galleries is user profile
 
-        $galleries = DB::table('galleries')->paginate('12');
+        $galleries = Gallery::paginate('12');
 
         return view('gallery.index', compact('galleries'));
     }

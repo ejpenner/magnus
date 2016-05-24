@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Permission;
+use App\Profile;
 use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
@@ -15,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','permission_id'
+        'name', 'email', 'password', 'permission_id', 'slug', 'username'
     ];
 
     /**
@@ -84,5 +85,17 @@ class User extends Authenticatable
         } else {
             return false;
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function isOwner($object)
+    {
+       if($this->attributes['id'] == $object->user_id) {
+           return true;
+       } else {
+           return false;
+       }
     }
 }

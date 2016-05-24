@@ -26,7 +26,7 @@ class Permission
                 return redirect()->back()->withErrors('You do not have permission to access this resource');
             }
         } else {
-            return redirect()->back()->withErrors('Permission middleware is not configured correctly in the routes file');
+            return redirect()->route('home')->withErrors('Permission middleware is not configured correctly in the routes file');
         }
 
         return $next($request);

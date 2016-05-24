@@ -17,7 +17,10 @@ class DatabaseSeeder extends Seeder
         
         $this->call(PermissionSeeder::class);
         $this->call(UserSeeder::class);
-        
+        $this->call(ProfileSeeder::class);
+        $this->call(GallerySeeder::class);
+
+
         Model::reguard();
     }
 }

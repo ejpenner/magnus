@@ -4,13 +4,18 @@
 </div>
 
 <div class="form-group col-md-6">
+    {!! Form::label('username', 'Username') !!}
+    {!! Form::text('username', null, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group col-md-6">
     {!! Form::label('email', 'E-Mail') !!}
     {!! Form::text('email', null, ['class' => 'form-control']) !!}
 </div>
 
 <div class="form-group col-md-6">
-    {!! Form::label('account_type', 'Account Type') !!}
-    {!! Form::select('account_type', array('read-only'=>'read-only','user'=>'user', 'admin'=>'admin'), null, ['class' => 'form-control']) !!}
+    {!! Form::label('permission_id', 'Account Type') !!}
+    {!! Form::select('permission_id', $permissions, null, ['class' => 'form-control']) !!}
 </div>
 
 <div class="form-group col-md-6">
