@@ -17,11 +17,8 @@ Route::get('/', function () {
 
 
 
-Route::auth();
-
 Route::group(['middleware' => ['guest']], function () {
-    Route::get('/home', 'UserController@login');
-    Route::get('/', 'UserController@login');
+    Route::auth();
 });
 
 Route::group(['middleware' => ['auth']], function () {
