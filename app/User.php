@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use App\Permission;
+use Illuminate\Support\Facades\Auth;
+
 class User extends Authenticatable
 {
     /**
@@ -12,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','permission_id'
     ];
 
     /**
@@ -24,11 +27,62 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
     
-    public function galleries() {
+    public function galleries()
+    {
         return $this->hasMany('App\Gallery');
     }
     
-    public function pieces() {
+    public function pieces()
+    {
         return $this->hasMany('App\Piece');
+    }
+    
+    public function profile()
+    {
+        return $this->hasOne('App\Profile');
+    }
+    
+    public function permissions()
+    {
+        return $this->hasOne('App\Permission');
+    }
+
+    protected $appends = ['is_admin','is_user'];
+
+    // methods
+    public function hasRole($role)
+    {
+        if (Permission::where('role', $role)->value('id') == Auth::user()->permission_id) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function hasPermission($permission)
+    {
+        if (Permission::where('schema_name', $permission)->value('id') == Auth::user()->permission_id) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getIsAdminAttribute()
+    {
+        if ($this->attributes['permission_id'] == Permission::where('schema_name', 'admin')->first()->value('id')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function canEdit()
+    {
+        if ($this->permission == 'admin' or $this->permission == 'user') {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

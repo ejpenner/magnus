@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+
+class Permission
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next, $type, $value)
+    {
+        // based on the variable assigned to the middleware, evaluate if the user has permission to use the resource
+        // type is permission or role
+        if($type == 'role') {
+            if (!$request->user()->hasRole($value)) {
+                return redirect()->back()->withErrors('You do not have permission to access this resource');
+            }
+        } elseif ($type == 'schema') {
+            if (!$request->user()->hasPermission($value)) {
+                return redirect()->back()->withErrors('You do not have permission to access this resource');
+            }
+        } else {
+            return redirect()->back()->withErrors('Permission middleware is not configured correctly in the routes file');
+        }
+
+        return $next($request);
+    }
+}

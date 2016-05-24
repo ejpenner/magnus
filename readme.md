@@ -20,7 +20,7 @@ Documentation for the framework can be found on the [Laravel website](http://lar
  * `"laravel/framework": "5.2.*",`
  * `"intervention/image": "^2.3",`
  * `"laravelcollective/html": "5.2.*"`
- 
+
 #### NPM Dev Dependencies
 * `"gulp": "^3.8.8",`
 * `"gulp-concat": "*",`
