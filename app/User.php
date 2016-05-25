@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Permission;
 use App\Profile;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
@@ -43,14 +44,19 @@ class User extends Authenticatable
         return $this->hasOne('App\Profile');
     }
     
-    public function permissions()
+    public function permission()
     {
         return $this->belongsTo('App\Permission');
     }
 
-    protected $appends = ['is_admin','is_user'];
+    protected $appends = ['banned'];
 
-    // methods
+    /**
+     *  Check if the logged in user has the specified role
+     *
+     * @param $role
+     * @return bool
+     */
     public function hasRole($role)
     {
         if (Permission::where('role', $role)->value('id') == Auth::user()->permission_id) {
@@ -61,7 +67,7 @@ class User extends Authenticatable
     }
 
     /**
-     *  Does the authorized user have the permission schema needed?
+     *  Does the authorized user have the permission schema
      *
      * @param $permission
      * @return bool
@@ -76,11 +82,22 @@ class User extends Authenticatable
         }
     }
 
+    /**
+     *  Check if the user has the specified permission
+     *
+     * @param $action: string
+     * @return bool|void
+     */
+
     public function hasPermission($action) {
-        if (Permission::where($action, true)->value($action) == Auth::user()->permissions[$action]) {
-            return true;
+        if(Schema::hasColumn('permissions', $action)) {
+            if (Permission::where($action, true)->value($action) == Auth::user()->permission[$action]) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            return false;
+            return die('Permission does not exist');
         }
     }
 

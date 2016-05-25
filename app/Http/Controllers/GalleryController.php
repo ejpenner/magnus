@@ -86,7 +86,10 @@ class GalleryController extends Controller
      */
     public function edit($id)
     {
-        return dd(Permission::findOrFail(1)->user);
+        //return dd(Permission::findOrFail(1)->users);
+        //return
+          // dd(Auth::user()->permission['read_all']);
+        //
     }
 
     /**
