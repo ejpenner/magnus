@@ -22,6 +22,10 @@ Route::get('/', ['as' => 'home', function () {
     return view('welcome');
 }]);
 
+Route::get('errors/401', ['as' => '401', function() {
+    return view('errors.401');
+}]);
+
 Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['middleware' => ['id']], function ($id) {
