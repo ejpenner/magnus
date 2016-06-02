@@ -8,6 +8,8 @@ use App\Permission;
 use App\Profile;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
 
 class User extends Authenticatable
 {
@@ -17,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'permission_id', 'slug', 'username'
+        'name', 'email', 'password', 'permission_id', 'slug', 'username', 'avatar'
     ];
 
     /**
@@ -28,6 +30,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    private $avatarDirectory = 'avatars';
+    private $avatarResize = '100';
     
     public function galleries()
     {
@@ -129,4 +134,62 @@ class User extends Authenticatable
             return false;
         }
     }
+
+    public function storeAvatar($request)
+    {
+        $destinationPath = $this->avatarDirectory; // upload path, goes to the public folder
+        $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
+        if($extension == null or $extension == '') {
+            $extension = 'png';
+        }
+        $fileName = substr(microtime(), 2, 8).'_uploaded.'.$extension; // renaming image
+
+        $request->file('image')->move($destinationPath, $fileName); // uploading file to given path
+
+        $fullPath = $destinationPath."/".$fileName; // set the image field to the full path
+        return $fullPath;
+    }
+
+    public function setAvatar($request)
+    {
+        if($this->avatar != null or $this->avatar != '') {
+            $this->deleteAvatarFile();
+        }
+        $this->avatar = $this->storeAvatar($request);
+
+        $avatarResized = $this->resize($this->avatar);
+        $avatarResized->save($this->avatar);
+    }
+
+    public function resize($image)
+    {
+        $resize = Image::make($image);
+        $resize->resize($this->avatarResize, null, function ( $constraint )
+        {
+            $constraint->aspectRatio();
+        });
+        return $resize;
+    }
+
+    public function getAvatar()
+    {
+        if(!empty($this->avatar) && File::exists($this->avatar))
+        {
+            // Get the filename from the full path
+            $filename = basename($this->avatar);
+            return '/'.$this->avatarDirectory.'/'.$filename;
+        }
+        return '/avatars/missing.png';
+    }
+
+    public function deleteAvatarFile()
+    {
+        $path = public_path();
+        if(File::delete($path.'/'.$this->avatar))
+        {
+            return true;
+        }
+        return false;
+    }
+
 }

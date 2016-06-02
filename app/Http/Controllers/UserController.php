@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests;
 
@@ -149,4 +151,16 @@ class UserController extends Controller
         $user->update($request->all());
         return redirect()->route('user.account', [$user->id])->with('success', 'User updated successfully!');
     }
+
+    public function avatar() {
+        return view('user.avatar');
+    }
+
+    public function uploadAvatar(Request $request) {
+        //dd($request->all());
+        $user = User::where('id', Auth::user()->id)->first();
+        $user->setAvatar($request);
+        $user->save();
+    }
+    
 }

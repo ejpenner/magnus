@@ -11,3 +11,4 @@ require('../../js/popover.js')
 require('../../js/scrollspy.js')
 require('../../js/tab.js')
 require('../../js/affix.js')
+    //var cropper = require('cropper');

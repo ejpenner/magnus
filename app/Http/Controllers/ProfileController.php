@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 use App\User;
 use App\Profile;
@@ -98,5 +99,11 @@ class ProfileController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    public function user() {
+        $profile = Profile::where('user_id', Auth::user()->id)->first();
+        
+        return view('profile.show', compact('profile', 'user'));
     }
 }

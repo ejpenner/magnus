@@ -1,5 +1,6 @@
 @import "font-awesome/font-awesome";
 @import "bootstrap/bootstrap";
+@import "cropper/cropper";
 
 /* Dropdown hover */
 .dropdown:hover .dropdown-menu {
@@ -46,14 +47,6 @@ footer {
   display:inline;
 }
 
-.modal-body .form-horizontal .col-sm-2,
-.modal-body .form-horizontal .col-sm-10 {
-  width: 100% !important;
-}
-
-.modal-body .form-horizontal .control-label {
-  text-align: left !important;
-}
-.modal-body .form-horizontal .col-sm-offset-2 {
-  margin-left: 15px !important;
+img {
+  max-width: 100%; /* This rule is very important, please do not ignore this! */
 }

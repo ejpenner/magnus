@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="container">
-        <h3>{{ $user->name }}</h3>
+        <h3><img src="{{ $user->getAvatar() }}"> {{ $user->name }}</h3>
         <p>{{ $profile->biography }}</p>
         <hr>
         <div class="container gallery-container">
