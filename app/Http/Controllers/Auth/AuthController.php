@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Profile;
 use Validator;
+use App\Permission;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -50,8 +52,9 @@ class AuthController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|max:255',
+            'username' => 'required|max:32|min:3|unique:users',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:8|confirmed',
         ]);
     }
 
@@ -63,10 +66,17 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
+            'username' => $data['username'],
+            'slug' => str_slug($data['username']),
             'email' => $data['email'],
+            'permission_id' => Permission::where('schema_name', 'User')->value('id'),
             'password' => bcrypt($data['password']),
         ]);
+
+        $user->profile()->save(new Profile(['biography'=>'Not filled out yet']));
+
+        return $user;
     }
 }

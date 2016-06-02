@@ -35,7 +35,7 @@ class UserController extends Controller
         return view('user.create');
     }
 
-    public function store(Request $request)
+    public function store(Requests\UserCreateRequest $request)
     {
         $user = new User;
 
@@ -60,7 +60,7 @@ class UserController extends Controller
         return view('user.edit', compact('user', 'permissions'));
     }
 
-    public function update(User $user, Request $request)
+    public function update(User $user, Requests\UserEditRequest $request)
     {
         //$user = User::findOrFail($id);
         if ($request->password == $request->password_confirmation) {
@@ -73,7 +73,7 @@ class UserController extends Controller
             }
             $user->permission_id = $request->permission_id;
 
-            $user->update();
+            $user->save();
 
             return redirect()->route('users.index')->with('success', 'User updated successfully.');
         } else {
@@ -129,7 +129,7 @@ class UserController extends Controller
         return view('user.accountPassword', compact('user'));
     }
 
-    public function updatePassword($user_id, Request $request)
+    public function updatePassword($user_id, Requests\PasswordRequest $request)
     {
         $user = User::findOrFail($user_id);
         $old_password   = Input::get('old_password');
@@ -142,14 +142,11 @@ class UserController extends Controller
         }
     }
 
-    public function updateAccount($id, Request $request)
+    public function updateAccount($id, Requests\AccountRequest $request)
     {
         $user = User::findOrFail($id);
-
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
-        $user->email = $request->email;
-        $user->update();
+        
+        $user->update($request->all());
         return redirect()->route('user.account', [$user->id])->with('success', 'User updated successfully!');
     }
 }

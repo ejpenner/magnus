@@ -8941,7 +8941,7 @@ button.close {
 /* Remove the navbar's default rounded borders and increase the bottom margin */
 .navbar {
   border-top: solid #c2bfc9 3px !important;
-  margin-bottom: 50px !important;
+  margin-bottom: 15px !important;
   border-radius: 0 !important;
 }
 /* Remove the jumbotron's default bottom margin */
@@ -8971,4 +8971,14 @@ footer {
 }
 .operations {
   display: inline;
+}
+.modal-body .form-horizontal .col-sm-2,
+.modal-body .form-horizontal .col-sm-10 {
+  width: 100% !important;
+}
+.modal-body .form-horizontal .control-label {
+  text-align: left !important;
+}
+.modal-body .form-horizontal .col-sm-offset-2 {
+  margin-left: 15px !important;
 }

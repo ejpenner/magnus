@@ -27,7 +27,7 @@ class AuthId
         if (Auth::user()->is_admin or $request->route('id') == Auth::user()->id) {
             return $next($request);
         } else {
-            return redirect(url('/home'))->withErrors('You are not permitted to complete that action. If you are an administrator and would like to update another user, go to Manage Users.');
+            return redirect(url('/home'))->withErrors('You are not permitted to complete that action or view that page.');
         }
     }
 }

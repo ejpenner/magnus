@@ -59,7 +59,6 @@ Route::bind('profile', function ($value, $route) {
 
 Route::resource('gallery', 'GalleryController');
 
-Route::resource('profile.gallery.piece', 'PieceController');
-
+Route::resource('gallery.piece', 'PieceController');
 
 Route::get('/home', 'HomeController@index');

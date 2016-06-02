@@ -29,6 +29,8 @@ class Permission extends Model
         return $this->attributes['schema_name'];
     }
     
+    
+    
     public function users() {
         return $this->hasMany('App\User');
     }
