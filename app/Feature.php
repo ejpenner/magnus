@@ -11,13 +11,20 @@ class Feature extends Model
     /**
      * @return array
      */
-    public function Piece()
+    public function piece()
     {
-        return $this->hasOne('App\Piece');
+        return $this->belongsTo('App\Piece');
     }
 
-    public function Gallery()
+    public function gallery()
     {
-        return $this->belongsToMany('App\Gallery');
+        return $this->belongsTo('App\Gallery');
     }
+
+
+    public function scopeRecent($query) {
+        $query->orderBy('created_at', 'desc');
+    }
+    
+    
 }

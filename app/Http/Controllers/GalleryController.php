@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Feature;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -34,7 +35,7 @@ class GalleryController extends Controller
     {
         // index of galleries is user profile
 
-        $galleries = Gallery::paginate('12');
+        $galleries = Gallery::orderBy('updated_at', 'desc')->paginate('12');
 
         return view('gallery.index', compact('galleries'));
     }
@@ -75,7 +76,9 @@ class GalleryController extends Controller
     {
         $gallery = Gallery::findOrFail($id);
 
-        return view('gallery.show', compact('gallery'));
+        $features = Feature::where('gallery_id', $gallery->id)->orderBy('created_at', 'desc')->paginate(12);
+        
+        return view('gallery.show', compact('gallery', 'features'));
     }
 
     /**

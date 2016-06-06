@@ -128,9 +128,9 @@ gulp.task('default', [
     'less',
     'vendor-scripts',
     'angular',
-    'scripts',
-    'phpcbf-app',
-    'phpcbf-config'
+    'scripts'
+    //'phpcbf-app',
+    //'phpcbf-config'
 ]);
 
 gulp.task('watch', function() {

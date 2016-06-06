@@ -156,9 +156,25 @@ class UserController extends Controller
         return view('user.avatar');
     }
 
+
+    /**
+     * Upload user avatar for users
+     * @param Request $request
+     * 
+     */
     public function uploadAvatar(Request $request) {
-        //dd($request->all());
         $user = User::where('id', Auth::user()->id)->first();
+        $user->setAvatar($request);
+        $user->save();
+    }
+
+    /**
+     * Upload an avatar for any user, for admin use
+     * @param Request $request
+     * @param $id
+     */
+    public function uploadAvatarAdmin (Request $request, $id) {
+        $user = User::where('id', $id)->first();
         $user->setAvatar($request);
         $user->save();
     }

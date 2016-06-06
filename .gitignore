@@ -6,3 +6,6 @@ Homestead.json
 .env
 /.idea
 
+/public/images/
+/public/thumbnails/
+/public/avatars/

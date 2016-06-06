@@ -12,4 +12,13 @@ class Gallery extends Model
     {
         return $this->belongsTo('App\User');
     }
+    
+    public function featured()
+    {
+        return $this->hasMany('App\Feature');
+    }
+    
+    public function setUpdatedAtAttribute($value) {
+        $this->attributes['updated_at'] = $value;
+    }
 }

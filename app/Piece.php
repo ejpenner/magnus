@@ -16,15 +16,16 @@ class Piece extends Model
     
     private $imageDirectory = 'images';
     private $thumbnailDirectory = 'thumbnails';
+    private $resizeTo = '400';
 
     public function user()
     {
         return $this->belongsTo('App\User');
     }
     
-    public function features()
+    public function featured()
     {
-        return $this->belongsToMany('App\Feature');
+        return $this->hasMany('App\Feature');
     }
 
     public function tags()
@@ -49,6 +50,20 @@ class Piece extends Model
     {
         $this->attributes['user_id'] = $id;
     }
+
+    public function scopePublished($query) {
+        $query->where('published_at', '<=', Carbon::now());
+    }
+    public function scopeUnpublished($query)
+    {
+        $query->where('published_at', '=>', Carbon::now());
+    }
+    public function setPublishedAtAttribute($date)
+    {
+        $this->attributes['published_at'] = Carbon::parse($date);
+        //$this->attributes['published_at'] = Carbon::createFromFormat('Y-m-d', $date);
+    }
+    
     /**
      * @return string
      */
@@ -59,7 +74,7 @@ class Piece extends Model
             $filename = basename($this->image_path);
             return  $this->imageDirectory.'/'.$filename;
         }
-        return 'images/missing.png';
+        return $this->imageDirectory.'/missing.png';
     }
     /**
      * @return string
@@ -71,13 +86,13 @@ class Piece extends Model
             $filename = basename($this->thumbnail_path);
             return $this->thumbnailDirectory.'/'.$filename;
         }
-        return 'images/missing.png';
+        return $this->thumbnailDirectory.'/missing.png';
     }
     /**
      * @param $image
      * @return mixed
      */
-    public function resize($image)
+    private function resize($image)
     {
         $resize = Image::make($image);
         $resize->resize($this->resizeTo, null, function ($constraint) {
@@ -96,10 +111,10 @@ class Piece extends Model
     {
         $destinationPath = $this->imageDirectory; // upload path, goes to the public folder
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-        $fileName = substr(microtime(), 2, 8).'_uploaded.'.$extension; // renaming image
+        $fileName = date('Ymd').'_'.substr(microtime(), 2, 8).'_uploaded.'.$extension; // renaming image
         $request->file('image')->move($destinationPath, $fileName); // uploading file to given path
         
-        Storage::disk('images')->put($fileName, $request->file('image'));  // put image in storage
+        //Storage::disk('images')->put($fileName, $request->file('image'));  // put image in storage
         
         $fullPath = $destinationPath."/".$fileName; // set the image field to the full path
         return $fullPath;
@@ -114,7 +129,7 @@ class Piece extends Model
     {
         $thumbDestination = $this->thumbnailDirectory;
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-        $fileThumbnailName = substr(microtime(), 2, 8).'_uploaded_thumb.'.$extension;
+        $fileThumbnailName = date('Ymd').'_'.substr(microtime(), 2, 8).'_thumb.'.$extension;
         $thumbnail = $this->resize($this->getImage());
         $fullPath = $thumbDestination."/".$fileThumbnailName;
         $thumbnail->save($fullPath);
@@ -128,7 +143,7 @@ class Piece extends Model
      */
     public function setImage($request)
     {
-        $this->image = $this->storeImage($request);
+        $this->image_path = $this->storeImage($request);
     }
     /**
      *  using storeThumbnail(), also assign this article's thumbnail attribute the path returned
@@ -136,7 +151,7 @@ class Piece extends Model
      */
     public function setThumbnail($request)
     {
-        $this->thumbnail = $this->storeThumbnail($request);
+        $this->thumbnail_path = $this->storeThumbnail($request);
     }
     /**
      *  Deletes articles' image files
@@ -150,6 +165,7 @@ class Piece extends Model
         }
         return false;
     }
+    
     public function updateImage($request)
     {
         if ($request->file('image') !== null) {  /// check if an image is attached

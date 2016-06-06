@@ -82,9 +82,11 @@ $(document).ready(function() {
                 }
             });
 
-
         });
         e.preventDefault();
+        window.setTimeout(function() {
+            location.reload();
+        }, 2000)
     });
 
 });

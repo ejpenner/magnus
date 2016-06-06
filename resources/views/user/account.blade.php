@@ -7,6 +7,7 @@
         <ul class="standard">
             <li><a href="{{ action('UserController@editAccount', $user->id) }}">Edit Account Information</a></li>
             <li><a href="{{ action('UserController@changeAccountPassword', $user->id) }}">Change Password</a></li>
+            <li><a href="{{ action('UserController@avatar') }}">Change Avatar</a></li>
         </ul>
     </div>
 @endsection

@@ -9210,6 +9210,7 @@ button.close {
 .jumbotron {
   color: #c2bfc9 !important;
   margin-bottom: 0 !important;
+  height: 100px !important;
   background-image: url("/images/404-space.jpg");
   background-position: center top;
   background-repeat: no-repeat;
@@ -9217,13 +9218,16 @@ button.close {
 .gallery-item {
   padding-bottom: 5px;
   padding-top: 5px;
-  border-bottom: solid white 5px;
-  border-left: solid whitesmoke 5px;
-  background: #EEE;
   min-height: 200px;
 }
 .gallery-container {
   margin-bottom: 15px;
+}
+/* Vertical alight for gallery.show */
+.vcenter {
+  display: table-cell;
+  vertical-align: middle;
+  float: none;
 }
 /* Add a gray background color and some padding to the footer */
 footer {
@@ -9234,13 +9238,7 @@ footer {
 .operations {
   display: inline;
 }
-.modal-body .form-horizontal .col-sm-2,
-.modal-body .form-horizontal .col-sm-10 {
-  width: 100% !important;
-}
-.modal-body .form-horizontal .control-label {
-  text-align: left !important;
-}
-.modal-body .form-horizontal .col-sm-offset-2 {
-  margin-left: 15px !important;
+img {
+  max-width: 100%;
+  /* This rule is very important, please do not ignore this! */
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\User;
 use App\Profile;
+use App\Gallery;
 
 class ProfileController extends Controller
 {
@@ -63,8 +64,9 @@ class ProfileController extends Controller
     public function show(User $user)
     {
         $profile = Profile::where('user_id', $user->id)->first();
-        
-        return view('profile.show', compact('profile', 'user'));
+        $galleries = Gallery::where('user_id', $user->id)->paginate(12);
+
+        return view('profile.show', compact('profile', 'user', 'galleries'));
     }
 
     /**

@@ -18,8 +18,6 @@
 
 <div class="jumbotron" id="header-background">
     <div class="container text-center">
-        <h1>Gallery App</h1>
-        <p>The Appening</p>
     </div>
 </div>
 
@@ -31,7 +29,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Logo</a>
+            <a class="navbar-brand" href="#">Gallery</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
