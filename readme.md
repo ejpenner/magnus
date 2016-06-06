@@ -1,4 +1,4 @@
-# Laravel PHP Framework
+# Galleries
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
 [![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
@@ -6,17 +6,32 @@
 [![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
 [![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
-
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
-
 ## Official Documentation
 
 Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
 
-## Contributing
+## Environment Setup
+* clone the repo
+* run `composer update` to install all the composer packages
+* run `npm install` to install all NPM assets
+* run `php artisan migrate` to run the migrations
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+#### Composer Packages Used
+ * `"laravel/framework": "5.2.*",`
+ * `"intervention/image": "^2.3",`
+ * `"laravelcollective/html": "5.2.*"`
+
+#### NPM Dev Dependencies
+* `"gulp": "^3.8.8",`
+* `"gulp-concat": "*",`
+* `"gulp-less": "*",`
+* `"babelify": "*",`
+* `"browserify": "^13.0.0",`
+* `"watchify": "^3.1.0",`
+* `"gulp-jsbeautifier": "*",`
+* `"gulp-phpcbf": "*",`
+* `"gulp-watchify": "*",`
+* `"strictify": "^0.2.0"`
 
 ## Security Vulnerabilities
 

@@ -5,9 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Carbon\Carbon;
+
+use App\Piece;
+use App\Gallery;
+use App\Feature;
 
 class PieceController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(
+            'auth',
+            [
+                'only' => ['create','store','edit','update','destroy']
+            ]
+        );
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,9 +41,16 @@ class PieceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($gallery)
     {
-        //
+
+        $gallery = Gallery::findOrFail($gallery);
+
+        if(Auth::user()->isOwner($gallery) or Auth::user()->hasRole('admin')) {
+            return view('piece.create', compact('gallery'));
+        } else {
+            return redirect()->back()->withErrors('You cannot add to this gallery');
+        }
     }
 
     /**
@@ -34,9 +59,22 @@ class PieceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($gallery_id, Request $request)
     {
-        //
+        $gallery = Gallery::findOrFail($gallery_id);
+        $gallery->updated_at = Carbon::now();
+        $gallery->save();
+
+        $piece = new Piece($request->all());
+        $piece->setImage($request);
+        $piece->setThumbnail($request);
+        $piece->published_at = Carbon::now();
+        $piece = Auth::user()->pieces()->save($piece);
+
+        $feature = new Feature(['piece_id'=>$piece->id, 'gallery_id'=>$gallery->id]);
+        $feature->save();
+
+        return redirect()->route('gallery.show', $gallery->id)->with('success', 'Piece has been added!');
     }
 
     /**
@@ -68,9 +106,18 @@ class PieceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $gallery_id, $piece_id)
     {
-        //
+        $gallery = Gallery::findOrFail($gallery_id);
+        $gallery->updated_at = Carbon::now();
+        $gallery->save();
+
+        $piece = Piece::findOrFail($piece_id);
+        $piece->update($request->except('image','published_at'));
+
+        $imageStatus = $piece->updateImage($request);
+
+        return redirect()->route('gallery.piece.show', [$gallery->id, $piece->id])->with('message', 'Updated piece successfully!');
     }
 
     /**

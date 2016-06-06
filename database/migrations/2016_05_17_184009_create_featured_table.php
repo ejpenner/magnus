@@ -14,12 +14,12 @@ class CreateFeaturedTable extends Migration
     {
         Schema::create('features', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('gallery_id')->unsigned();
-            $table->integer('piece_id')->unsigned();
             $table->timestamps();
         });
         
         Schema::table('features', function (Blueprint $table) {
+            $table->integer('gallery_id')->unsigned();
+            $table->integer('piece_id')->unsigned();
             $table->foreign('gallery_id')->references('id')->on('galleries')->onDelete('cascade');
             $table->foreign('piece_id')->references('id')->on('pieces')->onDelete('cascade');
         });

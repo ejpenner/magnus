@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
+use App\Gallery;
+use App\Piece;
+use App\User;
+
 class HomeController extends Controller
 {
     /**
@@ -14,7 +18,12 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(
+            'auth',
+            [
+                'only' => ['create','edit','destroy']
+            ]
+        );
     }
 
     /**
@@ -25,5 +34,11 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+    
+    public function recent() {
+        $pieces = Piece::orderBy('created_at', 'desc')->paginate(16);
+        
+        return view('home.recent', compact('pieces'));
     }
 }
