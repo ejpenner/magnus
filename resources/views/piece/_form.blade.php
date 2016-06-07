@@ -3,10 +3,15 @@
     {!! Form::text('title', null, ['class'=>'form-control']) !!}
 </div>
 <div class="form-group">
-    {!! Form::label('comments', 'Artist\'s Comments') !!}
-    {!! Form::textarea('comments', null, ['class'=>'form-control']) !!}
+    {!! Form::label('comment', 'Artist\'s Comments') !!}
+    {!! Form::textarea('comment', null, ['class'=>'form-control']) !!}
 </div>
 <div class="form-group">
-    {!! Form::file('image', null, ['class'=>'form-control']) !!}
+    {!! Form::label('tags', 'Tags') !!}
+    {!! Form::text('tags', null, ['class'=>'form-control']) !!}
+    <p class="alert alert-info">Be sure to separate tags with spaces</p>
+</div>
+<div class="form-group">
+    <input type="file" name="image" id="image" class="form-control">
 </div>
 {!! Form::submit('Submit', ['class' => 'form-control']) !!}

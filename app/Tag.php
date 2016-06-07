@@ -15,6 +15,8 @@ class Tag extends Model
     
     public function pieces()
     {
-        return $this->belongsToMany('App\Piece')->withTimestamps();
+        return $this->belongsToMany('App\Piece');
     }
+    
+    
 }

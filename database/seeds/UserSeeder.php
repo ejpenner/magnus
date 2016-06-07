@@ -21,9 +21,23 @@ class UserSeeder extends Seeder
         User::create(['name'=>'Eric Penner', 'username'=>'Vilest', 'slug' => 'vilest', 'email'=>'epenner@unomaha.edu',
             'password'=>'$2y$10$2vC4FBlXEw9jAp2mHX/I1ereZawBmX.tipKbEIfMlQo1g6VytHkQa', 'permission_id'=>1]);
 
-        foreach(range(1,15) as $index) {
-            User::create(['name'=>$faker->name, 'username'=>$faker->userName, 'slug' => str_slug($faker->userName, '-'),
-                'email' => $faker->email, 'password' => bcrypt("password"), 'permission_id' => rand(1, $permissionCount)]);
-        }
+        factory(User::class,10)->create()
+        ->each(function($user){
+            $user->profile()->save(factory(\App\Profile::class)->make());
+            foreach(range(1,2) as $index) {
+                $user->galleries()->save(factory(\App\Gallery::class)->make());
+            }
+            foreach($user->galleries as $gallery) {
+                foreach(range(1,2) as $i) {
+                    $piece = factory(\App\Piece::class)->create(['user_id'=>$user->id]);
+                    $gallery->featured()->save(factory(\App\Feature::class)->make(['piece_id'=>$piece->id]));
+                    foreach(range(1,3) as $j){
+                        $tag = factory(\App\Tag::class)->create();
+                        $piece->tags()->attach($tag->id);
+                    }
+                }
+
+            }
+        });
     }
 }

@@ -2,6 +2,8 @@
 @import "bootstrap/bootstrap";
 @import "cropper/cropper";
 
+@bg-image: url("/images/404/404-space.jpg");
+
 /* Dropdown hover */
 .dropdown:hover .dropdown-menu {
   display: block;
@@ -19,16 +21,27 @@
   color: #c2bfc9 !important;
   margin-bottom: 0 !important;
   height: 100px !important;
-  background-image: url("/images/404-space.jpg");
+  background-image: @bg-image;
   background-position: center top;
   background-repeat: no-repeat;
 }
 
+
+.border-radius (@radius: 10px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius:    @radius;
+  border-radius:         @radius;
+
+  -moz-background-clip:    padding;
+  -webkit-background-clip: padding-box;
+  background-clip:         padding-box;
+}
+
 .gallery-item {
+  //margin: 5px;
   padding-bottom: 5px;
   padding-top: 5px;
-  //border-bottom: solid white 5px;
-  //border-left: solid whitesmoke 5px;
+  //.border-radius();
   //background: #EEE;
   min-height: 200px;
 }
@@ -41,9 +54,9 @@
 /* Vertical alight for gallery.show */
 
 .vcenter {
-  display: table-cell;
-  vertical-align: middle;
-  float: none;
+  //display: table-cell;
+  //vertical-align: middle;
+  //float: none;
 }
 
 /* Add a gray background color and some padding to the footer */
@@ -57,6 +70,19 @@ footer {
   display:inline;
 }
 
-img {
+.piece-show {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#preview  {
   max-width: 100%; /* This rule is very important, please do not ignore this! */
+  max-height: 500px;
+  display:none;
+}
+
+#preview-edit  {
+  max-width: 100%; /* This rule is very important, please do not ignore this! */
+  max-height: 500px;
 }

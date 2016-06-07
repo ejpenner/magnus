@@ -18,7 +18,7 @@ class GallerySeeder extends Seeder
         $faker = Faker\Factory::create();
 
         foreach($users as $user) {
-            foreach (range(1,2) as $index) {
+            foreach (range(1,1) as $index) {
                 Gallery::create(['name'=>$faker->word, 'description' => $faker->text, 'user_id' => $user->id]);
             }
         }

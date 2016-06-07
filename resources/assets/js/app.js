@@ -31,10 +31,29 @@ $(document).ready(function() {
         }
     }
 
-    $('#avatar-file').change(function() {
+    function readFile(input, imgElement) {
 
+        if (input.files && input.files[0]) {
+            console.log('Reading file');
+            var reader = new FileReader();
+
+            reader.readAsDataURL(input.files[0]);
+
+            reader.onload = function(e) {
+                $(imgElement).attr('src', e.target.result);
+            };
+        }
+    }
+
+    $('#avatar-file').change(function() {
         readURL(this);
 
+    });
+
+    $('#image').change(function() {
+        readFile(this, '#preview');
+        readFile(this, '#preview-edit');
+        $('#preview').show();
     });
 
     var cropper = new Cropper(image, {

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="col-md-3">
+    <div class="col-md-2">
         <h1>{{ $gallery->name }}</h1>
         <p>{{ $gallery->description }}</p>
         @if(Auth::check() and (Auth::user()->isOwner($gallery) or Auth::user()->hasRole('admin')))
@@ -10,7 +10,7 @@
             </div>
         @endif
     </div>
-    <div class="col-md-9">
+    <div class="col-md-8">
         <div class="container-fluid">
             @foreach($features->chunk(3) as $featureChunk)
                 <div class="row" >

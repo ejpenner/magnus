@@ -30,7 +30,7 @@ class Piece extends Model
 
     public function tags()
     {
-        return $this->belongsToMany('App\Tag')->withTimestamps();
+        return $this->belongsToMany('App\Tag');
     }
 
     /**
@@ -179,5 +179,9 @@ class Piece extends Model
             }
         }
         return ' Something went wrong...';
+    }
+
+    public function stringifyTags() {
+        return implode(' ', array_pluck($this->tags->toArray(), 'name'));
     }
 }
