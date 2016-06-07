@@ -9211,17 +9211,25 @@ button.close {
   color: #c2bfc9 !important;
   margin-bottom: 0 !important;
   height: 100px !important;
-  background-image: url("/images/404-space.jpg");
+  background-image: url("/images/404/404-space.jpg");
   background-position: center top;
   background-repeat: no-repeat;
 }
 .gallery-item {
+  margin: 20px;
   padding-bottom: 5px;
   padding-top: 5px;
   min-height: 200px;
 }
 .gallery-container {
   margin-bottom: 15px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  background: #EEE;
 }
 /* Vertical alight for gallery.show */
 .vcenter {
@@ -9238,7 +9246,9 @@ footer {
 .operations {
   display: inline;
 }
-img {
+#preview {
   max-width: 100%;
   /* This rule is very important, please do not ignore this! */
+  max-height: 500px;
+  display: none;
 }

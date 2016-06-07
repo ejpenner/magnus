@@ -64,4 +64,4 @@ Route::resource('gallery', 'GalleryController');
 Route::resource('gallery.piece', 'PieceController');
 
 Route::get('/home', 'HomeController@index');
-Route::get('/recent', 'HomeController@recent');
+Route::get('/recent', ['uses'=> 'HomeController@recent', 'as'=>'recent']);

@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="col-md-3">
+    <div class="col-md-2">
         Side
     </div>
-    <div class="col-md-9">
+    <div class="col-md-10">
         <div class="container-fluid">
             @foreach($pieces->chunk(4) as $pieceChunk)
                 <div class="row">
                     @foreach($pieceChunk as $piece)
-                        <div class="col-md-3 vcenter">
+                        <div class="col-md-3 vcenter gallery-item">
                             <img src="/{{ $piece->getThumbnail() }}" alt="">
                             <h4><a href="{{ action('PieceController@show', [$piece->featured->first()->gallery_id, $piece->id]) }}">{{ $piece->title }}</a>- {{ $piece->user->name }}</h4>
                         </div>

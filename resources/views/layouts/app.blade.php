@@ -35,7 +35,7 @@
             <ul class="nav navbar-nav">
                 <li @if(Request::is('/')) class="active" @endif ><a href="{{ action('HomeController@index') }}">Home</a></li>
                 <li @if(Request::is('featured')) class="active" @endif ><a href="#">Featured</a></li>
-                <li @if(Request::is('recent')) class="active" @endif ><a href="#">Recent</a></li>
+                <li @if(Request::is('recent')) class="active" @endif ><a href="{{ action('HomeController@recent') }}">Recent</a></li>
                 <li @if(Request::is('gallery')) class="active" @endif ><a href="{{ action('GalleryController@index') }}">Galleries</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

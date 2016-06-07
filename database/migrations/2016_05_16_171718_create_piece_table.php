@@ -37,4 +37,6 @@ class CreatePieceTable extends Migration
     {
         Schema::drop('pieces');
     }
+    
+    
 }

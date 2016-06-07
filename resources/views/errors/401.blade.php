@@ -25,7 +25,7 @@
             text-align: center;
             display: table-cell;
             vertical-align: middle;
-            background-image: url("{{ asset('images/404-space.jpg') }}");
+            background-image: url("{{ asset('images/404/404-space.jpg') }}");
             background-repeat: no-repeat;
             background-position: center;
         }
