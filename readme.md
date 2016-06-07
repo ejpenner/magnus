@@ -6,14 +6,10 @@
 [![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
 [![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
 
-## Official Documentation
-
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
-
-## Environment Setup
+## Setup
 * clone the repo
 * run `composer update` to install all the composer packages
-* run `npm install` to install all NPM assets
+* run `npm install` to install all NPM assets. So far all of the npm modules used are just for development purposes.
 * run `php artisan migrate` to run the migrations
 
 #### Composer Packages Used
@@ -33,10 +29,9 @@ Documentation for the framework can be found on the [Laravel website](http://lar
 * `"gulp-watchify": "*",`
 * `"strictify": "^0.2.0"`
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+## Laravel Shoutout
 
-## License
+Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
