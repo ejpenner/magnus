@@ -65,3 +65,4 @@ Route::resource('gallery.piece', 'PieceController');
 
 Route::get('/home', 'HomeController@index');
 Route::get('/recent', ['uses'=> 'HomeController@recent', 'as'=>'recent']);
+Route::get('/search', ['uses'=> 'SearchController@searchAll', 'as'=>'searchAll']);

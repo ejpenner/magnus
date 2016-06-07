@@ -37,6 +37,14 @@
                 <li @if(Request::is('featured')) class="active" @endif ><a href="#">Featured</a></li>
                 <li @if(Request::is('recent')) class="active" @endif ><a href="{{ action('HomeController@recent') }}">Recent</a></li>
                 <li @if(Request::is('gallery')) class="active" @endif ><a href="{{ action('GalleryController@index') }}">Galleries</a></li>
+                <li @if(Request::is('search')) class="active" @endif >
+                    {!! Form::open(['action'=>'SearchController@searchAll', 'method'=>'get', 'class'=>'navbar-form navbar-left', 'role'=>'search']) !!}
+                        <div class="form-group">
+                            {!! Form::text('search-terms', null, ['class'=>'form-control', 'placeholder'=>'Search...']) !!}
+                        </div>
+                        {!! Form::submit('Submit', ['class' => 'form-control btn btn-default']) !!}
+                    {!! Form::close() !!}
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @if(Auth::check() and Auth::user()->hasRole("admin"))

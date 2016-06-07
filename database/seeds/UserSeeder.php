@@ -31,7 +31,12 @@ class UserSeeder extends Seeder
                 foreach(range(1,2) as $i) {
                     $piece = factory(\App\Piece::class)->create(['user_id'=>$user->id]);
                     $gallery->featured()->save(factory(\App\Feature::class)->make(['piece_id'=>$piece->id]));
+                    foreach(range(1,3) as $j){
+                        $tag = factory(\App\Tag::class)->create();
+                        $piece->tags()->attach($tag->id);
+                    }
                 }
+
             }
         });
     }

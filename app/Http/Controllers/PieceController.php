@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\Piece;
 use App\Gallery;
 use App\Feature;
+use App\Tag;
 
 class PieceController extends Controller
 {
@@ -61,6 +62,7 @@ class PieceController extends Controller
      */
     public function store($gallery_id, Request $request)
     {
+
         $gallery = Gallery::findOrFail($gallery_id);
         $gallery->updated_at = Carbon::now();
         $gallery->save();
@@ -74,6 +76,18 @@ class PieceController extends Controller
         $feature = new Feature(['piece_id'=>$piece->id, 'gallery_id'=>$gallery->id]);
         $feature->save();
 
+
+        if($request->input('tags') !== null) {
+
+            $tags = explode(' ', trim($request->input('tags')));
+            // for each tag, check if it exists, if it doesn't create it
+            $this->makeTags($tags);
+            // get tag IDs
+            $tagIds = $this->getTagIds($tags);
+            //attach the tags to this piece
+            $piece->tags()->attach($tagIds);
+        }
+
         return redirect()->route('gallery.show', $gallery->id)->with('success', 'Piece has been added!');
     }
 
@@ -83,9 +97,11 @@ class PieceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($gallery_id, $piece_id)
     {
-        return view('piece.show');
+        $gallery = Gallery::findOrFail($gallery_id);
+        $piece = Piece::findOrFail($piece_id);
+        return view('piece.show', compact('piece','gallery'));
     }
 
     /**
@@ -94,9 +110,12 @@ class PieceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($gallery_id, $piece_id)
     {
-        //
+        $gallery = Gallery::findOrFail($gallery_id);
+        $piece = Piece::findOrFail($piece_id);
+
+        return view('piece.edit', compact('piece','gallery'));
     }
 
     /**
@@ -113,11 +132,27 @@ class PieceController extends Controller
         $gallery->save();
 
         $piece = Piece::findOrFail($piece_id);
+
+        // update everything except the image and published at
         $piece->update($request->except('image','published_at'));
 
-        $imageStatus = $piece->updateImage($request);
+        // if the user wants to change the image file
+        if($request->input('image') !== null) {
+            $imageStatus = $piece->updateImage($request);
+        }
 
-        return redirect()->route('gallery.piece.show', [$gallery->id, $piece->id])->with('message', 'Updated piece successfully!');
+        // check if tags have changed
+        if($request->input('tags') === null) {
+            $tags = [];
+        } else {
+            $tags = explode(' ', trim($request->input('tags')));
+            $this->makeTags($tags);
+            $tags = $this->getTagIds($tags);
+        }
+
+        $piece->tags()->sync($tags);
+
+        return redirect()->route('gallery.piece.show', [$gallery->id, $piece->id])->with('success', 'Updated piece successfully!');
     }
 
     /**
@@ -126,8 +161,40 @@ class PieceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($gallery_id, $piece_id)
     {
-        //
+        $piece = Piece::findOrFail($piece_id);
+        $piece->delete();
+
+        return redirect()->route('gallery.show', $gallery_id)->with('success', 'The piece has been deleted!');
+    }
+
+    /**
+     *  for a list of tags, if the tag doesn't already exist in tags table
+     *  create a new entry for it
+     *
+     * @param $tags
+     */
+    private function makeTags($tags) {
+        foreach($tags as $tag) {
+            if(Tag::where('name', $tag)->first() === null) {
+                Tag::create(['name'=>$tag]);
+            }
+        }
+    }
+
+    /**
+     *  For a list of tags, return the IDs of those tags
+     *
+     * @param $tags
+     * @return array
+     */
+    private function getTagIds($tags) {
+        $tagIds = [];
+        foreach($tags as $tag) {
+            $id = Tag::where('name', $tag)->value('id');
+            array_push($tagIds, $id);
+        }
+        return $tagIds;
     }
 }

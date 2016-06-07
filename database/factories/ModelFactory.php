@@ -59,3 +59,9 @@ $factory->define(App\Feature::class, function (Faker\Generator $faker){
    ] ;
 });
 
+$factory->define(\App\Tag::class, function (Faker\Generator $faker){
+   return [
+       'name' => $faker->word,
+   ]; 
+});
+

@@ -52,6 +52,7 @@ $(document).ready(function() {
 
     $('#image').change(function() {
         readFile(this, '#preview');
+        readFile(this, '#preview-edit');
         $('#preview').show();
     });
 
