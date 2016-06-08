@@ -179,7 +179,7 @@ class User extends Authenticatable
             $filename = basename($this->avatar);
             return '/'.$this->avatarDirectory.'/'.$filename;
         }
-        return '/avatars/missing.png';
+        return '/avatars/missing/missing.png';
     }
 
     public function deleteAvatarFile()
