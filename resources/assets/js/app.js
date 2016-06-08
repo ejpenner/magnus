@@ -85,7 +85,7 @@ $(document).ready(function() {
 
             // Use `jQuery.ajax` method
             $.ajax({
-                url: '/users/avatar',
+                url: formURL,
                 method: "POST",
                 data: formData,
                 headers: {
