@@ -15,10 +15,10 @@
             @foreach($features->chunk(3) as $featureChunk)
                 <div class="row" >
                     @foreach($featureChunk as $feature)
-                        <div class="vcenter col-md-4">
+                        <div class="vcenter col-md-4 gallery-item">
                             <div class="">
-                                <img src="/{{ $feature->piece->getThumbnail() }}" alt="">
-                                <h4><a href="{{ action('PieceController@show', [$feature->gallery->id, $feature->piece->id]) }}">{{ $feature->piece->title }}</a>- {{ $feature->piece->user->name }}</h4>
+                                <a href="{{ action('PieceController@show', [$feature->gallery->id, $feature->piece->id]) }}"><img src="/{{ $feature->piece->getThumbnail() }}" alt=""></a>
+                                <h4><a href="{{ action('PieceController@show', [$feature->gallery->id, $feature->piece->id]) }}">{{ $feature->piece->title }}</a> - <small>{{ $feature->piece->user->name }}</small></h4>
                             </div>
                         </div>
                     @endforeach

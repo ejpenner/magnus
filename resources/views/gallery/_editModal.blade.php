@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editGalleryModal{{ $id }}">Edit Gallery</button>
+<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editGalleryModal{{ $id }}">Edit Gallery</button>
 <div id="editGalleryModal{{ $id }}" class="modal fade" role="form">
     <div class="modal-dialog">
 

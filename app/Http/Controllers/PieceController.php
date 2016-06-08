@@ -101,7 +101,8 @@ class PieceController extends Controller
     {
         $gallery = Gallery::findOrFail($gallery_id);
         $piece = Piece::findOrFail($piece_id);
-        return view('piece.show', compact('piece','gallery'));
+        $metadata = $piece->metadata();
+        return view('piece.show', compact('piece','gallery','metadata'));
     }
 
     /**
@@ -133,13 +134,14 @@ class PieceController extends Controller
 
         $piece = Piece::findOrFail($piece_id);
 
-        // update everything except the image and published at
-        $piece->update($request->except('image','published_at'));
-
         // if the user wants to change the image file
-        if($request->input('image') !== null) {
+        
+        if($request->file('image') !== null) {
             $imageStatus = $piece->updateImage($request);
         }
+
+        // update everything except the image and published at
+        $piece->update($request->except('image','published_at'));
 
         // check if tags have changed
         if($request->input('tags') === null) {

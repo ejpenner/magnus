@@ -61,7 +61,7 @@ class GalleryController extends Controller
         $gallery = new Gallery(['name'=>$request->name,'description'=>$request->description]);
         Auth::user()->galleries()->save($gallery);
 
-        return redirect()->route('gallery.index')->with('success', $gallery->name.' has been created!');
+        return redirect()->route('profile.show', [Auth::user()->slug])->with('success', $gallery->name.' has been created!');
     }
 
     /**

@@ -14,7 +14,7 @@
                                 <img src="/{{ $piece->getThumbnail() }}" alt="">
                             </a>
                             <h4><a href="{{ action('PieceController@show', [$piece->featured->first()->gallery_id, $piece->id]) }}">{{ $piece->title }}</a> -
-                                <a href="{{ action('ProfileController@show', $piece->user->slug) }}">{{ $piece->user->name }}</a></h4>
+                                <small><a href="{{ action('ProfileController@show', $piece->user->slug) }}">{{ $piece->user->name }}</a></small></h4>
                         </div>
                     @endforeach
                 </div>

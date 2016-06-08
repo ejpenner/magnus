@@ -28,6 +28,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 $factory->define(App\Piece::class,  function (Faker\Generator $faker){
     $usersMax = \App\User::count();
     $image_path = substr($faker->image($dir = public_path('images'), $width = 600, $height=400), 38);
+    $faker->seed(rand(1111,9999));
     return [
         'title' => $faker->word,
         'comment' => $faker->sentence,
