@@ -7,7 +7,7 @@
             <div>
                 <ul class="list-inline">
                     @foreach($piece->tags as $tag)
-                        <li>{{ $tag->name }}</li>
+                        <li><a href="{{ action('SearchController@searchAll', $tag->name) }}">{{ $tag->name }}</a></li>
                     @endforeach
                 </ul>
             </div>

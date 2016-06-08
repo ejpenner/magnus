@@ -27,10 +27,11 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Piece::class,  function (Faker\Generator $faker){
     $usersMax = \App\User::count();
+    $image_path = substr($faker->image($dir = public_path('images'), $width = 600, $height=400), 38);
     return [
         'title' => $faker->word,
         'comment' => $faker->sentence,
-        'image_path' => substr($faker->image($dir = public_path('images'), $width = 600, $height=400), 38),
+        'image_path' => $image_path,
         'thumbnail_path' => substr($faker->image($dir = public_path('thumbnails'), $width = 375, $height=250), 38),
         'published_at' => \Carbon\Carbon::now(),
         'user_id' => rand(1, $usersMax),
@@ -61,7 +62,7 @@ $factory->define(App\Feature::class, function (Faker\Generator $faker){
 
 $factory->define(\App\Tag::class, function (Faker\Generator $faker){
    return [
-       'name' => $faker->word,
+       'name' => $faker->unique()->word,
    ]; 
 });
 

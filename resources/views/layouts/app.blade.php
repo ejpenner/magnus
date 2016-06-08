@@ -38,11 +38,11 @@
                 <li @if(Request::is('recent')) class="active" @endif ><a href="{{ action('HomeController@recent') }}">Recent</a></li>
                 <li @if(Request::is('gallery')) class="active" @endif ><a href="{{ action('GalleryController@index') }}">Galleries</a></li>
                 <li @if(Request::is('search')) class="active" @endif >
-                    {!! Form::open(['action'=>'SearchController@searchAll', 'method'=>'get', 'class'=>'navbar-form navbar-left', 'role'=>'search']) !!}
+                    {!! Form::open(['url'=>'/search/', 'method'=>'get', 'class'=>'navbar-form navbar-left', 'role'=>'search', 'onsubmit'=>'return false;']) !!}
                         <div class="form-group">
-                            {!! Form::text('search-terms', null, ['class'=>'form-control', 'placeholder'=>'Search...']) !!}
+                            {!! Form::text('search-terms', null, ['class'=>'form-control', 'placeholder'=>'Search...', 'name'=>'q']) !!}
                         </div>
-                        {!! Form::submit('Submit', ['class' => 'form-control btn btn-default']) !!}
+                        {!! Form::submit('Search', ['class' => 'form-control btn btn-default', 'onclick'=>'window.location.href=this.form.action +\'/\'+ this.form.q.value;']) !!}
                     {!! Form::close() !!}
                 </li>
             </ul>

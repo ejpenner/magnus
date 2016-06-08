@@ -16,16 +16,26 @@ class SearchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function searchAll(Request $request)
+    public function searchAll($parameters)
     {
-        $query = Tag::query();
-        //dd($request->input('search-terms'));
-        $terms = explode(' ', $request->input('search-terms'));
-        //dd($terms);
 
-        $query->join('piece_tag', 'piece_tag.tag_id', '=', 'id')
-        ->join('pieces', 'pieces.id', '=', 'piece_tag.piece_id')->limit(5);
-        dd($query->get());
+
+        $parameters = str_replace(' ', '+', $parameters);
+        $terms = explode('+', $parameters);
+
+        $query = Piece::query();
+        $query->join('piece_tag', 'piece_tag.piece_id', '=', 'id')
+            ->join('tags', 'tags.id', '=', 'piece_tag.tag_id')
+            ->join('features', 'features.piece_id', '=', 'piece_tag.piece_id')
+            ->where(function ($q) use ($terms){
+                foreach($terms as $term) {
+                    $q->orWhere('name', '=', $term);
+                }
+            });
+
+        $results = $query->paginate(24);
+        
+        return view('search.index', compact('results'));
     }
 
     /**
@@ -37,5 +47,5 @@ class SearchController extends Controller
     {
         //
     }
-    
+
 }

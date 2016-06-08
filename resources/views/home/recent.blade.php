@@ -13,7 +13,8 @@
                             <a href="{{ action('PieceController@show', [$piece->featured->first()->gallery_id, $piece->id]) }}">
                                 <img src="/{{ $piece->getThumbnail() }}" alt="">
                             </a>
-                            <h4><a href="{{ action('PieceController@show', [$piece->featured->first()->gallery_id, $piece->id]) }}">{{ $piece->title }}</a>- {{ $piece->user->name }}</h4>
+                            <h4><a href="{{ action('PieceController@show', [$piece->featured->first()->gallery_id, $piece->id]) }}">{{ $piece->title }}</a> -
+                                <a href="{{ action('ProfileController@show', $piece->user->slug) }}">{{ $piece->user->name }}</a></h4>
                         </div>
                     @endforeach
                 </div>

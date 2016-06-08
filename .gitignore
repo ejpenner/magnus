@@ -9,3 +9,4 @@ Homestead.json
 /public/images/
 /public/thumbnails/
 /public/avatars/
+!/public/images/404/*.jpg
