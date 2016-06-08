@@ -9241,7 +9241,7 @@ button.close {
 .gallery-item {
   padding-bottom: 5px;
   padding-top: 5px;
-  min-height: 200px;
+  width: 390px;
 }
 .gallery-item img {
   -webkit-box-shadow: 5px 5px 5px #888888;
@@ -9257,7 +9257,9 @@ button.close {
 /* Vertical alight for gallery.show */
 .vcenter {
   display: table-cell;
+  vertical-align: middle;
   text-align: center;
+  float: none;
 }
 /* Add a gray background color and some padding to the footer */
 footer {
