@@ -16,11 +16,14 @@
     <div class="col-md-8">
         <div class="piece-display">
             <img class="piece-show" src="/{{ $piece->getImage() }}" alt="">
-            <h2>{{ $piece->title }}</h2>
-
-            <div class="well">
+        </div>
+        <div class="piece-info">
+            <div class="container-fluid">
+                <a href="{{ action('ProfileController@show', $piece->user->slug) }}"><img src="{{ $piece->user->getAvatar() }}" class="pull-left avatar" alt="avatar"></a>
+                <h3>{{ $piece->title }}</h3>
+                <p>By <a href="{{ action('ProfileController@show', $piece->user->slug) }}">{{ $piece->user->name }}</a></p>
                 @if(Auth::check() and (Auth::user()->isOwner($piece) or Auth::user()->hasRole('admin')))
-                    <div class="pull-right">
+                    <div class="pull-right operations">
                         {!! Form::model($piece, ['method'=>'delete', 'class'=>'delete-confirm operations',
                                                'action'=>['PieceController@destroy', $gallery->id, $piece->id]]) !!}
                         <a href="{{ action('PieceController@edit', [$gallery->id, $piece->id]) }}">
@@ -30,7 +33,21 @@
                         {!! Form::close() !!}
                     </div>
                 @endif
+            </div>
+        </div>
+        <div class="container">
+            <div class="well col-md-9">
                 <p>{{ $piece->comment }}</p>
+            </div>
+            <div class="col-md-3">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>Submitted On</td>
+                        <td class="pull-right">{{ $piece->published_at }}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

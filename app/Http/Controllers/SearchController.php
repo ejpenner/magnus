@@ -31,7 +31,7 @@ class SearchController extends Controller
                 foreach($terms as $term) {
                     $q->orWhere('name', '=', $term);
                 }
-            });
+            })->groupBy('pieces.id');
 
         $results = $query->paginate(24);
         

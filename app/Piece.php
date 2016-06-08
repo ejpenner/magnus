@@ -13,6 +13,7 @@ use Image;
 class Piece extends Model
 {
     protected $fillable = ['image_path','thumbnail_path','title','comment','user_id','published_at'];
+    protected $dates = ['created_at', 'updated_at', 'published_at'];
     
     private $imageDirectory = 'images';
     private $thumbnailDirectory = 'thumbnails';
@@ -62,6 +63,10 @@ class Piece extends Model
     {
         $this->attributes['published_at'] = Carbon::parse($date);
         //$this->attributes['published_at'] = Carbon::createFromFormat('Y-m-d', $date);
+    }
+
+    public function getPublishedAtAttribute($value){
+        return date_format(Carbon::parse($value), 'F j, Y');
     }
     
     /**
