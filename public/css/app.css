@@ -9251,12 +9251,13 @@ button.close {
 .gallery-container {
   margin-bottom: 15px;
 }
+.details-panel {
+  margin-top: 15px;
+}
 /* Vertical alight for gallery.show */
 .vcenter {
   display: table-cell;
-  vertical-align: middle;
   text-align: center;
-  float: none;
 }
 /* Add a gray background color and some padding to the footer */
 footer {

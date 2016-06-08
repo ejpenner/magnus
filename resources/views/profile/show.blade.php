@@ -12,12 +12,13 @@
         <div class="col-md-1">
             <h4>Galleries</h4>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-11">
             <div class="gallery-container">
                 @foreach($galleries->chunk(4) as $i => $gallery)
                     <div class="row">
                         @foreach($gallery as $j => $item)
                             <div class="col-md-3 vcenter gallery-item">
+
                                 @if(isset($item->featured[0]))
                                     <a href="{{ action('GalleryController@show', $item->id) }}">
                                         <img src="/{{ $item->featured->last()->piece->thumbnail_path }}" alt="">
@@ -51,7 +52,7 @@
         <div class="col-md-1">
             <h4>Recent Submissions</h4>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-11">
             @foreach($pieces->chunk(4) as $i => $piecesChunk)
                 <div class="row">
                     @foreach($piecesChunk as $piece)

@@ -25,6 +25,7 @@ class PieceController extends Controller
                 'only' => ['create','store','edit','update','destroy']
             ]
         );
+        $this->middleware('gallery', ['except'=>['show','index']]);
     }
 
     /**

@@ -3,28 +3,25 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Auth\Guard;
-use App\Http\Requests;
+
+use App\Piece;
 use Illuminate\Support\Facades\Auth;
 
-class AuthId
+class PieceManagement
 {
-    protected $auth;
-
     /**
-     * Create a new filter instance.
+     * Handle an incoming request.
      *
-     * @param  Guard $auth
-     * @return void
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
      */
-    public function __construct(Guard $auth)
-    {
-        $this->auth = $auth;
-    }
-
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->is_admin or $request->route('id') == Auth::user()->id) {
+        $piece_id = $request->route('piece');
+        $user_id = Piece::where('id', $piece_id)->value('user_id');
+
+        if (Auth::user()->is_admin or $user_id == Auth::user()->id) {
             return $next($request);
         } else {
             return redirect()->back()->withErrors('You are not permitted to complete that action or view that page.');

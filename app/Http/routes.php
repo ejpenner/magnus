@@ -34,14 +34,18 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('users/{id}/account', array('uses' => 'UserController@manageAccount', 'as' => 'user.account'));
         Route::get('users/{id}/changeMyPassword', array('uses' => 'UserController@changeAccountPassword', 'as' => 'user.accountPassword'));
         Route::patch('users/{id}/updatePassword', 'UserController@updatePassword');
-        Route::get('users/avatar', 'UserController@avatar');
-        Route::post('users/avatar', 'UserController@uploadAvatar');
     });
+
+    Route::get('users/avatar', 'UserController@avatar');
+    Route::post('users/avatar', 'UserController@uploadAvatar');
 
     Route::group(['middleware'=>'permission:role,admin'], function () {
         Route::resource('permissions', 'PermissionController');
 
         Route::resource('users', 'UserController');
+
+        Route::get('users/{id}/avatar', 'UserController@avatarAdmin');
+        Route::post('users/{id}/avatar', 'UserController@uploadAvatarAdmin');
 
 
     });

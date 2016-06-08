@@ -24,6 +24,7 @@ class GalleryController extends Controller
             'only' => ['create','store','edit','update','destroy']
             ]
         );
+        
     }
 
     /**

@@ -155,6 +155,11 @@ class UserController extends Controller
     public function avatar() {
         return view('user.avatar');
     }
+    
+    public function avatarAdmin($id) {
+        $user = User::findOrFail($id);
+        return view('user.avatarAdmin', compact('user'));
+    }
 
 
     /**

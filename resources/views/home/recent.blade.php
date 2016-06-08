@@ -2,7 +2,12 @@
 
 @section('content')
     <div class="col-md-1">
-        Side
+        <p>Recently Updated Galleries</p>
+        @if(\App\Gallery::count() > 0)
+            <ul>
+
+            </ul>
+        @endif
     </div>
     <div class="col-md-11">
         <div class="container-fluid">
