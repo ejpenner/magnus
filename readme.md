@@ -29,6 +29,8 @@
 * `"gulp-watchify": "*",`
 * `"strictify": "^0.2.0"`
 
+Also uses Bootstrap 3, CropperJS and JQuery.
+
 
 ## Laravel Shoutout
 
