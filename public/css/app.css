@@ -9225,7 +9225,7 @@ button.close {
 }
 /* Remove the navbar's default rounded borders and increase the bottom margin */
 .navbar {
-  border-top: solid #c2bfc9 3px !important;
+  border-top: solid #829aa0 3px !important;
   margin-bottom: 15px !important;
   border-radius: 0 !important;
 }
@@ -9263,8 +9263,9 @@ button.close {
 }
 /* Add a gray background color and some padding to the footer */
 footer {
-  background-color: #c2bfc9 !important;
-  padding: 25px !important;
+  background-color: #829aa0 !important;
+  padding: 25px;
+  padding-bottom: 75px !important;
   margin-top: 25px !important;
 }
 .operations {

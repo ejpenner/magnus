@@ -211,8 +211,8 @@ class PieceController extends Controller
             'current' => $piece->id,
             'previous' => null
         ];
-        $foundMinMax = false;
-        $foundMaxMin = false;
+        $foundMax = false;
+        $foundMin = false;
 
         foreach ($gallery->featured as $feature) {
             array_push($pieceNav, $feature->id);
@@ -225,7 +225,7 @@ class PieceController extends Controller
         }
 
         foreach ($pieceNav as $i => $id) {
-            if($piece->id == max($pieceNav) and $foundMinMax == false) {
+            if($piece->id == max($pieceNav) and $foundMax == false) {
                 $foundMinMax = true;
                 if($galleryNav['next'] == null) {
                     $galleryNav['next'] = min($pieceNav);
@@ -234,7 +234,7 @@ class PieceController extends Controller
                 if ($galleryNav['next'] == null) {
                     $galleryNav['next'] = $pieceNav[$i];
                 }
-            }elseif($piece->id == min($pieceNav) and $foundMaxMin == false) {
+            }elseif($piece->id == min($pieceNav) and $foundMin == false) {
                 $foundMaxMin = true;
                 $galleryNav['previous'] = max($pieceNav);
             } elseif($id < $piece->id) {

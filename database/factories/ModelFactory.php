@@ -27,13 +27,14 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Piece::class,  function (Faker\Generator $faker){
     $usersMax = \App\User::count();
-    $faker->seed(rand(1111,9999));
+    $faker->seed(rand(11111,99999));
     $image_path = substr($faker->image($dir = public_path('images'), $width = 600, $height=400), 38);
+    $thumbnail_path = substr($faker->image($dir = public_path('thumbnails'), $width = 300, $height=180), 38);
     return [
         'title' => ucwords($faker->words(3, true)),
         'comment' => $faker->paragraphs(2,true),
         'image_path' => $image_path,
-        'thumbnail_path' => substr($faker->image($dir = public_path('thumbnails'), $width = 300, $height=180), 38),
+        'thumbnail_path' => $thumbnail_path,
         'published_at' => \Carbon\Carbon::now(),
         'user_id' => rand(1, $usersMax),
     ];

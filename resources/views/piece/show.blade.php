@@ -35,7 +35,7 @@
                                         <h4>Tags:</h4>
                                         <ul class="list-inline">
                                             @foreach($piece->tags as $tag)
-                                                <li><a href="{{ action('SearchController@searchAll', $tag->name) }}">{{ $tag->name }}</a></li>
+                                                <li><a href="{{ action('SearchController@searchAll', 'tag:'.$tag->name) }}">{{ $tag->name }}</a></li>
                                             @endforeach
                                         </ul>
                                     </div>
