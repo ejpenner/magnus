@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
                 }
                 foreach($user->galleries as $gallery) {
                     echo $gallery."\n\n";
-                    foreach(range(1,3) as $i) {
+                    foreach(range(1,4) as $i) {
 
                         $piece = factory(\App\Piece::class)->create(['user_id'=>$user->id]);
 

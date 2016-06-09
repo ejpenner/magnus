@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="col-md-1">
+    <div class="col-md-2">
         <p>Recently Updated Galleries</p>
         @if(\App\Gallery::count() > 0)
             <ul>
@@ -11,7 +11,7 @@
             </ul>
         @endif
     </div>
-    <div class="col-md-11">
+    <div class="col-md-10">
         <div class="container-fluid">
             @foreach($pieces->chunk(4) as $pieceChunk)
                 <div class="row">

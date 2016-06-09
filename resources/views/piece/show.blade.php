@@ -1,38 +1,48 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="col-md-2">
-
-    </div>
-    <div class="col-md-8">
-        <div class="piece-display">
-            <img class="piece-show" src="/{{ $piece->getImage() }}" alt="">
-        </div>
-        {{--panel start--}}
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="piece-info">
-                    <div class="container-fluid">
-                        <div class="col-md-9">
-                            <a href="{{ action('ProfileController@show', $piece->user->slug) }}"><img src="{{ $piece->user->getAvatar() }}" class="pull-left avatar" alt="avatar"></a>
-                            <h3>{{ $piece->title }}</h3>
-                            <p>By <a href="{{ action('ProfileController@show', $piece->user->slug) }}">{{ $piece->user->name }}</a></p>
-                        </div>
-                        <div class="col-md-3">
-                            @unless($piece->tags->isEmpty())
-                                <div class="container-fluid">
-                                    <h4>Tags:</h4>
-                                    <ul class="list-inline">
-                                        @foreach($piece->tags as $tag)
-                                            <li><a href="{{ action('SearchController@searchAll', $tag->name) }}">{{ $tag->name }}</a></li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endunless
-                        </div> {{--end tags--}}
+    <div class="col-md-12">
+        <div class="text-center">
+            <div class="piece-display">
+                <img class="piece-show" src="/{{ $piece->getImage() }}" alt="">
+            </div>
+            <div class="text-center">
+                <div class="piece-nav">
+                    <div class="btn-group">
+                        <a class="btn btn-default" href="{{ action('PieceController@show', [$gallery->id, $galleryNav['previous']]) }}">Previous</a>
+                        <a class="btn btn-default" href="{{ action('GalleryController@show', [$gallery->id]) }}">Gallery</a>
+                        <a class="btn btn-default" href="{{ action('PieceController@show', [$gallery->id, $galleryNav['next']]) }}">Next</a>
                     </div>
                 </div>
-                <div class="container">
+            </div>
+        </div>
+        {{--panel start--}}
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="piece-info">
+                        <div class="container-fluid">
+                            <div class="col-md-9">
+                                <a href="{{ action('ProfileController@show', $piece->user->slug) }}">
+                                    <img src="{{ $piece->user->getAvatar() }}" class="pull-left avatar" alt="avatar">
+                                </a>
+                                <h3>{{ $piece->title }}</h3>
+                                <p>By <a href="{{ action('ProfileController@show', $piece->user->slug) }}">{{ $piece->user->name }}</a></p>
+                            </div>
+                            <div class="col-md-3">
+                                @unless($piece->tags->isEmpty())
+                                    <div class="container-fluid">
+                                        <h4>Tags:</h4>
+                                        <ul class="list-inline">
+                                            @foreach($piece->tags as $tag)
+                                                <li><a href="{{ action('SearchController@searchAll', $tag->name) }}">{{ $tag->name }}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endunless
+                            </div> {{--end tags--}}
+                        </div>
+                    </div>
                     <div class="well col-md-9">
                         <p>{{ $piece->comment }}</p>
                     </div>
@@ -54,6 +64,10 @@
                             </div>
                             <table class="table">
                                 <tbody>
+                                <tr>
+                                    <td>Views</td>
+                                    <td>{{ $piece->views }}</td>
+                                </tr>
                                 <tr>
                                     <td>Submitted On</td>
                                     <td>{{ $piece->published_at }}</td>

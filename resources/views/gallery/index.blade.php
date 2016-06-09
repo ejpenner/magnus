@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-        <div class="container-fluid gallery-container">
-
+        <div class="col-md-1">
+        </div>
+        <div class="container-fluid gallery-container col-md-11">
             @foreach($galleries->chunk(4) as $i => $gallery)
                 <div class="row">
                     @foreach($gallery as $j => $item)

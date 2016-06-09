@@ -1,7 +1,6 @@
 <?php
 
 namespace App;
-
 use Illuminate\Database\Eloquent\Model;
 
 use Carbon\Carbon;
@@ -12,12 +11,15 @@ use Intervention\Image\Facades\Image;
 
 class Piece extends Model
 {
-    protected $fillable = ['image_path','thumbnail_path','title','comment','user_id','published_at'];
+    protected $fillable =   ['image_path',
+                            'thumbnail_path',
+                            'title','comment','user_id',
+                            'published_at', 'views'];
     protected $dates = ['created_at', 'updated_at', 'published_at'];
     
     private $imageDirectory = 'images';
     private $thumbnailDirectory = 'thumbnails';
-    private $resizeTo = '325';
+    private $resizeTo = 325;
 
     public function user()
     {
@@ -221,5 +223,9 @@ class Piece extends Model
         $img = Image::make($this->getImage());
         $size = ceil($img->fileSize()/1000);
         return ['filesize'=>$size.' KB', 'resolution'=>$img->width() .'x'.$img->height()];
+    }
+
+    public function nextPiece($gallery_id) {
+        
     }
 }
