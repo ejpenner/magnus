@@ -36,7 +36,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::patch('users/{id}/updatePassword', 'UserController@updatePassword');
     });
 
-    Route::resource('gallery.piece.comments', 'CommentController');
+    Route::resource('gallery.p.c', 'CommentController');
 
     Route::get('users/avatar', 'UserController@avatar');
     Route::post('users/avatar', 'UserController@uploadAvatar');
@@ -63,7 +63,7 @@ Route::bind('profile', function ($value, $route) {
 
 Route::resource('gallery', 'GalleryController');
 
-Route::resource('gallery.piece', 'PieceController');
+Route::resource('gallery.p', 'PieceController');
 
 Route::get('/home', 'HomeController@index');
 Route::get('/recent', ['uses'=> 'HomeController@recent', 'as'=>'recent']);
