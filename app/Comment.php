@@ -21,6 +21,10 @@ class Comment extends Model
     public function piece() {
         return $this->belongsTo('App\Piece');
     }
+    
+    public function profile() {
+        return $this->belongsTo('App\Profile');
+    }
 
     public function childComments() {
         return $this->hasMany('App\Comment','parent_id','id');

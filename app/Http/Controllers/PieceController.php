@@ -13,6 +13,7 @@ use App\Piece;
 use App\Gallery;
 use App\Feature;
 use App\Tag;
+use App\Comment;
 
 class PieceController extends Controller
 {
@@ -103,10 +104,11 @@ class PieceController extends Controller
 
         $gallery = Gallery::findOrFail($gallery_id);
         $piece = Piece::findOrFail($piece_id);
+        $comments = Comment::where('piece_id', $piece->id)->get();
         $metadata = $piece->metadata();
         $galleryNav = $this->makeNavigator($gallery, $piece);
 
-        return view('piece.show', compact('piece','gallery','metadata','galleryNav'));
+        return view('piece.show', compact('piece','gallery','comments','metadata','galleryNav'));
     }
 
     /**

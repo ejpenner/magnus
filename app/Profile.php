@@ -8,8 +8,12 @@ class Profile extends Model
 {
     protected $fillable = ['user_id','biography'];
     
-    public function User()
+    public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function comments() {
+        return $this->hasMany('App\Comment');
     }
 }

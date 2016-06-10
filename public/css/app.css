@@ -9263,7 +9263,7 @@ button.close {
 }
 /* Add a gray background color and some padding to the footer */
 footer {
-  background-color: #829aa0 !important;
+  background-color: #222222 !important;
   padding: 25px;
   padding-bottom: 75px !important;
   margin-top: 25px !important;
@@ -9300,4 +9300,30 @@ footer {
   max-width: 100%;
   /* This rule is very important, please do not ignore this! */
   max-height: 500px;
+}
+.comment {
+  border: #eeeeee solid 2px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  width: auto;
+  padding: 2px;
+  margin: 1px;
+}
+.container > .child-comment {
+  border: #eeeeee solid 2px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  padding: 3px;
+  margin: 1px;
+}
+div .child-comment * {
+  margin-left: 10px;
 }

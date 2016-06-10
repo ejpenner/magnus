@@ -87,5 +87,8 @@
                 </div>
             </div>
         </div>
+        <div class="container">
+            @include('comment._comment', ['comments'=>$piece->comments])
+        </div>
     </div>
 @endsection
