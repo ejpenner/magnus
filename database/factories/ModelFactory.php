@@ -47,6 +47,12 @@ $factory->define(App\Gallery::class, function (Faker\Generator $faker){
     ] ;
 });
 
+$factory->define(App\Comment::class, function (Faker\Generator $faker){
+   return [
+       'body' => $faker->paragraph,
+   ];
+});
+
 $factory->define(App\Profile::class, function (Faker\Generator $faker){
     return [
         'biography' => $faker->paragraphs(2, true),

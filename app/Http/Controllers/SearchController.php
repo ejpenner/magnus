@@ -29,13 +29,10 @@ class SearchController extends Controller
             ->join('features', 'features.piece_id', '=', 'piece_tag.piece_id')
             ->where(function ($q) use ($terms){
                 foreach($terms as $term) {
-                    if(strpos($term, 'tag:') !== false) {
-                        $term = preg_replace('/tag:/', '', $term);
+                    if(strpos($term, '@') !== false) {
+                        $term = preg_replace('/@/', '', $term);
                         $q->orWhere('name', '=', trim($term));
-                    }  elseif(strpos($term, 'title:') !== false) {
-                        $term = preg_replace('/title:/', '', $term);
-                        $q->orWhere('title', 'like', "%$term%");
-                    }  else {
+                    } else {
                         $q->orWhere('name', '=', $term);
                         $q->orWhere('title', 'like', "%$term%");
                         $q->orWhere('comment', 'like', "%$term%");
