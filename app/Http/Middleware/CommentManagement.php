@@ -3,10 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Gallery;
-use Illuminate\Support\Facades\Auth;
 
-class GalleryManagement
+class CommentManagement
 {
     /**
      * Handle an incoming request.
@@ -17,8 +15,8 @@ class GalleryManagement
      */
     public function handle($request, Closure $next)
     {
-        $gallery_id = $request->route('gallery');
-        $user_id = Gallery::where('id', $gallery_id)->value('user_id');
+        $comment_id = $request->route('c');
+        $user_id = Comment::where('id', $comment_id)->value('user_id');
 
         if (Auth::user()->hasRole('admin') or $user_id == Auth::user()->id) {
             return $next($request);

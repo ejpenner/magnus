@@ -8,6 +8,18 @@ use App\Http\Requests;
 
 class CommentController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(
+            'auth',
+            [
+                'only' => ['create','store','edit','update','destroy']
+            ]
+        );
+        $this->middleware('comment', ['except'=>['show','index']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -34,10 +46,27 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $gallery, $piece)
     {
-        //
+        dd($gallery . ' '. $piece);
     }
+
+    /**
+     *  store a reply to a comment
+     *
+     * @param Request $request
+     * @param $gallery
+     * @param $piece
+     * @param $comment
+     */
+
+    public function storeNested(Request $request, $gallery, $piece, $comment)
+    {
+        dd($gallery . ' '. $piece . ' ' . $comment);
+    }
+    
+    
+   
 
     /**
      * Display the specified resource.
@@ -73,6 +102,11 @@ class CommentController extends Controller
         //
     }
 
+    public function updatedNested(Request $request, $gallery, $piece, $comment)
+    {
+        dd($gallery . ' '. $piece . ' ' . $comment);
+    }
+    
     /**
      * Remove the specified resource from storage.
      *

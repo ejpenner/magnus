@@ -88,7 +88,7 @@
             </div>
         </div>
         <div class="container">
-            @include('comment._comment', ['comments'=>$piece->comments])
+            @include('comment._comment', ['comments'=>$piece->comments, 'gallery'=>$gallery, 'piece'=>$piece])
         </div>
     </div>
 @endsection

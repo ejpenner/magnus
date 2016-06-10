@@ -36,8 +36,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::patch('users/{id}/updatePassword', 'UserController@updatePassword');
     });
 
-    Route::resource('gallery.p.c', 'CommentController');
-
     Route::get('users/avatar', 'UserController@avatar');
     Route::post('users/avatar', 'UserController@uploadAvatar');
 
@@ -52,7 +50,13 @@ Route::group(['middleware' => ['auth']], function () {
         return \App\User::whereSlug(strtolower($value))->first();
     });
 
+
+    Route::post('gallery/{g}/p/{p}/c/{c}', 'CommentController@storeNested');
+    Route::patch('gallery/{g}/p/{p}/c/{c}', 'CommentController@updateNested');
+    Route::delete('gallery/{g}/p/{p}/c/{c}', 'CommentController@destroyNested');
+
 });
+Route::resource('gallery.p.c', 'CommentController');
 
 
 Route::resource('profile', 'ProfileController');

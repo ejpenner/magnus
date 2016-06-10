@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CommentManagement;
 use App\Http\Middleware\Permission;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -52,6 +53,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'permission' => \App\Http\Middleware\Permission::class,
         'id'        => \App\Http\Middleware\AuthId::class,
-        'gallery'   => \App\Http\Middleware\GalleryManagement::class 
+        'gallery'   => \App\Http\Middleware\GalleryManagement::class,
+        'comment'   => \App\Http\Middleware\CommentManagement::class,
     ];
 }

@@ -139,7 +139,7 @@ footer {
   border: @gray-lighter solid 2px;
   .border-radius();
   width: auto;
-  padding:2px;
+  padding:2px 0 2px 0;
   margin:1px;
 }
 
@@ -150,12 +150,26 @@ footer {
   margin:1px;
 }
 
-div .child-comment * {
-  margin-left: 10px;
+.reply-area {
+  padding: 5px;
+  margin-left: 20px;
+  textarea {
+    width:65%;
+    margin-bottom: 2px;
+  }
 }
 
-//.comment-body {
-//  position: relative;
-//  right: 15px;
-//}
+div .child-comment * {
+ // margin-left: 10px;
+}
+
+.comment-body {
+  padding: 10px 0 5px 0;
+}
+
+.comment-avatar {
+  display: block;
+  text-align: center;
+  padding: 1px;
+}
 
