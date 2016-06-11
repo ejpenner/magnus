@@ -1,11 +1,11 @@
 @foreach($comment->allChildComments as $childComment)
     <div class="child-comment">
-        <div class="container comment">
+        <div class="container-fluid comment">
             <div class="col-md-2 comment-avatar">
                 <div class="text-center">
                     <a href="{{ action('ProfileController@show', $childComment->user->slug) }}">
                         <img src="{{ $childComment->user->getAvatar() }}" alt="avatar"><br>
-                        {{ $childComment->user->name }}
+                        <span class="comment-name">{{ $childComment->user->name }}</span>
                     </a>
                 </div>
             </div>
@@ -25,4 +25,5 @@
             @include('comment._childComment', ['comment' => $childComment])
         @endif
     </div>
+
 @endforeach

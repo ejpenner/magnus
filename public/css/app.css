@@ -9313,7 +9313,7 @@ footer {
   padding: 2px 0 2px 0;
   margin: 1px;
 }
-.container > .child-comment {
+.comment-area {
   border: #eeeeee solid 2px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -9321,16 +9321,26 @@ footer {
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
+  width: auto;
+  padding: 2px 0 2px 0;
+  margin: 1px;
+}
+.container-fluid > .child-comment {
+  width: auto;
   padding: 3px;
   margin: 1px;
 }
 .reply-area {
   padding: 5px;
   margin-left: 20px;
+  display: none;
 }
 .reply-area textarea {
   width: 65%;
   margin-bottom: 2px;
+}
+div .child-comment {
+  margin-left: 20px;
 }
 .comment-body {
   padding: 10px 0 5px 0;

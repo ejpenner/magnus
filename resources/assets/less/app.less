@@ -143,9 +143,18 @@ footer {
   margin:1px;
 }
 
-.container > .child-comment {
+.comment-area {
   border: @gray-lighter solid 2px;
   .border-radius();
+  width: auto;
+  padding:2px 0 2px 0;
+  margin:1px;
+}
+
+.container-fluid > .child-comment {
+  //border: @gray-lighter solid 2px;
+  //.border-radius();
+  width: auto;
   padding:3px;
   margin:1px;
 }
@@ -153,14 +162,15 @@ footer {
 .reply-area {
   padding: 5px;
   margin-left: 20px;
+  display: none;
   textarea {
     width:65%;
     margin-bottom: 2px;
   }
 }
 
-div .child-comment * {
- // margin-left: 10px;
+div .child-comment {
+  margin-left: 20px;
 }
 
 .comment-body {
@@ -171,5 +181,10 @@ div .child-comment * {
   display: block;
   text-align: center;
   padding: 1px;
+
+  .comment-name {
+    //float: none;
+    //position: relative;
+  }
 }
 

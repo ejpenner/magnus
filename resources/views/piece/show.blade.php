@@ -35,7 +35,7 @@
                                         <h4>Tags:</h4>
                                         <ul class="list-inline">
                                             @foreach($piece->tags as $tag)
-                                                <li><a href="{{ action('SearchController@searchAll', 'tag:'.$tag->name) }}">{{ $tag->name }}</a></li>
+                                                <li><a href="{{ action('SearchController@searchAll', '@'.$tag->name) }}">{{ $tag->name }}</a></li>
                                             @endforeach
                                         </ul>
                                     </div>
@@ -87,8 +87,10 @@
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div class="container-fluid">
+            <div class="col-md-offset-1 col-md-10">
             @include('comment._comment', ['comments'=>$piece->comments, 'gallery'=>$gallery, 'piece'=>$piece])
+            </div>
         </div>
     </div>
 @endsection

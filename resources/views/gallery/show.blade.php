@@ -12,7 +12,7 @@
             </div>
         @endif
     </div>
-    <div class="col-md-8">
+    <div class="col-md-10">
         <div class="container-fluid">
             @foreach($features->chunk(3) as $featureChunk)
                 <div class="row" >
