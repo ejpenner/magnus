@@ -1,6 +1,6 @@
 <div class="container reply-area form-group">
     {!! Form::open(['action'=>['CommentController@store', $gallery->id, $piece->id], 'method'=>'post']) !!}
-    {!! Form::textarea('comment', null, ['class'=>'form-control', 'rows'=>'4']) !!}
+    {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>'4']) !!}
     {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
     {!! Form::close() !!}
 </div>

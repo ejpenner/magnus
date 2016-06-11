@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\Comment;
+use App\Piece;
+use Illuminate\Support\Facades\Auth;
+
 class CommentController extends Controller
 {
 
@@ -17,6 +21,7 @@ class CommentController extends Controller
                 'only' => ['create','store','edit','update','destroy']
             ]
         );
+
         $this->middleware('comment', ['except'=>['show','index']]);
     }
 
@@ -46,9 +51,13 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $gallery, $piece)
+    public function store(Request $request, $gallery_id, $piece_id)
     {
-        dd($gallery . ' '. $piece);
+        $piece = Piece::findOrFail($piece_id);
+        $comment = new Comment(['user_id'=>Auth::user()->id,'body'=>$request->input('body')]);
+        $piece->comments()->save($comment);
+        
+        return redirect()->route('gallery.p.show', [$gallery_id, $piece->id]);
     }
 
     /**

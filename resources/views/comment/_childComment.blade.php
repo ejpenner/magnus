@@ -17,7 +17,7 @@
         </div>
         <div class="container reply-area form-group">
             {!! Form::open(['action'=>['CommentController@storeNested', $gallery->id, $comment->piece->id, $comment->id], 'method'=>'post']) !!}
-            {!! Form::textarea('comment', null, ['class'=>'form-control', 'rows'=>4]) !!}
+            {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>4]) !!}
             {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
             {!! Form::close() !!}
         </div>
