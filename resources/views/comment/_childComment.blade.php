@@ -1,6 +1,6 @@
 @foreach($comment->allChildComments as $childComment)
     <div class="child-comment">
-        <div class="container-fluid comment">
+        <div class="container-fluid comment" id="{{ $comment->id }}">
             <div class="col-md-2 comment-avatar">
                 <div class="text-center">
                     <a href="{{ action('ProfileController@show', $childComment->user->slug) }}">
@@ -10,13 +10,12 @@
                 </div>
             </div>
             <div class="col-md-9 comment-body">
-                {{ $childComment->body }}<br>
-                My ID {{ $childComment->id }} <br>
-                Parent ID {{ $childComment->parent_id }}
+                <div class="row">{{ $comment->created_at }}</div>
+                <div class="row">{{ $childComment->body }}</div>
             </div>
         </div>
         <div class="container reply-area form-group">
-            {!! Form::open(['action'=>['CommentController@storeNested', $gallery->id, $comment->piece->id, $comment->id], 'method'=>'post']) !!}
+            {!! Form::open(['action'=>['CommentController@storeChild', $gallery->id, $comment->piece->id, $comment->id], 'method'=>'post']) !!}
             {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>4]) !!}
             {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
             {!! Form::close() !!}

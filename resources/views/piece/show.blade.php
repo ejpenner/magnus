@@ -29,19 +29,20 @@
                                 <h3>{{ $piece->title }}</h3>
                                 <p>By <a href="{{ action('ProfileController@show', $piece->user->slug) }}">{{ $piece->user->name }}</a></p>
                             </div>
-                            <div class="col-md-3">
-                                @unless($piece->tags->isEmpty())
-                                    <div class="container-fluid">
-                                        <h4>Tags:</h4>
-                                        <ul class="list-inline">
-                                            @foreach($piece->tags as $tag)
-                                                <li><a href="{{ action('SearchController@searchAll', '@'.$tag->name) }}">{{ $tag->name }}</a></li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endunless
-                            </div> {{--end tags--}}
                         </div>
+                    </div>
+                    <div class="row">
+                        @unless($piece->tags->isEmpty())
+                            <div class="container-fluid">
+
+                                <ul class="list-inline">
+                                    <strong>Tags</strong>
+                                    @foreach($piece->tags as $tag)
+                                        <li><a href="{{ action('SearchController@searchAll', '@'.$tag->name) }}">{{ $tag->name }}</a></li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endunless
                     </div>
                     <div class="well col-md-9">
                         <p>{{ $piece->comment }}</p>

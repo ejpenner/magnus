@@ -57,7 +57,7 @@ class CommentController extends Controller
         $comment = new Comment(['user_id'=>Auth::user()->id,'body'=>$request->input('body')]);
         $piece->comments()->save($comment);
         
-        return redirect()->route('gallery.p.show', [$gallery_id, $piece->id]);
+        return redirect()->route('gallery.p.show', [$gallery_id, $piece->id])->with('success', 'Message posted!');
     }
 
     /**
@@ -69,9 +69,15 @@ class CommentController extends Controller
      * @param $comment
      */
 
-    public function storeNested(Request $request, $gallery, $piece, $comment)
+    public function storeChild(Request $request, $gallery_id, $piece_id, $comment_id)
     {
-        dd($gallery . ' '. $piece . ' ' . $comment);
+        $piece = Piece::findOrFail($piece_id);
+        $comment = Comment::findOrFail($comment_id);
+
+        $comment->childComments()->save(new Comment(['user_id'=>Auth::user()->id, 'piece_id'=>$piece->id, 'parent_id'=>$comment->id, 'body'=>$request->input('body')]));
+
+        return redirect()->route('gallery.p.show', [$gallery_id, $piece->id])->with('success', 'Message posted!');
+
     }
     
     

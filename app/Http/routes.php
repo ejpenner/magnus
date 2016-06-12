@@ -51,9 +51,9 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
 
-    Route::post('gallery/{g}/p/{p}/c/{c}', 'CommentController@storeNested');
-    Route::patch('gallery/{g}/p/{p}/c/{c}', 'CommentController@updateNested');
-    Route::delete('gallery/{g}/p/{p}/c/{c}', 'CommentController@destroyNested');
+    Route::post('gallery/{g}/p/{p}/c/{c}', 'CommentController@storeChild');
+    Route::patch('gallery/{g}/p/{p}/c/{c}', 'CommentController@updateChild');
+    Route::delete('gallery/{g}/p/{p}/c/{c}', 'CommentController@destroyChild');
 
 });
 Route::resource('gallery.p.c', 'CommentController');

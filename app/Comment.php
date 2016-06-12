@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Carbon\Carbon;
+
 class Comment extends Model
 {
 
@@ -37,6 +39,10 @@ class Comment extends Model
 
     public function allChildComments() {
         return $this->childComments()->with('allChildComments');
+    }
+
+    public function getCreatedAtAttribute($value) {
+        return date_format(Carbon::parse($value), 'm/j/Y H:iA');
     }
 
 
