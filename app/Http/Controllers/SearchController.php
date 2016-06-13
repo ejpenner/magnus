@@ -29,12 +29,20 @@ class SearchController extends Controller
             ->join('features', 'features.piece_id', '=', 'piece_tag.piece_id')
             ->where(function ($q) use ($terms){
                 foreach($terms as $term) {
-                    $q->orWhere('name', '=', $term);
+                    $term = trim($term);
+                    if(strpos($term, '@') !== false) {
+                        $term = preg_replace('/@/', '', $term);
+                        $q->orWhere('name', '=', $term);
+                    } else {
+                        $q->orWhere('name', '=', $term);
+                        $q->orWhere('title', 'like', "%$term%");
+                        $q->orWhere('comment', 'like', "%$term%");
+                    }
                 }
-            });
+            })->groupBy('pieces.id');
 
         $results = $query->paginate(24);
-        
+
         return view('search.index', compact('results'));
     }
 

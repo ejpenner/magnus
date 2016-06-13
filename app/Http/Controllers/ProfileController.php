@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Profile;
 use App\Gallery;
+use App\Piece;
 
 class ProfileController extends Controller
 {
@@ -31,7 +32,12 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        // RETURN AUTH'D USER'S PROFILE
+        $user = Auth::user();
+        $profile = Profile::where('user_id', $user->id)->first();
+        $galleries = Gallery::where('user_id', $user->id)->paginate(12);
+        $pieces = Piece::where('user_id', $user->id)->join('features', 'features.piece_id', '=', 'pieces.id')->paginate(12);
+
+        return view('profile.show', compact('profile', 'user', 'galleries', 'pieces'));
     }
 
     /**
@@ -65,8 +71,9 @@ class ProfileController extends Controller
     {
         $profile = Profile::where('user_id', $user->id)->first();
         $galleries = Gallery::where('user_id', $user->id)->paginate(12);
-
-        return view('profile.show', compact('profile', 'user', 'galleries'));
+        $pieces = Piece::where('user_id', $user->id)->join('features', 'features.piece_id', '=', 'pieces.id')->paginate(12);
+        
+        return view('profile.show', compact('profile', 'user', 'galleries', 'pieces'));
     }
 
     /**

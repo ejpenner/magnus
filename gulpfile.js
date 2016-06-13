@@ -128,12 +128,16 @@ gulp.task('default', [
     'less',
     'vendor-scripts',
     'angular',
-    'scripts'
-    //'phpcbf-app',
-    //'phpcbf-config'
+    'scripts',
+    // 'phpcbf-app',
+    // 'phpcbf-config'
 ]);
 
 gulp.task('watch', function() {
+    gulp.watch(watch_config.less, ['less']);
     gulp.watch(watch_config.scripts, { debounceDelay: 1000 }, ['scripts']);
+    gulp.watch(watch_config.angular, { debounceDelay: 1000 }, ['angular']);
+    // gulp.watch(watch_config.phpcbf_app, { debounceDelay: 7000 }, ['phpcbf_app']);
+    // gulp.watch(watch_config.phpcbf_config, { debounceDelay: 7000 }, ['phpcbf_config']);
 });
 

@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-        <div class="container-fluid gallery-container">
-
+        <div class="col-md-1">
+        </div>
+        <div class="container-fluid gallery-container col-md-11">
             @foreach($galleries->chunk(4) as $i => $gallery)
                 <div class="row">
                     @foreach($gallery as $j => $item)
@@ -20,7 +21,7 @@
                                 <div class="clearfix">
                                     @include('gallery._editModal', ['id'=>$i.'-'.$j, 'gallery'=>$item])
                                     {!! Form::model($item, ['method'=>'delete', 'class'=>'delete-confirm operations', 'action'=>['GalleryController@destroy', $item->id]]) !!}
-                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
+                                    <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
                                     {!! Form::close() !!}
                                 </div>
                             @endif
@@ -31,6 +32,6 @@
 
         </div>
         <div class="container">
-            <div class="pull-left">{!! $galleries->render() !!}</div>
+            <div class="pull-right">{!! $galleries->render() !!}</div>
         </div>
 @stop

@@ -1,26 +1,33 @@
 <?php
 
 namespace App;
-
 use Illuminate\Database\Eloquent\Model;
 
 use Carbon\Carbon;
 use Input;
 use File;
 use Illuminate\Support\Facades\Storage;
-use Image;
+use Intervention\Image\Facades\Image;
 
 class Piece extends Model
 {
-    protected $fillable = ['image_path','thumbnail_path','title','comment','user_id','published_at'];
+    protected $fillable =   ['image_path',
+                            'thumbnail_path',
+                            'title','comment','user_id',
+                            'published_at', 'views'];
+    protected $dates = ['created_at', 'updated_at', 'published_at'];
     
     private $imageDirectory = 'images';
     private $thumbnailDirectory = 'thumbnails';
-    private $resizeTo = '400';
+    private $resizeTo = 325;
 
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+    
+    public function comments() {
+        return $this->hasMany('App\Comment');
     }
     
     public function featured()
@@ -63,6 +70,15 @@ class Piece extends Model
         $this->attributes['published_at'] = Carbon::parse($date);
         //$this->attributes['published_at'] = Carbon::createFromFormat('Y-m-d', $date);
     }
+
+    public function getPublishedAtAttribute($value){
+        return date_format(Carbon::parse($value), 'F j, Y');
+    }
+    
+    public function view() {
+        $this->views = $this->views++;
+        $this->save();
+    }
     
     /**
      * @return string
@@ -95,10 +111,18 @@ class Piece extends Model
     private function resize($image)
     {
         $resize = Image::make($image);
-        $resize->resize($this->resizeTo, null, function ($constraint) {
+
+        $ratio = $resize->width() / $resize->height();
         
-            $constraint->aspectRatio();
-        });
+        if($ratio > 1){ // image is wider than tall
+            $resize->resize($this->resizeTo, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        } else { // image is taller than wide
+            $resize->resize(null, $this->resizeTo, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+        }
         return $resize;
     }
     /**
@@ -135,6 +159,7 @@ class Piece extends Model
         $thumbnail->save($fullPath);
         return $fullPath;
     }
+    
     /**
      * Using storeImage(), assign this articles' image attr to the path returned
      *
@@ -145,6 +170,7 @@ class Piece extends Model
     {
         $this->image_path = $this->storeImage($request);
     }
+    
     /**
      *  using storeThumbnail(), also assign this article's thumbnail attribute the path returned
      * @param $request
@@ -153,9 +179,11 @@ class Piece extends Model
     {
         $this->thumbnail_path = $this->storeThumbnail($request);
     }
+
     /**
-     *  Deletes articles' image files
-     *
+     * delete the thumbnail and image for this piece
+     * 
+     * @return bool
      */
     public function deleteImages()
     {
@@ -165,7 +193,13 @@ class Piece extends Model
         }
         return false;
     }
-    
+
+    /**
+     * Update this piece's image with the new uploaded file
+     * 
+     * @param $request
+     * @return string
+     */
     public function updateImage($request)
     {
         if ($request->file('image') !== null) {  /// check if an image is attached
@@ -173,15 +207,32 @@ class Piece extends Model
                 $this->setImage($request); // update the image
                 $this->setThumbnail($request); // update the thumbnail
                 $this->update(); // set the image update
-                return ', and files updated successfully.';
+                return 'Image files updated successfully.';
             } else {
-                return ', but files deletion failed.';
+                return 'Image files deletion failed.';
             }
         }
         return ' Something went wrong...';
     }
 
+    /**
+     *  Return an array of tagnames as a string
+     * 
+     * @return string
+     */
     public function stringifyTags() {
         return implode(' ', array_pluck($this->tags->toArray(), 'name'));
     }
+
+    /**
+     * Return an array containing some metadata about the image
+     * @return array
+     */
+    public function metadata() {
+        $img = Image::make($this->getImage());
+        $size = ceil($img->fileSize()/1000);
+        return ['filesize'=>$size.' KB', 'resolution'=>$img->width() .'x'.$img->height()];
+    }
+
+
 }

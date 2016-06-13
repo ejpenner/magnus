@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionSeeder::class);
         $this->call(TagSeeder::class);
         $this->call(UserSeeder::class);
-        //$this->call(ProfileSeeder::class);
+        $this->call(ProfileSeeder::class);
+        $this->call(CommentSeeder::class);
         //$this->call(GallerySeeder::class);
         //$this->call(PieceSeeder::class);
 

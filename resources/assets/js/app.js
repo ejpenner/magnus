@@ -45,6 +45,11 @@ $(document).ready(function() {
         }
     }
 
+    $(".reply-toggle").click(function() {
+        $(this).children().show();
+        $(this).children('.reply-btn').hide();
+    });
+
     $('#avatar-file').change(function() {
         readURL(this);
 
@@ -63,9 +68,6 @@ $(document).ready(function() {
             console.log(e.detail.y);
             console.log(e.detail.width);
             console.log(e.detail.height);
-            // console.log(e.detail.rotate);
-            // console.log(e.detail.scaleX);
-            // console.log(e.detail.scaleY);
         }
     });
 
@@ -85,7 +87,7 @@ $(document).ready(function() {
 
             // Use `jQuery.ajax` method
             $.ajax({
-                url: '/users/avatar',
+                url: formURL,
                 method: "POST",
                 data: formData,
                 headers: {

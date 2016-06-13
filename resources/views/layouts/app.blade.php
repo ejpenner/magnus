@@ -42,7 +42,7 @@
                         <div class="form-group">
                             {!! Form::text('search-terms', null, ['class'=>'form-control', 'placeholder'=>'Search...', 'name'=>'q']) !!}
                         </div>
-                        {!! Form::submit('Search', ['class' => 'form-control btn btn-default', 'onclick'=>'window.location.href=this.form.action +\'/\'+ this.form.q.value;']) !!}
+                        {!! Form::submit('Search', ['class' => 'form-control btn btn-primary', 'onclick'=>'window.location.href=this.form.action +\'/\'+ this.form.q.value;']) !!}
                     {!! Form::close() !!}
                 </li>
             </ul>

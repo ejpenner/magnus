@@ -13,6 +13,7 @@ use App\Piece;
 use App\Gallery;
 use App\Feature;
 use App\Tag;
+use App\Comment;
 
 class PieceController extends Controller
 {
@@ -25,6 +26,7 @@ class PieceController extends Controller
                 'only' => ['create','store','edit','update','destroy']
             ]
         );
+        $this->middleware('gallery', ['except'=>['show','index']]);
     }
 
     /**
@@ -60,7 +62,7 @@ class PieceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($gallery_id, Request $request)
+    public function store($gallery_id, Requests\PieceCreateRequest $request)
     {
 
         $gallery = Gallery::findOrFail($gallery_id);
@@ -99,9 +101,15 @@ class PieceController extends Controller
      */
     public function show($gallery_id, $piece_id)
     {
+
         $gallery = Gallery::findOrFail($gallery_id);
         $piece = Piece::findOrFail($piece_id);
-        return view('piece.show', compact('piece','gallery'));
+        $this->viewPiece($piece);
+        $comments = Comment::where('piece_id', $piece->id)->orderBy('created_at', 'asc')->get();
+        $metadata = $piece->metadata();
+        $galleryNav = $this->makeNavigator($gallery, $piece);
+
+        return view('piece.show', compact('piece','gallery','comments','metadata','galleryNav'));
     }
 
     /**
@@ -125,7 +133,7 @@ class PieceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $gallery_id, $piece_id)
+    public function update(Requests\PieceEditRequest $request, $gallery_id, $piece_id)
     {
         $gallery = Gallery::findOrFail($gallery_id);
         $gallery->updated_at = Carbon::now();
@@ -133,13 +141,14 @@ class PieceController extends Controller
 
         $piece = Piece::findOrFail($piece_id);
 
-        // update everything except the image and published at
-        $piece->update($request->except('image','published_at'));
-
         // if the user wants to change the image file
-        if($request->input('image') !== null) {
+
+        if($request->file('image') !== null) {
             $imageStatus = $piece->updateImage($request);
         }
+
+        // update everything except the image and published at
+        $piece->update($request->except('image','published_at'));
 
         // check if tags have changed
         if($request->input('tags') === null) {
@@ -196,5 +205,53 @@ class PieceController extends Controller
             array_push($tagIds, $id);
         }
         return $tagIds;
+    }
+
+    private function makeNavigator($gallery, $piece) {
+        $pieceNav = [];
+        $galleryNav = [
+            'next' => null,
+            'current' => $piece->id,
+            'previous' => null
+        ];
+        $foundMax = false;
+        $foundMin = false;
+
+        foreach ($gallery->featured as $feature) {
+            array_push($pieceNav, $feature->id);
+        }
+
+        if(count($pieceNav) < 3) {
+            $galleryNav['next'] = max($pieceNav);
+            $galleryNav['current'] = $piece->id;
+            $galleryNav['previous'] = min($pieceNav);
+        }
+
+        foreach ($pieceNav as $i => $id) {
+            if($piece->id == max($pieceNav) and $foundMax == false) {
+                $foundMinMax = true;
+                if($galleryNav['next'] == null) {
+                    $galleryNav['next'] = min($pieceNav);
+                }
+            } elseif($id > $piece->id) {
+                if ($galleryNav['next'] == null) {
+                    $galleryNav['next'] = $pieceNav[$i];
+                }
+            }elseif($piece->id == min($pieceNav) and $foundMin == false) {
+                $foundMaxMin = true;
+                $galleryNav['previous'] = max($pieceNav);
+            } elseif($id < $piece->id) {
+                $galleryNav['previous'] = $pieceNav[$i];
+            }
+        }
+
+        return $galleryNav;
+    }
+
+    private function viewPiece($piece) {
+        if(!Auth::user()->isOwner($piece)) {
+            $piece->views = $piece->views + 1;
+            $piece->save();
+        }
     }
 }

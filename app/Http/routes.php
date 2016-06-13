@@ -18,9 +18,7 @@ Route::model('profile', 'Profile');
 
 Route::auth();
 
-Route::get('/', ['as' => 'home', function () {
-    return view('welcome');
-}]);
+Route::get('/', 'HomeController@recent')->name('home');
 
 Route::get('errors/401', ['as' => '401', function() {
     return view('errors.401');
@@ -34,23 +32,29 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('users/{id}/account', array('uses' => 'UserController@manageAccount', 'as' => 'user.account'));
         Route::get('users/{id}/changeMyPassword', array('uses' => 'UserController@changeAccountPassword', 'as' => 'user.accountPassword'));
         Route::patch('users/{id}/updatePassword', 'UserController@updatePassword');
-        Route::get('users/avatar', 'UserController@avatar');
-        Route::post('users/avatar', 'UserController@uploadAvatar');
     });
+
+    Route::get('users/avatar', 'UserController@avatar');
+    Route::post('users/avatar', 'UserController@uploadAvatar');
 
     Route::group(['middleware'=>'permission:role,admin'], function () {
         Route::resource('permissions', 'PermissionController');
-
         Route::resource('users', 'UserController');
-
-
+        Route::get('users/{id}/avatar', 'UserController@avatarAdmin');
+        Route::post('users/{id}/avatar', 'UserController@uploadAvatarAdmin');
     });
 
     Route::bind('users', function ($value, $route) {
         return \App\User::whereSlug(strtolower($value))->first();
     });
 
+
+    Route::post('gallery/{g}/p/{p}/c/{c}', 'CommentController@storeChild');
+    Route::patch('gallery/{g}/p/{p}/c/{c}', 'CommentController@updateChild');
+    Route::delete('gallery/{g}/p/{p}/c/{c}', 'CommentController@destroyChild');
+
 });
+Route::resource('gallery.p.c', 'CommentController');
 
 
 Route::resource('profile', 'ProfileController');
@@ -61,7 +65,7 @@ Route::bind('profile', function ($value, $route) {
 
 Route::resource('gallery', 'GalleryController');
 
-Route::resource('gallery.piece', 'PieceController');
+Route::resource('gallery.p', 'PieceController');
 
 Route::get('/home', 'HomeController@index');
 Route::get('/recent', ['uses'=> 'HomeController@recent', 'as'=>'recent']);

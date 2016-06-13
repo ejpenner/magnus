@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Piece;
 
 class CreatePieceTable extends Migration
 {
@@ -18,6 +19,7 @@ class CreatePieceTable extends Migration
             $table->string('thumbnail_path');
             $table->string('title');
             $table->string('comment')->nullable();
+            $table->integer('views');
             $table->timestamp('published_at');
             $table->timestamps();
         });
@@ -35,6 +37,13 @@ class CreatePieceTable extends Migration
      */
     public function down()
     {
+        $pieces = Piece::all();
+
+        foreach ($pieces as $piece) {
+            echo public_path().'/'.$piece->getImage()."\n";
+            $piece->deleteImages();
+        }
+
         Schema::drop('pieces');
     }
     

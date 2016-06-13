@@ -44,6 +44,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Piece');
     }
     
+    public function comments() {
+        return $this->hasMany('App\Comment');
+    }
+    
     public function profile()
     {
         return $this->hasOne('App\Profile');
@@ -179,7 +183,7 @@ class User extends Authenticatable
             $filename = basename($this->avatar);
             return '/'.$this->avatarDirectory.'/'.$filename;
         }
-        return '/avatars/missing.png';
+        return '/avatars/missing/missing.png';
     }
 
     public function deleteAvatarFile()

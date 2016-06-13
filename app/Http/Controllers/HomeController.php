@@ -38,7 +38,7 @@ class HomeController extends Controller
     
     public function recent() {
         $pieces = Piece::orderBy('created_at', 'desc')->paginate(16);
-        
-        return view('home.recent', compact('pieces'));
+        $galleries = Gallery::orderBy('updated_at', 'desc')->limit(10)->get();
+        return view('home.recent', compact('pieces','galleries'));
     }
 }

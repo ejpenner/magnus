@@ -8,7 +8,9 @@ Homestead.json
 .env
 /.idea
 
-/public/images/
-/public/thumbnails/
-/public/avatars/
-!/public/images/404/*.jpg
+/public/images/*
+/public/thumbnails/*
+/public/avatars/*
+!/public/images/404/header-bg.jpg
+!/public/images/404/
+!/public/avatars/missing/missing.png

@@ -26,13 +26,18 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 
 $factory->define(App\Piece::class,  function (Faker\Generator $faker){
+    $sizes = [1 => [275,125], 2 => [125,275]];
+    $res = $sizes[rand(0,1)];
     $usersMax = \App\User::count();
+    $faker->seed(rand(11111,99999));
     $image_path = substr($faker->image($dir = public_path('images'), $width = 600, $height=400), 38);
+    
+    $thumbnail_path = substr($faker->image($dir = public_path('thumbnails'), $width = $res[0], $height= $res[1]), 38);
     return [
-        'title' => $faker->word,
-        'comment' => $faker->sentence,
+        'title' => ucwords($faker->words(3, true)),
+        'comment' => $faker->paragraphs(2,true),
         'image_path' => $image_path,
-        'thumbnail_path' => substr($faker->image($dir = public_path('thumbnails'), $width = 375, $height=250), 38),
+        'thumbnail_path' => $thumbnail_path,
         'published_at' => \Carbon\Carbon::now(),
         'user_id' => rand(1, $usersMax),
     ];
@@ -40,14 +45,20 @@ $factory->define(App\Piece::class,  function (Faker\Generator $faker){
 
 $factory->define(App\Gallery::class, function (Faker\Generator $faker){
     return [
-        'name' => $faker->word,
-        'description' => $faker->sentence
+        'name' => ucwords($faker->words(3, true)),
+        'description' => $faker->sentence,
     ] ;
+});
+
+$factory->define(App\Comment::class, function (Faker\Generator $faker){
+   return [
+       'body' => $faker->paragraph,
+   ];
 });
 
 $factory->define(App\Profile::class, function (Faker\Generator $faker){
     return [
-        'biography' => $faker->sentence
+        'biography' => $faker->paragraphs(2, true),
     ] ;
 });
 
