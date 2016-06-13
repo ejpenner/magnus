@@ -9330,11 +9330,12 @@ footer {
   padding: 3px;
   margin: 1px;
 }
-.reply-area {
+.reply-form {
   padding: 5px;
   margin-left: 20px;
+  display: none;
 }
-.reply-area textarea {
+.reply-form textarea {
   width: 65%;
   margin-bottom: 2px;
 }

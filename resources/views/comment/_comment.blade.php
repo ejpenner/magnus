@@ -1,8 +1,13 @@
-<div class="container reply-area form-group">
-    {!! Form::open(['action'=>['CommentController@store', $gallery->id, $piece->id], 'method'=>'post']) !!}
-    {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>'4']) !!}
-    {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
-    {!! Form::close() !!}
+<div class="reply-toggle container">
+    <button class="btn btn-default reply-btn">Reply</button>
+    <div class="container reply-form form-group">
+        <div>
+            {!! Form::open(['action'=>['CommentController@store', $gallery->id, $piece->id], 'method'=>'post']) !!}
+            {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>'4']) !!}
+            {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
+            {!! Form::close() !!}
+        </div>
+    </div>
 </div>
 <div class="container-fluid">
     @foreach($comments as $comment)
@@ -21,12 +26,18 @@
                         <div class="row">{{ $comment->created_at }}</div>
                         <div class="row">{{ $comment->body }}</div>
                     </div>
+
                 </div>
-                <div class="container reply-area form-group">
-                    {!! Form::open(['action'=>['CommentController@storeChild', $gallery->id, $comment->piece->id, $comment->id], 'method'=>'post']) !!}
-                    {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>4]) !!}
-                    {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
-                    {!! Form::close() !!}
+                <div class="reply-toggle container">
+                    <button class="btn btn-default reply-btn">Reply</button>
+                    <div class="container reply-form form-group">
+                        <div>
+                            {!! Form::open(['action'=>['CommentController@storeChild', $gallery->id, $comment->piece->id, $comment->id], 'method'=>'post']) !!}
+                            {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>4]) !!}
+                            {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
                 </div>
                 <div class="container-fluid">
                     @include('comment._childComment', ['comment' => $comment, 'piece'=>$piece])

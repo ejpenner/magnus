@@ -55,9 +55,9 @@ class CommentController extends Controller
     {
         $piece = Piece::findOrFail($piece_id);
         $comment = new Comment(['user_id'=>Auth::user()->id,'body'=>$request->input('body')]);
-        $piece->comments()->save($comment);
-        
-        return redirect()->route('gallery.p.show', [$gallery_id, $piece->id])->with('success', 'Message posted!');
+        $newComment = $piece->comments()->save($comment);
+        return redirect()->route('gallery.p.show', [$gallery_id, $piece->id, $newComment->id])->with('success', 'Message posted!');
+        //return redirect()->to(app('url')->previous(). $newComment->id);
     }
 
     /**
@@ -74,9 +74,8 @@ class CommentController extends Controller
         $piece = Piece::findOrFail($piece_id);
         $comment = Comment::findOrFail($comment_id);
 
-        $comment->childComments()->save(new Comment(['user_id'=>Auth::user()->id, 'piece_id'=>$piece->id, 'parent_id'=>$comment->id, 'body'=>$request->input('body')]));
-
-        return redirect()->route('gallery.p.show', [$gallery_id, $piece->id])->with('success', 'Message posted!');
+        $newComment = $comment->childComments()->save(new Comment(['user_id'=>Auth::user()->id, 'piece_id'=>$piece->id, 'parent_id'=>$comment->id, 'body'=>$request->input('body')]));
+        return redirect()->route('gallery.p.show', [$gallery_id, $piece->id]).''.->with('success', 'Message posted!');
 
     }
     
