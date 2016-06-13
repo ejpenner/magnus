@@ -22,10 +22,12 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="col-md-10 comment-body">
-                            <div class="row"><span class="comment-name">{{ $comment->user->name }}</span> {{ $comment->created_at }}</div>
-                            <div class="row">{{ $comment->id }}</div>
-                            <div class="row">{{ $comment->body }}</div>
+                        <div class="col-md-10">
+                            <div class="row"><span class="comment-name">{{ $comment->user->name }}</span></div>
+                            <div class="comment-body">
+                                <p class="comment-date">{{ $comment->created_at }}</p>
+                                <p>{{ $comment->body }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>

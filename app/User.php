@@ -32,7 +32,7 @@ class User extends Authenticatable
     ];
 
     private $avatarDirectory = 'avatars';
-    private $avatarResize = '100';
+    private $avatarResize = '150';
     
     public function galleries()
     {

@@ -18,7 +18,7 @@ class CreatePieceTable extends Migration
             $table->string('image_path');
             $table->string('thumbnail_path');
             $table->string('title');
-            $table->string('comment')->nullable();
+            $table->text('comment')->nullable();
             $table->integer('views');
             $table->timestamp('published_at');
             $table->timestamps();

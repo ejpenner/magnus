@@ -145,8 +145,8 @@ footer {
   border: @gray-lighter solid 2px;
   background-color: @gray-lighter;
   .border-radius();
-  width: auto;
-  padding:2px 0 2px 0;
+  //width: auto;
+  padding:5px;
   margin:1px;
 
   .comment-name {
@@ -154,17 +154,25 @@ footer {
   }
 
   .comment-avatar {
-    padding: 20px;
+    //padding: 20px;
     img {
       .border-radius(5px);
     }
   }
 
   .comment-body {
-    //background-color: @white;
-    //.border-radius();
+    background-color: @white;
+    .border-radius();
     //width: inherit;
-    padding: 15px 0 10px 0;
+    //padding: 15px 0 10px 0;
+
+    .comment-date {
+      padding: 10px 10px 0px 10px;
+    }
+
+    p {
+      padding: 15px 10px 20px 10px;
+    }
   }
 
 }

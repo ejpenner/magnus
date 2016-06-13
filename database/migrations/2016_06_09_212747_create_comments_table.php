@@ -18,7 +18,7 @@ class CreateCommentsTable extends Migration
             $table->integer('piece_id')->unsigned()->nullable();;
             $table->integer('parent_id')->unsigned()->nullable();
             $table->integer('profile_id')->unsigned()->nullable();
-            $table->string('body');
+            $table->text('body');
             $table->timestamps();
         });
 

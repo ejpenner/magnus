@@ -23,7 +23,8 @@ class CommentSeeder extends Seeder
         foreach($comments as $comment) {
             $comment->childComments()->save(factory(\App\Comment::class)->make(['user_id'=>rand(1,$users), 'piece_id'=>$comment->piece->id])
                 ->each(function($comment) use ($users) {
-                    $comment->childComments()->save(factory(\App\Comment::class)->make(['user_id'=>rand(1,$users), 'piece_id'=>$comment->piece->id]));
+                    $childComment = factory(\App\Comment::class)->make(['user_id'=>rand(1,$users), 'piece_id'=>$comment->piece->id]);
+                    $comment->childComments()->save($childComment);
                 }));
         }
     }
