@@ -18,9 +18,7 @@ Route::model('profile', 'Profile');
 
 Route::auth();
 
-Route::get('/', ['as' => 'home', function () {
-    return view('welcome');
-}]);
+Route::get('/', 'HomeController@recent')->name('home');
 
 Route::get('errors/401', ['as' => '401', function() {
     return view('errors.401');

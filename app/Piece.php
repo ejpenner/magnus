@@ -75,6 +75,11 @@ class Piece extends Model
         return date_format(Carbon::parse($value), 'F j, Y');
     }
     
+    public function view() {
+        $this->views = $this->views++;
+        $this->save();
+    }
+    
     /**
      * @return string
      */
@@ -229,7 +234,5 @@ class Piece extends Model
         return ['filesize'=>$size.' KB', 'resolution'=>$img->width() .'x'.$img->height()];
     }
 
-    public function nextPiece($gallery_id) {
-        
-    }
+
 }
