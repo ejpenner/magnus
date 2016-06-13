@@ -18,9 +18,9 @@ class GalleryManagement
     public function handle($request, Closure $next)
     {
         $gallery_id = $request->route('gallery');
-        $user_id = Gallery::where('id', $gallery_id)->value('user_id');
+        $gallery = Gallery::where('id', $gallery_id)->first();
 
-        if (Auth::user()->hasRole('admin') or $user_id == Auth::user()->id) {
+        if (Auth::user()->hasRole('admin') or Auth::user()->isOwner($gallery)) {
             return $next($request);
         } else {
             return redirect()->back()->withErrors('You are not permitted to complete that action or view that page.');

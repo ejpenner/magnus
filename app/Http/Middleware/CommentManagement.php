@@ -18,9 +18,9 @@ class CommentManagement
     public function handle($request, Closure $next)
     {
         $comment_id = $request->route('c');
-        $user_id = Comment::where('id', $comment_id)->value('user_id');
+        $comment= Comment::where('id', $comment_id)->first();
 
-        if (Auth::user()->hasRole('admin') or $user_id == Auth::user()->id) {
+        if (Auth::user()->hasRole('admin') or Auth::user()->isOwner($comment)) {
             return $next($request);
         } else {
             return redirect()->back()->withErrors('You are not permitted to complete that action or view that page.');
