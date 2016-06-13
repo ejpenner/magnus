@@ -9347,7 +9347,7 @@ footer {
 .comment .comment-body p {
   padding: 15px 10px 20px 10px;
 }
-.child-comment .container-fluid .comment {
+.child-comment .container.comment {
   margin-left: 10px;
 }
 .comment-area {
