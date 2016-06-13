@@ -53,11 +53,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::patch('gallery/{g}/p/{p}/c/{c}', 'CommentController@updateChild');
     Route::delete('gallery/{g}/p/{p}/c/{c}', 'CommentController@destroyChild');
 
+    Route::get('/submit', 'PieceController@newSubmission');
+    Route::post('/submit', 'PieceController@submit');
+
 });
 Route::resource('gallery.p.c', 'CommentController');
 
 
 Route::resource('profile', 'ProfileController');
+Route::get('profile/{user}/gallery', 'ProfileController@gallery');
+Route::get('profile/{user}/submissions', 'ProfileController@submissions');
 
 Route::bind('profile', function ($value, $route) {
     return \App\User::whereSlug(strtolower($value))->first();
@@ -68,5 +73,5 @@ Route::resource('gallery', 'GalleryController');
 Route::resource('gallery.p', 'PieceController');
 
 Route::get('/home', 'HomeController@index');
-Route::get('/recent', ['uses'=> 'HomeController@recent', 'as'=>'recent']);
+//Route::get('/recent', ['uses'=> 'HomeController@recent', 'as'=>'recent']);
 Route::get('/search/{terms}', ['uses'=> 'SearchController@searchAll', 'as'=>'searchAll']);

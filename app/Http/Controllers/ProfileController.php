@@ -41,13 +41,22 @@ class ProfileController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Return all the galleries of a user
      *
-     * @return \Illuminate\Http\Response
+     * @param User $user
      */
-    public function create()
-    {
-        //
+    public function gallery(User $user) {
+
+    }
+
+
+    /**
+     * Return all the piece submissions for a user
+     *
+     * @param User $user
+     */
+    public function submissions(User $user) {
+
     }
 
     /**
@@ -62,10 +71,9 @@ class ProfileController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *  Display the specified user's profile
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(User $user)
     {
@@ -109,6 +117,12 @@ class ProfileController extends Controller
     {
         //
     }
+
+    /**
+     *  Return the Auth'd users profile
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     
     public function user() {
         $profile = Profile::where('user_id', Auth::user()->id)->first();

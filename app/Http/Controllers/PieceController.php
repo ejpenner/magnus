@@ -34,9 +34,12 @@ class PieceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($gallery_id)
     {
-        //
+        $gallery = Gallery::findOrFail($gallery_id);
+        $features = Feature::where('gallery_id', $gallery->id)->orderBy('created_at', 'desc')->paginate(12);
+
+        return view('gallery.show', compact('gallery', 'features'));
     }
 
     /**
@@ -44,6 +47,15 @@ class PieceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
+    public function submit() {
+        
+    }
+
+    public function newSubmission() {
+
+    }
+    
     public function create($gallery)
     {
 

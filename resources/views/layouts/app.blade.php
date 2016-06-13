@@ -33,10 +33,10 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li @if(Request::is('/')) class="active" @endif ><a href="{{ action('HomeController@index') }}">Home</a></li>
+                <li @if(Request::is('/')) class="active" @endif ><a href="{{ action('HomeController@recent') }}">Home</a></li>
                 <li @if(Request::is('featured')) class="active" @endif ><a href="#">Featured</a></li>
-                <li @if(Request::is('recent')) class="active" @endif ><a href="{{ action('HomeController@recent') }}">Recent</a></li>
                 <li @if(Request::is('gallery')) class="active" @endif ><a href="{{ action('GalleryController@index') }}">Galleries</a></li>
+                <li @if(Request::is('submit')) class="active" @endif ><a href="{{ action('PieceController@submit') }}">Submit</a></li>
                 <li @if(Request::is('search')) class="active" @endif >
                     {!! Form::open(['url'=>'/search/', 'method'=>'get', 'class'=>'navbar-form navbar-left', 'role'=>'search', 'onsubmit'=>'return false;']) !!}
                         <div class="form-group">
