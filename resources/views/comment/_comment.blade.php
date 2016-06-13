@@ -13,20 +13,21 @@
     @foreach($comments as $comment)
         @if($comment->parent_id == null)
             <div class="comment-area">
-                <div class="container comment" id="{{ $comment->id }}">
-                    <div class="col-md-2 comment-avatar">
-                        <div class="text-center">
-                            <a href="{{ action('ProfileController@show', $comment->user->slug) }}">
-                                <img src="{{ $comment->user->getAvatar() }}" alt="avatar"><br>
-                                <span class="comment-name">{{ $comment->user->name }}</span>
-                            </a>
+                <div class="container-fluid comment" id="{{ $comment->id }}">
+                    <div class="row">
+                        <div class="col-md-2 comment-avatar">
+                            <div class="text-center">
+                                <a href="{{ action('ProfileController@show', $comment->user->slug) }}">
+                                    <img src="{{ $comment->user->getAvatar() }}" alt="avatar">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-10 comment-body">
+                            <div class="row"><span class="comment-name">{{ $comment->user->name }}</span> {{ $comment->created_at }}</div>
+                            <div class="row">{{ $comment->id }}</div>
+                            <div class="row">{{ $comment->body }}</div>
                         </div>
                     </div>
-                    <div class="col-md-9 comment-body">
-                        <div class="row">{{ $comment->created_at }}</div>
-                        <div class="row">{{ $comment->body }}</div>
-                    </div>
-
                 </div>
                 <div class="reply-toggle container">
                     <button class="btn btn-default reply-btn">Reply</button>

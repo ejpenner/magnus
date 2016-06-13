@@ -62,7 +62,7 @@ class PieceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($gallery_id, Request $request)
+    public function store($gallery_id, Requests\PieceCreateRequest $request)
     {
 
         $gallery = Gallery::findOrFail($gallery_id);
@@ -104,7 +104,8 @@ class PieceController extends Controller
 
         $gallery = Gallery::findOrFail($gallery_id);
         $piece = Piece::findOrFail($piece_id);
-        $comments = Comment::where('piece_id', $piece->id)->get();
+        $this->viewPiece($piece);
+        $comments = Comment::where('piece_id', $piece->id)->orderBy('created_at', 'asc')->get();
         $metadata = $piece->metadata();
         $galleryNav = $this->makeNavigator($gallery, $piece);
 
@@ -132,7 +133,7 @@ class PieceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $gallery_id, $piece_id)
+    public function update(Requests\PieceEditRequest $request, $gallery_id, $piece_id)
     {
         $gallery = Gallery::findOrFail($gallery_id);
         $gallery->updated_at = Carbon::now();
@@ -245,5 +246,12 @@ class PieceController extends Controller
         }
 
         return $galleryNav;
+    }
+
+    private function viewPiece($piece) {
+        if(!Auth::user()->isOwner($piece)) {
+            $piece->views = $piece->views + 1;
+            $piece->save();
+        }
     }
 }

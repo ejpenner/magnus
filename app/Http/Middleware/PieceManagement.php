@@ -19,9 +19,9 @@ class PieceManagement
     public function handle($request, Closure $next)
     {
         $piece_id = $request->route('piece');
-        $user_id = Piece::where('id', $piece_id)->value('user_id');
+        $piece = Piece::where('id', $piece_id)->first();
 
-        if (Auth::user()->is_admin or $user_id == Auth::user()->id) {
+        if (Auth::user()->is_admin or Auth::user()->isOwner($piece)) {
             return $next($request);
         } else {
             return redirect()->back()->withErrors('You are not permitted to complete that action or view that page.');

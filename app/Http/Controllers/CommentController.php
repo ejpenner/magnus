@@ -51,13 +51,13 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $gallery_id, $piece_id)
+    public function store(Requests\CommentRequest $request, $gallery_id, $piece_id)
     {
         $piece = Piece::findOrFail($piece_id);
         $comment = new Comment(['user_id'=>Auth::user()->id,'body'=>$request->input('body')]);
         $newComment = $piece->comments()->save($comment);
-        return redirect()->route('gallery.p.show', [$gallery_id, $piece->id, $newComment->id])->with('success', 'Message posted!');
-        //return redirect()->to(app('url')->previous(). $newComment->id);
+        //return redirect()->route('gallery.p.show', [$gallery_id, $piece->id, $newComment->id])->with('success', 'Message posted!');
+        return redirect()->to(app('url')->previous(). '#'.$newComment->id)->with('success', 'Message posted!');
     }
 
     /**
@@ -69,18 +69,17 @@ class CommentController extends Controller
      * @param $comment
      */
 
-    public function storeChild(Request $request, $gallery_id, $piece_id, $comment_id)
+    public function storeChild(Requests\CommentRequest $request, $gallery_id, $piece_id, $comment_id)
     {
         $piece = Piece::findOrFail($piece_id);
         $comment = Comment::findOrFail($comment_id);
 
-        $newComment = $comment->childComments()->save(new Comment(['user_id'=>Auth::user()->id, 'piece_id'=>$piece->id, 'parent_id'=>$comment->id, 'body'=>$request->input('body')]));
-        return redirect()->route('gallery.p.show', [$gallery_id, $piece->id]).''.->with('success', 'Message posted!');
+        $comment->childComments()->save(new Comment(['user_id'=>Auth::user()->id, 'piece_id'=>$piece->id, 'parent_id'=>$comment->id, 'body'=>$request->input('body')]));
+        $newComment = Comment::where('parent_id', $comment->id)->orderBy('created_at', 'desc')->first();
+        //return redirect()->route('gallery.p.show', [$gallery_id, $piece->id])->with('success', 'Message posted!');
+        return redirect()->to(app('url')->previous(). '#'.$newComment->id)->with('success', 'Message posted!');
 
     }
-    
-    
-   
 
     /**
      * Display the specified resource.
@@ -88,7 +87,7 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($gallery_id, $piece_id, $comment_id)
     {
         //
     }
@@ -111,12 +110,12 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Requests\CommentRequest $request, $id)
     {
         //
     }
 
-    public function updatedNested(Request $request, $gallery, $piece, $comment)
+    public function updatedNested(Requests\CommentRequest $request, $gallery, $piece, $comment)
     {
         dd($gallery . ' '. $piece . ' ' . $comment);
     }

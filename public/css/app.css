@@ -9274,6 +9274,14 @@ footer {
 .avatar {
   margin-right: 10px;
 }
+.avatar img {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
 .piece-show {
   display: block;
   margin-left: auto;
@@ -9303,6 +9311,7 @@ footer {
 }
 .comment {
   border: #eeeeee solid 2px;
+  background-color: #eeeeee;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
@@ -9312,22 +9321,27 @@ footer {
   width: auto;
   padding: 2px 0 2px 0;
   margin: 1px;
+}
+.comment .comment-name {
+  font-weight: bold;
+}
+.comment .comment-avatar {
+  padding: 20px;
+}
+.comment .comment-avatar img {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.comment .comment-body {
+  padding: 15px 0 10px 0;
 }
 .comment-area {
-  border: #eeeeee solid 2px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
   width: auto;
   padding: 2px 0 2px 0;
-  margin: 1px;
-}
-.container-fluid > .child-comment {
-  width: auto;
-  padding: 3px;
   margin: 1px;
 }
 .reply-form {
@@ -9338,15 +9352,4 @@ footer {
 .reply-form textarea {
   width: 65%;
   margin-bottom: 2px;
-}
-div .child-comment {
-  margin-left: 20px;
-}
-.comment-body {
-  padding: 10px 0 5px 0;
-}
-.comment-avatar {
-  display: block;
-  text-align: center;
-  padding: 1px;
 }
