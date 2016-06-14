@@ -173,5 +173,14 @@ class User extends Authenticatable
         }
         return false;
     }
+    
+    public function listRoles() {
+        $roles = [];
+        foreach($this->roles as $role) {
+            array_push($roles, $role->role_name);
+        }
+        $roles = implode(', ', $roles);
+        return $roles;
+    }
 
 }

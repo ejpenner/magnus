@@ -18,7 +18,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'username'  => $faker->userName,
         'password'  => bcrypt('password'),
         'slug'      => str_slug($faker->userName),
-        'avatar'    =>     substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
+        'avatar'    => substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
         'remember_token' => str_random(10),
     ];
 });
@@ -47,6 +47,7 @@ $factory->define(App\Gallery::class, function (Faker\Generator $faker){
     return [
         'name' => ucwords($faker->words(3, true)),
         'description' => $faker->sentence,
+        'main_gallery' => 0,
     ] ;
 });
 

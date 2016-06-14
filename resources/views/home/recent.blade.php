@@ -20,5 +20,7 @@
             @endforeach
         </div>
     </div>
-    {{ $pieces->render() }}
+    <div class="container">
+    <span class="pull-left">{{ $pieces->render() }}</span>
+    </div>
 @endsection

@@ -20,9 +20,9 @@
                 @foreach($users as $user)
                     <tr>
                         <td><a href="{{ action('UserController@edit', [$user->slug]) }}">{{ $user->name }}</a></td>
-                        <td>{{ $user->username }}</td>
+                        <td><a href="{{ action('ProfileController@show', $user->username) }}">{{ $user->username }}</a></td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->permission_id }}</td>
+                        <td>{{ $user->listRoles() }}</td>
                         <td>
                             @include('partials._slugOperations', ['model'=>$user, 'controller' => 'UserController'])
                         </td>

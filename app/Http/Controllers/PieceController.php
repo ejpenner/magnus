@@ -58,7 +58,8 @@ class PieceController extends Controller
      */
 
     public function newSubmission() {
-
+        $galleries = Gallery::where('user_id', Auth::user()->id)->lists('name', 'id');
+        dd($galleries);
     }
     
     public function create($gallery)

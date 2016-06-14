@@ -36,7 +36,7 @@ class GalleryController extends Controller
     {
         // index of galleries is user profile
 
-        $galleries = Gallery::orderBy('updated_at', 'desc')->paginate('12');
+        $galleries = Gallery::orderBy('updated_at', 'desc')->where('main_gallery', 0)->paginate('12');
 
         return view('gallery.index', compact('galleries'));
     }
@@ -59,7 +59,7 @@ class GalleryController extends Controller
      */
     public function store(Requests\GalleryRequest $request)
     {
-        $gallery = new Gallery(['name'=>$request->name,'description'=>$request->description]);
+        $gallery = new Gallery(['name'=>$request->name,'description'=>$request->description, 'main_gallery'=>0]);
         Auth::user()->galleries()->save($gallery);
 
         return redirect()->route('profile.show', [Auth::user()->slug])->with('success', $gallery->name.' has been created!');
@@ -120,8 +120,11 @@ class GalleryController extends Controller
     public function destroy($id)
     {
         $gallery = Gallery::findOrFail($id);
-        $gallery->delete();
-
-        return redirect()->route('gallery.index')->with('success', 'Gallery successfully deleted!');
+        if($gallery->main_gallery != true or Auth::user()->hasRole('Moderator')) {
+            $gallery->delete();
+            return redirect()->route('gallery.index')->with('success', 'Gallery successfully deleted!');
+        } else {
+            return redirect()->route('gallery.index')->with('message', 'You cannot delete your main gallery.');
+        }
     }
 }

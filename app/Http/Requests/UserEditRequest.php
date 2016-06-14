@@ -26,7 +26,6 @@ class UserEditRequest extends Request
         return [
             'name'=>'required|min:3|max:32',
             'email'=>'required|email',
-            'slug'=>'required',
             'password'=>'min:8'
         ];
     }

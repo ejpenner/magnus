@@ -21,7 +21,9 @@
                                 <div class="clearfix">
                                     @include('gallery._editModal', ['id'=>$i.'-'.$j, 'gallery'=>$item])
                                     {!! Form::model($item, ['method'=>'delete', 'class'=>'delete-confirm operations', 'action'=>['GalleryController@destroy', $item->id]]) !!}
-                                    <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
+                                    @if($item->main_gallery != true)
+                                        <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
+                                    @endif
                                     {!! Form::close() !!}
                                 </div>
                             @endif

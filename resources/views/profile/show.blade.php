@@ -4,10 +4,12 @@
 
     <div class="container-fluid">
         <h3><img src="{{ $user->getAvatar() }}"> {{ $user->name }}</h3>
-        @if(Auth::check() and (Auth::user()->hasRole('admin') or Auth::user()->isOwner($profile)))
+        @if(Auth::check() and (Auth::user()->hasRole('Administrator') or Auth::user()->isOwner($profile)))
             <div class="pull-right"> @include('gallery._createModal') </div>
         @endif
-        <p>{{ $profile->biography }}</p>
+        @if(isset($profile->biography))
+            <p>{{ $profile->biography }}</p>
+        @endif
         <hr>
         <div class="col-md-1">
             <h4>Galleries</h4>
@@ -32,7 +34,9 @@
                                     <div class="clearfix">
                                         @include('gallery._editModal', ['id'=>$i.'-'.$j, 'gallery'=>$item])
                                         {!! Form::model($item, ['method'=>'delete', 'class'=>'delete-confirm operations', 'action'=>['GalleryController@destroy', $item->id]]) !!}
-                                        <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
+                                        @if($item->main_gallery != true)
+                                            <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
+                                        @endif
                                         {!! Form::close() !!}
                                     </div>
                                 @endif

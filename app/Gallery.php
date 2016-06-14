@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Gallery extends Model
 {
-    protected $fillable = ['name','description', 'user_id'];
-    
+    protected $fillable = ['name', 'description', 'main_gallery', 'user_id'];
+
+    protected $casts = [
+        'main_gallery' => 'boolean'
+    ];
+
     public function user()
     {
         return $this->belongsTo('App\User');
