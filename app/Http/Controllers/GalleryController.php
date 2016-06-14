@@ -108,7 +108,7 @@ class GalleryController extends Controller
         $gallery = Gallery::findOrFail($id);
         $gallery->update($request->all());
 
-        return redirect()->route('gallery.index')->with('success', 'Gallery successfully updated!');
+        return redirect()->to(app('url')->previous())->with('success', 'Gallery successfully updated!');
     }
 
     /**
@@ -122,9 +122,9 @@ class GalleryController extends Controller
         $gallery = Gallery::findOrFail($id);
         if($gallery->main_gallery != true or Auth::user()->hasRole('Moderator')) {
             $gallery->delete();
-            return redirect()->route('gallery.index')->with('success', 'Gallery successfully deleted!');
+            return redirect()->to(app('url')->previous())->with('success', 'Gallery successfully deleted!');
         } else {
-            return redirect()->route('gallery.index')->with('message', 'You cannot delete your main gallery.');
+            return redirect()->to(app('url')->previous())->with('message', 'You cannot delete your main gallery.');
         }
     }
 }
