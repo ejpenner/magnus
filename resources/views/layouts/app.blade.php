@@ -39,10 +39,10 @@
                 <li @if(Request::is('submit')) class="active" @endif ><a href="{{ action('PieceController@submit') }}">Submit</a></li>
                 <li @if(Request::is('search')) class="active" @endif >
                     {!! Form::open(['url'=>'/search/', 'method'=>'get', 'class'=>'navbar-form navbar-left', 'role'=>'search', 'onsubmit'=>'return false;']) !!}
-                        <div class="form-group">
-                            {!! Form::text('search-terms', null, ['class'=>'form-control', 'placeholder'=>'Search...', 'name'=>'q']) !!}
-                        </div>
-                        {!! Form::submit('Search', ['class' => 'form-control btn btn-primary', 'onclick'=>'window.location.href=this.form.action +\'/\'+ this.form.q.value;']) !!}
+                    <div class="form-group">
+                        {!! Form::text('search-terms', null, ['class'=>'form-control', 'placeholder'=>'Search...', 'name'=>'q']) !!}
+                    </div>
+                    {!! Form::submit('Search', ['class' => 'form-control btn btn-primary', 'onclick'=>'window.location.href=this.form.action +\'/\'+ this.form.q.value;']) !!}
                     {!! Form::close() !!}
                 </li>
             </ul>
@@ -52,21 +52,22 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Panel <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ action('UserController@index') }}">Users</a></li>
-                            <li><a href="{{ action('PermissionController@index') }}">Permissions</a></li>
+                            <li><a href="{{ action('RoleController@index') }}">User Roles</a></li>
                         </ul>
                     </li>
                 @endif
                 @if(Auth::check())
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"> {{ Auth::user()->name }} <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ action('ProfileController@show', Auth::user()->slug) }}"><img src="{{ Auth::user()->getAvatar() }}" width="25px" > My Profile</a></li>
-                                <li><a href="{{ action('UserController@manageAccount', Auth::user()->id) }}"><span class="fa fa-user"></span> Account</a></li>
-                                <li><a href="/logout"><i class="fa fa-sign-out"></i> Log Out</a></li>
-                            </ul>
-                        </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> {{ Auth::user()->name }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ action('ProfileController@show', Auth::user()->slug) }}"><img src="{{ Auth::user()->getAvatar() }}" width="25px" > My Profile</a></li>
+                            <li><a href="{{ action('UserController@manageAccount', Auth::user()->id) }}"><span class="fa fa-user"></span> Account</a></li>
+                            <li><a href="/logout"><i class="fa fa-sign-out"></i> Log Out</a></li>
+                        </ul>
+                    </li>
                 @else
                     <li><a href="/login"><span class="fa fa-user"></span> Login</a></li>
+                    <li><a href="/register">Register</a></li>
                 @endif
             </ul>
         </div>

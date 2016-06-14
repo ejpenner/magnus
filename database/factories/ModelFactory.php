@@ -19,7 +19,6 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'password'  => bcrypt('password'),
         'slug'      => str_slug($faker->userName),
         'avatar'    =>     substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
-        'permission_id' => rand(1,3),
         'remember_token' => str_random(10),
     ];
 });

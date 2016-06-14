@@ -52,18 +52,26 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Profile');
     }
-    
-    public function permission()
-    {
-        return $this->belongsTo('App\Permission');
-    }
 
     public function roles() {
         return $this->belongsToMany('App\Role', 'user_roles');
     }
 
     protected $appends = ['banned'];
-
+    
+    /**
+     *  Check if the user has the specified permission
+     *
+     * @param $action: string
+     * @return bool|void
+     */
+    public function hasPermission($role) {
+        if(Role::hasPermission($this, $role)) {
+            return true;
+        }
+        return false;
+    }
+    
     /**
      *  Check if the logged in user has the specified role
      *
@@ -72,11 +80,12 @@ class User extends Authenticatable
      */
     public function hasRole($role)
     {
-        if (Permission::where('role', $role)->value('id') == Auth::user()->permission_id) {
-            return true;
-        } else {
-            return false;
+        foreach(Auth::user()->roles as $userRoles) {
+            if($userRoles->level >= Role::where('role_name', $role)->value('level')) {
+                return true;
+            }
         }
+        return false;
     }
 
     /**
@@ -85,44 +94,9 @@ class User extends Authenticatable
      * @param $permission
      * @return bool
      */
-    
     public function hasSchema($schema)
     {
         if (Permission::where('schema_name', $schema)->value('id') == Auth::user()->permission_id) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     *  Check if the user has the specified permission
-     *
-     * @param $action: string
-     * @return bool|void
-     */
-
-    public function hasPermission($action) {
-        if(Schema::hasColumn('permissions', $action)) {
-            if (Permission::where($action, true)->value($action) == Auth::user()->permission[$action]) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return die('Permission does not exist');
-        }
-    }
-
-    /**
-     *  Is this user an admin?
-     *
-     * @return bool
-     */
-
-    public function getIsAdminAttribute()
-    {
-        if ($this->attributes['permission_id'] == Permission::where('schema_name', 'admin')->first()->value('id')) {
             return true;
         } else {
             return false;

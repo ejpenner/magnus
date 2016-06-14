@@ -9355,6 +9355,13 @@ footer {
   padding: 2px 0 2px 0;
   margin: 1px;
 }
+.comment-area .comment-name {
+  padding: 1px;
+}
+.reply-toggle .reply-btn {
+  margin-left: 10px;
+  margin-top: 2px;
+}
 .reply-form {
   padding: 5px;
   margin-left: 20px;

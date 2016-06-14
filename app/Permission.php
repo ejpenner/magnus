@@ -11,6 +11,8 @@ class Permission extends Model
         'role', 'role_id',
         'create','read','edit','destroy',
         'create_all','read_all','edit_all','destroy_all',
+        'gallery_all','piece_all','comment_all','private_message_all',
+        'private_message_access', 'banned'
     ];
 
     protected $casts = [
@@ -22,16 +24,17 @@ class Permission extends Model
       'read_all' => 'boolean',
       'edit_all' => 'boolean',
       'destroy_all' => 'boolean',
+      'gallery_all' => 'boolean',
+      'piece_all' => 'boolean',
+      'comment_all' => 'boolean',
+      'private_message_all' => 'boolean',
+      'private_message_access' => 'boolean',
+      'banned' => 'boolean',
     ];
     
     public function getSchemaName()
     {
         return $this->attributes['schema_name'];
-    }
-    
-    
-    public function users() {
-        return $this->belongsTo('App\User');
     }
     
     public function role() {

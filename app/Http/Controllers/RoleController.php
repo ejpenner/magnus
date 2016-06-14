@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\Role;
 use App\Permission;
-use App\User;
 
-class PermissionController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +18,8 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $permissions = Permission::all();
-
-        return view('permission.index', compact('permissions'));
+        $roles = Role::all();
+        return view('role.index', compact('roles'));
     }
 
     /**
@@ -30,7 +29,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -41,11 +40,7 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        $permission = new Permission($request->all());
-        $permission->schema_name = strtolower(preg_replace('/\s/', '_', $request->schema_name));
-        $permission->save();
-
-        return redirect()->route('permissions.index')->with('success', 'Permission schema has been created!');
+        //
     }
 
     /**
@@ -56,7 +51,9 @@ class PermissionController extends Controller
      */
     public function show($id)
     {
-        //
+        $role = Role::findOrFail($id);
+
+        return view('role.show', compact('role'));
     }
 
     /**
@@ -79,12 +76,9 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $permission = Permission::findOrFail($id);
-
-        $permission->update($request->all());
-        $permission->save();
-        
-        return redirect()->route('roles.index')->with('success', 'Permission schema has been updated!');
+        $role = Role::findOrFail($id);
+        $role->update($request->all());
+        return redirect()->route('roles.index')->with('success', $role->role_name.' has been updated!');
     }
 
     /**
@@ -95,13 +89,6 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        $permission = Permission::findOrFail($id);
-
-        if(User::where('permission_id', $id)->count() == 0) {
-            $permission->delete();
-            return redirect()->route('permissions.index')->with('success', 'Permission schema has been deleted!');
-        } else {
-            return redirect()->route('permissions.index')->withErrors('This schema cannot be deleted, there are users associated with it');
-        }
+        //
     }
 }

@@ -37,9 +37,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('users/avatar', 'UserController@avatar');
     Route::post('users/avatar', 'UserController@uploadAvatar');
 
-    Route::group(['middleware'=>'permission:role,admin'], function () {
+    Route::group(['middleware'=>'permission:role,Administrator'], function () {
         Route::resource('permissions', 'PermissionController');
         Route::resource('users', 'UserController');
+        Route::resource('roles', 'RoleController');
         Route::get('users/{id}/avatar', 'UserController@avatarAdmin');
         Route::post('users/{id}/avatar', 'UserController@uploadAvatarAdmin');
     });
