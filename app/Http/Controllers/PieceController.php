@@ -42,15 +42,20 @@ class PieceController extends Controller
         return view('gallery.show', compact('gallery', 'features'));
     }
 
+
     /**
-     * Show the form for creating a new resource.
+     * POST method for newSubmission()
      *
-     * @return \Illuminate\Http\Response
      */
-    
+
     public function submit() {
         
     }
+
+    /**
+     *  Show the page to submit a piece that one can choose a gallery
+     *
+     */
 
     public function newSubmission() {
 

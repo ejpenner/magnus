@@ -58,6 +58,10 @@ class User extends Authenticatable
         return $this->belongsTo('App\Permission');
     }
 
+    public function roles() {
+        return $this->belongsToMany('App\Role', 'user_roles');
+    }
+
     protected $appends = ['banned'];
 
     /**

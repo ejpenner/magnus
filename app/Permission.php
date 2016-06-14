@@ -8,7 +8,7 @@ class Permission extends Model
 {
     protected $fillable = [
         'schema_name',
-        'role',
+        'role', 'role_id',
         'create','read','edit','destroy',
         'create_all','read_all','edit_all','destroy_all',
     ];
@@ -30,8 +30,11 @@ class Permission extends Model
     }
     
     
-    
     public function users() {
-        return $this->hasMany('App\User');
+        return $this->belongsTo('App\User');
+    }
+    
+    public function role() {
+        return $this->belongsTo('App\Role');
     }
 }
