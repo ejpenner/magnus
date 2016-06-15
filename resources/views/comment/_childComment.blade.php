@@ -21,7 +21,7 @@
                 <button class="btn btn-default reply-btn pull-left">Reply</button>
                 <div class="container reply-form form-group">
                     <div>
-                        {!! Form::open(['action'=>['CommentController@storeChild', $gallery->id, $comment->opus->id, $childComment->id], 'method'=>'post']) !!}
+                        {!! Form::open(['action'=>['CommentController@storeChild', $comment->opus->id, $childComment->id], 'method'=>'post']) !!}
                         {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>4]) !!}
                         {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
                         {!! Form::close() !!}

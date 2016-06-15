@@ -12,9 +12,6 @@
 */
 
 Route::model('users', 'User');
-Route::model('profile', 'Profile');
-
-//Route::model('gallery', 'Gallery');
 
 Route::auth();
 
@@ -27,13 +24,17 @@ Route::get('errors/401', ['as' => '401', function() {
 
 Route::resource('gallery', 'GalleryController');
 Route::resource('opus', 'OpusController');
+Route::resource('opus.comment', 'CommentController');
+
 // opus routes for opera inside a gallery
-Route::get('gallery/{gallery}/{opus}', 'OpusController@galleryShow');
-Route::post('gallery/{gallery}/', 'OpusController@galleryPost');
-Route::patch('gallery/{gallery}/{opus}', 'OpusController@galleryUpdate');
-Route::delete('gallery/{gallery}/{opus}', 'OpusController@galleryDestroy');
+//Route::get('gallery/{gallery}/{opus}',      'OpusController@galleryShow');
+
 
 Route::group(['middleware' => ['auth']], function () {
+
+    Route::post('gallery/{gallery}/',           'OpusController@galleryPost');
+    Route::patch('gallery/{gallery}/{opus}',    'OpusController@galleryUpdate');
+    Route::delete('gallery/{gallery}/{opus}',   'OpusController@galleryDestroy');
 
     Route::post('opus/{opus}/{comment}', 'CommentController@storeChild');
     Route::patch('opus/{opus}/{comment}', 'CommentController@updateChild');
@@ -62,20 +63,19 @@ Route::group(['middleware' => ['auth']], function () {
         return \App\User::whereSlug(strtolower($value))->first();
     });
 
-
-    Route::post('gallery/{g}/p/{p}/c/{c}', 'CommentController@storeChild');
-    Route::patch('gallery/{g}/p/{p}/c/{c}', 'CommentController@updateChild');
-    Route::delete('gallery/{g}/p/{p}/c/{c}', 'CommentController@destroyChild');
+    Route::post('opus/{opus}/{c}', 'CommentController@storeChild');
+    Route::patch('opus/{opus}/{c}', 'CommentController@updateChild');
+    Route::delete('opus/{opus}/{c}', 'CommentController@destroyChild');
 
     Route::get('/submit', 'PieceController@newSubmission');
     Route::post('/submit', 'PieceController@submit');
 
 });
-Route::resource('gallery.p.c', 'CommentController');
+
 
 Route::resource('profile', 'ProfileController');
 Route::get('profile/{user}/gallery', 'ProfileController@gallery');
-Route::get('profile/{user}/submissions', 'ProfileController@submissions');
+Route::get('profile/{user}/opera', 'ProfileController@opera');
 
 Route::bind('profile', function ($value, $route) {
     return \App\User::whereSlug(strtolower($value))->first();

@@ -69,13 +69,21 @@ class OpusController extends Controller
     public function show($opus_id)
     {
         $opus = Opus::findOrFail($opus_id);
-        $gallery = Gallery::where('id', $opus->id)->first();
+        $query = Gallery::query();
+        $query->join('gallery_opus', 'galleries.id', '=', 'gallery_opus.gallery_id')
+                ->where('gallery_opus.opus_id', $opus->id);
+        $gallery = $query->first();
         $this->viewPiece($opus);
+
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
         $galleryNav = $this->makeNavigator($gallery, $opus);
 
         return view('opus.show', compact('opus','gallery','comments','metadata','galleryNav'));
+    }
+
+    public function galleryShow($gallery_id, $opus_id) {
+
     }
 
     /**
@@ -151,14 +159,28 @@ class OpusController extends Controller
         $foundMax = false;
         $foundMin = false;
 
-        foreach ($gallery->opera as $opus) {
-            array_push($pieceNav, $opus->id);
+        foreach ($gallery->opera as $currentOpus) {
+            array_push($pieceNav, $currentOpus->id);
+        }
+
+        if(count($pieceNav) < 2) {
+            $galleryNav['next'] = $pieceNav[0];
+            $galleryNav['previous'] = $pieceNav[0];
+
+            return $galleryNav;
         }
 
         if(count($pieceNav) < 3) {
-            $galleryNav['next'] = max($pieceNav);
+            if($pieceNav[0] == $opus->id) {
+                $galleryNav['next'] = $pieceNav[1];
+                $galleryNav['previous'] = $pieceNav[1];
+            } else {
+                $galleryNav['next'] = $pieceNav[0];
+                $galleryNav['previous'] = $pieceNav[0];
+            }
             $galleryNav['current'] = $opus->id;
-            $galleryNav['previous'] = min($pieceNav);
+
+            return $galleryNav;
         }
 
         foreach ($pieceNav as $i => $id) {

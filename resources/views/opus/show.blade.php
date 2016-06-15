@@ -9,9 +9,9 @@
             <div class="text-center">
                 <div class="piece-nav">
                     <div class="btn-group">
-                        <a class="btn btn-default" href="{{ action('PieceController@show', [$gallery->id, $galleryNav['previous']]) }}">Previous</a>
+                        <a class="btn btn-default" href="{{ action('OpusController@show', $galleryNav['previous']) }}">Previous</a>
                         <a class="btn btn-default" href="{{ action('GalleryController@show', [$gallery->id]) }}">Gallery</a>
-                        <a class="btn btn-default" href="{{ action('PieceController@show', [$gallery->id, $galleryNav['next']]) }}">Next</a>
+                        <a class="btn btn-default" href="{{ action('OpusController@show', $galleryNav['next']) }}">Next</a>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,6 @@
                     <div class="row">
                         @unless($opus->tags->isEmpty())
                             <div class="container-fluid">
-
                                 <ul class="list-inline">
                                     <strong>Tags</strong>
                                     @foreach($opus->tags as $tag)
@@ -54,8 +53,8 @@
                                 @if(Auth::check() and (Auth::user()->isOwner($opus) or Auth::user()->hasRole('admin')))
                                     <div class="pull-right operations">
                                         {!! Form::model($opus, ['method'=>'delete', 'class'=>'delete-confirm operations',
-                                                               'action'=>['OpusController@destroy', $gallery->id, $piece->id]]) !!}
-                                        <a href="{{ action('OpusController@edit', [$gallery->id, $opus->id]) }}">
+                                                               'action'=>['OpusController@destroy', $opus->id]]) !!}
+                                        <a href="{{ action('OpusController@edit', [$opus->id]) }}">
                                             <button type="button" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</button>
                                         </a>
                                         <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>

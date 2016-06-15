@@ -2,7 +2,7 @@
     <button class="btn btn-default reply-btn">Reply</button>
     <div class="container reply-form form-group">
         <div>
-            {!! Form::open(['action'=>['CommentController@store', $gallery->id, $opus->id], 'method'=>'post']) !!}
+            {!! Form::open(['action'=>['CommentController@store', $opus->id], 'method'=>'post']) !!}
             {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>'4']) !!}
             {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
             {!! Form::close() !!}
@@ -34,7 +34,7 @@
                         <button class="btn btn-default reply-btn pull-left">Reply</button>
                         <div class="container reply-form form-group">
                             <div>
-                                {!! Form::open(['action'=>['CommentController@storeChild', $gallery->id, $comment->opus->id, $comment->id], 'method'=>'post']) !!}
+                                {!! Form::open(['action'=>['CommentController@storeChild', $comment->opus->id, $comment->id], 'method'=>'post']) !!}
                                 {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>4]) !!}
                                 {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
                                 {!! Form::close() !!}
