@@ -71,7 +71,7 @@ class OpusController extends Controller
         $opus = Opus::findOrFail($opus_id);
         $gallery = Gallery::where('id', $opus->id)->first();
         $this->viewPiece($opus);
-        $comments = Comment::where('piece_id', $opus->id)->orderBy('created_at', 'asc')->get();
+        $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
         $galleryNav = $this->makeNavigator($gallery, $opus);
 

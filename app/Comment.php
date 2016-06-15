@@ -23,6 +23,11 @@ class Comment extends Model
     public function piece() {
         return $this->belongsTo('App\Piece');
     }
+
+    public function opus()
+    {
+     return $this->belongsTo('App\Opus');
+    }
     
     public function profile() {
         return $this->belongsTo('App\Profile');
