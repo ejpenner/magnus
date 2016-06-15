@@ -27,12 +27,12 @@ Route::resource('opus', 'OpusController');
 Route::resource('opus.comment', 'CommentController');
 
 // opus routes for opera inside a gallery
-//Route::get('gallery/{gallery}/{opus}',      'OpusController@galleryShow');
+Route::get('gallery/{gallery}/{opus}',      'OpusController@galleryShow');
 
 
 Route::group(['middleware' => ['auth']], function () {
 
-    Route::post('gallery/{gallery}/',           'OpusController@galleryPost');
+    Route::post('gallery/{gallery}/',           'OpusController@galleryStore');
     Route::patch('gallery/{gallery}/{opus}',    'OpusController@galleryUpdate');
     Route::delete('gallery/{gallery}/{opus}',   'OpusController@galleryDestroy');
 

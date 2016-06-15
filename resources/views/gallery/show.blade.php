@@ -8,7 +8,7 @@
 
         @if(Auth::check() and (Auth::user()->isOwner($gallery) or Auth::user()->hasRole('admin')))
             <div class="container">
-                <a class="btn btn-primary" href="{{ action('PieceController@create', $gallery->id) }}">Submit Artwork</a>
+                <a class="btn btn-primary" href="{{ action('OpusController@create') }}">Submit Artwork</a>
             </div>
         @endif
     </div>
@@ -19,9 +19,9 @@
                     @foreach($opusChunk as $opus)
                         <div class="vcenter col-md-4 gallery-item">
                             <div class="">
-                                <a href="{{ action('OpusController@show', [$opus->id]) }}">
+                                <a href="{{ action('OpusController@galleryShow', [$gallery->id, $opus->id]) }}">
                                     <img src="/{{ $opus->getThumbnail() }}" alt=""></a>
-                                <h4><a href="{{ action('OpusController@show', [$opus->id]) }}">{{ $opus->title }}</a> -
+                                <h4><a href="{{ action('OpusController@galleryShow', [$gallery->id, $opus->id]) }}">{{ $opus->title }}</a> -
                                     <small>{{ $opus->user->name }}</small></h4>
                             </div>
                         </div>

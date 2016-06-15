@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
                     $user->galleries()->save(factory(\App\Gallery::class)->make());
                 }
                 foreach($user->galleries as $gallery) {
-                    foreach(range(1,2) as $i) {
+                    foreach(range(1,4) as $i) {
 
                         $opus = factory(\App\Opus::class)->create(['user_id'=>$user->id]);
 

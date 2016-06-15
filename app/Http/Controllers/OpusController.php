@@ -46,7 +46,7 @@ class OpusController extends Controller
      */
     public function create()
     {
-        //
+        return view('opus.create');
     }
 
     /**
@@ -57,7 +57,33 @@ class OpusController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $opus = new Opus($request->all());
+        $opus->setImage($request);
+        $opus->setThumbnail($request);
+        $opus->published_at = Carbon::now();
+        $opus = Auth::user()->opera()->save($opus);
+
+//        $gallery = Gallery::findOrFail($gallery_id);
+//        $gallery->updated_at = Carbon::now();
+//        $gallery->save();
+
+        if($request->input('tags') !== null) {
+
+            $tags = explode(' ', trim($request->input('tags')));
+            // for each tag, check if it exists, if it doesn't create it
+            $this->makeTags($tags);
+            // get tag IDs
+            $tagIds = $this->getTagIds($tags);
+            //attach the tags to this piece
+            $opus->tags()->attach($tagIds);
+        }
+
+        return redirect()->route('opus.show', $opus->id)->with('success', 'Piece has been added!');
+    }
+    
+    public function galleryStore(Request $request, $gallery_id) {
+        
     }
 
     /**
@@ -74,16 +100,27 @@ class OpusController extends Controller
                 ->where('gallery_opus.opus_id', $opus->id);
         $gallery = $query->first();
         $this->viewPiece($opus);
-
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
-        $galleryNav = $this->makeNavigator($gallery, $opus);
-
+        // check to see if this opus is part of a gallery
+        if(isset($gallery)) {
+            $galleryNav = $this->makeNavigator($gallery, $opus);
+        }
         return view('opus.show', compact('opus','gallery','comments','metadata','galleryNav'));
     }
 
     public function galleryShow($gallery_id, $opus_id) {
+        $opus = Opus::findOrFail($opus_id);
+        $query = Gallery::query();
+        $query->join('gallery_opus', 'galleries.id', '=', 'gallery_opus.gallery_id')
+            ->where('gallery_opus.opus_id', $opus->id);
+        $gallery = $query->first();
+        $this->viewPiece($opus);
+        $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
+        $metadata = $opus->metadata();
+        $galleryNav = $this->makeNavigator($gallery, $opus);
 
+        return view('opus.galleryShow', compact('opus','gallery','comments','metadata','galleryNav'));
     }
 
     /**
@@ -94,7 +131,8 @@ class OpusController extends Controller
      */
     public function edit($id)
     {
-        //
+        $opus = Opus::findOrFail($id);
+        return view('opus.edit', compact('opus'));
     }
 
     /**
@@ -106,7 +144,29 @@ class OpusController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $opus = Opus::findOrFail($id);
+
+        // if the user wants to change the image file
+
+        if($request->file('image') !== null) {
+            $imageStatus = $opus->updateImage($request);
+        }
+
+        // update everything except the image and published at
+        $opus->update($request->except('image','published_at'));
+
+        // check if tags have changed
+        if($request->input('tags') === null) {
+            $tags = [];
+        } else {
+            $tags = explode(' ', trim($request->input('tags')));
+            $this->makeTags($tags);
+            $tags = $this->getTagIds($tags);
+        }
+
+        $opus->tags()->sync($tags);
+
+        return redirect()->route('opus.show', [$opus->id])->with('success', 'Updated piece successfully!');
     }
 
     /**
