@@ -27,7 +27,6 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 $factory->define(App\Piece::class,  function (Faker\Generator $faker){
     $sizes = [0 => [275,150], 1 => [150,275]];
     $res = $sizes[rand(0,1)];
-    echo var_dump($res)."\n\n";
     $usersMax = \App\User::count();
     $faker->seed(rand(11111,99999));
     $image_path = substr($faker->image($dir = public_path('images'), $width = 600, $height=400), 38);

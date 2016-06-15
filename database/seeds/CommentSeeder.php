@@ -11,7 +11,7 @@ class CommentSeeder extends Seeder
      */
     public function run()
     {
-        $pieces = \App\Piece::all();
+        $pieces = \App\Opus::all();
         $users = \App\User::count();
 
         foreach($pieces as $piece) {

@@ -14,21 +14,21 @@
     </div>
     <div class="col-md-10">
         <div class="container-fluid">
-            @foreach($features->chunk(3) as $featureChunk)
+            @foreach($opera->chunk(3) as $opusChunk)
                 <div class="row" >
-                    @foreach($featureChunk as $feature)
+                    @foreach($opusChunk as $opus)
                         <div class="vcenter col-md-4 gallery-item">
                             <div class="">
-                                <a href="{{ action('PieceController@show', [$feature->gallery->id, $feature->piece->id]) }}">
-                                    <img src="/{{ $feature->piece->getThumbnail() }}" alt=""></a>
-                                <h4><a href="{{ action('PieceController@show', [$feature->gallery->id, $feature->piece->id]) }}">{{ $feature->piece->title }}</a> -
-                                    <small>{{ $feature->piece->user->name }}</small></h4>
+                                <a href="{{ action('OpusController@show', [$opus->id]) }}">
+                                    <img src="/{{ $opus->getThumbnail() }}" alt=""></a>
+                                <h4><a href="{{ action('OpusController@show', [$opus->id]) }}">{{ $opus->title }}</a> -
+                                    <small>{{ $opus->user->name }}</small></h4>
                             </div>
                         </div>
                     @endforeach
                 </div>
             @endforeach
-            {{ $features->render() }}
+            {{ $opera->render() }}
         </div>
     </div>
 @endsection

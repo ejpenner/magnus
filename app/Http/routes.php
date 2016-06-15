@@ -24,7 +24,20 @@ Route::get('errors/401', ['as' => '401', function() {
     return view('errors.401');
 }]);
 
+
+Route::resource('gallery', 'GalleryController');
+Route::resource('opus', 'OpusController');
+// opus routes for opera inside a gallery
+Route::get('gallery/{gallery}/{opus}', 'OpusController@galleryShow');
+Route::post('gallery/{gallery}/', 'OpusController@galleryPost');
+Route::patch('gallery/{gallery}/{opus}', 'OpusController@galleryUpdate');
+Route::delete('gallery/{gallery}/{opus}', 'OpusController@galleryDestroy');
+
 Route::group(['middleware' => ['auth']], function () {
+
+    Route::post('opus/{opus}/{comment}', 'CommentController@storeChild');
+    Route::patch('opus/{opus}/{comment}', 'CommentController@updateChild');
+    Route::delete('opus/{opus}/{comment}', 'CommentController@destroyChild');
 
     Route::group(['middleware' => ['id']], function ($id) {
         Route::get('users/{id}/editAccount', 'UserController@editAccount');
@@ -60,7 +73,6 @@ Route::group(['middleware' => ['auth']], function () {
 });
 Route::resource('gallery.p.c', 'CommentController');
 
-
 Route::resource('profile', 'ProfileController');
 Route::get('profile/{user}/gallery', 'ProfileController@gallery');
 Route::get('profile/{user}/submissions', 'ProfileController@submissions');
@@ -69,7 +81,6 @@ Route::bind('profile', function ($value, $route) {
     return \App\User::whereSlug(strtolower($value))->first();
 });
 
-Route::resource('gallery', 'GalleryController');
 
 Route::resource('gallery.p', 'PieceController');
 

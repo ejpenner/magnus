@@ -52,6 +52,7 @@ class CreateOpusesTable extends Migration
             $opus->deleteImages();
         }
 
+        Schema::drop('gallery_opus');
         Schema::drop('opuses');
     }
 }
