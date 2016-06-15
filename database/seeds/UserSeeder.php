@@ -41,7 +41,9 @@ class UserSeeder extends Seeder
                         $piece = factory(\App\Piece::class)->create(['user_id'=>$user->id]);
 
                         echo $piece."\n\n";;
-
+                        
+                        $gallery->opuses()->attach($piece->id);
+                        
                         $gallery->featured()->save(factory(\App\Feature::class)->make(['piece_id'=>$piece->id]));
                         $tagCount = \App\Tag::count();
 
