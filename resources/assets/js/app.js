@@ -26,7 +26,7 @@ $(document).ready(function() {
             reader.readAsDataURL(input.files[0]);
 
             reader.onload = function(e) {
-                cropper.replace(e.target.result);
+                avatarCropper.replace(e.target.result);
             };
         }
     }
@@ -61,8 +61,8 @@ $(document).ready(function() {
         $('#preview').show();
     });
 
-    var cropper = new Cropper(image, {
-        aspectRatio: 1 / 1,
+    var avatarCropper = new Cropper(image, {
+        aspectRatio: 1,
         crop: function(e) {
             console.log(e.detail.x);
             console.log(e.detail.y);
@@ -78,7 +78,7 @@ $(document).ready(function() {
         var token = $('input[name=_token]');
 
         console.log(formURL);
-        cropper.getCroppedCanvas().toBlob(function(blob) {
+        avatarCropper.getCroppedCanvas().toBlob(function(blob) {
             var formData = new FormData();
 
 

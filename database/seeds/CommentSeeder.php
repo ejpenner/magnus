@@ -11,7 +11,7 @@ class CommentSeeder extends Seeder
      */
     public function run()
     {
-        $pieces = \App\Piece::all();
+        $pieces = \App\Opus::all();
         $users = \App\User::count();
 
         foreach($pieces as $piece) {
@@ -21,10 +21,11 @@ class CommentSeeder extends Seeder
         $comments = \App\Comment::all();
 
         foreach($comments as $comment) {
-            $comment->childComments()->save(factory(\App\Comment::class)->make(['user_id'=>rand(1,$users), 'piece_id'=>$comment->piece->id])
-                ->each(function($comment) use ($users) {
-                    $comment->childComments()->save(factory(\App\Comment::class)->make(['user_id'=>rand(1,$users), 'piece_id'=>$comment->piece->id]));
-                }));
+            $comment->childComments()->save(factory(\App\Comment::class)->make(['user_id'=>rand(1,$users), 'opus_id'=>$comment->opus->id]));
+
+            foreach ($comment->childComments() as $child) {
+                $child->save(factory(\App\Comment::class)->make(['user_id'=>rand(1,$users), 'parent_id'=>$comment->id, 'opus_id'=>$comment->opus->id]));
+            }
         }
     }
 }

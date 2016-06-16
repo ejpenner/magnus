@@ -15,7 +15,12 @@ class Tag extends Model
     
     public function pieces()
     {
-        return $this->belongsToMany('App\Piece');
+        return $this->belongsToMany('App\Piece')->withTimestamps();
+    }
+    
+    public function opera()
+    {
+        return $this->belongsToMany('App\Opus')->withTimestamps();
     }
     
     

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Profile;
+use App\Gallery;
 use Validator;
 use App\Permission;
 use App\Http\Controllers\Controller;
@@ -76,6 +77,7 @@ class AuthController extends Controller
         ]);
 
         $user->profile()->save(new Profile(['biography'=>'Not filled out yet']));
+        $user->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
 
         return $user;
     }

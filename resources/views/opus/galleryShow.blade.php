@@ -4,14 +4,14 @@
     <div class="col-md-12">
         <div class="text-center">
             <div class="piece-display">
-                <img class="piece-show" src="/{{ $piece->getImage() }}" alt="">
+                <img class="piece-show" src="/{{ $opus->getImage() }}" alt="">
             </div>
             <div class="text-center">
                 <div class="piece-nav">
                     <div class="btn-group">
-                        <a class="btn btn-default" href="{{ action('PieceController@show', [$gallery->id, $galleryNav['previous']]) }}">Previous</a>
+                        <a class="btn btn-default" href="{{ action('OpusController@galleryShow', [$gallery->id, $galleryNav['previous']]) }}">Previous</a>
                         <a class="btn btn-default" href="{{ action('GalleryController@show', [$gallery->id]) }}">Gallery</a>
-                        <a class="btn btn-default" href="{{ action('PieceController@show', [$gallery->id, $galleryNav['next']]) }}">Next</a>
+                        <a class="btn btn-default" href="{{ action('OpusController@galleryShow', [$gallery->id, $galleryNav['next']]) }}">Next</a>
                     </div>
                 </div>
             </div>
@@ -23,21 +23,20 @@
                     <div class="piece-info">
                         <div class="container-fluid">
                             <div class="col-md-9">
-                                <a href="{{ action('ProfileController@show', $piece->user->slug) }}">
-                                    <img src="{{ $piece->user->getAvatar() }}" class="pull-left avatar" alt="avatar">
+                                <a href="{{ action('ProfileController@show', $opus->user->slug) }}">
+                                    <img src="{{ $opus->user->getAvatar() }}" class="pull-left avatar" alt="avatar">
                                 </a>
-                                <h3>{{ $piece->title }}</h3>
-                                <p>By <a href="{{ action('ProfileController@show', $piece->user->slug) }}">{{ $piece->user->name }}</a></p>
+                                <h3>{{ $opus->title }}</h3>
+                                <p>By <a href="{{ action('ProfileController@show', $opus->user->slug) }}">{{ $opus->user->name }}</a></p>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        @unless($piece->tags->isEmpty())
+                        @unless($opus->tags->isEmpty())
                             <div class="container-fluid">
-
                                 <ul class="list-inline">
                                     <strong>Tags</strong>
-                                    @foreach($piece->tags as $tag)
+                                    @foreach($opus->tags as $tag)
                                         <li><a href="{{ action('SearchController@searchAll', '@'.$tag->name) }}">{{ $tag->name }}</a></li>
                                     @endforeach
                                 </ul>
@@ -45,17 +44,17 @@
                         @endunless
                     </div>
                     <div class="well col-md-9">
-                        <p>{{ $piece->comment }}</p>
+                        <p>{{ $opus->comment }}</p>
                     </div>
                     <div class="col-md-3">
                         <div class="panel panel-default details-panel">
                             <div class="panel-heading">
                                 Details
-                                @if(Auth::check() and (Auth::user()->isOwner($piece) or Auth::user()->hasRole('admin')))
+                                @if(Auth::check() and (Auth::user()->isOwner($opus) or Auth::user()->hasRole('admin')))
                                     <div class="pull-right operations">
-                                        {!! Form::model($piece, ['method'=>'delete', 'class'=>'delete-confirm operations',
-                                                               'action'=>['PieceController@destroy', $gallery->id, $piece->id]]) !!}
-                                        <a href="{{ action('PieceController@edit', [$gallery->id, $piece->id]) }}">
+                                        {!! Form::model($opus, ['method'=>'delete', 'class'=>'delete-confirm operations',
+                                                               'action'=>['OpusController@destroy', $opus->id]]) !!}
+                                        <a href="{{ action('OpusController@edit', [$opus->id]) }}">
                                             <button type="button" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</button>
                                         </a>
                                         <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
@@ -67,11 +66,11 @@
                                 <tbody>
                                 <tr>
                                     <td>Views</td>
-                                    <td>{{ $piece->views }}</td>
+                                    <td>{{ $opus->views }}</td>
                                 </tr>
                                 <tr>
                                     <td>Submitted On</td>
-                                    <td>{{ $piece->published_at }}</td>
+                                    <td>{{ $opus->published_at }}</td>
                                 </tr>
                                 <tr>
                                     <td>Image Size</td>
@@ -90,7 +89,7 @@
         </div>
         <div class="container-fluid">
             <div class="col-md-offset-2 col-md-8">
-            @include('comment._comment', ['comments'=>$piece->comments, 'gallery'=>$gallery, 'piece'=>$piece])
+                @include('comment._comment', ['comments'=>$opus->comments, 'gallery'=>$gallery, 'opus'=>$opus])
             </div>
         </div>
     </div>

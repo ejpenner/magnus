@@ -11,6 +11,8 @@ use App\Http\Requests;
 use App\User;
 use App\Profile;
 use App\Permission;
+use App\Role;
+use App\Gallery;
 
 class UserController extends Controller
 {
@@ -34,7 +36,9 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('user.create');
+        $roles = Role::lists('role_name', 'id');
+        
+        return view('user.create', compact('roles'));
     }
 
     public function store(Requests\UserCreateRequest $request)
@@ -46,9 +50,9 @@ class UserController extends Controller
         $user->profile_slug = str_slug($request->username, '-');
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
-        $user->permission_id = $request->permission_id;
+        $user->roles()->attach($request->input('role_id'));
         $user->save();
-        
+        $user->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
         Profile::create(['user_id'=>$user->id]);
         
         return redirect()->route('users.index')->with('success', 'Your user was created.');
@@ -56,15 +60,12 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        //$user = User::findOrFail($id);
-        $permissions = Permission::lists('schema_name', 'id');
-
-        return view('user.edit', compact('user', 'permissions'));
+        $roles = Role::lists('role_name', 'id');
+        return view('user.edit', compact('user', 'roles'));
     }
 
     public function update(User $user, Requests\UserEditRequest $request)
     {
-        //$user = User::findOrFail($id);
         if ($request->password == $request->password_confirmation) {
             $user->name = $request->name;
             $user->username = $request->username;
@@ -73,7 +74,9 @@ class UserController extends Controller
             if ($request->password != "" and $request->password != null) {
                 $user->password = bcrypt($request->password);
             }
-            $user->permission_id = $request->permission_id;
+            $user->roles()->detach();
+
+            $user->roles()->attach($request->input('role_id'));
 
             $user->save();
 

@@ -9,8 +9,8 @@
                     @foreach($gallery as $j => $item)
                         <div class="col-md-3 vcenter gallery-item">
 
-                            @if(isset($item->featured[0]))
-                                <a href="{{ action('GalleryController@show', $item->id) }}"><img src="{{ $item->featured->last()->piece->thumbnail_path }}" alt=""></a>
+                            @if(isset($item->opera))
+                                <a href="{{ action('GalleryController@show', $item->id) }}"><img src="{{ $item->opera->last()->thumbnail_path }}" alt=""></a>
                             @endif
 
                             <h4><a href="{{ action('GalleryController@show', $item->id) }}">{{ $item->name }}</a></h4>
@@ -21,7 +21,9 @@
                                 <div class="clearfix">
                                     @include('gallery._editModal', ['id'=>$i.'-'.$j, 'gallery'=>$item])
                                     {!! Form::model($item, ['method'=>'delete', 'class'=>'delete-confirm operations', 'action'=>['GalleryController@destroy', $item->id]]) !!}
-                                    <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
+                                    @if($item->main_gallery != true)
+                                        <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
+                                    @endif
                                     {!! Form::close() !!}
                                 </div>
                             @endif

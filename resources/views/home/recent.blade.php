@@ -1,34 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="col-md-2">
-        <p>Recently Updated Galleries</p>
-        @if(\App\Gallery::count() > 0)
-            <ul>
-                @foreach($galleries as $gallery)
-                    <li>{{ $gallery->name }}</li>
-                @endforeach
-            </ul>
-        @endif
-    </div>
-    <div class="col-md-10">
+    <div class="col-md-10 col-md-offset-1">
         <div class="container-fluid">
-            @foreach($pieces->chunk(4) as $pieceChunk)
+            @foreach($opera->chunk(4) as $operaChunk)
                 <div class="row">
-                    @foreach($pieceChunk as $piece)
+                    @foreach($operaChunk as $opus)
                         <div class="col-md-3 vcenter gallery-item">
                             <div class="">
-                            <a href="{{ action('PieceController@show', [$piece->featured->first()->gallery_id, $piece->id]) }}">
-                                <img src="/{{ $piece->getThumbnail() }}" alt="">
+                            <a href="{{ action('OpusController@show', [$opus->id]) }}">
+                                <img src="/{{ $opus->getThumbnail() }}" alt="">
                             </a>
                             </div>
-                            <h4><a href="{{ action('PieceController@show', [$piece->featured->first()->gallery_id, $piece->id]) }}">{{ $piece->title }}</a> -
-                                <small><a href="{{ action('ProfileController@show', $piece->user->slug) }}">{{ $piece->user->name }}</a></small></h4>
+                            <h4><a href="{{ action('OpusController@show', [$opus->id]) }}">{{ $opus->title }}</a> -
+                                <small><a href="{{ action('ProfileController@show', $opus->user->slug) }}">{{ $opus->user->name }}</a></small></h4>
                         </div>
                     @endforeach
                 </div>
             @endforeach
         </div>
     </div>
-    {{ $pieces->render() }}
+    <div class="container">
+    <span class="pull-left">{{ $opera->render() }}</span>
+    </div>
 @endsection

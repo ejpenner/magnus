@@ -6,7 +6,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 
 use App\Gallery;
-use App\Piece;
+use App\Opus;
 use App\User;
 
 class HomeController extends Controller
@@ -37,8 +37,7 @@ class HomeController extends Controller
     }
     
     public function recent() {
-        $pieces = Piece::orderBy('created_at', 'desc')->paginate(16);
-        $galleries = Gallery::orderBy('updated_at', 'desc')->limit(10)->get();
-        return view('home.recent', compact('pieces','galleries'));
+        $opera = Opus::orderBy('created_at', 'desc')->paginate(16);
+        return view('home.recent', compact('opera'));
     }
 }

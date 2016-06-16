@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Gallery;
+use App\Opus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,7 +37,7 @@ class GalleryController extends Controller
     {
         // index of galleries is user profile
 
-        $galleries = Gallery::orderBy('updated_at', 'desc')->paginate('12');
+        $galleries = Gallery::orderBy('updated_at', 'desc')->where('main_gallery', 0)->paginate('12');
 
         return view('gallery.index', compact('galleries'));
     }
@@ -59,7 +60,7 @@ class GalleryController extends Controller
      */
     public function store(Requests\GalleryRequest $request)
     {
-        $gallery = new Gallery(['name'=>$request->name,'description'=>$request->description]);
+        $gallery = new Gallery(['name'=>$request->name,'description'=>$request->description, 'main_gallery'=>0]);
         Auth::user()->galleries()->save($gallery);
 
         return redirect()->route('profile.show', [Auth::user()->slug])->with('success', $gallery->name.' has been created!');
@@ -76,10 +77,11 @@ class GalleryController extends Controller
     public function show($id)
     {
         $gallery = Gallery::findOrFail($id);
+        $query = Opus::query()->join('gallery_opus', 'opuses.id', '=', 'gallery_opus.opus_id');
+        $query->where('gallery_opus.gallery_id', '=', $gallery->id);
+        $opera = $query->paginate(12);
 
-        $features = Feature::where('gallery_id', $gallery->id)->orderBy('created_at', 'desc')->paginate(12);
-        
-        return view('gallery.show', compact('gallery', 'features'));
+        return view('gallery.show', compact('gallery', 'opera'));
     }
 
     /**
@@ -108,7 +110,7 @@ class GalleryController extends Controller
         $gallery = Gallery::findOrFail($id);
         $gallery->update($request->all());
 
-        return redirect()->route('gallery.index')->with('success', 'Gallery successfully updated!');
+        return redirect()->to(app('url')->previous())->with('success', 'Gallery successfully updated!');
     }
 
     /**
@@ -120,8 +122,11 @@ class GalleryController extends Controller
     public function destroy($id)
     {
         $gallery = Gallery::findOrFail($id);
-        $gallery->delete();
-
-        return redirect()->route('gallery.index')->with('success', 'Gallery successfully deleted!');
+        if($gallery->main_gallery != true or Auth::user()->hasRole('Moderator')) {
+            $gallery->delete();
+            return redirect()->to(app('url')->previous())->with('success', 'Gallery successfully deleted!');
+        } else {
+            return redirect()->to(app('url')->previous())->with('message', 'You cannot delete your main gallery.');
+        }
     }
 }

@@ -15,7 +15,8 @@ class CreateGalleryTable extends Migration
         Schema::create('galleries', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('description')->nullable();
+            $table->boolean('main_gallery')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
 

@@ -34,16 +34,34 @@ class PieceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($gallery_id)
     {
-        //
+        $gallery = Gallery::findOrFail($gallery_id);
+        $features = Feature::where('gallery_id', $gallery->id)->orderBy('created_at', 'desc')->paginate(12);
+
+        return view('gallery.show', compact('gallery', 'features'));
+    }
+
+
+    /**
+     * POST method for newSubmission()
+     *
+     */
+
+    public function submit() {
+        
     }
 
     /**
-     * Show the form for creating a new resource.
+     *  Show the page to submit a piece that one can choose a gallery
      *
-     * @return \Illuminate\Http\Response
      */
+
+    public function newSubmission() {
+        $galleries = Gallery::where('user_id', Auth::user()->id)->lists('name', 'id');
+        dd($galleries);
+    }
+    
     public function create($gallery)
     {
 

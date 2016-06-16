@@ -9318,15 +9318,11 @@ footer {
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-  width: auto;
-  padding: 2px 0 2px 0;
+  padding: 5px;
   margin: 1px;
 }
 .comment .comment-name {
   font-weight: bold;
-}
-.comment .comment-avatar {
-  padding: 20px;
 }
 .comment .comment-avatar img {
   -webkit-border-radius: 5px;
@@ -9337,12 +9333,34 @@ footer {
   background-clip: padding-box;
 }
 .comment .comment-body {
-  padding: 15px 0 10px 0;
+  background-color: #FFFFFF;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.comment .comment-body .comment-date {
+  padding: 10px 10px 0px 10px;
+}
+.comment .comment-body p {
+  padding: 15px 10px 20px 10px;
+}
+.child-comment .container.comment {
+  margin-left: 10px;
 }
 .comment-area {
   width: auto;
   padding: 2px 0 2px 0;
   margin: 1px;
+}
+.comment-area .comment-name {
+  padding: 1px;
+}
+.reply-toggle .reply-btn {
+  margin-left: 10px;
+  margin-top: 2px;
 }
 .reply-form {
   padding: 5px;

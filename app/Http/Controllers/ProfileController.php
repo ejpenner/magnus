@@ -11,6 +11,7 @@ use App\User;
 use App\Profile;
 use App\Gallery;
 use App\Piece;
+use App\Opus;
 
 class ProfileController extends Controller
 {
@@ -41,13 +42,31 @@ class ProfileController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Return all the galleries of a user
      *
-     * @return \Illuminate\Http\Response
+     * @param User $user
      */
-    public function create()
-    {
-        //
+    public function gallery(User $user) {
+        $galleries = Gallery::where('user_id', $user->id)->get();
+    }
+
+    /**
+     * return all the opus of a user
+     * 
+     * @param User $user
+     */
+    public function opera(User $user) {
+        
+    }
+
+
+    /**
+     * Return all the piece submissions for a user
+     *
+     * @param User $user
+     */
+    public function submissions(User $user) {
+
     }
 
     /**
@@ -62,18 +81,18 @@ class ProfileController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *  Display the specified user's profile
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(User $user)
     {
         $profile = Profile::where('user_id', $user->id)->first();
         $galleries = Gallery::where('user_id', $user->id)->paginate(12);
-        $pieces = Piece::where('user_id', $user->id)->join('features', 'features.piece_id', '=', 'pieces.id')->paginate(12);
+        //$pieces = Piece::where('user_id', $user->id)->join('features', 'features.piece_id', '=', 'pieces.id')->paginate(12);
+        $opera = Opus::where('user_id', $user->id)->paginate(8);
         
-        return view('profile.show', compact('profile', 'user', 'galleries', 'pieces'));
+        return view('profile.show', compact('profile', 'user', 'galleries', 'opera'));
     }
 
     /**
@@ -109,6 +128,12 @@ class ProfileController extends Controller
     {
         //
     }
+
+    /**
+     *  Return the Auth'd users profile
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     
     public function user() {
         $profile = Profile::where('user_id', Auth::user()->id)->first();
