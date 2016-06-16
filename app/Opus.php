@@ -227,8 +227,12 @@ class Opus extends Model
      * @return array
      */
     public function metadata() {
-        $img = Image::make($this->getImage());
-        $size = ceil($img->fileSize()/1000);
-        return ['filesize'=>$size.' KB', 'resolution'=>$img->width() .'x'.$img->height()];
+        if(true) {
+            $img = Image::make($this->getImage());
+            $size = ceil($img->fileSize() / 1000);
+            return ['filesize' => $size . ' KB', 'resolution' => $img->width() . 'x' . $img->height()];
+        } else {
+            return ['filesize' => 'unknown' . ' KB', 'resolution' => 'unknown' . 'x' . 'unknown'];
+        }
     }
 }

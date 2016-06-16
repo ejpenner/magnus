@@ -6,7 +6,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Permission;
 use App\Profile;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
@@ -59,6 +58,10 @@ class User extends Authenticatable
 
     public function roles() {
         return $this->belongsToMany('App\Role', 'user_roles');
+    }
+    
+    public function notifications() {
+        return $this->belongsToMany('App\Notification', 'notification_user')->withTimestamps();
     }
 
     protected $appends = ['banned'];

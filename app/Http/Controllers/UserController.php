@@ -102,12 +102,6 @@ class UserController extends Controller
         return view('auth.login');
     }
 
-    public function logout()
-    {
-        Auth::logout();
-        return redirect('auth.login')->with('success', 'Successfully Logged Out!');
-    }
-
     public function editAccount($id)
     {
         $user = User::findOrFail($id);

@@ -12,6 +12,7 @@ use App\Opus;
 use App\Gallery;
 use App\Tag;
 use App\Comment;
+use Illuminate\Support\Facades\Session;
 
 class OpusController extends Controller
 {
@@ -94,14 +95,15 @@ class OpusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($opus_id)
+    public function show(Request $request, $opus_id)
     {
         $opus = Opus::findOrFail($opus_id);
         $query = Gallery::query();
         $query->join('gallery_opus', 'galleries.id', '=', 'gallery_opus.gallery_id')
             ->where('gallery_opus.opus_id', $opus->id);
         $gallery = $query->first();
-        $this->viewPiece($opus);
+        $this->viewPiece($request, $opus);
+        dd(session('opus.viewed'));
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
         // check to see if this opus is part of a gallery
@@ -118,13 +120,15 @@ class OpusController extends Controller
      * @param $opus_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function galleryShow($gallery_id, $opus_id) {
+    public function galleryShow(Request $request,$gallery_id, $opus_id) {
         $opus = Opus::findOrFail($opus_id);
         $query = Gallery::query();
         $query->join('gallery_opus', 'galleries.id', '=', 'gallery_opus.gallery_id')
             ->where('gallery_opus.opus_id', $opus->id);
         $gallery = $query->first();
-        $this->viewPiece($opus);
+        $this->viewPiece($request, $opus);
+
+
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
         $galleryNav = $this->makeNavigator($gallery, $opus);
@@ -329,13 +333,32 @@ class OpusController extends Controller
     }
 
     /**
-     *  Increment the page view on the opus
+     * Increment the page view on the opus if the user has not seen it this session
+     * @param $request
+     * @param $user
      * @param $opus
      */
-    private function viewPiece($opus) {
+    private function viewPiece($request, $opus) {
+        $seen = false;
+        $viewed = session('opus.viewed');
         if(Auth::check() and !Auth::user()->isOwner($opus)) {
-            $opus->views = $opus->views + 1;
-            $opus->save();
+            if(!$request->session()->has('opus.viewed')) {
+                //$request->session()->put('opus.viewed', []);
+                 $request->session()->push('opus.viewed', $opus->id);
+            } else {
+                foreach($viewed as $view) {
+                    if($opus->id == $view) { // the user has seen it before
+                        $seen = true;
+                        break;
+                    }
+                }
+            }
+            $request->session()->push('opus.viewed', $opus->id);
+            if (!$seen) {
+
+                $opus->views = $opus->views + 1;
+                $opus->save();
+            }
         }
     }
 }

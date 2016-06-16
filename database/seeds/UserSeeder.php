@@ -32,11 +32,11 @@ class UserSeeder extends Seeder
                 $user->roles()->attach(Role::where('role_name', 'User')->value('id'));
                 $user->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
                 
-                foreach(range(1,2) as $index) {
+                foreach(range(1,1) as $index) {
                     $user->galleries()->save(factory(\App\Gallery::class)->make());
                 }
                 foreach($user->galleries as $gallery) {
-                    foreach(range(1,4) as $i) {
+                    foreach(range(1,1) as $i) {
 
                         $opus = factory(\App\Opus::class)->create(['user_id'=>$user->id]);
 
