@@ -17,20 +17,10 @@
                     </div>
                 </div>
             </div>
-            <div class="reply-toggle container">
-                <button class="btn btn-default reply-btn pull-left">Reply</button>
-                <div class="container reply-form form-group">
-                    <div>
-                        {!! Form::open(['action'=>['CommentController@storeChild', $comment->opus->id, $childComment->id], 'method'=>'post']) !!}
-                        {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>4]) !!}
-                        {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
-                        {!! Form::close() !!}
-                    </div>
-                </div>
-            </div>
+            @include('comment._replyChild', ['comment'=>$childComment])
         </div>
         @if($childComment->allChildComments->count() > 0)
-            @include('comment._childComment', ['comment' => $childComment])
+            @include('comment._childComment', ['comment' => $childComment, 'opus'=>$opus])
         @endif
     </div>
 @endforeach

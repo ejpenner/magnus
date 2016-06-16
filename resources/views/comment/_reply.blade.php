@@ -1,7 +1,11 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Eric
- * Date: 6/15/2016
- * Time: 7:19 PM
- */
+<div class="reply-toggle container">
+    <button class="btn btn-primary reply-btn">Reply</button>
+    <div class="container reply-form form-group">
+        <div>
+            {!! Form::open(['action'=>['CommentController@store', $opus->id], 'method'=>'post']) !!}
+            {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>'4']) !!}
+            {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
+            {!! Form::close() !!}
+        </div>
+    </div>
+</div>

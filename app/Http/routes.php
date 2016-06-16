@@ -63,9 +63,9 @@ Route::group(['middleware' => ['auth']], function () {
         return \App\User::whereSlug(strtolower($value))->first();
     });
 
-    Route::post('opus/{opus}/{c}', 'CommentController@storeChild');
-    Route::patch('opus/{opus}/{c}', 'CommentController@updateChild');
-    Route::delete('opus/{opus}/{c}', 'CommentController@destroyChild');
+    Route::post('opus/{opus}/c/{c}', 'CommentController@storeChild');
+    Route::patch('opus/{opus}/c/{c}', 'CommentController@updateChild');
+    Route::delete('opus/{opus}/c/{c}', 'CommentController@destroyChild');
 
     Route::get('/submit', 'PieceController@newSubmission');
     Route::post('/submit', 'PieceController@submit');
@@ -81,8 +81,6 @@ Route::bind('profile', function ($value, $route) {
     return \App\User::whereSlug(strtolower($value))->first();
 });
 
-
-Route::resource('gallery.p', 'PieceController');
 
 Route::get('/home', 'HomeController@index');
 //Route::get('/recent', ['uses'=> 'HomeController@recent', 'as'=>'recent']);

@@ -72,8 +72,7 @@ class CommentController extends Controller
     {
         $opus = Opus::findOrFail($opus_id);
         $comment = Comment::findOrFail($comment_id);
-
-        $comment->childComments()->save(new Comment(['user_id'=>Auth::user()->id, 'piece_id'=>$opus->id, 'parent_id'=>$comment->id, 'body'=>$request->input('body')]));
+        $comment->childComments()->save(new Comment(['user_id'=>Auth::user()->id, 'opus_id'=>$opus->id, 'parent_id'=>$comment->id, 'body'=>$request->input('body')]));
         $newComment = Comment::where('parent_id', $comment->id)->orderBy('created_at', 'desc')->first();
         //return redirect()->route('gallery.p.show', [$gallery_id, $piece->id])->with('success', 'Message posted!');
         return redirect()->to(app('url')->previous(). '#'.$newComment->id)->with('success', 'Message posted!');
