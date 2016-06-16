@@ -24,7 +24,7 @@ class Role extends Model
      * @return bool
      */
 
-    public static function hasPermission($user, $role) {
+    public static function hasRole($user, $role) {
         foreach($user->roles as $userRole) {
             if($userRole->level >= Role::where('role_name', $role)->value('level')) {
                 return true;

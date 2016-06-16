@@ -45,11 +45,12 @@ $factory->define(App\Piece::class,  function (Faker\Generator $faker){
 $factory->define(App\Opus::class,  function (Faker\Generator $faker){
     $sizes = [0 => [275,150], 1 => [150,275]];
     $res = $sizes[rand(0,1)];
+    $theme = 'abstract';
     $usersMax = \App\User::count();
     $faker->seed(rand(11111,99999));
-    $image_path = substr($faker->image($dir = public_path('images'), $width = 600, $height=400), 38);
+    $image_path = substr($faker->image($dir = public_path('images'), $width = 600, $height=400,$theme), 38);
 
-    $thumbnail_path = substr($faker->image($dir = public_path('thumbnails'), $width = $res[0], $height= $res[1]), 38);
+    $thumbnail_path = substr($faker->image($dir = public_path('thumbnails'), $width = $res[0], $height=$res[1], $theme), 38);
     return [
         'title' => ucwords($faker->words(3, true)),
         'comment' => $faker->paragraphs(2,true),

@@ -18,7 +18,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(10);
         
         foreach ($users as &$user) {
             $user->permission_id = Permission::where('id', $user->permission_id)->value('schema_name');

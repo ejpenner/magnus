@@ -72,9 +72,11 @@ class User extends Authenticatable
      * @param $action: string
      * @return bool|void
      */
-    public function hasPermission($role) {
-        if(Role::hasPermission($this, $role)) {
-            return true;
+    public function hasPermission($permission) {
+        foreach(Auth::user()->roles as $userRoles) {
+            foreach($userRoles->permission->attributes as $key => $value) {
+                return Permission::where('schema_name', $userRoles->role_name)->value($permission);
+            }
         }
         return false;
     }
@@ -87,10 +89,9 @@ class User extends Authenticatable
      */
     public function hasRole($role)
     {
-        foreach(Auth::user()->roles as $userRoles) {
-            if($userRoles->level >= Role::where('role_name', $role)->value('level')) {
-                return true;
-            }
+      
+        if(Role::hasRole($this, $role)) {
+            return true;
         }
         return false;
     }

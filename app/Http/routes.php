@@ -50,11 +50,19 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('users/avatar', 'UserController@avatar');
     Route::post('users/avatar', 'UserController@uploadAvatar');
-
+    
+    Route::group(['middleware'=>'permission:role,Developer', 'prefix'=>'admin'], function () {
+        Route::get('session', 'AdminController@session');
+    });
+    
     Route::group(['middleware'=>'permission:role,Administrator'], function () {
         Route::resource('permissions', 'PermissionController');
         Route::resource('users', 'UserController');
         Route::resource('roles', 'RoleController');
+
+    });
+
+    Route::group(['middleware'=>'permission:role,Global Moderator'], function () {
         Route::get('users/{id}/avatar', 'UserController@avatarAdmin');
         Route::post('users/{id}/avatar', 'UserController@uploadAvatarAdmin');
     });

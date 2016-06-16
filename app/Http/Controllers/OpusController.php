@@ -103,7 +103,7 @@ class OpusController extends Controller
             ->where('gallery_opus.opus_id', $opus->id);
         $gallery = $query->first();
         $this->viewPiece($request, $opus);
-        dd(session('opus.viewed'));
+        //dd(session('viewed'));
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
         // check to see if this opus is part of a gallery
@@ -114,8 +114,8 @@ class OpusController extends Controller
     }
 
     /**
-     *  Show an opus that is a part of a gallery 
-     * 
+     *  Show an opus that is a part of a gallery
+     *
      * @param $gallery_id
      * @param $opus_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -184,7 +184,7 @@ class OpusController extends Controller
 
     /**
      *  Update an opus that is a part of a gallery
-     * 
+     *
      * @param Request $request
      * @param $gallery_id
      * @param $piece_id
@@ -235,9 +235,9 @@ class OpusController extends Controller
 
         return redirect()->to(app('url')->previous())->with('success', 'The piece has been deleted!');
     }
-    
+
     public function galleryDestroy($gallery_id, $opus_id) {
-        
+
     }
 
     /**
@@ -328,7 +328,6 @@ class OpusController extends Controller
                 $galleryNav['previous'] = $pieceNav[$i];
             }
         }
-
         return $galleryNav;
     }
 
@@ -340,22 +339,40 @@ class OpusController extends Controller
      */
     private function viewPiece($request, $opus) {
         $seen = false;
-        $viewed = session('opus.viewed');
-        if(Auth::check() and !Auth::user()->isOwner($opus)) {
-            if(!$request->session()->has('opus.viewed')) {
-                //$request->session()->put('opus.viewed', []);
-                 $request->session()->push('opus.viewed', $opus->id);
-            } else {
-                foreach($viewed as $view) {
-                    if($opus->id == $view) { // the user has seen it before
+        $viewed = session('viewed');
+        if(Auth::check()) {
+            if($request->session()->has('viewed') and !Auth::user()->isOwner($opus)) {
+                foreach ($viewed as $view) {
+                    if ($opus->id == $view) { // the user has seen it before
                         $seen = true;
                         break;
                     }
                 }
+                if (!$seen) {
+                    $request->session()->push('viewed', $opus->id);
+                    $opus->views = $opus->views + 1;
+                    $opus->save();
+                }
+            } else {
+                $request->session()->push('viewed', $opus->id);
+                $opus->views = $opus->views + 1;
+                $opus->save();
             }
-            $request->session()->push('opus.viewed', $opus->id);
-            if (!$seen) {
-
+        } else { // viewer is a guest
+            if($request->session()->has('viewed')) { // guest has seen another opus already
+                foreach ($viewed as $view) {
+                    if ($opus->id == $view) { // the user has seen it before
+                        $seen = true;
+                        break;
+                    }
+                }
+                if (!$seen) {
+                    $request->session()->push('viewed', $opus->id);
+                    $opus->views = $opus->views + 1;
+                    $opus->save();
+                }
+            } else { // guest is viewing their first opus
+                $request->session()->push('viewed', $opus->id);
                 $opus->views = $opus->views + 1;
                 $opus->save();
             }

@@ -47,7 +47,7 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                @if(Auth::check() and Auth::user()->hasRole("admin"))
+                @if(Auth::check() and Auth::user()->hasRole("Administrator"))
                     <li @if(Request::is('admin')) class="active dropdown" @else class="dropdown" @endif>
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Panel <span class="caret"></span></a>
                         <ul class="dropdown-menu">
