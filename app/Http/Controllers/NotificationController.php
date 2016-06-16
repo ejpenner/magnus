@@ -23,8 +23,11 @@ class NotificationController extends Controller
         $user = Auth::user();
         $query = Opus::query();
         $query->join('notifications', 'opuses.id', '=', 'notifications.opus_id');
+        $query->join('notification_user', 'notification_user.notification_id', '=', 'notifications.id');
+        $query->where('notification_user.user_id', $user->id);
+        $query->select('opuses.id', 'opuses.user_id', 'opuses.image_path', 'opuses.thumbnail_path', 'opuses.title', 'notification_user.notification_id');
         $opusResults = $query->get();
-
+        
         return view('notification.index', compact('user', 'opusResults'));
     }
 
