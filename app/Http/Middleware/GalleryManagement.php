@@ -20,7 +20,7 @@ class GalleryManagement
         $gallery_id = $request->route('gallery');
         $gallery = Gallery::where('id', $gallery_id)->first();
 
-        if (Auth::user()->hasRole('admin') or Auth::user()->isOwner($gallery)) {
+        if (Auth::user()->hasRole('Administrator') or Auth::user()->isOwner($gallery)) {
             return $next($request);
         } else {
             return redirect()->back()->withErrors('You are not permitted to complete that action or view that page.');

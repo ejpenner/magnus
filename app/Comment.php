@@ -20,10 +20,6 @@ class Comment extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function piece() {
-        return $this->belongsTo('App\Piece');
-    }
-
     public function opus()
     {
      return $this->belongsTo('App\Opus');

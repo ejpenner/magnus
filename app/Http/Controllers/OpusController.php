@@ -15,7 +15,9 @@ use App\Comment;
 
 class OpusController extends Controller
 {
-
+    /**
+     * OpusController constructor.
+     */
     public function __construct()
     {
         $this->middleware(
@@ -26,7 +28,7 @@ class OpusController extends Controller
         );
         $this->middleware('gallery', ['except'=>['show','index']]);
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -55,7 +57,7 @@ class OpusController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Requests\OpusCreateRequest $request)
     {
 
         $opus = new Opus($request->all());
@@ -81,13 +83,13 @@ class OpusController extends Controller
 
         return redirect()->route('opus.show', $opus->id)->with('success', 'Piece has been added!');
     }
-    
-    public function galleryStore(Request $request, $gallery_id) {
-        
+
+    public function galleryStore(Requests\OpusCreateRequest $request, $gallery_id) {
+
     }
 
     /**
-     * Display the specified resource.
+     *  Show an opus
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -97,7 +99,7 @@ class OpusController extends Controller
         $opus = Opus::findOrFail($opus_id);
         $query = Gallery::query();
         $query->join('gallery_opus', 'galleries.id', '=', 'gallery_opus.gallery_id')
-                ->where('gallery_opus.opus_id', $opus->id);
+            ->where('gallery_opus.opus_id', $opus->id);
         $gallery = $query->first();
         $this->viewPiece($opus);
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
@@ -109,6 +111,13 @@ class OpusController extends Controller
         return view('opus.show', compact('opus','gallery','comments','metadata','galleryNav'));
     }
 
+    /**
+     *  Show an opus that is a part of a gallery 
+     * 
+     * @param $gallery_id
+     * @param $opus_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function galleryShow($gallery_id, $opus_id) {
         $opus = Opus::findOrFail($opus_id);
         $query = Gallery::query();
@@ -136,7 +145,7 @@ class OpusController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the opus
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -170,6 +179,45 @@ class OpusController extends Controller
     }
 
     /**
+     *  Update an opus that is a part of a gallery
+     * 
+     * @param Request $request
+     * @param $gallery_id
+     * @param $piece_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function galleryUpdate(Requests\OpusEditRequest $request, $gallery_id, $piece_id)
+    {
+        $gallery = Gallery::findOrFail($gallery_id);
+        $gallery->updated_at = Carbon::now();
+        $gallery->save();
+
+        $piece = Piece::findOrFail($piece_id);
+
+        // if the user wants to change the image file
+
+        if($request->file('image') !== null) {
+            $imageStatus = $piece->updateImage($request);
+        }
+
+        // update everything except the image and published at
+        $piece->update($request->except('image','published_at'));
+
+        // check if tags have changed
+        if($request->input('tags') === null) {
+            $tags = [];
+        } else {
+            $tags = explode(' ', trim($request->input('tags')));
+            $this->makeTags($tags);
+            $tags = $this->getTagIds($tags);
+        }
+
+        $piece->tags()->sync($tags);
+
+        return redirect()->route('gallery.piece.show', [$gallery->id, $piece->id])->with('success', 'Updated piece successfully!');
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -177,7 +225,14 @@ class OpusController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $opus = Opus::findOrFail($id);
+        $opus->delete();
+
+        return redirect()->to(app('url')->previous())->with('success', 'The piece has been deleted!');
+    }
+    
+    public function galleryDestroy($gallery_id, $opus_id) {
+        
     }
 
     /**
@@ -209,6 +264,14 @@ class OpusController extends Controller
         return $tagIds;
     }
 
+    /**
+     *  Make a navigator array with the id of the next and previous
+     *  opus in a gallery
+     *
+     * @param $gallery
+     * @param $opus
+     * @return array
+     */
     private function makeNavigator($gallery, $opus) {
         $pieceNav = [];
         $galleryNav = [
@@ -264,10 +327,14 @@ class OpusController extends Controller
         return $galleryNav;
     }
 
-    private function viewPiece($piece) {
-        if(Auth::check() and !Auth::user()->isOwner($piece)) {
-            $piece->views = $piece->views + 1;
-            $piece->save();
+    /**
+     *  Increment the page view on the opus
+     * @param $opus
+     */
+    private function viewPiece($opus) {
+        if(Auth::check() and !Auth::user()->isOwner($opus)) {
+            $opus->views = $opus->views + 1;
+            $opus->save();
         }
     }
 }
