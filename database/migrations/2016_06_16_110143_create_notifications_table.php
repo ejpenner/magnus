@@ -15,9 +15,12 @@ class CreateNotificationsTable extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->increments('id');
             $table->string('handle'); //comment, opus, reply, private message, etc
-            $table->integer('handle_id')->unsigned();
+            $table->integer('comment_id')->unsigned();
+            $table->integer('opus_id')->unsigned();
+            $table->integer('message_id')->unsigned();
             $table->string('content');
             $table->boolean('read');
+            $table->timestamps();
         });
 
         Schema::create('notification_user', function (Blueprint $table){

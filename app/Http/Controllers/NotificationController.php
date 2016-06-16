@@ -5,17 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
+use App\Opus;
+use App\Comment;
+use App\User;
+use App\Notification;
 
 class NotificationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     *  Message inbox for logged in user
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $query = Opus::query();
+        $query->join('notifications', 'opuses.id', '=', 'notifications.opus_id');
+        $opusResults = $query->get();
+
+        return view('notification.index', compact('user', 'opusResults'));
     }
 
     /**
@@ -81,6 +91,6 @@ class NotificationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = Auth::user();
     }
 }

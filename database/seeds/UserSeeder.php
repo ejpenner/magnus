@@ -30,13 +30,22 @@ class UserSeeder extends Seeder
             ->each(function($user){
 
                 $user->roles()->attach(Role::where('role_name', 'User')->value('id'));
-                $user->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
-                
+
+                foreach(range(1,1) as $index) {
+                    factory(\App\Opus::class, 2)->create(['user_id'=>$user->id])->each(function($opus) {
+                        $tagCount = \App\Tag::count();
+
+                        foreach(range(1,3) as $j){
+                            $tag = \App\Tag::where('id', $this->UniqueRandomNumbersWithinRange(1,$tagCount,1))->first();
+                            $opus->tags()->attach($tag->id);
+                        }
+                    });
+                }
                 foreach(range(1,1) as $index) {
                     $user->galleries()->save(factory(\App\Gallery::class)->make());
                 }
                 foreach($user->galleries as $gallery) {
-                    foreach(range(1,5) as $i) {
+                    foreach(range(1,2) as $i) {
 
                         $opus = factory(\App\Opus::class)->create(['user_id'=>$user->id]);
 

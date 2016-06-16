@@ -37,6 +37,10 @@ class Opus extends Model
     public function galleries() {
         return $this->belongsToMany('App\Gallery')->withTimestamps();
     }
+    
+    public function notifications() {
+        return $this->hasMany('App\Notification');
+    }
 
     /**
      * get a list of tag ids associated with the current piece

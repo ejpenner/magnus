@@ -12,6 +12,7 @@
 */
 
 Route::model('users', 'User');
+Route::model('profile', 'Profile');
 
 Route::auth();
 
@@ -21,6 +22,13 @@ Route::get('errors/401', ['as' => '401', function() {
     return view('errors.401');
 }]);
 
+Route::bind('users', function ($value, $route) {
+    return \App\User::whereSlug(strtolower($value))->first();
+});
+
+Route::bind('profile', function ($value, $route) {
+    return \App\User::whereSlug(strtolower($value))->first();
+});
 
 Route::resource('gallery', 'GalleryController');
 Route::resource('opus', 'OpusController');
@@ -39,6 +47,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('opus/{opus}/{comment}', 'CommentController@storeChild');
     Route::patch('opus/{opus}/{comment}', 'CommentController@updateChild');
     Route::delete('opus/{opus}/{comment}', 'CommentController@destroyChild');
+
+    //Notifications
+    Route::resource('messages', 'NotificationController');
 
     Route::group(['middleware' => ['id']], function ($id) {
         Route::get('users/{id}/editAccount', 'UserController@editAccount');
@@ -67,10 +78,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('users/{id}/avatar', 'UserController@uploadAvatarAdmin');
     });
 
-    Route::bind('users', function ($value, $route) {
-        return \App\User::whereSlug(strtolower($value))->first();
-    });
-
     Route::post('opus/{opus}/c/{c}', 'CommentController@storeChild');
     Route::patch('opus/{opus}/c/{c}', 'CommentController@updateChild');
     Route::delete('opus/{opus}/c/{c}', 'CommentController@destroyChild');
@@ -80,14 +87,11 @@ Route::group(['middleware' => ['auth']], function () {
 
 });
 
-
 Route::resource('profile', 'ProfileController');
-Route::get('profile/{user}/gallery', 'ProfileController@gallery');
-Route::get('profile/{user}/opera', 'ProfileController@opera');
+Route::get('profile/{profile}/galleries', 'ProfileController@galleries');
+Route::get('profile/{profile}/opera', 'ProfileController@opera');
 
-Route::bind('profile', function ($value, $route) {
-    return \App\User::whereSlug(strtolower($value))->first();
-});
+
 
 
 Route::get('/home', 'HomeController@index');

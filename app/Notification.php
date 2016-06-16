@@ -13,4 +13,14 @@ class Notification extends Model
         return $this->belongsToMany('App\User', 'notification_user')->withTimestamps();
     }
 
+    public function comment() {
+        return $this->belongsTo('App\Comment');
+    }
+
+    public function opus() {
+        return $this->belongsTo('App\Opus');
+    }
+
+
+
 }

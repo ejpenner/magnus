@@ -3,16 +3,10 @@
 @section('content')
 
     <div class="container-fluid">
-        <h3><img src="{{ $user->getAvatar() }}"> {{ $user->name }}</h3>
-        @if(Auth::check() and (Auth::user()->hasRole('Administrator') or Auth::user()->isOwner($profile)))
-            <div class="pull-right"> @include('gallery._createModal') </div>
-        @endif
-        @if(isset($profile->biography))
-            <p>{{ $profile->biography }}</p>
-        @endif
-        <hr>
+        @include('profile._header', ['profile'=>$profile,'user'=>$user])
         <div class="col-md-1">
             <h4>Galleries</h4>
+            <a class="btn btn-lg btn-primary" href="{{ action('ProfileController@galleries', $user->slug) }}">See All</a>
         </div>
         <div class="col-md-11">
             <div class="gallery-container">
@@ -21,9 +15,9 @@
                         @foreach($gallery as $j => $item)
                             <div class="col-md-3 vcenter gallery-item">
 
-                                @if(isset($item->opera))
+                                @if(isset($item->opera->first()->thumbnail_path))
                                     <a href="{{ action('GalleryController@show', $item->id) }}">
-                                        <img src="/{{ $item->opera->last()->thumbnail_path }}" alt="">
+                                        <img src="/{{ $item->opera->first()->thumbnail_path }}" alt="">
                                     </a>
                                 @endif
 
@@ -46,15 +40,11 @@
                 @endforeach
             </div>
         </div>
-        <div class="pull-left">
-            <div class="container">
-                <div class="pull-right">{!! $galleries->render() !!}</div>
-            </div>
-        </div>
     </div>
     <div class="container-fluid">
         <div class="col-md-1">
             <h4>Recent Submissions</h4>
+            <a class="btn btn-lg btn-primary" href="{{ action('ProfileController@opera', $user->slug) }}">See All Submissions</a>
         </div>
         <div class="col-md-11">
             @foreach($opera->chunk(4) as $i => $operaChunk)
@@ -67,7 +57,6 @@
                     @endforeach
                 </div>
             @endforeach
-            <div class="pull-right">{!! $opera->render() !!}</div>
         </div>
     </div>
 

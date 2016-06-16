@@ -81,6 +81,19 @@ $factory->define(App\Profile::class, function (Faker\Generator $faker){
     ] ;
 });
 
+$factory->define(App\Notification::class, function (Faker\Generator $faker){
+    $handles = ['opus','comment'];
+    $opusCount = \App\Opus::count();
+    $randomOpus = rand(1,$opusCount);
+    $commentCount = \App\Comment::count();
+    $randomComment = rand(1, $commentCount);
+    $noteStore = [
+        ['handle'=>$handles[0], 'opus_id'=>rand(1,$randomOpus), 'content'=>\App\Opus::find($randomOpus)->first()->title, 'read'=>0],
+        ['handle'=>$handles[1], 'comment_id'=>rand(1,$randomComment), 'content'=>\App\Comment::find($randomComment)->body, 'read'=>0]
+    ];
+    return $noteStore[rand(0,1)];
+});
+
 $factory->define(App\Feature::class, function (Faker\Generator $faker){
     $galleryMax = \App\Gallery::count();
     $pieceMax = \App\Piece::count();

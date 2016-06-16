@@ -35,10 +35,10 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $profile = Profile::where('user_id', $user->id)->first();
-        $galleries = Gallery::where('user_id', $user->id)->paginate(12);
-        $pieces = Piece::where('user_id', $user->id)->join('features', 'features.piece_id', '=', 'pieces.id')->paginate(12);
+        $galleries = Gallery::where('user_id', $user->id)->limit(4)->get();
+        $opera = Opus::where('user_id', $user->id)->orderBy('created_at', 'desc')->limit(8)->get();
 
-        return view('profile.show', compact('profile', 'user', 'galleries', 'pieces'));
+        return view('profile.show', compact('profile', 'user', 'galleries', 'opera'));
     }
 
     /**
@@ -46,7 +46,7 @@ class ProfileController extends Controller
      *
      * @param User $user
      */
-    public function gallery(User $user) {
+    public function galleries(User $user) {
         $galleries = Gallery::where('user_id', $user->id)->get();
     }
 
@@ -56,7 +56,9 @@ class ProfileController extends Controller
      * @param User $user
      */
     public function opera(User $user) {
-        
+        $profile = Profile::where('user_id', $user->id)->first();
+        $opera = Opus::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(24);
+        return view('profile.opera', compact('user','profile','opera'));
     }
 
 
@@ -90,7 +92,7 @@ class ProfileController extends Controller
         $profile = Profile::where('user_id', $user->id)->first();
         $galleries = Gallery::where('user_id', $user->id)->paginate(12);
         //$pieces = Piece::where('user_id', $user->id)->join('features', 'features.piece_id', '=', 'pieces.id')->paginate(12);
-        $opera = Opus::where('user_id', $user->id)->paginate(8);
+        $opera = Opus::where('user_id', $user->id)->limit(8)->get();
         
         return view('profile.show', compact('profile', 'user', 'galleries', 'opera'));
     }
