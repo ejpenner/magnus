@@ -48,8 +48,11 @@ class CreateOpusesTable extends Migration
         $opuses = Opus::all();
 
         foreach ($opuses as $opus) {
-            echo public_path().'/'.$opus->getImage()."\n";
-            $opus->deleteImages();
+            echo public_path().'/'.$opus->getImage();
+
+             if($opus->deleteImages()) {
+                 echo " deleted\n";
+             }
         }
 
         Schema::drop('gallery_opus');

@@ -226,6 +226,7 @@ class OpusController extends Controller
     public function destroy($id)
     {
         $opus = Opus::findOrFail($id);
+        $opus->deleteImages();
         $opus->delete();
 
         return redirect()->to(app('url')->previous())->with('success', 'The piece has been deleted!');
