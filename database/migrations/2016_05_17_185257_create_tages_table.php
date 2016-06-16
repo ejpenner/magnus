@@ -18,10 +18,10 @@ class CreateTagesTable extends Migration
             $table->string('name')->unique();
         });
         
-        Schema::create('piece_tag', function (Blueprint $table)
+        Schema::create('opus_tag', function (Blueprint $table)
         {
-            $table->integer('piece_id')->unsigned();
-            $table->foreign('piece_id')->references('id')->on('pieces')->onDelete('cascade');
+            $table->integer('opus_id')->unsigned();
+            $table->foreign('opus_id')->references('id')->on('opuses')->onDelete('cascade');
             $table->integer('tag_id')->unsigned();
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
             $table->timestamps();
@@ -35,7 +35,7 @@ class CreateTagesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('piece_tag');
+        Schema::drop('opus_tag');
         Schema::drop('tags');
     }
 }

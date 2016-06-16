@@ -44,6 +44,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Piece');
     }
     
+    public function opera() {
+        return $this->hasMany('App\Opus');
+    }
+    
     public function comments() {
         return $this->hasMany('App\Comment');
     }

@@ -11,6 +11,7 @@ use App\User;
 use App\Profile;
 use App\Gallery;
 use App\Piece;
+use App\Opus;
 
 class ProfileController extends Controller
 {
@@ -46,7 +47,16 @@ class ProfileController extends Controller
      * @param User $user
      */
     public function gallery(User $user) {
+        $galleries = Gallery::where('user_id', $user->id)->get();
+    }
 
+    /**
+     * return all the opus of a user
+     * 
+     * @param User $user
+     */
+    public function opera(User $user) {
+        
     }
 
 
@@ -79,9 +89,10 @@ class ProfileController extends Controller
     {
         $profile = Profile::where('user_id', $user->id)->first();
         $galleries = Gallery::where('user_id', $user->id)->paginate(12);
-        $pieces = Piece::where('user_id', $user->id)->join('features', 'features.piece_id', '=', 'pieces.id')->paginate(12);
+        //$pieces = Piece::where('user_id', $user->id)->join('features', 'features.piece_id', '=', 'pieces.id')->paginate(12);
+        $opera = Opus::where('user_id', $user->id)->paginate(8);
         
-        return view('profile.show', compact('profile', 'user', 'galleries', 'pieces'));
+        return view('profile.show', compact('profile', 'user', 'galleries', 'opera'));
     }
 
     /**

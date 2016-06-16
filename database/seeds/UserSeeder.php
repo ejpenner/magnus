@@ -36,18 +36,20 @@ class UserSeeder extends Seeder
                     $user->galleries()->save(factory(\App\Gallery::class)->make());
                 }
                 foreach($user->galleries as $gallery) {
-                    foreach(range(1,2) as $i) {
+                    foreach(range(1,4) as $i) {
 
-                        $piece = factory(\App\Piece::class)->create(['user_id'=>$user->id]);
+                        $opus = factory(\App\Opus::class)->create(['user_id'=>$user->id]);
 
-                        echo $piece."\n\n";;
+                        echo $opus."\n\n";;
+                        
+                        $opus->save();
+                        $gallery->opera()->attach($opus->id);
 
-                        $gallery->featured()->save(factory(\App\Feature::class)->make(['piece_id'=>$piece->id]));
                         $tagCount = \App\Tag::count();
 
                         foreach(range(1,3) as $j){
                             $tag = \App\Tag::where('id', $this->UniqueRandomNumbersWithinRange(1,$tagCount,1))->first();
-                            $piece->tags()->attach($tag->id);
+                            $opus->tags()->attach($tag->id);
                             echo $tag."\n\n";;
                         }
                     }

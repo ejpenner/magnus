@@ -21,9 +21,9 @@
                         @foreach($gallery as $j => $item)
                             <div class="col-md-3 vcenter gallery-item">
 
-                                @if(isset($item->featured[0]))
+                                @if(isset($item->opera))
                                     <a href="{{ action('GalleryController@show', $item->id) }}">
-                                        <img src="/{{ $item->featured->last()->piece->thumbnail_path }}" alt="">
+                                        <img src="/{{ $item->opera->last()->thumbnail_path }}" alt="">
                                     </a>
                                 @endif
 
@@ -57,17 +57,17 @@
             <h4>Recent Submissions</h4>
         </div>
         <div class="col-md-11">
-            @foreach($pieces->chunk(4) as $i => $piecesChunk)
+            @foreach($opera->chunk(4) as $i => $operaChunk)
                 <div class="row">
-                    @foreach($piecesChunk as $piece)
+                    @foreach($operaChunk as $opus)
                         <div class="col-md-3 vcenter gallery-item">
-                            <a href="{{ action('PieceController@show', [$piece->gallery_id, $piece->id]) }}"><img class="piece-show" src="/{{ $piece->getThumbnail() }}" alt=""></a>
-                            <h4><a href="{{ action('PieceController@show', [$piece->gallery_id, $piece->id]) }}">{{ $piece->title }}</a></h4>
+                            <a href="{{ action('OpusController@show', [$opus->id]) }}"><img class="piece-show" src="/{{ $opus->getThumbnail() }}" alt=""></a>
+                            <h4><a href="{{ action('OpusController@show', [$opus->id]) }}">{{ $opus->title }}</a></h4>
                         </div>
                     @endforeach
                 </div>
             @endforeach
-            <div class="pull-right">{!! $pieces->render() !!}</div>
+            <div class="pull-right">{!! $opera->render() !!}</div>
         </div>
     </div>
 

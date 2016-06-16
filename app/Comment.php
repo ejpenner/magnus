@@ -12,7 +12,7 @@ class Comment extends Model
     protected $fillable = [
         'user_id',
         'parent_id',
-        'piece_id',
+        'opus_id',
         'body'
     ];
 
@@ -20,8 +20,9 @@ class Comment extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function piece() {
-        return $this->belongsTo('App\Piece');
+    public function opus()
+    {
+     return $this->belongsTo('App\Opus');
     }
     
     public function profile() {
@@ -31,8 +32,7 @@ class Comment extends Model
     public function childComments() {
         return $this->hasMany('App\Comment','parent_id','id');
     }
-
-
+    
     public function parentComment() {
         return $this->hasOne('App\Comment', 'id', 'parent_id');
     }

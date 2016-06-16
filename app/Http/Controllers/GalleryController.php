@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Gallery;
+use App\Opus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -76,10 +77,11 @@ class GalleryController extends Controller
     public function show($id)
     {
         $gallery = Gallery::findOrFail($id);
+        $query = Opus::query()->join('gallery_opus', 'opuses.id', '=', 'gallery_opus.opus_id');
+        $query->where('gallery_opus.gallery_id', '=', $gallery->id);
+        $opera = $query->paginate(12);
 
-        $features = Feature::where('gallery_id', $gallery->id)->orderBy('created_at', 'desc')->paginate(12);
-        
-        return view('gallery.show', compact('gallery', 'features'));
+        return view('gallery.show', compact('gallery', 'opera'));
     }
 
     /**

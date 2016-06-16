@@ -17,6 +17,10 @@ class Gallery extends Model
         return $this->belongsTo('App\User');
     }
     
+    public function opera() {
+        return $this->belongsToMany('App\Opus')->withTimestamps();
+    }
+    
     public function featured()
     {
         return $this->hasMany('App\Feature');

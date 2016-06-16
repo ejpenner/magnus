@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Piece;
+use App\Opus;
 use App\Tag;
 
 class SearchController extends Controller
@@ -23,10 +24,9 @@ class SearchController extends Controller
         $parameters = str_replace(' ', '+', $parameters);
         $terms = explode('+', $parameters);
 
-        $query = Piece::query();
-        $query->join('piece_tag', 'piece_tag.piece_id', '=', 'id')
-            ->join('tags', 'tags.id', '=', 'piece_tag.tag_id')
-            ->join('features', 'features.piece_id', '=', 'piece_tag.piece_id')
+        $query = Opus::query();
+        $query->join('opus_tag', 'opus_tag.opus_id', '=', 'id')
+            ->join('tags', 'tags.id', '=', 'opus_tag.tag_id')
             ->where(function ($q) use ($terms){
                 foreach($terms as $term) {
                     $term = trim($term);
@@ -38,11 +38,11 @@ class SearchController extends Controller
                         $q->orWhere('title', 'like', "%$term%");
                         $q->orWhere('comment', 'like', "%$term%");
                     }
-                }
-            })->groupBy('pieces.id');
+                }})
+            ->groupBy('opuses.id');
 
         $results = $query->paginate(24);
-
+        
         return view('search.index', compact('results'));
     }
 
