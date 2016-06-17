@@ -109,3 +109,11 @@ $factory->define(\App\Tag::class, function (Faker\Generator $faker){
    ]; 
 });
 
+$factory->define(\App\Watch::class, function(Faker\Generator $faker){
+   return [
+       'watch_comments' => true,
+       'watch_opus'     => true,
+       'watch_activity' => true
+   ];
+});
+

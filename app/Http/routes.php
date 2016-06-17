@@ -84,6 +84,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('users/avatar', 'UserController@uploadAvatar');
 
     /**
+     *  User watch routes
+     */
+    Route::post('users/{users}/watch', 'UserController@watchUser');
+    //Route::get('users/{users}/unwatch');
+
+    /**
      * Developer middleware group
      */
     Route::group(['middleware'=>'permission:role,'.Config::get('roles.developer').'', 'prefix'=>'admin'], function () {

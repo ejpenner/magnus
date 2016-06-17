@@ -12,6 +12,7 @@ use App\Opus;
 use App\Gallery;
 use App\Tag;
 use App\Comment;
+use App\User;
 use App\Notification;
 use Illuminate\Support\Facades\Session;
 
@@ -28,7 +29,7 @@ class OpusController extends Controller
                 'only' => ['create','store','edit','update','destroy']
             ]
         );
-        $this->middleware('gallery', ['except'=>['show','index']]);
+        //$this->middleware('gallery', ['except'=>['show','submit','index']]);
     }
 
     /**
@@ -54,6 +55,7 @@ class OpusController extends Controller
     }
 
     public function newSubmission(){
+        return dd(Auth::user()->watchedUsers);
 
     }
     
@@ -75,6 +77,9 @@ class OpusController extends Controller
         $opus->setThumbnail($request);
         $opus->published_at = Carbon::now();
         $opus = Auth::user()->opera()->save($opus);
+
+        $user = User::where('id', $opus->user_id)->first();
+        $user->notifyWatchersNewOpus($opus);
         
 //        $gallery = Gallery::findOrFail($gallery_id);
 //        $gallery->updated_at = Carbon::now();

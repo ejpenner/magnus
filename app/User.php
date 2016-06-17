@@ -57,12 +57,28 @@ class User extends Authenticatable
         return $this->hasOne('App\Profile');
     }
 
-    public function roles() {
+    public function roles()
+    {
         return $this->belongsToMany('App\Role', 'user_roles');
     }
     
-    public function notifications() {
+    public function notifications()
+    {
         return $this->belongsToMany('App\Notification', 'notification_user')->withTimestamps();
+    }
+
+    /**
+     *  List of users as Watch that the user watches
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function watchedUsers()
+    {
+        return $this->belongsToMany('App\Watch', 'user_watch', 'user_id', 'watch_id')->withTimestamps();
+    }
+
+    public function watchers()
+    {
+        return $this->belongsToMany('App\User', 'user_watch', 'user_id', 'watch_id')->withTimestamps();
     }
 
     protected $appends = ['banned'];
@@ -211,6 +227,23 @@ class User extends Authenticatable
         $q->where('notifications.read', '0');
         $r = $q->count();
         return $r;
+    }
+
+    public function notifyOpus(Opus $opus) {
+        $notification = Notification::create([
+            'handle'=>'opus',
+            'opus_id' => $opus->id,
+            'content' => $opus->title
+        ]);
+        $this->notifications()->attach($notification->id);
+    }
+
+    public function notifyWatchersNewOpus(Opus $opus) {
+        foreach($this->watchers as $watcher) {
+            if($watcher->id != $this->id) {
+                $watcher->notifyOpus($opus);
+            }
+        }
     }
 
 }

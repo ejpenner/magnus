@@ -79,11 +79,11 @@
         @include('partials._flash')
         @include('partials._errors')
     </div>
-    @if(!Auth::user()->hasRole(Config::get('roles.banned')))
+    @unless(Auth::check() and Auth::user()->hasRole(Config::get('roles.banned')))
         @yield('content')
     @else
         <p>You are banned :(</p>
-    @endif
+    @endunless
 </div>
 <footer class="container-fluid text-center">
     <p>&copy; 2016 <strong>VILEST</strong>udios</p>

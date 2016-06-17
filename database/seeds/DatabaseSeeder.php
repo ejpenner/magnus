@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProfileSeeder::class);
         $this->call(CommentSeeder::class);
         $this->call(NotificationSeeder::class);
+        $this->call(WatchSeeder::class);
         //$this->call(GallerySeeder::class);
         //$this->call(PieceSeeder::class);
 
