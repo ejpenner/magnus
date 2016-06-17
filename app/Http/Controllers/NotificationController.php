@@ -95,5 +95,8 @@ class NotificationController extends Controller
     public function destroy($id)
     {
         $user = Auth::user();
+        $notification = Notification::findOrFail($id);
+        $user->notifications()->detach($notification->id);
+        return redirect()->to(app('url')->previous())->with('success', 'Message deleted');
     }
 }

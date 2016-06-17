@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Permission;
 use App\Profile;
+use App\Notification;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
@@ -89,8 +90,15 @@ class User extends Authenticatable
      */
     public function hasRole($role)
     {
-      
         if(Role::hasRole($this, $role)) {
+            return true;
+        }
+        return false;
+    }
+    
+    public function atLeastHasRole($role)
+    {
+        if(Role::atLeastHasRole($this, $role)) {
             return true;
         }
         return false;
@@ -189,6 +197,20 @@ class User extends Authenticatable
         }
         $roles = implode(', ', $roles);
         return $roles;
+    }
+
+    /**
+     *  Get the number of unread messages the user has
+     * @return mixed
+     */
+    public function messageCount() {
+        $q = Notification::query();
+        $q->join('notification_user', 'notifications.id', '=', 'notification_user.notification_id');
+        $q->join('users', 'users.id', '=', 'notification_user.user_id');
+        $q->where('notification_user.user_id', $this->id);
+        $q->where('notifications.read', '0');
+        $r = $q->count();
+        return $r;
     }
 
 }

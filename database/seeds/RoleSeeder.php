@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Config;
 
 use App\Role;
 
@@ -13,12 +14,12 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        Role::create(['role_name'=>'Developer', 'level'=>70]);
-        Role::create(['role_name'=>'Administrator', 'level'=>60]);
-        Role::create(['role_name'=>'Global Moderator', 'level'=>50]);
-        Role::create(['role_name'=>'Moderator', 'level'=>40]);
-        Role::create(['role_name'=>'User', 'level'=>30]);
-        Role::create(['role_name'=>'Suspended', 'level'=>20]);
-        Role::create(['role_name'=>'Banned', 'level'=>10]);
+        Role::create(['role_name'=>Config::get('roles.developer'), 'level'=>Config::get('roles.devLevel')]);
+        Role::create(['role_name'=>Config::get('roles.administrator'), 'level'=>Config::get('roles.adminLevel')]);
+        Role::create(['role_name'=>Config::get('roles.globalMod'), 'level'=>Config::get('roles.globalModLevel')]);
+        Role::create(['role_name'=>Config::get('roles.moderator'), 'level'=>Config::get('roles.modLevel')]);
+        Role::create(['role_name'=>Config::get('roles.user'), 'level'=>Config::get('roles.userLevel')]);
+        Role::create(['role_name'=>Config::get('roles.suspended'), 'level'=>Config::get('roles.suspendedLevel')]);
+        Role::create(['role_name'=>Config::get('roles.banned'), 'level'=>Config::get('roles.bannedLevel')]);
     }
 }

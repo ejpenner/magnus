@@ -52,6 +52,14 @@ class OpusController extends Controller
         return view('opus.create');
     }
 
+    public function newSubmission(){
+
+    }
+    
+    public function submit(Requests\OpusCreateRequest $request) {
+        
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -82,7 +90,7 @@ class OpusController extends Controller
             $opus->tags()->attach($tagIds);
         }
 
-        return redirect()->route('opus.show', $opus->id)->with('success', 'Piece has been added!');
+        return redirect()->route('opus.show', $opus->id)->with('success', 'Your work been added!');
     }
 
     public function galleryStore(Requests\OpusCreateRequest $request, $gallery_id) {
@@ -179,7 +187,7 @@ class OpusController extends Controller
 
         $opus->tags()->sync($tags);
 
-        return redirect()->route('opus.show', [$opus->id])->with('success', 'Updated piece successfully!');
+        return redirect()->route('opus.show', [$opus->id])->with('success', 'Updated opus successfully!');
     }
 
     /**
@@ -277,7 +285,7 @@ class OpusController extends Controller
      * @param $opus
      * @return array
      */
-    private function makeNavigator($gallery, $opus) {
+    private function makeNavigator(Gallery $gallery, Opus $opus) {
         $pieceNav = [];
         $galleryNav = [
             'next' => null,
@@ -333,11 +341,10 @@ class OpusController extends Controller
 
     /**
      * Increment the page view on the opus if the user has not seen it this session
-     * @param $request
-     * @param $user
-     * @param $opus
+     * @param Request $request
+     * @param Opus $opus
      */
-    private function viewPiece($request, $opus) {
+    private function viewPiece(Request $request, Opus $opus) {
         $seen = false;
         $viewed = session('viewed');
         if(Auth::check()) {

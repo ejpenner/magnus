@@ -36,7 +36,7 @@
                 <li @if(Request::is('/')) class="active" @endif ><a href="{{ action('HomeController@recent') }}">Home</a></li>
                 <li @if(Request::is('featured')) class="active" @endif ><a href="#">Featured</a></li>
                 <li @if(Request::is('gallery')) class="active" @endif ><a href="{{ action('GalleryController@index') }}">Galleries</a></li>
-                <li @if(Request::is('submit')) class="active" @endif ><a href="{{ action('PieceController@submit') }}">Submit</a></li>
+                <li @if(Request::is('submit')) class="active" @endif ><a href="{{ action('OpusController@submit') }}">Submit</a></li>
                 <li @if(Request::is('search')) class="active" @endif >
                     {!! Form::open(['url'=>'/search/', 'method'=>'get', 'class'=>'navbar-form navbar-left', 'role'=>'search', 'onsubmit'=>'return false;']) !!}
                     <div class="form-group">
@@ -47,7 +47,7 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                @if(Auth::check() and Auth::user()->hasRole("Administrator"))
+                @if(Auth::check() and Auth::user()->atLeastHasRole(Config::get('roles.administrator')))
                     <li @if(Request::is('admin')) class="active dropdown" @else class="dropdown" @endif>
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Panel <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -57,6 +57,7 @@
                     </li>
                 @endif
                 @if(Auth::check())
+                    <li><a href="{{ action('NotificationController@index') }}">Messages <small>({{ Auth::user()->messageCount() }})</small></a></li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#"> {{ Auth::user()->name }} <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -78,7 +79,11 @@
         @include('partials._flash')
         @include('partials._errors')
     </div>
-    @yield('content')
+    @if(!Auth::user()->hasRole(Config::get('roles.banned')))
+        @yield('content')
+    @else
+        <p>You are banned :(</p>
+    @endif
 </div>
 <footer class="container-fluid text-center">
     <p>&copy; 2016 <strong>VILEST</strong>udios</p>

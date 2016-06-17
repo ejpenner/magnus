@@ -3,7 +3,6 @@
 use Illuminate\Database\Seeder;
 
 use App\User;
-use App\Permission;
 use App\Role;
 use App\Gallery;
 
@@ -16,11 +15,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker\Factory::create();
-
-        $permissionCount = Permission::all()->count();
-
-        $vilest = User::create(['name'=>'Eric Penner', 'username'=>'Vilest', 'slug' => 'vilest', 'email'=>'epenner@unomaha.edu',
+        $vilest = User::create(['name'=>'Eric', 'username'=>'Vilest', 'slug' => 'vilest', 'email'=>'epenner@unomaha.edu',
             'password'=>'$2y$10$2vC4FBlXEw9jAp2mHX/I1ereZawBmX.tipKbEIfMlQo1g6VytHkQa']);
         $vilest->roles()->attach(Role::where('role_name', 'Developer')->value('id'));
         $vilest->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
