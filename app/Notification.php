@@ -21,6 +21,12 @@ class Notification extends Model
         return $this->belongsTo('App\Opus');
     }
 
+    public function opusNotification(Opus $opus, User $user)
+    {
+        $this->opus_id = $opus->id;
+        $user->notifications()->attach($this);
+    }
+
 
 
 }

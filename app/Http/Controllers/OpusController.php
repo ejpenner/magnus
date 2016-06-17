@@ -12,6 +12,7 @@ use App\Opus;
 use App\Gallery;
 use App\Tag;
 use App\Comment;
+use App\Notification;
 use Illuminate\Support\Facades\Session;
 
 class OpusController extends Controller
@@ -74,7 +75,7 @@ class OpusController extends Controller
         $opus->setThumbnail($request);
         $opus->published_at = Carbon::now();
         $opus = Auth::user()->opera()->save($opus);
-
+        
 //        $gallery = Gallery::findOrFail($gallery_id);
 //        $gallery->updated_at = Carbon::now();
 //        $gallery->save();
