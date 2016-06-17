@@ -68,17 +68,21 @@ class User extends Authenticatable
     }
 
     /**
-     *  List of users as Watch that the user watches
+     *  List of users as Watch models that this user watches
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function watchedUsers()
     {
-        return $this->belongsToMany('App\Watch', 'user_watch', 'user_id', 'watch_id')->withTimestamps();
+        return $this->belongsToMany('App\User', 'user_watch', 'watcher_user_id', 'watch_id')->withTimestamps();
     }
 
+    /**
+     *  Returns a list of users that follow this user
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function watchers()
     {
-        return $this->belongsToMany('App\User', 'user_watch', 'user_id', 'watch_id')->withTimestamps();
+        return $this->belongsToMany('App\Watch', 'user_watch', 'watcher_user_id', 'watch_id')->withTimestamps();
     }
 
     protected $appends = ['banned'];
@@ -111,7 +115,12 @@ class User extends Authenticatable
         }
         return false;
     }
-    
+
+    /**
+     *  Check if the user has at least the specified role
+     * @param $role
+     * @return bool
+     */
     public function atLeastHasRole($role)
     {
         if(Role::atLeastHasRole($this, $role)) {
@@ -229,19 +238,20 @@ class User extends Authenticatable
         return $r;
     }
 
-    public function notifyOpus(Opus $opus) {
+    public function notifyOpus(Notification $notification) {
+        $this->notifications()->attach($notification->id);
+    }
+
+    public function notifyWatchersNewOpus(Opus $opus) {
         $notification = Notification::create([
             'handle'=>'opus',
             'opus_id' => $opus->id,
             'content' => $opus->title
         ]);
-        $this->notifications()->attach($notification->id);
-    }
-
-    public function notifyWatchersNewOpus(Opus $opus) {
+        
         foreach($this->watchers as $watcher) {
             if($watcher->id != $this->id) {
-                $watcher->notifyOpus($opus);
+                $watcher->notifyOpus($notification);
             }
         }
     }

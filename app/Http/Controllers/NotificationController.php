@@ -27,8 +27,15 @@ class NotificationController extends Controller
         $query->where('notification_user.user_id', $user->id);
         $query->select('opuses.id', 'opuses.user_id', 'opuses.image_path', 'opuses.thumbnail_path', 'opuses.title', 'notification_user.notification_id');
         $opusResults = $query->get();
+
+        $commentQuery = Comment::query();
+        $commentQuery->join('notifications', 'comments.id', '=', 'notifications.comment_id');
+        $commentQuery->join('notification_user', 'notification_user.notification_id', '=', 'notifications.id');
+        $commentQuery->where('notification_user.user_id', $user->id);
+        $commentQuery->select('comments.id', 'comments.created_at', 'comments.user_id', 'comments.parent_id', 'comments.profile_id', 'comments.body');
+        $commentResults = $commentQuery->get();
         
-        return view('notification.index', compact('user', 'opusResults'));
+        return view('notification.index', compact('user', 'opusResults', 'commentResults'));
     }
 
     /**

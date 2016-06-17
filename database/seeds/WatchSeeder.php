@@ -18,7 +18,7 @@ class WatchSeeder extends Seeder
         foreach($users as $user) {
             foreach($users as $watcher) {
                 if($user->id != $watcher->id) {
-                    $user->watchers()->attach(factory(Watch::class)->create(['user_id' => $watcher->id])->id);
+                    $user->watchedUsers()->attach(factory(Watch::class)->create(['user_id' => $watcher->id])->id);
                     //$watcher->watches()->attach(factory(Watch::class)->create(['user_id' => $user->id])->id);
                 }
             }
