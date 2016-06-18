@@ -15,10 +15,10 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $vilest = User::create(['name'=>'Eric', 'username'=>'Vilest', 'slug' => 'vilest', 'email'=>'epenner@unomaha.edu',
+        $vilest = User::create(['name'=>'Furrman', 'username'=>'Vilest', 'slug' => 'vilest', 'email'=>'murrus@purr.us',
             'password'=>'$2y$10$2vC4FBlXEw9jAp2mHX/I1ereZawBmX.tipKbEIfMlQo1g6VytHkQa']);
         $vilest->roles()->attach(Role::where('role_name', 'Developer')->value('id'));
-        $vilest->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
+        //$vilest->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
    
 
         factory(User::class,10)->create()

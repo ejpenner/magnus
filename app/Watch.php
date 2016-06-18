@@ -24,7 +24,7 @@ class Watch extends Model
         'comment_watch' => 'boolean',
         'activity_watch' => 'boolean'
     ];
-
+    
     public function users() {
         return $this->belongsToMany('App\User', 'user_watch', 'watcher_user_id', 'user_id')->withPivot('watched_user_id')->withTimestamps();
     }
