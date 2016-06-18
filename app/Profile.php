@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class Profile extends Model
@@ -26,10 +27,11 @@ class Profile extends Model
         return $watcherList;
     }
 
-    public function listWatchers() {
-        $watcherList = [];
-        foreach($this->user->watchers as $watcher) {
-            User::where('id', $watcher->pivot->watcher_user_id)->get()->toArray();
-        }
-    }
+//    public function listWatchers() {
+//        $watcherList = Collection::make();
+//        foreach($this->user->watchers as $watcher) {
+//              $watcherList->push(User::where('id', $watcher->user_id)->first());
+//        }
+//        return $watcherList;
+//    }
 }

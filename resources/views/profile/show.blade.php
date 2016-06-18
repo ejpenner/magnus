@@ -65,8 +65,8 @@
                 <div class="panel-heading">Watched Users</div>
                 <div class="panel-body">
                     <ul>
-                        @foreach($profile->listWatchedUsers() as $watcher)
-                            <li><a href="{{ action('ProfileController@show', $watcher['slug']) }}">{{ $watcher['name'] }}</a></li>
+                        @foreach($user->listWatchedUsers() as $watcher)
+                            <li><a href="{{ action('ProfileController@show', $watcher->slug) }}">{{ $watcher->name }}</a></li>
                         @endforeach
                     </ul>
                 </div>
@@ -77,8 +77,8 @@
                 <div class="panel-heading">Watchers</div>
                 <div class="panel-body">
                     <ul>
-                        @foreach($profile->listWatchers() as $watcher)
-                            <li><a href="{{ action('ProfileController@show', $watcher['slug']) }}">{{ $watcher['name'] }}</a></li>
+                        @foreach($user->listWatchers() as $watcher)
+                            <li><a href="{{ action('ProfileController@show', $watcher->slug) }}">{{ $watcher->name }}</a></li>
                         @endforeach
                     </ul>
                 </div>

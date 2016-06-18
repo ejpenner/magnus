@@ -10,6 +10,7 @@ use App\Notification;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
@@ -73,7 +74,7 @@ class User extends Authenticatable
      */
     public function watchedUsers()
     {
-        return $this->belongsToMany('App\User', 'user_watch', 'watcher_user_id', 'watch_id')->withTimestamps();
+        return $this->belongsToMany('App\Watch', 'user_watch', 'watcher_user_id', 'watch_id')->withPivot('watched_user_id')->withTimestamps();
     }
 
     /**
@@ -82,10 +83,8 @@ class User extends Authenticatable
      */
     public function watchers()
     {
-        return $this->belongsToMany('App\Watch', 'user_watch', 'watcher_user_id', 'watch_id')->withTimestamps();
+        return $this->belongsToMany('App\Watch', 'user_watch', 'watcher_user_id', 'watch_id')->withPivot('watched_user_id')->withTimestamps();
     }
-
-    protected $appends = ['banned'];
     
     /**
      *  Check if the user has the specified permission
@@ -240,6 +239,27 @@ class User extends Authenticatable
 
     public function notifyOpus(Notification $notification) {
         $this->notifications()->attach($notification->id);
+    }
+
+    public function listWatchers() {
+        $watcherList = Collection::make();
+        foreach($this->watchers as $watcher) {
+            if($this->id != $watcher->pivot->watcher_user_id) {
+                $watcherList->push(User::where('id', $watcher->pivot->watcher_user_id)->first());
+            }
+        }
+        return $watcherList;
+    }
+
+    public function listWatchedUsers()
+    {
+        $watcherList = Collection::make();
+        foreach($this->watchers as $watcher) {
+            if($this->id != $watcher->pivot->watched_user_id) {
+                $watcherList->push(User::where('id', $watcher->pivot->watched_user_id)->first());
+            }
+        }
+        return $watcherList;
     }
 
     public function notifyWatchersNewOpus(Opus $opus) {

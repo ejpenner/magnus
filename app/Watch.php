@@ -26,7 +26,7 @@ class Watch extends Model
     ];
 
     public function users() {
-        return $this->belongsToMany('App\User', 'user_watch', 'watcher_user_id', 'user_id')->withTimestamps();
+        return $this->belongsToMany('App\User', 'user_watch', 'watcher_user_id', 'user_id')->withPivot('watched_user_id')->withTimestamps();
     }
 
     public function user() {
@@ -36,7 +36,10 @@ class Watch extends Model
     public static function watchUser(User $user, $opus, $comment, $activity)
     {
         $watch = Watch::create(['user_id'=>$user->id, 'watch_opus'=>$opus, 'watch_comments'=>$comment, 'watch_activity'=>$activity]);
-        Auth::user()->watchedUsers()->attach($watch->id);
+        Auth::user()->watchers()->attach($watch->id,['watched_user_id'=>$user->id]);
+        //$user->watchers()->attach($watch->id, ['watched_user_id'=>null]);
     }
+
+    
 
 }
