@@ -353,8 +353,8 @@ class OpusController extends Controller
     private function viewPiece(Request $request, Opus $opus) {
         $seen = false;
         $viewed = session('viewed');
-        if(Auth::check()) {
-            if($request->session()->has('viewed') and !Auth::user()->isOwner($opus)) {
+        if(Auth::check() and  !Auth::user()->isOwner($opus)) {
+            if($request->session()->has('viewed')) {
                 foreach ($viewed as $view) {
                     if ($opus->id == $view) { // the user has seen it before
                         $seen = true;

@@ -15,7 +15,6 @@
                         </div>
                         <h4><a href="{{ action('OpusController@show', [$opus->id]) }}">{{ $opus->title }}</a> -
                             <small><a href="{{ action('ProfileController@show', $opus->user->slug) }}">{{ $opus->user->name }}</a></small></h4>
-                        <div>{{ $opus->notification_id }}</div>
                         <div>
                             {!! Form::model($opus, ['method'=>'delete', 'class'=>'delete-confirm operations', 'action'=>['NotificationController@destroy', $opus->notification_id]]) !!}
                             <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</button>
