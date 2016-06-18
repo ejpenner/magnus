@@ -74,7 +74,7 @@ class User extends Authenticatable
      */
     public function watchedUsers()
     {
-        return $this->belongsToMany('App\Watch', 'user_watch', 'watcher_user_id', 'watch_id')->withPivot('watched_user_id')->withTimestamps();
+        return $this->belongsToMany('App\Watch', 'user_watch', 'watched_user_id', 'watch_id')->withPivot('watcher_user_id')->withTimestamps();
     }
 
     /**
@@ -241,16 +241,27 @@ class User extends Authenticatable
         $this->notifications()->attach($notification->id);
     }
 
+
+    /**
+     * Returns a collection of users that watch this user
+     *
+     * @return static
+     */
     public function listWatchers() {
         $watcherList = Collection::make();
-        foreach($this->watchers as $watcher) {
-            if($this->id != $watcher->pivot->watcher_user_id) {
+        foreach($this->watchedUsers as $watcher) {
                 $watcherList->push(User::where('id', $watcher->pivot->watcher_user_id)->first());
-            }
         }
         return $watcherList;
     }
 
+
+    /**
+     *  Returns a collection of users that this user watches
+     *  TODO: WORKS
+     *
+     * @return static
+     */
     public function listWatchedUsers()
     {
         $watcherList = Collection::make();

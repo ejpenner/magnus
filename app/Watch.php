@@ -37,7 +37,6 @@ class Watch extends Model
     {
         $watch = Watch::create(['user_id'=>$user->id, 'watch_opus'=>$opus, 'watch_comments'=>$comment, 'watch_activity'=>$activity]);
         Auth::user()->watchers()->attach($watch->id,['watched_user_id'=>$user->id]);
-        //$user->watchers()->attach($watch->id, ['watched_user_id'=>null]);
     }
 
     
