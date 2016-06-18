@@ -10,7 +10,9 @@
 * clone the repo
 * run `composer update` to install all the composer packages
 * run `npm install` to install all NPM assets. So far all of the npm modules used are just for development purposes.
-* run `php artisan migrate` to run the migrations
+* run `php artisan migrate --seed` to run the migrations and seed the tables
+* run `gulp` to compile bootstrap LESS and concatenate vendor js script files
+* You're good to go!
 
 #### Composer Packages Used
  * `"laravel/framework": "5.2.*",`
@@ -29,7 +31,7 @@
 * `"gulp-watchify": "*",`
 * `"strictify": "^0.2.0"`
 
-Also uses Bootstrap 3, CropperJS and JQuery.
+Bootstrap 3, CropperJS and JQuery are included in the vendor files.
 
 
 ## Laravel Shoutout
