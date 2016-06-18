@@ -15,6 +15,7 @@ class CreateWatchesTable extends Migration
         Schema::create('watches', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
+            $table->integer('watcher_user_id')->unsigned();
             $table->boolean('watch_opus');
             $table->boolean('watch_comments');
             $table->boolean('watch_activity');

@@ -87,7 +87,7 @@ Route::group(['middleware' => ['auth']], function () {
      *  User watch routes
      */
     Route::post('users/{users}/watch', 'UserController@watchUser');
-    //Route::get('users/{users}/unwatch');
+    Route::get('users/{users}/unwatch', 'UserController@unwatchUser');
 
     /**
      * Developer middleware group

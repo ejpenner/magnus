@@ -1,4 +1,8 @@
+@if(Auth::user()->isWatched($user))
+<a class="btn btn-danger" href="{{ action('UserController@unwatchUser', $user->slug) }}"><i class="fa fa-minus"></i> Unwatch User</a>
+@else
 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#watchUserModal"><i class="fa fa-plus"></i> Watch User</button>
+
 <div id="watchUserModal" class="modal fade" role="form">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -27,3 +31,4 @@
 
     </div>
 </div>
+@endif

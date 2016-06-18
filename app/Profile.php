@@ -18,14 +18,14 @@ class Profile extends Model
         return $this->hasMany('App\Comment');
     }
     
-    public function listWatchedUsers()
-    {
-        $watcherList = [];
-        foreach($this->user->watchedUsers as $watcher) {
-            array_push($watcherList, ['name'=>$watcher->name, 'id'=>$watcher->id, 'slug'=>$watcher->slug]);
-        }
-        return $watcherList;
-    }
+//    public function listWatchedUsers()
+//    {
+//        $watcherList = [];
+//        foreach($this->user->watchedUsers as $watcher) {
+//            array_push($watcherList, ['name'=>$watcher->name, 'id'=>$watcher->id, 'slug'=>$watcher->slug]);
+//        }
+//        return $watcherList;
+//    }
 
 //    public function listWatchers() {
 //        $watcherList = Collection::make();

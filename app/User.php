@@ -237,6 +237,11 @@ class User extends Authenticatable
         return $r;
     }
 
+    /**
+     *  Notify this user of a new opus of a user they watch
+     * @param \App\Notification $notification
+     */
+
     public function notifyOpus(Notification $notification) {
         $this->notifications()->attach($notification->id);
     }
@@ -273,6 +278,26 @@ class User extends Authenticatable
         return $watcherList;
     }
 
+    /**
+     *  Determine if this user is being watched by you.
+     * @param User $user
+     * @return bool
+     */
+    public function isWatched(User $user)
+    {
+        $watch = Watch::where('user_id',$user->id)->where('watcher_user_id', $this->id)->count();
+        if($watch != 0 ){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     *  Create a new notification and let all users who watch you know
+     * @param Opus $opus
+     */
     public function notifyWatchersNewOpus(Opus $opus) {
         $notification = Notification::create([
             'handle'=>'opus',
@@ -281,9 +306,8 @@ class User extends Authenticatable
         ]);
         
         foreach($this->watchers as $watcher) {
-            if($watcher->id != $this->id) {
-                $watcher->notifyOpus($notification);
-            }
+                $user = User::find($watcher->user_id);
+                $user->notifyOpus($notification);
         }
     }
 

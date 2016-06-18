@@ -62,7 +62,7 @@
     <div class="container">
         <div class="col-md-6">
             <div class="panel panel-default">
-                <div class="panel-heading">Watched Users</div>
+                <div class="panel-heading">Watching</div>
                 <div class="panel-body">
                     <ul>
                         @foreach($user->listWatchedUsers() as $watcher)

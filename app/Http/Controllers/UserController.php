@@ -189,7 +189,7 @@ class UserController extends Controller
     public function watchUser(Request $request, User $user) {
         foreach(Auth::user()->watchedUsers as $watched) {
             if($user->id == $watched->user_id) {
-                //return redirect()->to(app('url')->previous())->withErrors('YYou are already watching this user!');
+                return redirect()->to(app('url')->previous())->withErrors('You are already watching this user!');
             }
         }
         if(Auth::user()-> id != $user->id) {
@@ -201,6 +201,12 @@ class UserController extends Controller
         } else {
             return redirect()->to(app('url')->previous())->withErrors('You can\'t watch yourself!');
         }
+    }
+    
+    public function unwatchUser(Request $request, User $user)
+    {
+        Watch::unwatchUser($user);
+        return redirect()->to(app('url')->previous())->with('success', 'You have unwatched '.$user->name.'.');
     }
     
 }

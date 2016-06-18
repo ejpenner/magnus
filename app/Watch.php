@@ -16,7 +16,7 @@ class Watch extends Model
     protected $table="watches";
 
     protected $fillable = [
-        'user_id', 'watch_opus', 'watch_comments', 'watch_activity'
+        'user_id', 'watcher_user_id', 'watch_opus', 'watch_comments', 'watch_activity'
     ];
 
     protected $casts = [
@@ -35,10 +35,22 @@ class Watch extends Model
 
     public static function watchUser(User $user, $opus, $comment, $activity)
     {
-        $watch = Watch::create(['user_id'=>$user->id, 'watch_opus'=>$opus, 'watch_comments'=>$comment, 'watch_activity'=>$activity]);
+        $watch = Watch::create(['user_id'=>$user->id, 'watcher_user_id'=>Auth::user()->id, 'watch_opus'=>$opus, 'watch_comments'=>$comment, 'watch_activity'=>$activity]);
         Auth::user()->watchers()->attach($watch->id,['watched_user_id'=>$user->id]);
     }
 
-    
+    public static function modifyWatchUser()
+    {
+
+    }
+
+    public static function unwatchUser(User $user)
+    {
+        $watch = Auth::user()->watchers()->where('user_id', $user->id)->where('watches.watcher_user_id', Auth::user()->id)->first();
+        Auth::user()->watchers()->detach($watch->id);
+        $watch->delete();
+    }
+
+
 
 }
