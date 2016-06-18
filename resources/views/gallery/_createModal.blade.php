@@ -10,7 +10,7 @@
 
             <div class="modal-body">
                 {!! Form::open(['action'=>['GalleryController@store']]) !!}
-                    @include('gallery._form')
+                @include('gallery._form')
                 {!! Form::close() !!}
             </div>
 

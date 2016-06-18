@@ -9,7 +9,7 @@
                     @foreach($gallery as $j => $item)
                         <div class="col-md-3 vcenter gallery-item">
 
-                            @if(isset($item->opera))
+                            @if($item->opera != nullOrEmptyString())
                                 <a href="{{ action('GalleryController@show', $item->id) }}"><img src="{{ $item->opera->last()->thumbnail_path }}" alt=""></a>
                             @endif
 

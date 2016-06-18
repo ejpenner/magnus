@@ -8,6 +8,7 @@ class Role extends Model
 {
     protected $fillable = ['role_name', 'level'];
     
+    
     public function permission() {
         return $this->hasOne('App\Permission');
     }
@@ -24,7 +25,7 @@ class Role extends Model
      * @return bool
      */
 
-    public static function hasPermission($user, $role) {
+    public static function atLeastHasRole(User $user, $role) {
         foreach($user->roles as $userRole) {
             if($userRole->level >= Role::where('role_name', $role)->value('level')) {
                 return true;
@@ -32,4 +33,18 @@ class Role extends Model
         }
         return false;
     }
+
+    public static function hasRole(User $user, $role) {
+        foreach($user->roles as $userRole) {
+            if($userRole->level == Role::where('role_name', $role)->value('level')) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public static function Administrator(){
+        return 0;
+    }
+    
 }

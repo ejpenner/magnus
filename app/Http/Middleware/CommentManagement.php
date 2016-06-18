@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Comment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class CommentManagement
 {
@@ -20,7 +21,7 @@ class CommentManagement
         $comment_id = $request->route('c');
         $comment= Comment::where('id', $comment_id)->first();
 
-        if (Auth::user()->hasRole('admin') or Auth::user()->isOwner($comment)) {
+        if (Auth::user()->atLeastHasRole(Config::get('roles.globalMod')) or Auth::user()or Auth::user()->isOwner($comment)) {
             return $next($request);
         } else {
             return redirect()->back()->withErrors('You are not permitted to complete that action or view that page.');

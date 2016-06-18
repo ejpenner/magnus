@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Profile;
 use App\Gallery;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Permission;
 use App\Http\Controllers\Controller;
@@ -52,7 +54,7 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'name' => 'required|max:40',
             'username' => 'required|max:32|min:3|unique:users',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:8|confirmed',
@@ -80,5 +82,12 @@ class AuthController extends Controller
         $user->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
 
         return $user;
+    }
+
+    public function logout()
+    {
+        Session::flush();
+        Auth::logout();
+        return redirect('/login')->with('success', 'Successfully Logged Out!');
     }
 }

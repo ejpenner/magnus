@@ -6,10 +6,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Permission;
 use App\Profile;
-use Illuminate\Support\Facades\Schema;
+use App\Notification;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
@@ -57,11 +58,33 @@ class User extends Authenticatable
         return $this->hasOne('App\Profile');
     }
 
-    public function roles() {
+    public function roles()
+    {
         return $this->belongsToMany('App\Role', 'user_roles');
     }
+    
+    public function notifications()
+    {
+        return $this->belongsToMany('App\Notification', 'notification_user')->withTimestamps();
+    }
 
-    protected $appends = ['banned'];
+    /**
+     *  List of users as Watch models that this user watches
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function watchedUsers()
+    {
+        return $this->belongsToMany('App\Watch', 'user_watch', 'watched_user_id', 'watch_id')->withPivot('watcher_user_id')->withTimestamps();
+    }
+
+    /**
+     *  Returns a list of users that follow this user
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function watchers()
+    {
+        return $this->belongsToMany('App\Watch', 'user_watch', 'watcher_user_id', 'watch_id')->withPivot('watched_user_id')->withTimestamps();
+    }
     
     /**
      *  Check if the user has the specified permission
@@ -69,9 +92,11 @@ class User extends Authenticatable
      * @param $action: string
      * @return bool|void
      */
-    public function hasPermission($role) {
-        if(Role::hasPermission($this, $role)) {
-            return true;
+    public function hasPermission($permission) {
+        foreach(Auth::user()->roles as $userRoles) {
+            foreach($userRoles->permission->attributes as $key => $value) {
+                return Permission::where('schema_name', $userRoles->role_name)->value($permission);
+            }
         }
         return false;
     }
@@ -84,10 +109,21 @@ class User extends Authenticatable
      */
     public function hasRole($role)
     {
-        foreach(Auth::user()->roles as $userRoles) {
-            if($userRoles->level >= Role::where('role_name', $role)->value('level')) {
-                return true;
-            }
+        if(Role::hasRole($this, $role)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *  Check if the user has at least the specified role
+     * @param $role
+     * @return bool
+     */
+    public function atLeastHasRole($role)
+    {
+        if(Role::atLeastHasRole($this, $role)) {
+            return true;
         }
         return false;
     }
@@ -185,6 +221,94 @@ class User extends Authenticatable
         }
         $roles = implode(', ', $roles);
         return $roles;
+    }
+
+    /**
+     *  Get the number of unread messages the user has
+     * @return mixed
+     */
+    public function messageCount() {
+        $q = Notification::query();
+        $q->join('notification_user', 'notifications.id', '=', 'notification_user.notification_id');
+        $q->join('users', 'users.id', '=', 'notification_user.user_id');
+        $q->where('notification_user.user_id', $this->id);
+        $q->where('notifications.read', '0');
+        $r = $q->count();
+        return $r;
+    }
+
+    /**
+     *  Notify this user of a new opus of a user they watch
+     * @param \App\Notification $notification
+     */
+
+    public function notifyOpus(Notification $notification) {
+        $this->notifications()->attach($notification->id);
+    }
+
+
+    /**
+     * Returns a collection of users that watch this user
+     *
+     * @return static
+     */
+    public function listWatchers() {
+        $watcherList = Collection::make();
+        foreach($this->watchedUsers as $watcher) {
+                $watcherList->push(User::where('id', $watcher->pivot->watcher_user_id)->first());
+        }
+        return $watcherList;
+    }
+
+
+    /**
+     *  Returns a collection of users that this user watches
+     *  TODO: WORKS
+     *
+     * @return static
+     */
+    public function listWatchedUsers()
+    {
+        $watcherList = Collection::make();
+        foreach($this->watchers as $watcher) {
+            if($this->id != $watcher->pivot->watched_user_id) {
+                $watcherList->push(User::where('id', $watcher->pivot->watched_user_id)->first());
+            }
+        }
+        return $watcherList;
+    }
+
+    /**
+     *  Determine if this user is being watched by you.
+     * @param User $user
+     * @return bool
+     */
+    public function isWatched(User $user)
+    {
+        $watch = Watch::where('user_id',$user->id)->where('watcher_user_id', $this->id)->count();
+        if($watch != 0 ){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     *  Create a new notification and let all users who watch you know
+     * @param Opus $opus
+     */
+    public function notifyWatchersNewOpus(Opus $opus) {
+        $notification = Notification::create([
+            'handle'=>'opus',
+            'opus_id' => $opus->id,
+            'content' => $opus->title
+        ]);
+        
+        foreach($this->watchers as $watcher) {
+                $user = User::find($watcher->user_id);
+                $user->notifyOpus($notification);
+        }
     }
 
 }

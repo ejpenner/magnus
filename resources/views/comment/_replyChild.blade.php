@@ -1,3 +1,4 @@
+@if(Auth::check())
 <div class="reply-toggle container">
     <button class="btn btn-primary reply-btn pull-left btn-xs">Reply</button>
     <div class="container reply-form form-group">
@@ -9,3 +10,4 @@
         </div>
     </div>
 </div>
+@endif

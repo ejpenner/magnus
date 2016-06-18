@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Gallery;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class GalleryManagement
 {
@@ -20,7 +21,7 @@ class GalleryManagement
         $gallery_id = $request->route('gallery');
         $gallery = Gallery::where('id', $gallery_id)->first();
 
-        if (Auth::user()->hasRole('Administrator') or Auth::user()->isOwner($gallery)) {
+        if (!Auth::check() or Auth::user()->atLeastHasRole(Config::get('roles.administrator')) or Auth::user()->isOwner($gallery)) {
             return $next($request);
         } else {
             return redirect()->back()->withErrors('You are not permitted to complete that action or view that page.');

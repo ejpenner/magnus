@@ -13,12 +13,13 @@ use App\Profile;
 use App\Permission;
 use App\Role;
 use App\Gallery;
+use App\Watch;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(10);
         
         foreach ($users as &$user) {
             $user->permission_id = Permission::where('id', $user->permission_id)->value('schema_name');
@@ -102,12 +103,6 @@ class UserController extends Controller
         return view('auth.login');
     }
 
-    public function logout()
-    {
-        Auth::logout();
-        return redirect('auth.login')->with('success', 'Successfully Logged Out!');
-    }
-
     public function editAccount($id)
     {
         $user = User::findOrFail($id);
@@ -163,12 +158,10 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         return view('user.avatarAdmin', compact('user'));
     }
-
-
+    
     /**
      * Upload user avatar for users
      * @param Request $request
-     * 
      */
     public function uploadAvatar(Request $request) {
         $user = User::where('id', Auth::user()->id)->first();
@@ -185,6 +178,35 @@ class UserController extends Controller
         $user = User::where('id', $id)->first();
         $user->setAvatar($request);
         $user->save();
+    }
+
+    /**
+     *  Add the selected user to the Auth'd user's watch list
+     * @param Request $request
+     * @param User $user
+     * @return $this|\Illuminate\Http\RedirectResponse\
+     */
+    public function watchUser(Request $request, User $user) {
+        foreach(Auth::user()->watchedUsers as $watched) {
+            if($user->id == $watched->user_id) {
+                return redirect()->to(app('url')->previous())->withErrors('You are already watching this user!');
+            }
+        }
+        if(Auth::user()-> id != $user->id) {
+            Watch::watchUser($user,
+                $request->input('watch_opus') ? 1 : 0,
+                $request->input('watch_comments') ? 1 : 0,
+                $request->input('watch_activity') ? 1 : 0);
+            return redirect()->to(app('url')->previous())->with('success', 'You have added ' . $user->name . ' to your watch list!');
+        } else {
+            return redirect()->to(app('url')->previous())->withErrors('You can\'t watch yourself!');
+        }
+    }
+    
+    public function unwatchUser(Request $request, User $user)
+    {
+        Watch::unwatchUser($user);
+        return redirect()->to(app('url')->previous())->with('success', 'You have unwatched '.$user->name.'.');
     }
     
 }
