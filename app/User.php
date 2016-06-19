@@ -112,8 +112,8 @@ class User extends Authenticatable
     }
 
     /**
-     *  Return some span formatting around usernames for fancy CSS stuff
-     * @param $value
+     *  Return some span formatting around usernames for fancy CSS output
+     * 
      * @return string
      */
     public function decorateName() {
