@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
                 $user->roles()->attach(Role::where('role_name', Config::get('roles.user'))->value('id'));
 
                 foreach(range(1,1) as $index) {
-                    factory(\App\Opus::class, 3)->create(['user_id'=>$user->id])->each(function($opus) {
+                    factory(\App\Opus::class, 2)->create(['user_id'=>$user->id])->each(function($opus) {
                         $tagCount = \App\Tag::count();
 
                         foreach(range(1,3) as $j){
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
                     $user->galleries()->save(factory(\App\Gallery::class)->make());
                 }
                 foreach($user->galleries as $gallery) {
-                    foreach(range(1,5) as $i) {
+                    foreach(range(1,3) as $i) {
 
                         $opus = factory(\App\Opus::class)->create(['user_id'=>$user->id]);
 

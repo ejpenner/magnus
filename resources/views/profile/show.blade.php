@@ -7,7 +7,6 @@
         <div class="col-md-2">
             <h4>Galleries</h4>
             <a class="btn btn-lg btn-primary" href="{{ action('ProfileController@galleries', $user->slug) }}">See All</a>
-            <p>{!! $user->decorateName() !!}</p>
         </div>
         <div class="col-md-10">
             <div class="gallery-container">

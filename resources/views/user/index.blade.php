@@ -20,7 +20,7 @@
                 @foreach($users as $user)
                     <tr>
                         <td><a href="{{ action('UserController@edit', [$user->slug]) }}">{{ $user->name }}</a></td>
-                        <td><a href="{{ action('ProfileController@show', $user->username) }}">{{ $user->username }}</a></td>
+                        <td><a href="{{ action('ProfileController@show', $user->slug) }}">{{ $user->username }}</a></td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->listRoles() }}</td>
                         <td>

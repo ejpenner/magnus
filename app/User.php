@@ -18,7 +18,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'permission_id', 'slug', 'username', 'avatar'
+        'name', 'email', 'password',
+        'permission_id', 'slug', 'username',
+        'avatar', 'timezone'
     ];
 
     /**
@@ -138,12 +140,7 @@ class User extends Authenticatable
      */
     public function hasPermission($permission) 
     {
-        foreach(Auth::user()->roles as $userRoles) {
-            foreach($userRoles->permission->attributes as $key => $value) {
-                return Permission::where('schema_name', $userRoles->role_name)->value($permission);
-            }
-        }
-        return false;
+        
     }
 
     /**
