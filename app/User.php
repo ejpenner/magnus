@@ -4,10 +4,8 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-use App\Permission;
-use App\Profile;
-use App\Notification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Collection;
@@ -34,35 +32,60 @@ class User extends Authenticatable
 
     private $avatarDirectory = 'avatars';
     private $avatarResize = '150';
-    
+
+    /**
+     * User has 0:M relationship with Gallery model
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function galleries()
     {
         return $this->hasMany('App\Gallery');
     }
-    
-    public function pieces()
-    {
-        return $this->hasMany('App\Piece');
-    }
-    
+
+    /**
+     * User model has 0:M relationship with Opus model
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function opera() {
         return $this->hasMany('App\Opus');
     }
-    
+
+    /**
+     * User model has 0:M relationship with Comment model
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function comments() {
         return $this->hasMany('App\Comment');
     }
-    
+
+    /**
+     *  User model's 1:1 relationship with Profile model
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function profile()
     {
         return $this->hasOne('App\Profile');
     }
 
+    /**
+     *  User has M:N relationship with Roles model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function roles()
     {
         return $this->belongsToMany('App\Role', 'user_roles');
     }
-    
+
+    /**
+     * User has M:N relationship with Notification model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function notifications()
     {
         return $this->belongsToMany('App\Notification', 'notification_user')->withTimestamps();
@@ -70,6 +93,7 @@ class User extends Authenticatable
 
     /**
      *  List of users as Watch models that this user watches
+     * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function watchedUsers()
@@ -79,20 +103,41 @@ class User extends Authenticatable
 
     /**
      *  Returns a list of users that follow this user
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function watchers()
     {
         return $this->belongsToMany('App\Watch', 'user_watch', 'watcher_user_id', 'watch_id')->withPivot('watched_user_id')->withTimestamps();
     }
-    
+
+    /**
+     *  Return some span formatting around usernames for fancy CSS stuff
+     * @param $value
+     * @return string
+     */
+    public function decorateName() {
+        if(Role::atLeastHasRole($this, Config::get('roles.developer'))) {
+            return "<span class=\"username role-developer\">$this->name</span>";
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.administrator'))) {
+            return "<span class=\"username role-administrator\">$this->name</span>";
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.globalModerator'))) {
+            return "<span class=\"username role-globalModerator\">$this->name</span>";
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.moderator'))) {
+            return "<span class=\"username role-moderator\">$this->name</span>";
+        } else {
+            return "<span class=\"username\">$this->name</span>";
+        }
+    }
+
     /**
      *  Check if the user has the specified permission
      *
      * @param $action: string
      * @return bool|void
      */
-    public function hasPermission($permission) {
+    public function hasPermission($permission) 
+    {
         foreach(Auth::user()->roles as $userRoles) {
             foreach($userRoles->permission->attributes as $key => $value) {
                 return Permission::where('schema_name', $userRoles->role_name)->value($permission);
@@ -100,7 +145,7 @@ class User extends Authenticatable
         }
         return false;
     }
-    
+
     /**
      *  Check if the logged in user has the specified role
      *
@@ -116,7 +161,8 @@ class User extends Authenticatable
     }
 
     /**
-     *  Check if the user has at least the specified role
+     * Check if the user has at least the specified role
+     *
      * @param $role
      * @return bool
      */
@@ -129,7 +175,7 @@ class User extends Authenticatable
     }
 
     /**
-     *  Does the authorized user have the permission schema
+     * Does the authorized user have the permission schema
      *
      * @param $permission
      * @return bool
@@ -157,6 +203,13 @@ class User extends Authenticatable
         }
     }
 
+    /**
+     *  Store the image stored within the Request
+     *  Return the relative path of the file
+     *
+     * @param $request
+     * @return string
+     */
     public function storeAvatar($request)
     {
         $destinationPath = $this->avatarDirectory; // upload path, goes to the public folder
@@ -172,6 +225,11 @@ class User extends Authenticatable
         return $fullPath;
     }
 
+    /**
+     *  Set the user's avatar
+     *
+     * @param $request
+     */
     public function setAvatar($request)
     {
         if($this->avatar != null or $this->avatar != '') {
@@ -183,6 +241,12 @@ class User extends Authenticatable
         $avatarResized->save($this->avatar);
     }
 
+    /**
+     *  Resize the user's uploaded avatar
+     *
+     * @param $image
+     * @return Image
+     */
     public function resize($image)
     {
         $resize = Image::make($image);
@@ -193,6 +257,11 @@ class User extends Authenticatable
         return $resize;
     }
 
+    /**
+     *  Return the relative URL of this user's avatar
+     *
+     * @return string
+     */
     public function getAvatar()
     {
         if(!empty($this->avatar) && File::exists($this->avatar))
@@ -204,6 +273,11 @@ class User extends Authenticatable
         return '/avatars/missing/missing.png';
     }
 
+    /**
+     * Delete the user's avatar file
+     *
+     * @return bool
+     */
     public function deleteAvatarFile()
     {
         $path = public_path();
@@ -213,7 +287,12 @@ class User extends Authenticatable
         }
         return false;
     }
-    
+
+    /**
+     * Returns an string of all of the user's roles
+     *
+     * @return array|string
+     */
     public function listRoles() {
         $roles = [];
         foreach($this->roles as $role) {
@@ -225,9 +304,11 @@ class User extends Authenticatable
 
     /**
      *  Get the number of unread messages the user has
+     *
      * @return mixed
      */
-    public function messageCount() {
+    public function messageCount()
+    {
         $q = Notification::query();
         $q->join('notification_user', 'notifications.id', '=', 'notification_user.notification_id');
         $q->join('users', 'users.id', '=', 'notification_user.user_id');
@@ -238,32 +319,32 @@ class User extends Authenticatable
     }
 
     /**
-     *  Notify this user of a new opus of a user they watch
+     *  Notify this user of a new Opus/Comment/Activity of a user they watch
+     *
      * @param \App\Notification $notification
+     * @return void
      */
-
-    public function notifyOpus(Notification $notification) {
+    public function notify(Notification $notification)
+    {
         $this->notifications()->attach($notification->id);
     }
-
 
     /**
      * Returns a collection of users that watch this user
      *
      * @return static
      */
-    public function listWatchers() {
+    public function listWatchers()
+    {
         $watcherList = Collection::make();
         foreach($this->watchedUsers as $watcher) {
-                $watcherList->push(User::where('id', $watcher->pivot->watcher_user_id)->first());
+            $watcherList->push(User::where('id', $watcher->pivot->watcher_user_id)->first());
         }
         return $watcherList;
     }
 
-
     /**
      *  Returns a collection of users that this user watches
-     *  TODO: WORKS
      *
      * @return static
      */
@@ -280,6 +361,7 @@ class User extends Authenticatable
 
     /**
      *  Determine if this user is being watched by you.
+     *
      * @param User $user
      * @return bool
      */
@@ -293,22 +375,22 @@ class User extends Authenticatable
         }
     }
 
-
     /**
      *  Create a new notification and let all users who watch you know
+     *
      * @param Opus $opus
      */
-    public function notifyWatchersNewOpus(Opus $opus) {
+    public function notifyWatchersNewOpus(Opus $opus)
+    {
         $notification = Notification::create([
             'handle'=>'opus',
             'opus_id' => $opus->id,
             'content' => $opus->title
         ]);
-        
+
         foreach($this->watchers as $watcher) {
-                $user = User::find($watcher->user_id);
-                $user->notifyOpus($notification);
+            $user = User::find($watcher->user_id);
+            $user->notify($notification);
         }
     }
-
 }

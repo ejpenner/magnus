@@ -1,4 +1,7 @@
 <?php
+/**
+ * array for permission access
+ */
 return [
     'developer' => 'Developer',
     'devLevel' => 70,

@@ -29,7 +29,7 @@ class OpusController extends Controller
                 'only' => ['create','store','edit','update','destroy']
             ]
         );
-        //$this->middleware('gallery', ['except'=>['show','submit','index']]);
+        $this->middleware('gallery', ['except'=>['show','index']]);
     }
 
     /**
@@ -80,10 +80,6 @@ class OpusController extends Controller
 
         $user = User::where('id', $opus->user_id)->first();
         $user->notifyWatchersNewOpus($opus);
-        
-//        $gallery = Gallery::findOrFail($gallery_id);
-//        $gallery->updated_at = Carbon::now();
-//        $gallery->save();
 
         if($request->input('tags') !== null) {
 
@@ -100,7 +96,32 @@ class OpusController extends Controller
     }
 
     public function galleryStore(Requests\OpusCreateRequest $request, $gallery_id) {
+        $opus = new Opus($request->all());
 
+        $opus->setImage($request);
+        $opus->setThumbnail($request);
+        $opus->published_at = Carbon::now();
+        $opus = Auth::user()->opera()->save($opus);
+        $user = User::where('id', $opus->user_id)->first();
+        $user->notifyWatchersNewOpus($opus);
+
+        $gallery = Gallery::findOrFail($gallery_id);
+        $gallery->updated_at = Carbon::now();
+        $gallery->save();
+        $gallery->opera()->attach($opus->id);
+
+        if($request->input('tags') !== null) {
+
+            $tags = explode(' ', trim($request->input('tags')));
+            // for each tag, check if it exists, if it doesn't create it
+            $this->makeTags($tags);
+            // get tag IDs
+            $tagIds = $this->getTagIds($tags);
+            //attach the tags to this piece
+            $opus->tags()->attach($tagIds);
+        }
+
+        return redirect()->route('opus.show', $opus->id)->with('success', 'Your work been added!');
     }
 
     /**
@@ -134,7 +155,7 @@ class OpusController extends Controller
      * @param $opus_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function galleryShow(Request $request,$gallery_id, $opus_id) {
+    public function galleryShow(Request $request, $gallery_id, $opus_id) {
         $opus = Opus::findOrFail($opus_id);
         $query = Gallery::query();
         $query->join('gallery_opus', 'galleries.id', '=', 'gallery_opus.gallery_id')
@@ -204,13 +225,13 @@ class OpusController extends Controller
      * @param $piece_id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function galleryUpdate(Requests\OpusEditRequest $request, $gallery_id, $piece_id)
+    public function galleryUpdate(Requests\OpusEditRequest $request, $gallery_id, $opus_id)
     {
         $gallery = Gallery::findOrFail($gallery_id);
         $gallery->updated_at = Carbon::now();
         $gallery->save();
 
-        $piece = Piece::findOrFail($piece_id);
+        $opus = Opus::findOrFail($opus_id);
 
         // if the user wants to change the image file
 
@@ -219,7 +240,7 @@ class OpusController extends Controller
         }
 
         // update everything except the image and published at
-        $piece->update($request->except('image','published_at'));
+        $opus->update($request->except('image','published_at'));
 
         // check if tags have changed
         if($request->input('tags') === null) {
@@ -230,9 +251,9 @@ class OpusController extends Controller
             $tags = $this->getTagIds($tags);
         }
 
-        $piece->tags()->sync($tags);
+        $opus->tags()->sync($tags);
 
-        return redirect()->route('gallery.piece.show', [$gallery->id, $piece->id])->with('success', 'Updated piece successfully!');
+        return redirect()->route('opus.show', [$opus->id])->with('success', 'Updated opus successfully!');
     }
 
     /**
@@ -247,11 +268,16 @@ class OpusController extends Controller
         $opus->deleteImages();
         $opus->delete();
 
-        return redirect()->to(app('url')->previous())->with('success', 'The piece has been deleted!');
+        return redirect()->to(app('url')->previous())->with('success', 'The opus has been deleted!');
     }
 
     public function galleryDestroy($gallery_id, $opus_id) {
+        $opus = Opus::findOrFail($opus_id);
+        $gallery = Gallery::findOrFail($gallery_id);
+        $gallery->opera()->detach($opus->id);
+        $opus->delete();
 
+        return redirect()->route('gallery.show', $gallery_id)->with('success', 'The piece has been deleted!');
     }
 
     /**
@@ -300,18 +326,22 @@ class OpusController extends Controller
         ];
         $foundMax = false;
         $foundMin = false;
-
+        
+        // get all the Opus ID in the gallery into an array
         foreach ($gallery->opera as $currentOpus) {
             array_push($pieceNav, $currentOpus->id);
         }
 
+        // if there are only two opera in a gallery, the next and previous
+        // links should be the opus it is not
         if(count($pieceNav) < 2) {
             $galleryNav['next'] = $pieceNav[0];
             $galleryNav['previous'] = $pieceNav[0];
 
             return $galleryNav;
         }
-
+        
+        // logic for a gallery with only three opera
         if(count($pieceNav) < 3) {
             if($pieceNav[0] == $opus->id) {
                 $galleryNav['next'] = $pieceNav[1];
@@ -325,6 +355,7 @@ class OpusController extends Controller
             return $galleryNav;
         }
 
+        // logic for a gallery with more than three opera in it
         foreach ($pieceNav as $i => $id) {
             if($opus->id == max($pieceNav) and $foundMax == false) {
                 $foundMinMax = true;
