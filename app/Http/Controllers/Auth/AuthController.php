@@ -76,10 +76,11 @@ class AuthController extends Controller
             'email' => $data['email'],
             'permission_id' => Permission::where('schema_name', 'User')->value('id'),
             'password' => bcrypt($data['password']),
+            'timezone' => 'US\Central'
         ]);
 
         $user->profile()->save(new Profile(['biography'=>'Not filled out yet']));
-        $user->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
+        //$user->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
 
         return $user;
     }

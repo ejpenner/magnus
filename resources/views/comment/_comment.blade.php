@@ -15,12 +15,14 @@
                         <div class="col-md-10">
                             <div class="row"><span class="comment-name">{{ $comment->user->name }}</span></div>
                             <div class="comment-body">
-                                <p class="comment-date">{{ $comment->created_at }}</p>
-                                <p>{{ $comment->body }}</p>
+                                <div class="comment-date">{{ $comment->created_at }}</div>
+                                <p class="comment-text">{{ $comment->body }}</p>
                             </div>
                         </div>
                     </div>
-                    @include('comment._replyChild', ['comment'=>$comment])
+                    <div class="container">
+                        @include('comment._replyChild', ['comment'=>$comment])
+                    </div>
                 </div>
 
                 <div class="container-fluid">

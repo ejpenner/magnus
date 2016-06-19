@@ -4,7 +4,7 @@
     <div class="container reply-form form-group">
         <div>
             {!! Form::open(['action'=>['CommentController@store', $opus->id], 'method'=>'post']) !!}
-            {!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>'4']) !!}
+            {!! Form::textarea('body', null, ['class'=>'form-control reply-textarea', 'rows'=>'4']) !!}
             {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
             {!! Form::close() !!}
         </div>

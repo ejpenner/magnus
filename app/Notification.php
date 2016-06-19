@@ -45,4 +45,9 @@ class Notification extends Model
     public function notify(User $user) {
         $user->notifications()->attach($this->id);
     }
+    
+    public function deleteNotification(User $user)
+    {
+        $user->notifications()->detach($this->id);
+    }
 }

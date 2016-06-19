@@ -118,13 +118,30 @@ class Opus extends Model
     }
 
     /**
-     * published_at mutator
+     * Return the time of creation with respect to the user's timezone
+     * @param $value
+     * @return bool|string|static
+     */
+    public function getCreatedAtAttribute($value) {
+        if(isset(Auth::user()->timezone)) {
+            return date_format(Carbon::parse($value)->timezone(Auth::user()->timezone), 'M d, Y g:iA');
+        } else {
+            return Carbon::parse($value);
+        }
+    }
+
+    /**
+     *  returns published_at with respect to the user's timezone
      * 
      * @param $value
      * @return bool|string
      */
     public function getPublishedAtAttribute($value){
-        return date_format(Carbon::parse($value), 'F j, Y');
+        if(isset(Auth::user()->timezone)) {
+            return date_format(Carbon::parse($value)->timezone(Auth::user()->timezone), 'F d, Y');
+        } else {
+            return Carbon::parse($value);
+        }
     }
 
     /**

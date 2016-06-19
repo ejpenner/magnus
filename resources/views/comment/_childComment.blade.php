@@ -12,12 +12,14 @@
                 <div class="col-md-10">
                     <div class="row"><span class="comment-name">{{ $childComment->user->name }}</span> > <a href="{{ Request::url() }}#{{ $comment->id }}">{{ $comment->user->name }}</a></div>
                     <div class="comment-body">
-                        <p class="comment-date">{{ $childComment->created_at }}</p>
-                        <p>{{ $childComment->body }}</p>
+                        <div class="comment-date">{{ $childComment->created_at }}</div>
+                        <p class="comment-text">{{ $childComment->body }}</p>
                     </div>
                 </div>
             </div>
-            @include('comment._replyChild', ['comment'=>$childComment])
+            <div class="container">
+                @include('comment._replyChild', ['comment'=>$childComment])
+            </div>
         </div>
         @if($childComment->allChildComments->count() > 0)
             @include('comment._childComment', ['comment' => $childComment, 'opus'=>$opus])

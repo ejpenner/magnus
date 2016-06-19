@@ -10,7 +10,6 @@
 @newSuccess: #6d9771;
 @newDefault: #EEE;
 
-@comment-offset: -80px;
 @white: #FFFFFF;
 
 @brand-primary: @newPrimary;
@@ -215,10 +214,8 @@ footer {
 }
 // avatar styling
 .avatar {
-  margin-right: 10px;
-  img {
-    .border-radius(5px);
-  }
+  margin-right: 5px;
+  .border-radius(5px);
 }
 
 .piece-show {
@@ -270,15 +267,19 @@ footer {
   .comment-body {
     background-color: @white;
     .border-radius();
+    //height: 100%;
+    min-height: 130px;
     //width: inherit;
     //padding: 15px 0 10px 0;
 
     .comment-date {
-      padding: 10px 10px 0px 10px;
+      padding: 5px 10px 0px 10px;
+      color: #8c8c8c;
     }
 
-    p {
-      padding: 15px 10px 20px 10px;
+    .comment-text {
+      margin-top: -5px;
+      padding: 15px 10px 30px 10px;
     }
   }
 }
@@ -308,10 +309,11 @@ footer {
 
 .reply-form {
   padding: 5px;
-  margin-left: 20px;
+  margin-left: 40px;
+  width:inherit;
   display: none;
-  textarea {
-    width:65%;
+  .reply-textarea {
+    width: 70%;
     margin-bottom: 2px;
   }
 }
