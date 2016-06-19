@@ -4,40 +4,65 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-use Input;
-use File;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 
 class Opus extends Model
 {
-    protected $fillable =   ['image_path',
-        'thumbnail_path',
+    protected $fillable =   [
+        'image_path', 'thumbnail_path',
         'title','comment','user_id',
-        'published_at', 'views'];
+        'published_at', 'views'
+    ];
+
     protected $dates = ['created_at', 'updated_at', 'published_at'];
 
     private $imageDirectory = 'images';
     private $thumbnailDirectory = 'thumbnails';
-    private $resizeTo = 325;
+    private $resizeTo = 300;
 
+    /**
+     * Opus has a M:1 relationship with User model
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo('App\User');
     }
 
+    /**
+     * Opus has a 0:M relationship with Comment model
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function comments() {
         return $this->hasMany('App\Comment');
     }
 
+    /**
+     * Opus model has an M:N relationship with Tag model
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function tags()
     {
         return $this->belongsToMany('App\Tag')->withTimestamps();
     }
-    
+
+    /**
+     * Opus model has a M:N relationship with Gallery model
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function galleries() {
         return $this->belongsToMany('App\Gallery')->withTimestamps();
     }
-    
+
+    /**
+     * Opus model has a 1:M relationship with Notification model
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function notifications() {
         return $this->hasMany('App\Notification');
     }
@@ -53,6 +78,8 @@ class Opus extends Model
     }
 
     /**
+     * Set the user_id attribute of this opus
+     *
      * @param $id
      */
     public function setUserIdAttribute($id)
@@ -60,29 +87,56 @@ class Opus extends Model
         $this->attributes['user_id'] = $id;
     }
 
+    /**
+     * Query scope that only returns Opus that are published
+     * 
+     * @param $query
+     */
     public function scopePublished($query) {
         $query->where('published_at', '<=', Carbon::now());
     }
+
+    /**
+     * Query scope that only returns Opus that are unpublished
+     *
+     * @param $query
+     */
     public function scopeUnpublished($query)
     {
         $query->where('published_at', '=>', Carbon::now());
     }
+
+    /**
+     * Setter for published_at attribute
+     * @param $date
+     */
     public function setPublishedAtAttribute($date)
     {
         $this->attributes['published_at'] = Carbon::parse($date);
         //$this->attributes['published_at'] = Carbon::createFromFormat('Y-m-d', $date);
     }
 
+    /**
+     * published_at mutator
+     * 
+     * @param $value
+     * @return bool|string
+     */
     public function getPublishedAtAttribute($value){
         return date_format(Carbon::parse($value), 'F j, Y');
     }
 
+    /**
+     * Increment this opus' view by one
+     */
     public function view() {
         $this->views = $this->views++;
         $this->save();
     }
 
     /**
+     * Returns a relative path this this opus' image
+     * 
      * @return string
      */
     public function getImage()
@@ -95,6 +149,8 @@ class Opus extends Model
         return $this->imageDirectory.'/missing.png';
     }
     /**
+     * Returns the relative path to this opus' thumbnail image
+     * 
      * @return string
      */
     public function getThumbnail()
@@ -107,8 +163,10 @@ class Opus extends Model
         return $this->thumbnailDirectory.'/missing.png';
     }
     /**
+     * Resize the opus' image for it's thumbnail
+     * 
      * @param $image
-     * @return mixed
+     * @return Image
      */
     private function resize($image)
     {
