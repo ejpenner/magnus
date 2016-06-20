@@ -12,8 +12,14 @@ Route::model('profile', 'Profile');
  */
 Route::auth();
 
+/**
+ * Home route
+ */
 Route::get('/', 'HomeController@recent')->name('home');
 
+/**
+ * Error 401 Unauthorized Route
+ */
 Route::get('errors/401', ['as' => '401', function() {
     return view('errors.401');
 }]);
@@ -45,10 +51,30 @@ Route::resource('opus.comment', 'CommentController');
 Route::get('gallery/{gallery}/{opus}',      'OpusController@galleryShow');
 
 /**
+ * Profile routes
+ */
+Route::resource('profile', 'ProfileController');
+Route::get('profile/{profile}/galleries', 'ProfileController@galleries');
+Route::get('profile/{profile}/opera', 'ProfileController@opera');
+Route::get('profile/{profile}/watchers', 'ProfileController@watchers');
+Route::get('profile/{profile}/watching', 'ProfileController@watching');
+
+/**
+ * Search route
+ */
+Route::get('/search/{terms}', ['uses'=> 'SearchController@searchAll', 'as'=>'searchAll']);
+
+/**
  * Authenticated middleware group
  */
 Route::group(['middleware' => ['auth']], function () {
 
+    /**
+     * Alternate create and store routes for creating Opus
+     */
+    Route::get('/submit', 'OpusController@newSubmission');
+    Route::post('/submit', 'OpusController@submit');
+    
     /**
      * CRUD routes for opera in galleries
      */
@@ -116,25 +142,4 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('users/{id}/avatar', 'UserController@avatarAdmin');
         Route::post('users/{id}/avatar', 'UserController@uploadAvatarAdmin');
     });
-
-//    Route::post('opus/{opus}/c/{c}', 'CommentController@storeChild');
-//    Route::patch('opus/{opus}/c/{c}', 'CommentController@updateChild');
-//    Route::delete('opus/{opus}/c/{c}', 'CommentController@destroyChild');
-
-    Route::get('/submit', 'OpusController@newSubmission');
-    Route::post('/submit', 'OpusController@submit');
-
 });
-
-Route::resource('profile', 'ProfileController');
-Route::get('profile/{profile}/galleries', 'ProfileController@galleries');
-Route::get('profile/{profile}/opera', 'ProfileController@opera');
-Route::get('profile/{profile}/watchers', 'ProfileController@watchers');
-Route::get('profile/{profile}/watching', 'ProfileController@watching');
-
-
-
-
-Route::get('/home', 'HomeController@index');
-//Route::get('/recent', ['uses'=> 'HomeController@recent', 'as'=>'recent']);
-Route::get('/search/{terms}', ['uses'=> 'SearchController@searchAll', 'as'=>'searchAll']);
