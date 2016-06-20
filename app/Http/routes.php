@@ -74,7 +74,7 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::get('/submit', 'OpusController@newSubmission');
     Route::post('/submit', 'OpusController@submit');
-    
+
     /**
      * CRUD routes for opera in galleries
      */

@@ -27,7 +27,7 @@ class OpusController extends Controller
                 'only' => ['create','store','edit','update','destroy']
             ]
         );
-        $this->middleware('gallery', ['except'=>['show','index']]);
+        $this->middleware('gallery', ['except'=>['show','index','galleryShow']]);
     }
 
     /**
