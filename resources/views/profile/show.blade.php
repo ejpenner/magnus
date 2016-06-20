@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
+    @if($user->name != null)
     <div class="container-fluid">
         @include('profile._header', ['profile'=>$profile,'user'=>$user])
         <div class="col-md-2">
@@ -51,7 +51,7 @@
                 <div class="row">
                     @foreach($operaChunk as $opus)
                         <div class="col-md-3 vcenter gallery-item">
-                            <a href="{{ action('OpusController@show', [$opus->id]) }}"><img class="piece-show" src="/{{ $opus->getThumbnail() }}" alt=""></a>
+                            <a href="{{ action('OpusController@show', [$opus->id]) }}"><img class="piece-show" src="/{{ $opus->getThumbnail() }}" alt="{{ $opus->title }}"></a>
                             <h4><a href="{{ action('OpusController@show', [$opus->id]) }}">{{ $opus->title }}</a></h4>
                         </div>
                     @endforeach
@@ -85,4 +85,9 @@
             </div>
         </div>
     </div>
+    @else
+        <div class="container">
+            <h2>Profile does not exist</h2>
+        </div>
+    @endif
 @endsection

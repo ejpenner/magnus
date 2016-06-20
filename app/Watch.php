@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Watch;
 use Illuminate\Support\Facades\Auth;
 
 class Watch extends Model

@@ -50,4 +50,23 @@ class Notification extends Model
     {
         $user->notifications()->detach($this->id);
     }
+
+    /**
+     *  Create a new Notification and let all users who watch the User know about it
+     *
+     * @param Opus $opus
+     */
+    public static function notifyWatchersNewOpus(User $user, Opus $opus)
+    {
+        $notification = Notification::create([
+            'handle'=>'opus',
+            'opus_id' => $opus->id,
+            'content' => $opus->title
+        ]);
+
+        foreach($user->watchers as $watcher) {
+            $u = User::find($watcher->user_id);
+            $notification->notify($u);
+        }
+    }
 }

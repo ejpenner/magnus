@@ -7,14 +7,12 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 
-
 use App\Opus;
 use App\Gallery;
 use App\Tag;
 use App\Comment;
 use App\User;
 use App\Notification;
-use Illuminate\Support\Facades\Session;
 
 class OpusController extends Controller
 {
@@ -77,12 +75,10 @@ class OpusController extends Controller
         $opus->setThumbnail($request);
         $opus->published_at = Carbon::now();
         $opus = Auth::user()->opera()->save($opus);
-
         $user = User::where('id', $opus->user_id)->first();
-        $user->notifyWatchersNewOpus($opus);
+        Notification::notifyWatchersNewOpus($user, $opus);
 
         if($request->input('tags') !== null) {
-
             $tags = explode(' ', trim($request->input('tags')));
             // for each tag, check if it exists, if it doesn't create it
             $this->makeTags($tags);
@@ -103,7 +99,7 @@ class OpusController extends Controller
         $opus->published_at = Carbon::now();
         $opus = Auth::user()->opera()->save($opus);
         $user = User::where('id', $opus->user_id)->first();
-        $user->notifyWatchersNewOpus($opus);
+        Notification::notifyWatchersNewOpus($user, $opus);
 
         $gallery = Gallery::findOrFail($gallery_id);
         $gallery->updated_at = Carbon::now();
@@ -138,10 +134,8 @@ class OpusController extends Controller
             ->where('gallery_opus.opus_id', $opus->id);
         $gallery = $query->first();
         $this->viewPiece($request, $opus);
-        //dd(session('viewed'));
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
-        // check to see if this opus is part of a gallery
         if(isset($gallery)) {
             $galleryNav = $this->makeNavigator($gallery, $opus);
         }
@@ -162,8 +156,6 @@ class OpusController extends Controller
             ->where('gallery_opus.opus_id', $opus->id);
         $gallery = $query->first();
         $this->viewPiece($request, $opus);
-
-
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
         $galleryNav = $this->makeNavigator($gallery, $opus);

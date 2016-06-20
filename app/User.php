@@ -371,23 +371,5 @@ class User extends Authenticatable
             return false;
         }
     }
-
-    /**
-     *  Create a new notification and let all users who watch you know
-     *
-     * @param Opus $opus
-     */
-    public function notifyWatchersNewOpus(Opus $opus)
-    {
-        $notification = Notification::create([
-            'handle'=>'opus',
-            'opus_id' => $opus->id,
-            'content' => $opus->title
-        ]);
-
-        foreach($this->watchers as $watcher) {
-            $user = User::find($watcher->user_id);
-            $user->notify($notification);
-        }
-    }
+    
 }

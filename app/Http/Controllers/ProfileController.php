@@ -90,8 +90,7 @@ class ProfileController extends Controller
     public function show(User $user)
     {
         $profile = Profile::where('user_id', $user->id)->first();
-        $galleries = Gallery::where('user_id', $user->id)->paginate(12);
-        //$pieces = Piece::where('user_id', $user->id)->join('features', 'features.piece_id', '=', 'pieces.id')->paginate(12);
+        $galleries = Gallery::where('user_id', $user->id)->limit(4)->get();
         $opera = Opus::where('user_id', $user->id)->limit(8)->get();
         
         return view('profile.show', compact('profile', 'user', 'galleries', 'opera'));
