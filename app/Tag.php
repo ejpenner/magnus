@@ -23,5 +23,23 @@ class Tag extends Model
         return $this->belongsToMany('App\Opus')->withTimestamps();
     }
     
-    
+    public static function makeTags(Opus $opus, $tag_string){
+        $tags = explode(' ', trim($tag_string));
+        if(!empty($tags)) {
+            foreach($tags as $tag) {
+                if(Tag::where('name', $tag)->first() === null) {
+                    Tag::create(['name'=>$tag]);
+                }
+            }
+            $tagIds = [];
+            foreach($tags as $tag) {
+                $id = Tag::where('name', $tag)->value('id');
+                array_push($tagIds, $id);
+            }
+
+            $opus->tags()->sync($tagIds);
+        } else {
+            return;
+        }
+    }
 }

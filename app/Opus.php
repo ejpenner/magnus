@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Requests\Request;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
@@ -145,11 +146,48 @@ class Opus extends Model
     }
 
     /**
-     * Increment this opus' view by one
+     * Increment this opus' pageviews
      */
-    public function view() {
-        $this->views = $this->views++;
-        $this->save();
+    public function pageview($request) {
+        $seen = false;
+        $viewed = session('viewed');
+        if(Auth::check() and  !Auth::user()->isOwner($this)) {
+            if($request->session()->has('viewed')) {
+                foreach ($viewed as $view) {
+                    if ($this->id == $view) { // the user has seen it before
+                        $seen = true;
+                        break;
+                    }
+                }
+                if (!$seen) {
+                    $request->session()->push('viewed', $this->id);
+                    $this->views = $this->views + 1;
+                    $this->save();
+                }
+            } else {
+                $request->session()->push('viewed', $this->id);
+                $this->views = $this->views + 1;
+                $this->save();
+            }
+        } else { // viewer is a guest
+            if($request->session()->has('viewed')) { // guest has seen another opus already
+                foreach ($viewed as $view) {
+                    if ($this->id == $view) { // the user has seen it before
+                        $seen = true;
+                        break;
+                    }
+                }
+                if (!$seen) {
+                    $request->session()->push('viewed', $this->id);
+                    $this->views = $this->views + 1;
+                    $this->save();
+                }
+            } else { // guest is viewing their first opus
+                $request->session()->push('viewed', $this->id);
+                $this->views = $this->views + 1;
+                $this->save();
+            }
+        }
     }
 
     /**

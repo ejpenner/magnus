@@ -79,18 +79,19 @@ class OpusController extends Controller
         Notification::notifyWatchersNewOpus($user, $opus);
 
         if($request->input('tags') !== null) {
-            $tags = explode(' ', trim($request->input('tags')));
-            // for each tag, check if it exists, if it doesn't create it
-            $this->makeTags($tags);
-            // get tag IDs
-            $tagIds = $this->getTagIds($tags);
-            //attach the tags to this piece
-            $opus->tags()->attach($tagIds);
+            Tag::makeTags($opus, $request->input('tags'));
         }
 
         return redirect()->route('opus.show', $opus->id)->with('success', 'Your work been added!');
     }
 
+    /**
+     * Controller method for showing /gallery/{gallery}/{opus} routes
+     *
+     * @param Requests\OpusCreateRequest $request
+     * @param $gallery_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function galleryStore(Requests\OpusCreateRequest $request, $gallery_id) {
         $opus = new Opus($request->all());
 
@@ -107,14 +108,7 @@ class OpusController extends Controller
         $gallery->opera()->attach($opus->id);
 
         if($request->input('tags') !== null) {
-
-            $tags = explode(' ', trim($request->input('tags')));
-            // for each tag, check if it exists, if it doesn't create it
-            $this->makeTags($tags);
-            // get tag IDs
-            $tagIds = $this->getTagIds($tags);
-            //attach the tags to this piece
-            $opus->tags()->attach($tagIds);
+            Tag::makeTags($opus, $request->input('tags'));
         }
 
         return redirect()->route('opus.show', $opus->id)->with('success', 'Your work been added!');
@@ -133,7 +127,7 @@ class OpusController extends Controller
         $query->join('gallery_opus', 'galleries.id', '=', 'gallery_opus.gallery_id')
             ->where('gallery_opus.opus_id', $opus->id);
         $gallery = $query->first();
-        $this->viewPiece($request, $opus);
+        $opus->pageview($request);
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
         if(isset($gallery)) {
@@ -155,7 +149,7 @@ class OpusController extends Controller
         $query->join('gallery_opus', 'galleries.id', '=', 'gallery_opus.gallery_id')
             ->where('gallery_opus.opus_id', $opus->id);
         $gallery = $query->first();
-        $this->viewPiece($request, $opus);
+        $opus->pageview($request);
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
         $galleryNav = $this->makeNavigator($gallery, $opus);
@@ -196,15 +190,9 @@ class OpusController extends Controller
         $opus->update($request->except('image','published_at'));
 
         // check if tags have changed
-        if($request->input('tags') === null) {
-            $tags = [];
-        } else {
-            $tags = explode(' ', trim($request->input('tags')));
-            $this->makeTags($tags);
-            $tags = $this->getTagIds($tags);
+        if($request->input('tags') !== null) {
+            Tag::makeTags($opus, $request->input('tags'));
         }
-
-        $opus->tags()->sync($tags);
 
         return redirect()->route('opus.show', [$opus->id])->with('success', 'Updated opus successfully!');
     }
@@ -228,22 +216,16 @@ class OpusController extends Controller
         // if the user wants to change the image file
 
         if($request->file('image') !== null) {
-            $imageStatus = $piece->updateImage($request);
+            $imageStatus = $opus->updateImage($request);
         }
 
         // update everything except the image and published at
         $opus->update($request->except('image','published_at'));
 
         // check if tags have changed
-        if($request->input('tags') === null) {
-            $tags = [];
-        } else {
-            $tags = explode(' ', trim($request->input('tags')));
-            $this->makeTags($tags);
-            $tags = $this->getTagIds($tags);
+        if($request->input('tags') !== null) {
+            Tag::makeTags($opus, $request->input('tags'));
         }
-
-        $opus->tags()->sync($tags);
 
         return redirect()->route('opus.show', [$opus->id])->with('success', 'Updated opus successfully!');
     }
@@ -270,35 +252,6 @@ class OpusController extends Controller
         $opus->delete();
 
         return redirect()->route('gallery.show', $gallery_id)->with('success', 'The piece has been deleted!');
-    }
-
-    /**
-     *  for a list of tags, if the tag doesn't already exist in tags table
-     *  create a new entry for it
-     *
-     * @param $tags
-     */
-    private function makeTags($tags) {
-        foreach($tags as $tag) {
-            if(Tag::where('name', $tag)->first() === null) {
-                Tag::create(['name'=>$tag]);
-            }
-        }
-    }
-
-    /**
-     *  For a list of tags, return the IDs of those tags
-     *
-     * @param $tags
-     * @return array
-     */
-    private function getTagIds($tags) {
-        $tagIds = [];
-        foreach($tags as $tag) {
-            $id = Tag::where('name', $tag)->value('id');
-            array_push($tagIds, $id);
-        }
-        return $tagIds;
     }
 
     /**
@@ -366,52 +319,5 @@ class OpusController extends Controller
             }
         }
         return $galleryNav;
-    }
-
-    /**
-     * Increment the page view on the opus if the user has not seen it this session
-     * @param Request $request
-     * @param Opus $opus
-     */
-    private function viewPiece(Request $request, Opus $opus) {
-        $seen = false;
-        $viewed = session('viewed');
-        if(Auth::check() and  !Auth::user()->isOwner($opus)) {
-            if($request->session()->has('viewed')) {
-                foreach ($viewed as $view) {
-                    if ($opus->id == $view) { // the user has seen it before
-                        $seen = true;
-                        break;
-                    }
-                }
-                if (!$seen) {
-                    $request->session()->push('viewed', $opus->id);
-                    $opus->views = $opus->views + 1;
-                    $opus->save();
-                }
-            } else {
-                $request->session()->push('viewed', $opus->id);
-                $opus->views = $opus->views + 1;
-                $opus->save();
-            }
-        } else { // viewer is a guest
-            if($request->session()->has('viewed')) { // guest has seen another opus already
-                foreach ($viewed as $view) {
-                    if ($opus->id == $view) { // the user has seen it before
-                        $seen = true;
-                        break;
-                    }
-                }
-                if (!$seen) {
-                    $request->session()->push('viewed', $opus->id);
-                    $opus->views = $opus->views + 1;
-                    $opus->save();
-                }
-            } else { // guest is viewing their first opus
-                $request->session()->push('viewed', $opus->id);
-                $opus->views = $opus->views + 1;
-                $opus->save();
-            }
-        }
     }
 }
