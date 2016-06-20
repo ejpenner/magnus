@@ -1,4 +1,3 @@
-
 <div class="form-group col-md-6">
     {!! Form::label('name', 'Name') !!}
     {!! Form::text('name', null, ['class' => 'form-control']) !!}
@@ -9,8 +8,9 @@
     {!! Form::text('email', null, ['class' => 'form-control']) !!}
 </div>
 
-<div class="form-group col-md-6">
-    {!! Timezone::selectForm(null, 'Select your timezone',['class'=>'form-control','name'=>'timezone']) !!}
+<div class="form-group">
+    {!! Form::label('timezone', 'Timezone') !!}
+    {!! Timezone::selectForm(isset($user->timezone) ? $user->timezone : null, 'Select your timezone',['class'=>'form-control','name'=>'timezone']) !!}
 </div>
 
 <div class="form-group col-md-6">

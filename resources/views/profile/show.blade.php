@@ -62,7 +62,10 @@
     <div class="container">
         <div class="col-md-6">
             <div class="panel panel-default">
-                <div class="panel-heading">Watching</div>
+                <div class="panel-heading">
+                    Watching
+                    <a class="btn btn-xs btn-primary pull-right" href="{{ action('ProfileController@watching', $user->slug) }}">Full list</a>
+                </div>
                 <div class="panel-body">
                     <ul>
                         @foreach($user->listWatchedUsers() as $watcher)
@@ -74,7 +77,10 @@
         </div>
         <div class="col-md-6">
             <div class="panel panel-default">
-                <div class="panel-heading">Watchers</div>
+                <div class="panel-heading">
+                    Watchers
+                    <a class="btn btn-xs btn-primary pull-right" href="{{ action('ProfileController@watchers', $user->slug) }}">Full list</a>
+                </div>
                 <div class="panel-body">
                     <ul>
                         @foreach($user->listWatchers() as $watcher)

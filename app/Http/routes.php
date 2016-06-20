@@ -25,6 +25,9 @@ Route::bind('users', function ($value, $route) {
     return \App\User::whereSlug(strtolower($value))->first();
 });
 
+/**
+ *  binds User model via slug to {profile} wildcard
+ */
 Route::bind('profile', function ($value, $route) {
     return \App\User::whereSlug(strtolower($value))->first();
 });
@@ -126,6 +129,8 @@ Route::group(['middleware' => ['auth']], function () {
 Route::resource('profile', 'ProfileController');
 Route::get('profile/{profile}/galleries', 'ProfileController@galleries');
 Route::get('profile/{profile}/opera', 'ProfileController@opera');
+Route::get('profile/{profile}/watchers', 'ProfileController@watchers');
+Route::get('profile/{profile}/watching', 'ProfileController@watching');
 
 
 

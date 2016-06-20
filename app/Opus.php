@@ -21,7 +21,9 @@ class Opus extends Model
 
     private $imageDirectory = 'images';
     private $thumbnailDirectory = 'thumbnails';
-    private $resizeTo = 300;
+    private $imageSubDirectory = '';
+    private $thumbnailSubdirectory = '';
+    private $resizeTo = 275;
 
     /**
      * Opus has a M:1 relationship with User model
@@ -199,8 +201,8 @@ class Opus extends Model
     {
         if (!empty($this->image_path) && File::exists($this->image_path)) {  // $exists = Storage::disk('images')->has(basename($this->image_path));
             // Get the filename from the full path
-            $filename = basename($this->image_path);
-            return  $this->imageDirectory.'/'.$filename;
+            //$filename = basename($this->image_path);
+            return  $this->image_path;
         }
         return $this->imageDirectory.'/missing.png';
     }
@@ -213,8 +215,8 @@ class Opus extends Model
     {
         if (!empty($this->thumbnail_path) && File::exists($this->thumbnail_path)) {
             // Get the filename from the full path
-            $filename = basename($this->thumbnail_path);
-            return $this->thumbnailDirectory.'/'.$filename;
+            //$filename = basename($this->thumbnail_path);
+            return $this->thumbnail_path;
         }
         return $this->thumbnailDirectory.'/missing.png';
     }
@@ -247,9 +249,10 @@ class Opus extends Model
      * @param  \Illuminate\Http\Request  $request
      * @return string
      */
-    public function storeImage($request)
+    public function storeImage(User $user, $request)
     {
-        $destinationPath = $this->imageDirectory; // upload path, goes to the public folder
+        $userDirectory = $user->username;
+        $destinationPath = $this->imageDirectory.'/'.$userDirectory; // upload path, goes to the public folder
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         $fileName = date('Ymd').'_'.substr(microtime(), 2, 8).'_uploaded.'.$extension; // renaming image
         $request->file('image')->move($destinationPath, $fileName); // uploading file to given path
@@ -265,9 +268,10 @@ class Opus extends Model
      * @param $request
      * @return string
      */
-    public function storeThumbnail($request)
+    public function storeThumbnail(User $user, $request)
     {
-        $thumbDestination = $this->thumbnailDirectory;
+        $userDirectory = $user->username;
+        $thumbDestination = $this->thumbnailDirectory.'/'.$userDirectory;
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         $fileThumbnailName = date('Ymd').'_'.substr(microtime(), 2, 8).'_thumb.'.$extension;
         $thumbnail = $this->resize($this->getImage());
@@ -282,18 +286,20 @@ class Opus extends Model
      * @param  \Illuminate\Http\Request  $request
      * @return void
      */
-    public function setImage($request)
+    public function setImage(User $user, $request)
     {
-        $this->image_path = $this->storeImage($request);
+        $this->image_path = $this->storeImage($user, $request);
+        $this->save();
     }
 
     /**
      *  using storeThumbnail(), also assign this article's thumbnail attribute the path returned
      * @param $request
      */
-    public function setThumbnail($request)
+    public function setThumbnail(User $user, $request)
     {
-        $this->thumbnail_path = $this->storeThumbnail($request);
+        $this->thumbnail_path = $this->storeThumbnail($user, $request);
+        $this->save();
     }
 
     /**
@@ -316,12 +322,12 @@ class Opus extends Model
      * @param $request
      * @return string
      */
-    public function updateImage($request)
+    public function updateImage(User $user, $request)
     {
         if ($request->file('image') !== null) {  /// check if an image is attached
             if ($this->deleteImages()) {
-                $this->setImage($request); // update the image
-                $this->setThumbnail($request); // update the thumbnail
+                $this->setImage($user, $request); // update the image
+                $this->setThumbnail($user, $request); // update the thumbnail
                 $this->update(); // set the image update
                 return 'Image files updated successfully.';
             } else {

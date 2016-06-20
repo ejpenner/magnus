@@ -13,7 +13,7 @@
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     $timezones = ['America/Denver', 'America/New_York', 'America/Chicago', 'America/Los_Angeles'];
-    return [
+        $user = [
         'name'      => $faker->name,
         'email'     => $faker->safeEmail,
         'username'  => $faker->userName,
@@ -23,6 +23,9 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'timezone'  => $timezones[rand(0,3)],
         'remember_token' => str_random(10),
     ];
+    File::makeDirectory(public_path('images/'.$user['username']));
+    File::makeDirectory(public_path('thumbnails/'.$user['username']));
+    return $user;
 });
 
 $factory->define(App\Opus::class,  function (Faker\Generator $faker){
@@ -32,7 +35,6 @@ $factory->define(App\Opus::class,  function (Faker\Generator $faker){
     $usersMax = \App\User::count();
     $faker->seed(rand(11111,99999));
     $image_path = substr($faker->image($dir = public_path('images'), $width = 600, $height=400,$theme), 38);
-
     $thumbnail_path = substr($faker->image($dir = public_path('thumbnails'), $width = $res[0], $height=$res[1], $theme), 38);
     return [
         'title' => ucwords($faker->words(3, true)),

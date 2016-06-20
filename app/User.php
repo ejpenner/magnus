@@ -334,7 +334,10 @@ class User extends Authenticatable
     public function listWatchers()
     {
         $watcherList = Collection::make();
-        foreach($this->watchedUsers as $watcher) {
+        foreach($this->watchedUsers as $i => $watcher) {
+            if($i >= 10) {
+                return $watcherList;
+            }
             $watcherList->push(User::where('id', $watcher->pivot->watcher_user_id)->first());
         }
         return $watcherList;
@@ -348,8 +351,11 @@ class User extends Authenticatable
     public function listWatchedUsers()
     {
         $watcherList = Collection::make();
-        foreach($this->watchers as $watcher) {
+        foreach($this->watchers as $i => $watcher) {
             if($this->id != $watcher->pivot->watched_user_id) {
+                if($i >= 10) {
+                    return $watcherList;
+                }
                 $watcherList->push(User::where('id', $watcher->pivot->watched_user_id)->first());
             }
         }

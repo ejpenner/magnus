@@ -7,6 +7,7 @@ use App\Profile;
 use App\Gallery;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Validator;
 use App\Permission;
 use App\Http\Controllers\Controller;
@@ -74,12 +75,13 @@ class AuthController extends Controller
             'username' => $data['username'],
             'slug' => str_slug($data['username']),
             'email' => $data['email'],
-            'permission_id' => Permission::where('schema_name', 'User')->value('id'),
             'password' => bcrypt($data['password']),
             'timezone' => 'US\Central'
         ]);
 
         $user->profile()->save(new Profile(['biography'=>'Not filled out yet']));
+        File::makeDirectory(public_path('images/'.$user->username));
+        File::makeDirectory(public_path('thumbnails/'.$user->username));
         //$user->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
 
         return $user;

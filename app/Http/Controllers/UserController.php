@@ -72,6 +72,7 @@ class UserController extends Controller
             $user->username = $request->username;
             $user->email = $request->email;
             $user->slug = str_slug($request->username, '-');
+            $user->timezone = $request->input('timezone');
             if ($request->password != "" and $request->password != null) {
                 $user->password = bcrypt($request->password);
             }

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
 use App\User;
 use App\Role;
 use App\Gallery;
@@ -16,7 +17,9 @@ class UserSeeder extends Seeder
     public function run()
     {
         $vilest = User::create(['name'=>'Furrman', 'username'=>'Vilest', 'slug' => 'vilest', 'email'=>'murrus@purr.us',
-            'password'=>'$2y$10$2vC4FBlXEw9jAp2mHX/I1ereZawBmX.tipKbEIfMlQo1g6VytHkQa']);
+            'password'=>'$2y$10$2vC4FBlXEw9jAp2mHX/I1ereZawBmX.tipKbEIfMlQo1g6VytHkQa', 'timezone'=>'America/Chicago']);
+        File::makeDirectory(public_path('images/'.$vilest->username));
+        File::makeDirectory(public_path('thumbnails/'.$vilest->username));
         $vilest->roles()->attach(Role::where('role_name', 'Developer')->value('id'));
    
 

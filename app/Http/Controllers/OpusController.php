@@ -69,13 +69,12 @@ class OpusController extends Controller
      */
     public function store(Requests\OpusCreateRequest $request)
     {
-
         $opus = new Opus($request->all());
-        $opus->setImage($request);
-        $opus->setThumbnail($request);
         $opus->published_at = Carbon::now();
         $opus = Auth::user()->opera()->save($opus);
         $user = User::where('id', $opus->user_id)->first();
+        $opus->setImage($user, $request);
+        $opus->setThumbnail($user, $request);
         Notification::notifyWatchersNewOpus($user, $opus);
 
         if($request->input('tags') !== null) {
@@ -94,19 +93,16 @@ class OpusController extends Controller
      */
     public function galleryStore(Requests\OpusCreateRequest $request, $gallery_id) {
         $opus = new Opus($request->all());
-
-        $opus->setImage($request);
-        $opus->setThumbnail($request);
         $opus->published_at = Carbon::now();
         $opus = Auth::user()->opera()->save($opus);
         $user = User::where('id', $opus->user_id)->first();
+        $opus->setImage($user, $request);
+        $opus->setThumbnail($user, $request);
         Notification::notifyWatchersNewOpus($user, $opus);
 
         $gallery = Gallery::findOrFail($gallery_id);
-        $gallery->updated_at = Carbon::now();
-        $gallery->save();
-        $gallery->opera()->attach($opus->id);
-
+        $gallery->addOpus($opus);
+        
         if($request->input('tags') !== null) {
             Tag::makeTags($opus, $request->input('tags'));
         }
@@ -179,11 +175,11 @@ class OpusController extends Controller
     public function update(Request $request, $id)
     {
         $opus = Opus::findOrFail($id);
-
+        $user = User::findOrFail($opus->user_id);
         // if the user wants to change the image file
 
         if($request->file('image') !== null) {
-            $imageStatus = $opus->updateImage($request);
+            $imageStatus = $opus->updateImage($user, $request);
         }
 
         // update everything except the image and published at
@@ -212,11 +208,12 @@ class OpusController extends Controller
         $gallery->save();
 
         $opus = Opus::findOrFail($opus_id);
-
+        $user = User::findOrFail($opus->user_id);
+        
         // if the user wants to change the image file
 
         if($request->file('image') !== null) {
-            $imageStatus = $opus->updateImage($request);
+            $imageStatus = $opus->updateImage($user, $request);
         }
 
         // update everything except the image and published at
