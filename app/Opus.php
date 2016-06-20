@@ -127,7 +127,7 @@ class Opus extends Model
         if(isset(Auth::user()->timezone)) {
             return date_format(Carbon::parse($value)->timezone(Auth::user()->timezone), 'M d, Y g:iA');
         } else {
-            return Carbon::parse($value);
+            return date_format(Carbon::parse($value), 'F d, Y');
         }
     }
 
@@ -141,7 +141,7 @@ class Opus extends Model
         if(isset(Auth::user()->timezone)) {
             return date_format(Carbon::parse($value)->timezone(Auth::user()->timezone), 'F d, Y');
         } else {
-            return Carbon::parse($value);
+            return date_format(Carbon::parse($value), 'F d, Y');
         }
     }
 
@@ -191,7 +191,7 @@ class Opus extends Model
     }
 
     /**
-     * Returns a relative path this this opus' image
+     * Returns a relative path to this opus' image
      * 
      * @return string
      */
