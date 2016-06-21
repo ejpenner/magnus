@@ -48,12 +48,34 @@ class OpusController extends Controller
     }
 
     public function newSubmission(){
-        return dd(Auth::user()->watchedUsers);
+        $user = Auth::user();
+        $galleries = Gallery::where('user_id', $user->id)->get();
+        return view('opus.submit', compact('galleries'));
 
     }
-    
+
     public function submit(Requests\OpusCreateRequest $request) {
+        //dd($request->all());
+        $gallery_ids = [];
+        foreach($request->all() as $key => $value) {
+            if(preg_match('/gallery_id\d+/', $key))
+            {
+                array_push($gallery_ids, $value);
+            }
+        }
+
+        $user = Auth::user();
+        $opus = Opus::make($request, $user);
+        Notification::notifyWatchersNewOpus($opus, $user);
+        Tag::makeTags($opus, $request->input('tags'));
         
+        if(count($gallery_ids) > 0) {
+            foreach ($gallery_ids as $id) {
+                Gallery::where('id', $id)->first()->addOpus($opus);
+            }
+        }
+
+        return redirect()->route('opus.show', $opus->id)->with('success', 'Your work been added!');
     }
 
     /**
@@ -202,7 +224,7 @@ class OpusController extends Controller
 
         $opus = Opus::findOrFail($opus_id);
         $user = User::findOrFail($opus->user_id);
-        
+
         // if the user wants to change the image file
 
         if($request->file('image') !== null) {
@@ -261,7 +283,7 @@ class OpusController extends Controller
         ];
         $foundMax = false;
         $foundMin = false;
-        
+
         // get all the Opus ID in the gallery into an array
         foreach ($gallery->opera as $currentOpus) {
             array_push($pieceNav, $currentOpus->id);
@@ -275,7 +297,7 @@ class OpusController extends Controller
 
             return $galleryNav;
         }
-        
+
         // logic for a gallery with only three opera
         if(count($pieceNav) < 3) {
             if($pieceNav[0] == $opus->id) {

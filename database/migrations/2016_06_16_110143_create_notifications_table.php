@@ -17,7 +17,8 @@ class CreateNotificationsTable extends Migration
             $table->string('handle'); //comment, opus, reply, private message, etc
             $table->integer('comment_id')->unsigned();
             $table->integer('opus_id')->unsigned();
-            $table->integer('message_id')->unsigned();
+            $table->integer('private_message_id')->unsigned();
+            $table->integer('favorite_id')->unsigned();
             $table->string('content');
             $table->boolean('read');
             $table->timestamps();

@@ -122,14 +122,14 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Developer middleware group
      */
-    Route::group(['middleware'=>'permission:role,'.Config::get('roles.developer').'', 'prefix'=>'admin'], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.developer').'', 'prefix'=>'admin'], function () {
         Route::get('session', 'AdminController@session');
     });
 
     /**
      * Administration middleware group
      */
-    Route::group(['middleware'=>'permission:role,'.Config::get('roles.administrator').''], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.administrator').''], function () {
         Route::resource('permissions', 'PermissionController');
         Route::resource('users', 'UserController');
         Route::resource('roles', 'RoleController');
@@ -139,7 +139,7 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Global moderator middleware group
      */
-    Route::group(['middleware'=>'permission:role,'.Config::get('roles.globalMod').''], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.globalMod').''], function () {
         Route::get('users/{id}/avatar', 'UserController@avatarAdmin');
         Route::post('users/{id}/avatar', 'UserController@uploadAvatarAdmin');
     });

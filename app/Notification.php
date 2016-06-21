@@ -69,7 +69,14 @@ class Notification extends Model
             $notification->notify($u);
         }
     }
-    
+
+    /**
+     * A static method to create a reply notification and deliver it to $op
+     *
+     * @param User $op
+     * @param User $replier
+     * @param Comment $newComment
+     */
     public static function notifyUserNewReply(User $op, User $replier, Comment $newComment)
     {
         if ($op->id != $replier->id) // if op is not replying to their own comment
@@ -78,7 +85,14 @@ class Notification extends Model
             $notify->notify($op);
         }
     }
-    
+
+    /**
+     * A static method to create a top-level comment notification and deliver it to $op
+     *
+     * @param User $op
+     * @param User $replier
+     * @param Comment $newComment
+     */
     public static function notifyUserNewComment(User $op, Comment $comment)
     {
         $notify = Notification::create(['handle' => 'comment', 'comment_id' => $comment->id, 'content' => $comment->body]);

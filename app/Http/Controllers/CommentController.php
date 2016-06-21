@@ -60,6 +60,17 @@ class CommentController extends Controller
     }
 
     /**
+     * Controller method to store top level comments on profiles
+     * 
+     * @param Requests\CommentRequest $request
+     * @param $profile_id
+     */
+    public function storeProfile(Requests\CommentRequest $request, $profile_id)
+    {
+        
+    }
+
+    /**
      * store a reply to a comment and notify the OP
      *
      * @param Requests\CommentRequest $request
