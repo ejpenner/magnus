@@ -56,7 +56,7 @@ class Notification extends Model
      *
      * @param Opus $opus
      */
-    public static function notifyWatchersNewOpus(User $user, Opus $opus)
+    public static function notifyWatchersNewOpus(Opus $opus, User $user)
     {
         $notification = Notification::create([
             'handle'=>'opus',

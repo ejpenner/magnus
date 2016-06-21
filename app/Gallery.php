@@ -11,6 +11,8 @@ class Gallery extends Model
     protected $casts = [
         'main_gallery' => 'boolean'
     ];
+    
+    protected $dates = ['created_at','updated_at'];
 
     /**
      * Gallery model belongs to the User model
@@ -56,6 +58,29 @@ class Gallery extends Model
     {
         $this->updated_at = Carbon::now();
         $this->save();
-        $this->opera()->dettach($opus->id);
+        $this->opera()->detach($opus->id);
+    }
+
+    /**
+     * Copy the Opus to another gallery
+     * @param Opus $opus
+     * @param Gallery $gallery
+     */
+    public function copyOpus(Opus $opus, Gallery $gallery)
+    {
+        $this->updated_at = Carbon::now();
+        $this->save();
+        $gallery->addOpus($opus);
+    }
+
+    /**
+     * Move the opus to another gallery
+     * @param Opus $opus
+     * @param Gallery $gallery
+     */
+    public function moveOpus(Opus $opus, Gallery $gallery)
+    {
+        $this->removeOpus($opus);
+        $gallery->addOpus($opus);
     }
 }

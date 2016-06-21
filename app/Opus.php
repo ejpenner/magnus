@@ -11,18 +11,16 @@ use Illuminate\Support\Facades\Auth;
 
 class Opus extends Model
 {
-    protected $fillable =   [
+    protected $fillable = [
         'image_path', 'thumbnail_path',
         'title','comment','user_id',
         'published_at', 'views'
     ];
 
-    protected $dates = ['created_at', 'updated_at', 'published_at'];
+    protected $dates = ['published_at'];
 
     private $imageDirectory = 'images';
     private $thumbnailDirectory = 'thumbnails';
-    private $imageSubDirectory = '';
-    private $thumbnailSubdirectory = '';
     private $resizeTo = 275;
 
     /**
@@ -36,7 +34,7 @@ class Opus extends Model
 
     /**
      * Opus has a 0:M relationship with Comment model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments() {
@@ -45,7 +43,7 @@ class Opus extends Model
 
     /**
      * Opus model has an M:N relationship with Tag model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function tags()
@@ -55,7 +53,7 @@ class Opus extends Model
 
     /**
      * Opus model has a M:N relationship with Gallery model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function galleries() {
@@ -64,7 +62,7 @@ class Opus extends Model
 
     /**
      * Opus model has a 1:M relationship with Notification model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function notifications() {
@@ -93,7 +91,7 @@ class Opus extends Model
 
     /**
      * Query scope that only returns Opus that are published
-     * 
+     *
      * @param $query
      */
     public function scopePublished($query) {
@@ -135,7 +133,7 @@ class Opus extends Model
 
     /**
      *  returns published_at with respect to the user's timezone
-     * 
+     *
      * @param $value
      * @return bool|string
      */
@@ -194,7 +192,7 @@ class Opus extends Model
 
     /**
      * Returns a relative path to this opus' image
-     * 
+     *
      * @return string
      */
     public function getImage()
@@ -208,7 +206,7 @@ class Opus extends Model
     }
     /**
      * Returns the relative path to this opus' thumbnail image
-     * 
+     *
      * @return string
      */
     public function getThumbnail()
@@ -222,7 +220,7 @@ class Opus extends Model
     }
     /**
      * Resize the opus' image for it's thumbnail
-     * 
+     *
      * @param $image
      * @return Image
      */
@@ -294,6 +292,7 @@ class Opus extends Model
 
     /**
      *  using storeThumbnail(), also assign this article's thumbnail attribute the path returned
+     *
      * @param $request
      */
     public function setThumbnail(User $user, $request)
@@ -348,6 +347,7 @@ class Opus extends Model
 
     /**
      * Return an array containing some metadata about the image
+     *
      * @return array
      */
     public function metadata() {
@@ -358,5 +358,22 @@ class Opus extends Model
         } else {
             return ['filesize' => 'unknown' . ' KB', 'resolution' => 'unknown' . 'x' . 'unknown'];
         }
+    }
+
+    /**
+     * Static make function to replace the logic in the Opus controller
+     * @param Request $request
+     * @param User $user
+     * @return bool
+     */
+    public static function make(Request $request, User $user)
+    {
+        $opus = new Opus($request->all());
+        $opus->published_at = Carbon::now();
+        $opus = $user->opera()->save($opus);
+        $opus->setImage($user, $request);
+        $opus->setThumbnail($user, $request);
+
+        return $opus;
     }
 }

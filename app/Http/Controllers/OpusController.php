@@ -21,13 +21,8 @@ class OpusController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(
-            'auth',
-            [
-                'only' => ['create','store','edit','update','destroy']
-            ]
-        );
-        $this->middleware('gallery', ['except'=>['show','index','galleryShow']]);
+        $this->middleware('auth',    ['except'  => ['show','index','galleryShow']]);
+        $this->middleware('gallery', ['except'  => ['show','index','galleryShow']]);
     }
 
     /**
@@ -69,17 +64,18 @@ class OpusController extends Controller
      */
     public function store(Requests\OpusCreateRequest $request)
     {
-        $opus = new Opus($request->all());
-        $opus->published_at = Carbon::now();
-        $opus = Auth::user()->opera()->save($opus);
-        $user = User::where('id', $opus->user_id)->first();
-        $opus->setImage($user, $request);
-        $opus->setThumbnail($user, $request);
-        Notification::notifyWatchersNewOpus($user, $opus);
-
-        if($request->input('tags') !== null) {
-            Tag::makeTags($opus, $request->input('tags'));
-        }
+        //dd($request->all());
+//        $opus = new Opus($request->all());
+//        $opus->published_at = Carbon::now();
+//        $opus = Auth::user()->opera()->save($opus);
+//        $user = User::where('id', $opus->user_id)->first();
+//        $opus->setImage($user, $request);
+//        $opus->setThumbnail($user, $request);
+        $user = Auth::user();
+        $opus = Opus::make($request, $user);
+        Notification::notifyWatchersNewOpus($opus, $user);
+        Tag::makeTags($opus, $request->input('tags'));
+     
 
         return redirect()->route('opus.show', $opus->id)->with('success', 'Your work been added!');
     }

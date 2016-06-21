@@ -28,8 +28,8 @@ class Tag extends Model
      * @param $tag_string
      */
     public static function makeTags(Opus $opus, $tag_string){
-        $tags = explode(' ', trim($tag_string));
-        if(!empty($tags)) {
+        if($tag_string != '') {
+            $tags = explode(' ', trim($tag_string));
             foreach($tags as $tag) {
                 if(Tag::where('name', $tag)->first() === null) {
                     Tag::create(['name'=>$tag]);
@@ -38,10 +38,9 @@ class Tag extends Model
             $tagIds = [];
             foreach($tags as $tag) {
                 $addTag = Tag::where('name', $tag)->first();
-                if(strtolower($addTag->name) != strtolower($tag))
+                if(strtolower($addTag->name) == strtolower($tag))
                 array_push($tagIds, $addTag->id);
             }
-
             $opus->tags()->sync($tagIds);
         } else {
             return;
