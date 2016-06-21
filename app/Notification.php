@@ -69,4 +69,19 @@ class Notification extends Model
             $notification->notify($u);
         }
     }
+    
+    public static function notifyUserNewReply(User $op, User $replier, Comment $newComment)
+    {
+        if ($op->id != $replier->id) // if op is not replying to their own comment
+        {
+            $notify = Notification::create(['handle' => 'comment', 'comment_id' => $newComment->id, 'content' => $newComment->body]);
+            $notify->notify($op);
+        }
+    }
+    
+    public static function notifyUserNewComment(User $op, Comment $comment)
+    {
+        $notify = Notification::create(['handle' => 'comment', 'comment_id' => $comment->id, 'content' => $comment->body]);
+        $notify->notify($op);
+    }
 }

@@ -35,7 +35,7 @@ class NotificationController extends Controller
         $commentQuery->join('notifications', 'comments.id', '=', 'notifications.comment_id');
         $commentQuery->join('notification_user', 'notification_user.notification_id', '=', 'notifications.id');
         $commentQuery->where('notification_user.user_id', $user->id);
-        $commentQuery->select('comments.id', 'comments.created_at', 'comments.user_id', 'comments.parent_id', 'comments.profile_id', 'comments.body', 'notification_user.notification_id');
+        $commentQuery->select('comments.id', 'comments.created_at', 'comments.user_id', 'comments.parent_id', 'comments.profile_id', 'comments.body', 'notification_user.notification_id', 'comments.opus_id');
         $commentQuery->orderBy('comments.created_at', 'desc');
         $commentResults = $commentQuery->get();
         

@@ -17,7 +17,7 @@
                             <small><a href="{{ action('ProfileController@show', $opus->user->slug) }}">{{ $opus->user->name }}</a></small></h4>
                         <div>
                             {!! Form::model($opus, ['method'=>'delete', 'class'=>'delete-confirm operations', 'action'=>['NotificationController@destroy', $opus->notification_id]]) !!}
-                                <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</button>
+                            <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</button>
                             {!! Form::close() !!}
                         </div>
                     </div>
@@ -42,16 +42,25 @@
                                         </div>
                                     </div>
                                     <div class="col-md-10">
-                                        <div class="row"><span class="comment-name">{{ $comment->user->name }}</span></div>
+                                        <div class="row">
+                                            <span class="comment-name">{{ $comment->user->name }}</span>
+                                            <span class="pull-right comment-delete-notification">
+                                                {!! Form::model($opus, ['method'=>'delete', 'class'=>'delete-confirm operations', 'action'=>['NotificationController@destroy', $comment->notification_id]]) !!}
+                                                <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</button>
+                                                {!! Form::close() !!}
+                                            </span>
+                                        </div>
                                         <div class="comment-body">
                                             <div class="comment-date">{{ $comment->created_at }}</div>
                                             <p class="comment-text">{{ $comment->body }}</p>
                                         </div>
                                     </div>
                                 </div>
-                                {!! Form::model($opus, ['method'=>'delete', 'class'=>'delete-confirm operations', 'action'=>['NotificationController@destroy', $comment->notification_id]]) !!}
-                                    <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</button>
-                                {!! Form::close() !!}
+                                <div class="container">
+                                    <div class="clearfix">
+                                        @include('notification._replyChild', ['comment'=>$comment])
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     @endforeach

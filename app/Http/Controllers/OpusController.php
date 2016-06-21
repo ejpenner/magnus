@@ -75,7 +75,6 @@ class OpusController extends Controller
         $opus = Opus::make($request, $user);
         Notification::notifyWatchersNewOpus($opus, $user);
         Tag::makeTags($opus, $request->input('tags'));
-     
 
         return redirect()->route('opus.show', $opus->id)->with('success', 'Your work been added!');
     }
@@ -88,20 +87,18 @@ class OpusController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function galleryStore(Requests\OpusCreateRequest $request, $gallery_id) {
-        $opus = new Opus($request->all());
-        $opus->published_at = Carbon::now();
-        $opus = Auth::user()->opera()->save($opus);
-        $user = User::where('id', $opus->user_id)->first();
-        $opus->setImage($user, $request);
-        $opus->setThumbnail($user, $request);
+//        $opus = new Opus($request->all());
+//        $opus->published_at = Carbon::now();
+//        $opus = Auth::user()->opera()->save($opus);
+//        $user = User::where('id', $opus->user_id)->first();
+//        $opus->setImage($user, $request);
+//        $opus->setThumbnail($user, $request);
+        $user = Auth::user();
+        $opus = Opus::make($request, $user);
         Notification::notifyWatchersNewOpus($user, $opus);
-
+        Tag::makeTags($opus, $request->input('tags'));
         $gallery = Gallery::findOrFail($gallery_id);
         $gallery->addOpus($opus);
-        
-        if($request->input('tags') !== null) {
-            Tag::makeTags($opus, $request->input('tags'));
-        }
 
         return redirect()->route('opus.show', $opus->id)->with('success', 'Your work been added!');
     }

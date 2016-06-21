@@ -8,20 +8,16 @@ use App\Http\Requests;
 
 use App\Comment;
 use App\Opus;
+use App\Notification;
 use Illuminate\Support\Facades\Auth;
+use Mockery\Matcher\Not;
 
 class CommentController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware(
-            'auth',
-            [
-                'only' => ['create','store','edit','update','destroy']
-            ]
-        );
-
+        $this->middleware('auth',    ['except'=>['show','index']]);
         $this->middleware('comment', ['except'=>['show','index']]);
     }
 
@@ -46,7 +42,8 @@ class CommentController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage and notify the
+     * owner of the Opus
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -56,27 +53,55 @@ class CommentController extends Controller
         $opus = Opus::findOrFail($opus_id);
         $comment = new Comment(['user_id'=>Auth::user()->id,'body'=>$request->input('body')]);
         $newComment = $opus->comments()->save($comment);
-        //return redirect()->route('gallery.p.show', [$gallery_id, $piece->id, $newComment->id])->with('success', 'Message posted!');
+
+        Notification::notifyUserNewComment($opus->user, $newComment);
+
         return redirect()->to(app('url')->previous(). '#'.$newComment->id)->with('success', 'Message posted!');
     }
 
     /**
-     *  store a reply to a comment
+     * store a reply to a comment and notify the OP
      *
-     * @param Request $request
-     * @param $piece
-     * @param $comment
+     * @param Requests\CommentRequest $request
+     * @param $opus_id
+     * @param $comment_id
+     * @return \Illuminate\Http\RedirectResponse
      */
-
     public function storeChild(Requests\CommentRequest $request, $opus_id, $comment_id)
     {
         $opus = Opus::findOrFail($opus_id);
         $comment = Comment::findOrFail($comment_id);
         $comment->childComments()->save(new Comment(['user_id'=>Auth::user()->id, 'opus_id'=>$opus->id, 'parent_id'=>$comment->id, 'body'=>$request->input('body')]));
         $newComment = Comment::where('parent_id', $comment->id)->orderBy('created_at', 'desc')->first();
-        //return redirect()->route('gallery.p.show', [$gallery_id, $piece->id])->with('success', 'Message posted!');
-        return redirect()->to(app('url')->previous(). '#'.$newComment->id)->with('success', 'Message posted!');
 
+        Notification::notifyUserNewReply($comment->user, $newComment->user, $newComment);
+
+        return redirect()->to(app('url')->previous(). '#'.$newComment->id)->with('success', 'Message posted!');
+    }
+
+    /**
+     * store a reply to a comment and notify the OP and give
+     * the option to remove the message from Auth::user()'s message center
+     *
+     * @param Requests\CommentRequest $request
+     * @param $opus_id
+     * @param $comment_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeChildRemoveNotification(Requests\CommentRequest $request, $opus_id, $comment_id, $notification_id)
+    {
+        $opus = Opus::findOrFail($opus_id);
+        $comment = Comment::findOrFail($comment_id);
+        $comment->childComments()->save(new Comment(['user_id'=>Auth::user()->id, 'opus_id'=>$opus->id, 'parent_id'=>$comment->id, 'body'=>$request->input('body')]));
+        $newComment = Comment::where('parent_id', $comment->id)->orderBy('created_at', 'desc')->first();
+
+        Notification::notifyUserNewReply($comment->user, $newComment->user, $newComment);
+
+        if($request->input('remove_notify')) {
+            $notification = Notification::where('id', $notification_id)->first();
+            Auth::user()->deleteNotification($notification);
+        }
+        return redirect()->to(app('url')->previous(). '#'.$newComment->id)->with('success', 'Message posted!');
     }
 
     /**

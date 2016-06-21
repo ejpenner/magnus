@@ -9286,7 +9286,7 @@ button.close {
 .gallery-item {
   padding-bottom: 5px;
   padding-top: 5px;
-  width: 370px;
+  width: 350px;
 }
 .gallery-item img {
   -webkit-box-shadow: 5px 5px 5px #888888;
@@ -9411,6 +9411,11 @@ footer {
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
+}
+.comment .comment-delete-notification {
+  position: relative;
+  left: -35px;
+  top: -3px;
 }
 .comment .comment-body {
   background-color: #FFFFFF;

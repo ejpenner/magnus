@@ -146,7 +146,9 @@ class Opus extends Model
     }
 
     /**
-     * Increment this opus' pageviews
+     * Increment the pageview of this Opus if conditions are met
+     * 
+     * @param $request
      */
     public function pageview($request) {
         $seen = false;

@@ -326,6 +326,11 @@ class User extends Authenticatable
         $this->notifications()->attach($notification->id);
     }
 
+    public function deleteNotification(Notification $notification)
+    {
+        $this->notifications()->detach($notification->id);
+    }
+
     /**
      * Returns a collection of users that watch this user
      *

@@ -90,9 +90,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('opus/{opus}/{comment}', 'CommentController@destroyChild');
 
     /**
-     * Notification controller
+     * Notification controller and related routes
      */
     Route::resource('messages', 'NotificationController');
+    Route::post('opus/{opus}/{comment}/{notification}', 'CommentController@storeChildRemoveNotification');
 
     /**
      * CRUD routes for user operations
