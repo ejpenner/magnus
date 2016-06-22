@@ -45,4 +45,57 @@ class Notification extends Model
     public function notify(User $user) {
         $user->notifications()->attach($this->id);
     }
+    
+    public function deleteNotification(User $user)
+    {
+        $user->notifications()->detach($this->id);
+    }
+
+    /**
+     *  Create a new Notification and let all users who watch the User know about it
+     *
+     * @param Opus $opus
+     */
+    public static function notifyWatchersNewOpus(Opus $opus, User $user)
+    {
+        $notification = Notification::create([
+            'handle'=>'opus',
+            'opus_id' => $opus->id,
+            'content' => $opus->title
+        ]);
+
+        foreach($user->watchers as $watcher) {
+            $u = User::find($watcher->user_id);
+            $notification->notify($u);
+        }
+    }
+
+    /**
+     * A static method to create a reply notification and deliver it to $op
+     *
+     * @param User $op
+     * @param User $replier
+     * @param Comment $newComment
+     */
+    public static function notifyUserNewReply(User $op, User $replier, Comment $newComment)
+    {
+        if ($op->id != $replier->id) // if op is not replying to their own comment
+        {
+            $notify = Notification::create(['handle' => 'comment', 'comment_id' => $newComment->id, 'content' => $newComment->body]);
+            $notify->notify($op);
+        }
+    }
+
+    /**
+     * A static method to create a top-level comment notification and deliver it to $op
+     *
+     * @param User $op
+     * @param User $replier
+     * @param Comment $newComment
+     */
+    public static function notifyUserNewComment(User $op, Comment $comment)
+    {
+        $notify = Notification::create(['handle' => 'comment', 'comment_id' => $comment->id, 'content' => $comment->body]);
+        $notify->notify($op);
+    }
 }

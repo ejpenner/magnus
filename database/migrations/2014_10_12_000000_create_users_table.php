@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\File;
 
 class CreateUsersTable extends Migration
 {
@@ -20,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('avatar');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('timezone');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -37,6 +39,8 @@ class CreateUsersTable extends Migration
 
         foreach($users as $user) {
             $user->deleteAvatarFile();
+            File::deleteDirectory(public_path('images/'.$user->username));
+            File::deleteDirectory(public_path('thumbnails/'.$user->username));
         }
         Schema::drop('users');
     }

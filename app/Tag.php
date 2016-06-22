@@ -6,22 +6,44 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
+    protected $fillable = ['name'];
+
     /**
-     *  return all associated articles with the given tag
-     *
+     * A Tag model belongs to many Opus models
+     * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    protected $fillable = ['name'];
-    
-    public function pieces()
-    {
-        return $this->belongsToMany('App\Piece')->withTimestamps();
-    }
-    
     public function opera()
     {
         return $this->belongsToMany('App\Opus')->withTimestamps();
     }
-    
-    
+
+    /**
+     * A function that takes in an Opus and a string
+     * and makes Tags from the string if they don't already
+     * exist. Then for every tag that is not a duplicate, 
+     * attach it to the Opus and sync it with Tag
+     * 
+     * @param Opus $opus
+     * @param $tag_string
+     */
+    public static function make(Opus $opus, $tag_string){
+        if($tag_string != '') {
+            $tags = explode(' ', trim($tag_string));
+            foreach($tags as $tag) {
+                if(Tag::where('name', $tag)->first() === null) {
+                    Tag::create(['name'=>$tag]);
+                }
+            }
+            $tagIds = [];
+            foreach($tags as $tag) {
+                $addTag = Tag::where('name', $tag)->first();
+                if(strtolower($addTag->name) == strtolower($tag))
+                array_push($tagIds, $addTag->id);
+            }
+            $opus->tags()->sync($tagIds);
+        } else {
+            return;
+        }
+    }
 }

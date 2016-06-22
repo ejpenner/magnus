@@ -12,25 +12,29 @@
 */
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
-    return [
+    $timezones = ['America/Denver', 'America/New_York', 'America/Chicago', 'America/Los_Angeles'];
+        $user = [
         'name'      => $faker->name,
         'email'     => $faker->safeEmail,
         'username'  => $faker->userName,
         'password'  => bcrypt('password'),
         'slug'      => str_slug($faker->userName),
         'avatar'    => substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
+        'timezone'  => $timezones[rand(0,3)],
         'remember_token' => str_random(10),
     ];
+    File::makeDirectory(public_path('images/'.$user['username']));
+    File::makeDirectory(public_path('thumbnails/'.$user['username']));
+    return $user;
 });
 
 $factory->define(App\Opus::class,  function (Faker\Generator $faker){
-    $sizes = [0 => [275,150], 1 => [150,275]];
+    $sizes = [0 => [275,175], 1 => [175,275]];
     $res = $sizes[rand(0,1)];
     $theme = '';
     $usersMax = \App\User::count();
     $faker->seed(rand(11111,99999));
     $image_path = substr($faker->image($dir = public_path('images'), $width = 600, $height=400,$theme), 38);
-
     $thumbnail_path = substr($faker->image($dir = public_path('thumbnails'), $width = $res[0], $height=$res[1], $theme), 38);
     return [
         'title' => ucwords($faker->words(3, true)),

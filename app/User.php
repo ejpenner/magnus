@@ -18,7 +18,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'permission_id', 'slug', 'username', 'avatar'
+        'name', 'email', 'password',
+        'permission_id', 'slug', 'username',
+        'avatar', 'timezone'
     ];
 
     /**
@@ -138,12 +140,7 @@ class User extends Authenticatable
      */
     public function hasPermission($permission) 
     {
-        foreach(Auth::user()->roles as $userRoles) {
-            foreach($userRoles->permission->attributes as $key => $value) {
-                return Permission::where('schema_name', $userRoles->role_name)->value($permission);
-            }
-        }
-        return false;
+        
     }
 
     /**
@@ -329,6 +326,11 @@ class User extends Authenticatable
         $this->notifications()->attach($notification->id);
     }
 
+    public function deleteNotification(Notification $notification)
+    {
+        $this->notifications()->detach($notification->id);
+    }
+
     /**
      * Returns a collection of users that watch this user
      *
@@ -337,7 +339,10 @@ class User extends Authenticatable
     public function listWatchers()
     {
         $watcherList = Collection::make();
-        foreach($this->watchedUsers as $watcher) {
+        foreach($this->watchedUsers as $i => $watcher) {
+            if($i >= 10) {
+                return $watcherList;
+            }
             $watcherList->push(User::where('id', $watcher->pivot->watcher_user_id)->first());
         }
         return $watcherList;
@@ -351,8 +356,11 @@ class User extends Authenticatable
     public function listWatchedUsers()
     {
         $watcherList = Collection::make();
-        foreach($this->watchers as $watcher) {
+        foreach($this->watchers as $i => $watcher) {
             if($this->id != $watcher->pivot->watched_user_id) {
+                if($i >= 10) {
+                    return $watcherList;
+                }
                 $watcherList->push(User::where('id', $watcher->pivot->watched_user_id)->first());
             }
         }
@@ -374,23 +382,5 @@ class User extends Authenticatable
             return false;
         }
     }
-
-    /**
-     *  Create a new notification and let all users who watch you know
-     *
-     * @param Opus $opus
-     */
-    public function notifyWatchersNewOpus(Opus $opus)
-    {
-        $notification = Notification::create([
-            'handle'=>'opus',
-            'opus_id' => $opus->id,
-            'content' => $opus->title
-        ]);
-
-        foreach($this->watchers as $watcher) {
-            $user = User::find($watcher->user_id);
-            $user->notify($notification);
-        }
-    }
+    
 }

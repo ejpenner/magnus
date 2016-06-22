@@ -72,6 +72,7 @@ class UserController extends Controller
             $user->username = $request->username;
             $user->email = $request->email;
             $user->slug = str_slug($request->username, '-');
+            $user->timezone = $request->input('timezone');
             if ($request->password != "" and $request->password != null) {
                 $user->password = bcrypt($request->password);
             }
@@ -129,6 +130,12 @@ class UserController extends Controller
         return view('user.accountPassword', compact('user'));
     }
 
+    /**
+     * Update password route
+     * @param $user_id
+     * @param Requests\PasswordRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updatePassword($user_id, Requests\PasswordRequest $request)
     {
         $user = User::findOrFail($user_id);
@@ -142,6 +149,12 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Non-power user account update route
+     * @param $id
+     * @param Requests\AccountRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateAccount($id, Requests\AccountRequest $request)
     {
         $user = User::findOrFail($id);
@@ -150,10 +163,19 @@ class UserController extends Controller
         return redirect()->route('user.account', [$user->id])->with('success', 'User updated successfully!');
     }
 
+    /**
+     * Returns the change avatar view
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function avatar() {
         return view('user.avatar');
     }
-    
+
+    /**
+     * Route for power users to change other user's avatars
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function avatarAdmin($id) {
         $user = User::findOrFail($id);
         return view('user.avatarAdmin', compact('user'));
@@ -202,11 +224,16 @@ class UserController extends Controller
             return redirect()->to(app('url')->previous())->withErrors('You can\'t watch yourself!');
         }
     }
-    
+
+    /**
+     * 
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function unwatchUser(Request $request, User $user)
     {
         Watch::unwatchUser($user);
         return redirect()->to(app('url')->previous())->with('success', 'You have unwatched '.$user->name.'.');
     }
-    
 }

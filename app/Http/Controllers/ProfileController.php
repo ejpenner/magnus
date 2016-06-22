@@ -42,12 +42,46 @@ class ProfileController extends Controller
     }
 
     /**
+     * Return a list of users that watch $user
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function watchers(User $user)
+    {
+        $query = User::query();
+        $query->join('user_watch', 'users.id', '=', 'user_watch.watcher_user_id');
+        $query->where('user_watch.watched_user_id', $user->id);
+        $query->orderBy('user_watch.created_at', 'desc');
+        $watchers = $query->paginate(50);
+        if($user->name != null) {
+            return view('profile.watchers', compact('user', 'watchers'));
+        } else {
+            return abort(404);
+        }
+    }
+
+    public function watching(User $user)
+    {
+        $query = User::query();
+        $query->join('user_watch', 'users.id', '=', 'user_watch.watched_user_id');
+        $query->where('user_watch.watcher_user_id', $user->id);
+        $query->orderBy('user_watch.created_at', 'desc');
+        $watchers = $query->paginate(50);
+        if($user->name != null) {
+            return view('profile.watching', compact('user', 'watchers'));
+        } else {
+            return abort(404);
+        }
+    }
+
+    /**
      * Return all the galleries of a user
      *
      * @param User $user
      */
     public function galleries(User $user) {
-        $galleries = Gallery::where('user_id', $user->id)->get();
+        $galleries = Gallery::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(12);
+        return view('profile.gallery', compact('galleries'));
     }
 
     /**
@@ -90,11 +124,13 @@ class ProfileController extends Controller
     public function show(User $user)
     {
         $profile = Profile::where('user_id', $user->id)->first();
-        $galleries = Gallery::where('user_id', $user->id)->paginate(12);
-        //$pieces = Piece::where('user_id', $user->id)->join('features', 'features.piece_id', '=', 'pieces.id')->paginate(12);
-        $opera = Opus::where('user_id', $user->id)->limit(8)->get();
-        
-        return view('profile.show', compact('profile', 'user', 'galleries', 'opera'));
+        $galleries = Gallery::where('user_id', $user->id)->limit(4)->orderBy('updated_at', 'desc')->get();
+        $opera = Opus::where('user_id', $user->id)->limit(8)->orderBy('created_at', 'desc')->get();
+        if($user->name != null) {
+            return view('profile.show', compact('profile', 'user', 'galleries', 'opera'));
+        } else {
+            return abort(404);
+        }
     }
 
     /**
@@ -129,17 +165,5 @@ class ProfileController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    /**
-     *  Return the Auth'd users profile
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    
-    public function user() {
-        $profile = Profile::where('user_id', Auth::user()->id)->first();
-        
-        return view('profile.show', compact('profile', 'user'));
     }
 }

@@ -50,7 +50,7 @@
                         <div class="panel panel-default details-panel">
                             <div class="panel-heading">
                                 Details
-                                @if(Auth::check() and (Auth::user()->isOwner($opus) or Auth::user()->hasRole('admin')))
+                                @if(Auth::check() and (Auth::user()->isOwner($opus) or Auth::user()->atLeastHasRole(config('roles.moderator'))))
                                     <div class="pull-right operations">
                                         {!! Form::model($opus, ['method'=>'delete', 'class'=>'delete-confirm operations',
                                                                'action'=>['OpusController@destroy', $opus->id]]) !!}

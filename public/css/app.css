@@ -9286,7 +9286,7 @@ button.close {
 .gallery-item {
   padding-bottom: 5px;
   padding-top: 5px;
-  width: 370px;
+  width: 350px;
 }
 .gallery-item img {
   -webkit-box-shadow: 5px 5px 5px #888888;
@@ -9354,9 +9354,7 @@ footer {
   display: inline;
 }
 .avatar {
-  margin-right: 10px;
-}
-.avatar img {
+  margin-right: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -9414,6 +9412,11 @@ footer {
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
 }
+.comment .comment-delete-notification {
+  position: relative;
+  left: -35px;
+  top: -3px;
+}
 .comment .comment-body {
   background-color: #FFFFFF;
   -webkit-border-radius: 10px;
@@ -9422,12 +9425,15 @@ footer {
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
+  min-height: 130px;
 }
 .comment .comment-body .comment-date {
-  padding: 10px 10px 0px 10px;
+  padding: 5px 10px 0px 10px;
+  color: #8c8c8c;
 }
-.comment .comment-body p {
-  padding: 15px 10px 20px 10px;
+.comment .comment-body .comment-text {
+  margin-top: -5px;
+  padding: 15px 10px 30px 10px;
 }
 .child-comment .container.comment {
   margin-left: 10px;
@@ -9446,10 +9452,11 @@ footer {
 }
 .reply-form {
   padding: 5px;
-  margin-left: 20px;
+  margin-left: 40px;
+  width: inherit;
   display: none;
 }
-.reply-form textarea {
-  width: 65%;
+.reply-form .reply-textarea {
+  width: 70%;
   margin-bottom: 2px;
 }
