@@ -85,7 +85,7 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Pretty url CRUD for comments
      */
-    Route::get('comment/{comment}', 'CommentController@show');
+    Route::get('comments/{comment}', 'CommentController@show');
     Route::post('opus/{opus}/{comment}', 'CommentController@storeChild');
     Route::patch('opus/{opus}/{comment}', 'CommentController@updateChild');
     Route::delete('opus/{opus}/{comment}', 'CommentController@destroyChild');

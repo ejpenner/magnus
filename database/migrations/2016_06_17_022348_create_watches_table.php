@@ -19,6 +19,7 @@ class CreateWatchesTable extends Migration
             $table->boolean('watch_opus');
             $table->boolean('watch_comments');
             $table->boolean('watch_activity');
+            $table->boolean('add_friend');
             $table->timestamps();
         });
 

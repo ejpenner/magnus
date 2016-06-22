@@ -18,6 +18,7 @@
 @brand-success: @newSuccess;
 
 @galley-item-width: 350px;
+@min-gallery-item-height: 330px;
 
 /* Dropdown hover */
 .dropdown:hover .dropdown-menu {
@@ -118,12 +119,14 @@
   -ms-transform: 		 skew(@deg, @deg2);
   -o-transform: 		 skew(@deg, @deg2);
 }
+
 .translate (@x, @y:0) {
   -webkit-transform:       translate(@x, @y);
   -moz-transform: 	 translate(@x, @y);
   -ms-transform: 		 translate(@x, @y);
   -o-transform: 		 translate(@x, @y);
 }
+
 .translate3d (@x, @y: 0, @z: 0) {
   -webkit-transform:       translate3d(@x, @y, @z);
   -moz-transform: 	 translate3d(@x, @y, @z);
@@ -143,19 +146,25 @@
   -o-transform-origin:      @x @y;
 }
 
-.gallery-item {
-  //margin: 5px;
+div.gallery-item {
+  position:relative;
   padding-bottom: 5px;
   padding-top: 5px;
-  //.border-radius();
-  //background: #EEE;
-  //min-height: 200px;
-  width: @galley-item-width;
-}
+  text-align: center;
+  min-height: @min-gallery-item-height;
 
-.gallery-item {
   img {
     .box-shadow(5px 5px 5px #888888);
+  }
+
+  /* horizontal and vertical for opera and galleries */
+  .vcenter {
+    position: absolute;
+    vertical-align: middle;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    .translate(-50%, -50%);
   }
 }
 
@@ -190,15 +199,6 @@ span.role-administrator::before {
   //margin-top: 15px;
 }
 
-/* Vertical alight for gallery.show */
-
-.vcenter {
-  //position: absolute;
-  display: inline-block;
-  vertical-align: middle;
-  text-align: center;
-  float: none;
-}
 
 /* Add a gray background color and some padding to the footer */
 footer {

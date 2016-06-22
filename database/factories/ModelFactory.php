@@ -29,7 +29,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Opus::class,  function (Faker\Generator $faker){
-    $sizes = [0 => [275,175], 1 => [175,275]];
+    $sizes = [0 => [250,160], 1 => [160,250]];
     $res = $sizes[rand(0,1)];
     $theme = '';
     $usersMax = \App\User::count();

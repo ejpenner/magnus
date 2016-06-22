@@ -14,7 +14,12 @@ class Comment extends Model
         'user_id',
         'parent_id',
         'opus_id',
-        'body'
+        'body',
+        'deleted'
+    ];
+    
+    protected $casts = [
+        'deleted' => 'boolean'
     ];
 
     public function user() {

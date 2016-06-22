@@ -25,6 +25,6 @@
                 </div>
             </div>
         </div>
+        @include('comment._commentShow', ['comment'=>$comment])
     </div>
-    @include('comment._commentShow', ['comment'=>$comment])
 @endsection
