@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Config;
 class GalleryManagement
 {
     /**
-     * Handle an incoming request.
+     *  Allow a user to continue with an operation on an Opus if they own it or are at least a global mod
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -21,7 +21,7 @@ class GalleryManagement
         $gallery_id = $request->route('gallery');
         $gallery = Gallery::where('id', $gallery_id)->first();
 
-        if (!Auth::check() or Auth::user()->atLeastHasRole(Config::get('roles.administrator')) or Auth::user()->isOwner($gallery)) {
+        if (!Auth::check() or Auth::user()->atLeastHasRole(Config::get('roles.globalModerator')) or Auth::user()->isOwner($gallery)) {
             return $next($request);
         } else {
             return redirect()->back()->withErrors('You are not permitted to complete that action or view that page.');

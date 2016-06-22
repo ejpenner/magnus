@@ -15,12 +15,10 @@ class WatchSeeder extends Seeder
     {
         $users = User::all();
 
-
-        
         foreach($users as $user) {
             foreach($users as $watcher) {
                 if($user->id != $watcher->id) {
-                    $user->watchedUsers()->attach(factory(Watch::class)->create(['user_id' => $watcher->id])->id,['watched_user_id'=>rand(1, User::count())]);
+                    $user->watchers()->attach(factory(Watch::class)->create(['user_id' => $watcher->id])->id,['watched_user_id'=>rand(1, User::count())]);
                     //$user->watchers()->attach(factory(Watch::class)->create(['user_id' => $user->id])->id,[]);
                 }
             }

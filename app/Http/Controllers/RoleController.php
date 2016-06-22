@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Config;
 use App\Http\Requests;
 
 use App\Role;
@@ -77,6 +77,9 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         $role = Role::findOrFail($id);
+        dd($role);
+        dd($request->all());
+        //Config::set('role.');
         $role->update($request->all());
         return redirect()->route('roles.index')->with('success', $role->role_name.' has been updated!');
     }

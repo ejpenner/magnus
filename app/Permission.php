@@ -40,7 +40,12 @@ class Permission extends Model
         return $this->belongsTo('App\Role');
     }
 
-    public function hasPermission($user, $permission) {
-        
+    public static function hasPermission(User $user, $permission) {
+        foreach($user->roles as $userRoles) {
+            foreach($userRoles->permission->attributes as $key => $value) {
+                $permissions = Permission::where('schema_name', $userRoles->role_name)->value($permission);
+            }
+        }
+        return false;
     }
 }

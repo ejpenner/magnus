@@ -10,7 +10,6 @@
 @newSuccess: #6d9771;
 @newDefault: #EEE;
 
-@comment-offset: -80px;
 @white: #FFFFFF;
 
 @brand-primary: @newPrimary;
@@ -18,7 +17,7 @@
 @brand-danger: @newDanger;
 @brand-success: @newSuccess;
 
-@galley-item-width: 370px;
+@galley-item-width: 350px;
 
 /* Dropdown hover */
 .dropdown:hover .dropdown-menu {
@@ -59,6 +58,91 @@
   box-shadow:         @string;
 }
 
+.opacity (@opacity: 0.5) {
+  -webkit-opacity: 	@opacity;
+  -moz-opacity: 		@opacity;
+  opacity: 		@opacity;
+}
+
+.gradient (@startColor: #eee, @endColor: white) {
+  background-color: @startColor;
+  background: -webkit-gradient(linear, left top, left bottom, from(@startColor), to(@endColor));
+  background: -webkit-linear-gradient(top, @startColor, @endColor);
+  background: -moz-linear-gradient(top, @startColor, @endColor);
+  background: -ms-linear-gradient(top, @startColor, @endColor);
+  background: -o-linear-gradient(top, @startColor, @endColor);
+}
+
+.horizontal-gradient (@startColor: #eee, @endColor: white) {
+  background-color: @startColor;
+  background-image: -webkit-gradient(linear, left top, right top, from(@startColor), to(@endColor));
+  background-image: -webkit-linear-gradient(left, @startColor, @endColor);
+  background-image: -moz-linear-gradient(left, @startColor, @endColor);
+  background-image: -ms-linear-gradient(left, @startColor, @endColor);
+  background-image: -o-linear-gradient(left, @startColor, @endColor);
+}
+
+.animation (@name, @duration: 300ms, @delay: 0, @ease: ease) {
+  -webkit-animation: @name @duration @delay @ease;
+  -moz-animation:    @name @duration @delay @ease;
+  -ms-animation:     @name @duration @delay @ease;
+}
+
+.transition (@transition) {
+  -webkit-transition: @transition;
+  -moz-transition:    @transition;
+  -ms-transition:     @transition;
+  -o-transition:      @transition;
+}
+.transform(@string){
+  -webkit-transform: @string;
+  -moz-transform: 	 @string;
+  -ms-transform: 		 @string;
+  -o-transform: 		 @string;
+}
+.scale (@factor) {
+  -webkit-transform: scale(@factor);
+  -moz-transform: 	 scale(@factor);
+  -ms-transform: 		 scale(@factor);
+  -o-transform: 		 scale(@factor);
+}
+.rotate (@deg) {
+  -webkit-transform: rotate(@deg);
+  -moz-transform: 	 rotate(@deg);
+  -ms-transform: 		 rotate(@deg);
+  -o-transform: 		 rotate(@deg);
+}
+.skew (@deg, @deg2) {
+  -webkit-transform:       skew(@deg, @deg2);
+  -moz-transform: 	 skew(@deg, @deg2);
+  -ms-transform: 		 skew(@deg, @deg2);
+  -o-transform: 		 skew(@deg, @deg2);
+}
+.translate (@x, @y:0) {
+  -webkit-transform:       translate(@x, @y);
+  -moz-transform: 	 translate(@x, @y);
+  -ms-transform: 		 translate(@x, @y);
+  -o-transform: 		 translate(@x, @y);
+}
+.translate3d (@x, @y: 0, @z: 0) {
+  -webkit-transform:       translate3d(@x, @y, @z);
+  -moz-transform: 	 translate3d(@x, @y, @z);
+  -ms-transform: 		 translate3d(@x, @y, @z);
+  -o-transform: 		 translate3d(@x, @y, @z);
+}
+.perspective (@value: 1000) {
+  -webkit-perspective: 	@value;
+  -moz-perspective: 	@value;
+  -ms-perspective: 	@value;
+  perspective: 		@value;
+}
+.transform-origin (@x:center, @y:center) {
+  -webkit-transform-origin: @x @y;
+  -moz-transform-origin:    @x @y;
+  -ms-transform-origin:     @x @y;
+  -o-transform-origin:      @x @y;
+}
+
 .gallery-item {
   //margin: 5px;
   padding-bottom: 5px;
@@ -75,23 +159,45 @@
   }
 }
 
+span.role-developer::before {
+  content: "Dev";
+  margin-right: 3px;
+  padding: 4px;
+  font-size: inherit;
+  position: relative;
+  color: @white;
+  .border-radius(5px);
+  .gradient(#337e3c, #222e24);
+}
+
+span.role-administrator::before {
+  content: "Admin";
+  margin-right: 3px;
+  padding: 4px;
+  font-size: inherit;
+  position: relative;
+  color: @white;
+  .border-radius(5px);
+  .gradient(#ba3d2d, #552522);
+}
+
 .gallery-container {
   margin-bottom: 15px;
 }
 
 // details panel on piece.show
 .details-panel {
-  margin-top: 15px;
+  //margin-top: 15px;
 }
 
 /* Vertical alight for gallery.show */
 
 .vcenter {
-    //position: absolute;
-    display: inline-block;
-    vertical-align: middle;
-    text-align: center;
-    float: none;
+  //position: absolute;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  float: none;
 }
 
 /* Add a gray background color and some padding to the footer */
@@ -102,15 +208,14 @@ footer {
   margin-top: 25px !important;
 }
 
+// Operations partial styling
 .operations {
   display:inline;
 }
-
+// avatar styling
 .avatar {
-  margin-right: 10px;
-  img {
-    .border-radius(5px);
-  }
+  margin-right: 5px;
+  .border-radius(5px);
 }
 
 .piece-show {
@@ -145,7 +250,6 @@ footer {
   border: @gray-lighter solid 2px;
   background-color: @gray-lighter;
   .border-radius();
-  //width: auto;
   padding:5px;
   margin:1px;
 
@@ -160,18 +264,28 @@ footer {
     }
   }
 
+  .comment-delete-notification {
+    position: relative;
+    left: -35px;
+    top: -3px;
+  }
+
   .comment-body {
     background-color: @white;
     .border-radius();
+    //height: 100%;
+    min-height: 130px;
     //width: inherit;
     //padding: 15px 0 10px 0;
 
     .comment-date {
-      padding: 10px 10px 0px 10px;
+      padding: 5px 10px 0px 10px;
+      color: #8c8c8c;
     }
 
-    p {
-      padding: 15px 10px 20px 10px;
+    .comment-text {
+      margin-top: -5px;
+      padding: 15px 10px 30px 10px;
     }
   }
 }
@@ -183,8 +297,6 @@ footer {
 }
 
 .comment-area {
-  //border: @gray-lighter solid 2px;
-  //.border-radius();
   width: auto;
   padding:2px 0 2px 0;
   margin:1px;
@@ -192,18 +304,6 @@ footer {
   .comment-name {
     padding: 1px;
   }
-}
-
-.container-fluid > .child-comment {
-  //border: @gray-lighter solid 2px;
-  //.border-radius();
-  //width: auto;
-  //padding:3px;
-  //margin:1px;
-}
-
-div .child-comment * {
-  //margin-left: 25px;
 }
 
 .reply-toggle {
@@ -215,26 +315,11 @@ div .child-comment * {
 
 .reply-form {
   padding: 5px;
-  margin-left: 20px;
+  margin-left: 40px;
+  width:inherit;
   display: none;
-  textarea {
-    width:65%;
+  .reply-textarea {
+    width: 70%;
     margin-bottom: 2px;
   }
 }
-
-//div .child-comment * {
-//  .comment-avatar {
-//    position: relative;
-//    left:@comment-offset;
-//    float:left;
-//    clear: none;
-//  }
-//
-//  .comment-body {
-//    position: relative;
-//    left:@comment-offset;
-//    float:left;
-//    clear: none;
-//  }
-//}

@@ -8,30 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class Profile extends Model
 {
     protected $fillable = ['user_id','biography'];
-    
+
+    /**
+     * A profile model belongs to one User model
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo('App\User');
     }
 
+    /**
+     * A profile model has many comment models
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function comments() {
         return $this->hasMany('App\Comment');
     }
-    
-//    public function listWatchedUsers()
-//    {
-//        $watcherList = [];
-//        foreach($this->user->watchedUsers as $watcher) {
-//            array_push($watcherList, ['name'=>$watcher->name, 'id'=>$watcher->id, 'slug'=>$watcher->slug]);
-//        }
-//        return $watcherList;
-//    }
-
-//    public function listWatchers() {
-//        $watcherList = Collection::make();
-//        foreach($this->user->watchers as $watcher) {
-//              $watcherList->push(User::where('id', $watcher->user_id)->first());
-//        }
-//        return $watcherList;
-//    }
 }

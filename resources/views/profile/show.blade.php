@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-
+    @if($user->name != null)
     <div class="container-fluid">
         @include('profile._header', ['profile'=>$profile,'user'=>$user])
         <div class="col-md-2">
@@ -10,34 +10,7 @@
         </div>
         <div class="col-md-10">
             <div class="gallery-container">
-                @foreach($galleries->chunk(4) as $i => $gallery)
-                    <div class="row">
-                        @foreach($gallery as $j => $item)
-                            <div class="col-md-3 vcenter gallery-item">
-
-                                @if(isset($item->opera->first()->thumbnail_path))
-                                    <a href="{{ action('GalleryController@show', $item->id) }}">
-                                        <img src="/{{ $item->opera->first()->thumbnail_path }}" alt="">
-                                    </a>
-                                @endif
-
-                                <h4><a href="{{ action('GalleryController@show', $item->id) }}">{{ $item->name }}</a></h4>
-                                <p>{{ $item->description }}</p>
-
-                                @if(Auth::check() and (Auth::user()->hasRole('admin') or Auth::user()->isOwner($item)))
-                                    <div class="clearfix">
-                                        @include('gallery._editModal', ['id'=>$i.'-'.$j, 'gallery'=>$item])
-                                        {!! Form::model($item, ['method'=>'delete', 'class'=>'delete-confirm operations', 'action'=>['GalleryController@destroy', $item->id]]) !!}
-                                        @if($item->main_gallery != true)
-                                            <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
-                                        @endif
-                                        {!! Form::close() !!}
-                                    </div>
-                                @endif
-                            </div>
-                        @endforeach
-                    </div>
-                @endforeach
+                @include('partials._galleries', ['galleries' => $galleries])
             </div>
         </div>
     </div>
@@ -51,7 +24,7 @@
                 <div class="row">
                     @foreach($operaChunk as $opus)
                         <div class="col-md-3 vcenter gallery-item">
-                            <a href="{{ action('OpusController@show', [$opus->id]) }}"><img class="piece-show" src="/{{ $opus->getThumbnail() }}" alt=""></a>
+                            <a href="{{ action('OpusController@show', [$opus->id]) }}"><img class="piece-show" src="/{{ $opus->getThumbnail() }}" alt="{{ $opus->title }}"></a>
                             <h4><a href="{{ action('OpusController@show', [$opus->id]) }}">{{ $opus->title }}</a></h4>
                         </div>
                     @endforeach
@@ -62,7 +35,10 @@
     <div class="container">
         <div class="col-md-6">
             <div class="panel panel-default">
-                <div class="panel-heading">Watching</div>
+                <div class="panel-heading">
+                    Watching
+                    <a class="btn btn-xs btn-primary pull-right" href="{{ action('ProfileController@watching', $user->slug) }}">Full list</a>
+                </div>
                 <div class="panel-body">
                     <ul>
                         @foreach($user->listWatchedUsers() as $watcher)
@@ -74,7 +50,10 @@
         </div>
         <div class="col-md-6">
             <div class="panel panel-default">
-                <div class="panel-heading">Watchers</div>
+                <div class="panel-heading">
+                    Watchers
+                    <a class="btn btn-xs btn-primary pull-right" href="{{ action('ProfileController@watchers', $user->slug) }}">Full list</a>
+                </div>
                 <div class="panel-body">
                     <ul>
                         @foreach($user->listWatchers() as $watcher)
@@ -85,4 +64,9 @@
             </div>
         </div>
     </div>
+    @else
+        <div class="container">
+            <h2>Profile does not exist</h2>
+        </div>
+    @endif
 @endsection

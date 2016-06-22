@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Watch;
 use Illuminate\Support\Facades\Auth;
 
 class Watch extends Model
@@ -33,6 +32,13 @@ class Watch extends Model
         return $this->belongsTo('App\User');
     }
 
+    /**
+     * Auth::user() will watch $user
+     * @param User $user
+     * @param $opus
+     * @param $comment
+     * @param $activity
+     */
     public static function watchUser(User $user, $opus, $comment, $activity)
     {
         $watch = Watch::create(['user_id'=>$user->id, 'watcher_user_id'=>Auth::user()->id, 'watch_opus'=>$opus, 'watch_comments'=>$comment, 'watch_activity'=>$activity]);
@@ -44,6 +50,13 @@ class Watch extends Model
 
     }
 
+    /**
+     * Auth::user() will unwatch $user
+     * @param User $user
+     * @param $opus
+     * @param $comment
+     * @param $activity
+     */
     public static function unwatchUser(User $user)
     {
         $watch = Auth::user()->watchers()->where('user_id', $user->id)->where('watches.watcher_user_id', Auth::user()->id)->first();

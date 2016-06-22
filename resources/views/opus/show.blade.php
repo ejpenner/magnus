@@ -45,14 +45,19 @@
                             </div>
                         @endunless
                     </div>
-                    <div class="well col-md-9">
-                        <p>{{ $opus->comment }}</p>
+                    <!-- Artist comments -->
+                    <div class="col-md-9">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <p>{{ $opus->comment }}</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <div class="panel panel-default details-panel">
                             <div class="panel-heading">
                                 Details
-                                @if(Auth::check() and (Auth::user()->isOwner($opus) or Auth::user()->hasRole('admin')))
+                                @if(Auth::check() and (Auth::user()->isOwner($opus) or Auth::user()->atLeastHasRole(config('roles.moderator'))))
                                     <div class="pull-right operations">
                                         {!! Form::model($opus, ['method'=>'delete', 'class'=>'delete-confirm operations',
                                                                'action'=>['OpusController@destroy', $opus->id]]) !!}

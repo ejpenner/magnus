@@ -12,8 +12,14 @@ Route::model('profile', 'Profile');
  */
 Route::auth();
 
+/**
+ * Home route
+ */
 Route::get('/', 'HomeController@recent')->name('home');
 
+/**
+ * Error 401 Unauthorized Route
+ */
 Route::get('errors/401', ['as' => '401', function() {
     return view('errors.401');
 }]);
@@ -25,6 +31,9 @@ Route::bind('users', function ($value, $route) {
     return \App\User::whereSlug(strtolower($value))->first();
 });
 
+/**
+ *  binds User model via slug to {profile} wildcard
+ */
 Route::bind('profile', function ($value, $route) {
     return \App\User::whereSlug(strtolower($value))->first();
 });
@@ -42,9 +51,29 @@ Route::resource('opus.comment', 'CommentController');
 Route::get('gallery/{gallery}/{opus}',      'OpusController@galleryShow');
 
 /**
+ * Profile routes
+ */
+Route::resource('profile', 'ProfileController');
+Route::get('profile/{profile}/galleries', 'ProfileController@galleries');
+Route::get('profile/{profile}/opera', 'ProfileController@opera');
+Route::get('profile/{profile}/watchers', 'ProfileController@watchers');
+Route::get('profile/{profile}/watching', 'ProfileController@watching');
+
+/**
+ * Search route
+ */
+Route::get('/search/{terms}', ['uses'=> 'SearchController@searchAll', 'as'=>'searchAll']);
+
+/**
  * Authenticated middleware group
  */
 Route::group(['middleware' => ['auth']], function () {
+
+    /**
+     * Alternate create and store routes for creating Opus
+     */
+    Route::get('/submit', 'OpusController@newSubmission');
+    Route::post('/submit', 'OpusController@submit');
 
     /**
      * CRUD routes for opera in galleries
@@ -61,9 +90,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('opus/{opus}/{comment}', 'CommentController@destroyChild');
 
     /**
-     * Notification controller
+     * Notification controller and related routes
      */
     Route::resource('messages', 'NotificationController');
+    Route::post('opus/{opus}/{comment}/{notification}', 'CommentController@storeChildRemoveNotification');
 
     /**
      * CRUD routes for user operations
@@ -92,14 +122,14 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Developer middleware group
      */
-    Route::group(['middleware'=>'permission:role,'.Config::get('roles.developer').'', 'prefix'=>'admin'], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.developer').'', 'prefix'=>'admin'], function () {
         Route::get('session', 'AdminController@session');
     });
 
     /**
      * Administration middleware group
      */
-    Route::group(['middleware'=>'permission:role,'.Config::get('roles.administrator').''], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.administrator').''], function () {
         Route::resource('permissions', 'PermissionController');
         Route::resource('users', 'UserController');
         Route::resource('roles', 'RoleController');
@@ -109,27 +139,8 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Global moderator middleware group
      */
-    Route::group(['middleware'=>'permission:role,'.Config::get('roles.globalMod').''], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.globalMod').''], function () {
         Route::get('users/{id}/avatar', 'UserController@avatarAdmin');
         Route::post('users/{id}/avatar', 'UserController@uploadAvatarAdmin');
     });
-
-//    Route::post('opus/{opus}/c/{c}', 'CommentController@storeChild');
-//    Route::patch('opus/{opus}/c/{c}', 'CommentController@updateChild');
-//    Route::delete('opus/{opus}/c/{c}', 'CommentController@destroyChild');
-
-    Route::get('/submit', 'OpusController@newSubmission');
-    Route::post('/submit', 'OpusController@submit');
-
 });
-
-Route::resource('profile', 'ProfileController');
-Route::get('profile/{profile}/galleries', 'ProfileController@galleries');
-Route::get('profile/{profile}/opera', 'ProfileController@opera');
-
-
-
-
-Route::get('/home', 'HomeController@index');
-//Route::get('/recent', ['uses'=> 'HomeController@recent', 'as'=>'recent']);
-Route::get('/search/{terms}', ['uses'=> 'SearchController@searchAll', 'as'=>'searchAll']);

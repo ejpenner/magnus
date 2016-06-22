@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class Comment extends Model
 {
@@ -42,7 +43,11 @@ class Comment extends Model
     }
 
     public function getCreatedAtAttribute($value) {
-        return date_format(Carbon::parse($value), 'm/j/Y H:iA');
+        if(isset(Auth::user()->timezone)) {
+            return date_format(Carbon::parse($value)->timezone(Auth::user()->timezone), 'M d, Y g:iA');
+        } else {
+            return Carbon::parse($value);
+        }
     }
 
 
