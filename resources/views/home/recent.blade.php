@@ -6,15 +6,7 @@
             @foreach($opera->chunk(4) as $operaChunk)
                 <div class="row">
                     @foreach($operaChunk as $opus)
-                        <div class="col-md-3 vcenter gallery-item">
-                            <div class="">
-                            <a href="{{ action('OpusController@show', [$opus->id]) }}">
-                                <img src="/{{ $opus->getThumbnail() }}" alt="">
-                            </a>
-                            </div>
-                            <h4><a href="{{ action('OpusController@show', [$opus->id]) }}">{{ $opus->title }}</a> -
-                                <small><a href="{{ action('ProfileController@show', $opus->user->slug) }}">{{ $opus->user->name }}</a></small></h4>
-                        </div>
+                        @include('partials._opus', ['opus' => $opus])
                     @endforeach
                 </div>
             @endforeach
