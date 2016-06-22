@@ -9,13 +9,7 @@
             @foreach($results->chunk(4) as $resultChunk)
                 <div class="row">
                     @foreach($resultChunk as $result)
-                        <div class="col-md-3 vcenter gallery-item">
-                            <a href="{{ action('OpusController@show', [$result->id]) }}">
-                                <img src="/{{ $result->getThumbnail() }}" alt="">
-                            </a>
-                            <h4><a href="{{ action('OpusController@show', [$result->id]) }}">{{ $result->title }}</a> -
-                                <small><a href="{{ action('ProfileController@show', $result->user->slug) }}">{{ $result->user->name }}</a></small></h4>
-                        </div>
+                        @include('partials._opus', ['opus' => $result])
                     @endforeach
                 </div>
             @endforeach

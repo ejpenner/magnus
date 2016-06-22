@@ -23,7 +23,7 @@
             @foreach($opera->chunk(4) as $i => $operaChunk)
                 <div class="row">
                     @foreach($operaChunk as $opus)
-                        @include('partials._opus', ['opus' => $opus])
+                        @include('partials._opus', ['opus' => $opus, 'showName' => false])
                     @endforeach
                 </div>
             @endforeach
