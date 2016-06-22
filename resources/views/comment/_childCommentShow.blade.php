@@ -22,7 +22,7 @@
             </div>
         </div>
         @if($childComment->allChildComments->count() > 0)
-            @include('comment._childComment', ['comment' => $childComment, 'opus'=>$opus])
+            @include('comment._childCommentShow', ['comment' => $childComment])
         @endif
     </div>
 @endforeach

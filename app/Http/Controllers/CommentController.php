@@ -121,9 +121,10 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($gallery_id, $piece_id, $comment_id)
+    public function show($comment_id)
     {
-        //
+        $comment = Comment::findOrFail($comment_id);
+        return view('comment.show', compact('comment'));
     }
 
     /**

@@ -35,7 +35,7 @@ class Comment extends Model
     }
     
     public function parentComment() {
-        return $this->hasOne('App\Comment', 'id', 'parent_id');
+        return $this->belongsTo('App\Comment', 'parent_id', 'id');
     }
 
     public function allChildComments() {

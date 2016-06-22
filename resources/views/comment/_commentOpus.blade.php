@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="container-fluid">
-                    @include('comment._childComment', ['comment' => $comment, 'opus'=>$opus])
+                    @include('comment._childCommentOpus', ['comment' => $comment, 'opus'=>$opus])
                 </div>
             </div>
         @endif
