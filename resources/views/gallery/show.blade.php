@@ -6,9 +6,9 @@
         <p>{{ $gallery->description }}</p>
         <p>Created by <a href="{{ action('ProfileController@show', $gallery->user->slug) }}">{{ $gallery->user->name }}</a></p>
 
-        @if(Auth::check() and (Auth::user()->isOwner($gallery) or Auth::user()->hasRole('Administrator')))
+        @if(Auth::check() and (Auth::user()->isOwner($gallery) or Auth::user()->hasRole(config('roles.moderator'))))
             <div class="container">
-                <a class="btn btn-primary" href="{{ action('OpusController@create') }}">Submit Artwork</a>
+                <a class="btn btn-primary" href="{{ action('OpusController@newSubmission') }}">Submit Artwork</a>
             </div>
         @endif
     </div>

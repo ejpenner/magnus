@@ -80,7 +80,8 @@ class ProfileController extends Controller
      * @param User $user
      */
     public function galleries(User $user) {
-        $galleries = Gallery::where('user_id', $user->id)->get();
+        $galleries = Gallery::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(12);
+        return view('profile.gallery', compact('galleries'));
     }
 
     /**

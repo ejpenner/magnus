@@ -122,7 +122,7 @@ class GalleryController extends Controller
     public function destroy($id)
     {
         $gallery = Gallery::findOrFail($id);
-        if($gallery->main_gallery != true or Auth::user()->hasRole('Moderator')) {
+        if(Auth::user()->isOwner($gallery) or Auth::user()->hasRole(config('role.moderator'))) {
             $gallery->delete();
             return redirect()->to(app('url')->previous())->with('success', 'Gallery successfully deleted!');
         } else {

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class Gallery extends Model
 {
@@ -83,5 +84,21 @@ class Gallery extends Model
     {
         $this->removeOpus($opus);
         $gallery->addOpus($opus);
+    }
+    
+    public static function place(Request $request, Opus $opus)
+    {
+        $gallery_ids = [];
+        foreach($request->all() as $key => $value) {
+            if(preg_match('/gallery_id\d+/', $key))
+            {
+                array_push($gallery_ids, $value);
+            }
+        }
+        if(count($gallery_ids) > 0) {
+            foreach ($gallery_ids as $id) {
+                Gallery::where('id', $id)->first()->addOpus($opus);
+            }
+        }
     }
 }
