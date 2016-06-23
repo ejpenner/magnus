@@ -154,6 +154,15 @@ div.gallery-item {
   text-align: center;
   min-height: @min-gallery-item-height;
 
+  .gallery-operations {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    //margin-right: -50%;
+    .translate(-50%, 135px);
+    z-index: 5;
+  }
+
   img {
     .box-shadow(5px 5px 5px #888888);
   }
@@ -167,15 +176,6 @@ div.gallery-item {
     margin-right: -50%;
     .translate(-50%, -50%);
   }
-}
-
-div.gallery-operations {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  //margin-right: -50%;
-  .translate(-50%, 135px);
-  z-index: 5;
 }
 
 div.message-item {

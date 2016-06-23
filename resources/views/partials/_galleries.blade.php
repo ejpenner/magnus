@@ -12,13 +12,14 @@
                         <h5><a href="{{ action('GalleryController@show', $item->id) }}">{{ $item->name }}</a></h5>
                     </div>
                 </div>
-                <div class="gallery-operations">
-                    @if(Auth::check() and (Auth::user()->atLeastHasRole(config('roles.globalModerator')) or Auth::user()->isOwner($item)))
-                        <div>
-                            @include('partials._galleryOperationsDropdown', ['id'=>$i.'-'.$j, 'gallery'=>$item])
-                        </div>
-                    @endif
-                </div>
+                @if(Auth::check() and (Auth::user()->atLeastHasRole(config('roles.globalModerator')) or Auth::user()->isOwner($item)))
+                    <div class="gallery-operations">
+                        @include('partials._galleryOperationsDropdown', ['id' => $i.'-'.$j, 'gallery' => $item])
+                    </div>
+                    <div>
+                        @include('partials._galleryOperationsModal', ['id' => $i.'-'.$j, 'gallery' => $item])
+                    </div>
+                @endif
             </div>
         @endforeach
     </div>
