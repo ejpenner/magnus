@@ -13,11 +13,6 @@ Route::model('profile', 'Profile');
 Route::auth();
 
 /**
- * Home route
- */
-Route::get('/{filter?}', 'HomeController@recent')->name('home');
-
-/**
  * Error 401 Unauthorized Route
  */
 Route::get('errors/401', ['as' => '401', function() {
@@ -148,3 +143,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('users/{id}/avatar', 'UserController@uploadAvatarAdmin');
     });
 });
+
+/**
+ * Home route
+ */
+Route::get('/{filter?}', 'HomeController@recent')->name('home');

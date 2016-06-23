@@ -2,8 +2,8 @@
 
 @section('content')
     @if($user->name != null)
+        @include('profile._header', ['profile'=>$profile,'user'=>$user,'details'=>true])
         <div class="container gallery-container">
-            @include('profile._header', ['profile'=>$profile,'user'=>$user])
             <div class="col-md-12">
                 @include('partials._galleries', ['galleries' => $galleries])
             </div>
