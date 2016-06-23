@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests;
-
 use App\User;
 use App\Profile;
 use App\Permission;
@@ -215,10 +214,7 @@ class UserController extends Controller
             }
         }
         if(Auth::user()-> id != $user->id) {
-            Watch::watchUser($user,
-                $request->input('watch_opus') ? 1 : 0,
-                $request->input('watch_comments') ? 1 : 0,
-                $request->input('watch_activity') ? 1 : 0);
+            Watch::watchUser(Auth::user(), $user, $request);
             return redirect()->to(app('url')->previous())->with('success', 'You have added ' . $user->name . ' to your watch list!');
         } else {
             return redirect()->to(app('url')->previous())->withErrors('You can\'t watch yourself!');
@@ -233,7 +229,7 @@ class UserController extends Controller
      */
     public function unwatchUser(Request $request, User $user)
     {
-        Watch::unwatchUser($user);
+        Watch::unwatchUser(Auth::user(), $user);
         return redirect()->to(app('url')->previous())->with('success', 'You have unwatched '.$user->name.'.');
     }
 }

@@ -14,7 +14,12 @@ class Comment extends Model
         'user_id',
         'parent_id',
         'opus_id',
-        'body'
+        'body',
+        'deleted'
+    ];
+    
+    protected $casts = [
+        'deleted' => 'boolean'
     ];
 
     public function user() {
@@ -35,7 +40,7 @@ class Comment extends Model
     }
     
     public function parentComment() {
-        return $this->hasOne('App\Comment', 'id', 'parent_id');
+        return $this->belongsTo('App\Comment', 'parent_id', 'id');
     }
 
     public function allChildComments() {

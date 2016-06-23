@@ -52,7 +52,9 @@ class ProfileController extends Controller
         $query->join('user_watch', 'users.id', '=', 'user_watch.watcher_user_id');
         $query->where('user_watch.watched_user_id', $user->id);
         $query->orderBy('user_watch.created_at', 'desc');
+        $query->select('users.name','users.username','users.id','users.slug','user_watch.created_at');
         $watchers = $query->paginate(50);
+
         if($user->name != null) {
             return view('profile.watchers', compact('user', 'watchers'));
         } else {
@@ -66,6 +68,7 @@ class ProfileController extends Controller
         $query->join('user_watch', 'users.id', '=', 'user_watch.watched_user_id');
         $query->where('user_watch.watcher_user_id', $user->id);
         $query->orderBy('user_watch.created_at', 'desc');
+        $query->select('users.name','users.username','users.id','users.slug','user_watch.created_at');
         $watchers = $query->paginate(50);
         if($user->name != null) {
             return view('profile.watching', compact('user', 'watchers'));

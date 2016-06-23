@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $dates = ['created_at', 'updated_at'];
 
     private $avatarDirectory = 'avatars';
     private $avatarResize = '150';
@@ -112,6 +115,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Watch', 'user_watch', 'watcher_user_id', 'watch_id')->withPivot('watched_user_id')->withTimestamps();
     }
+//
+//    public function getCreatedAtAttribute($value)
+//    {
+//        $this->attributes['created_at'] = Carbon::parse($value)->format('F j, Y');
+//    }
 
     /**
      *  Return some span formatting around usernames for fancy CSS output
@@ -123,12 +131,28 @@ class User extends Authenticatable
             return "<span class=\"username role-developer\">$this->name</span>";
         } elseif(Role::atLeastHasRole($this, Config::get('roles.administrator'))) {
             return "<span class=\"username role-administrator\">$this->name</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.globalModerator'))) {
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.globalMod'))) {
             return "<span class=\"username role-globalModerator\">$this->name</span>";
         } elseif(Role::atLeastHasRole($this, Config::get('roles.moderator'))) {
             return "<span class=\"username role-moderator\">$this->name</span>";
         } else {
             return "<span class=\"username\">$this->name</span>";
+        }
+    }
+
+    public function decorateUsername() {
+        if(Role::atLeastHasRole($this, Config::get('roles.developer'))) {
+            return "<span class=\"username role-developer\">$this->username</span>";
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.administrator'))) {
+            return "<span class=\"username role-administrator\">$this->username</span>";
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.globalMod'))) {
+            return "<span class=\"username role-globalModerator\">$this->username</span>";
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.moderator'))) {
+            return "<span class=\"username role-moderator\">$this->username</span>";
+        } elseif(Role::hasRole($this, Config::get('roles.banned'))) {
+            return "<span class=\"username role-banned\">$this->username</span>";
+        } else {
+            return "<span class=\"username\">$this->username</span>";
         }
     }
 
@@ -382,5 +406,4 @@ class User extends Authenticatable
             return false;
         }
     }
-    
 }

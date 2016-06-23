@@ -89,7 +89,7 @@
         </div>
         <div class="container-fluid">
             <div class="col-md-offset-2 col-md-8">
-                @include('comment._comment', ['comments'=>$opus->comments, 'gallery'=>$gallery, 'opus'=>$opus])
+                @include('comment._commentOpus', ['comments'=>$opus->comments, 'gallery'=>$gallery, 'opus'=>$opus])
             </div>
         </div>
     </div>

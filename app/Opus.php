@@ -21,7 +21,7 @@ class Opus extends Model
 
     private $imageDirectory = 'images';
     private $thumbnailDirectory = 'thumbnails';
-    private $resizeTo = 275;
+    private $resizeTo = 250;
 
     /**
      * Opus has a M:1 relationship with User model
