@@ -18,7 +18,8 @@
 @brand-success: @newSuccess;
 
 @galley-item-width: 350px;
-@min-gallery-item-height: 330px;
+@min-gallery-item-height: 360px;
+@max-message-item-height: 300px;
 
 /* Dropdown hover */
 .dropdown:hover .dropdown-menu {
@@ -177,26 +178,57 @@ div.gallery-item {
   }
 }
 
+div.message-item {
+  min-height: @max-message-item-height !important;
+}
+
 span.role-developer::before {
   content: "Dev";
   margin-right: 3px;
-  padding: 4px;
-  font-size: inherit;
+  padding: 2px;
+  font-size: 90%;
   position: relative;
   color: @white;
   .border-radius(5px);
-  .gradient(#337e3c, #222e24);
+  .gradient(#a45dba, #552f51);
 }
 
 span.role-administrator::before {
   content: "Admin";
   margin-right: 3px;
-  padding: 4px;
-  font-size: inherit;
+  padding: 2px;
+  font-size: 90%;
   position: relative;
   color: @white;
   .border-radius(5px);
-  .gradient(#ba3d2d, #552522);
+  .gradient(#c03622, #552522);
+}
+
+span.role-globalModerator::before {
+  content: "Conflict Resolution Officer";
+  margin-right: 3px;
+  padding: 2px;
+  font-size: 90%;
+  position: relative;
+  color: @white;
+  .border-radius(5px);
+  .gradient(#48ad42, #1a551a);
+}
+
+span.role-moderator::before {
+  content: "Mod";
+  margin-right: 3px;
+  padding: 2px;
+  font-size: 90%;
+  position: relative;
+  color: @white;
+  .border-radius(5px);
+  .gradient(#292ec6, #1a2363);
+}
+
+span.role-banned {
+  text-decoration: line-through;
+  color: @gray-light;
 }
 
 .gallery-container {
@@ -331,4 +363,9 @@ footer {
     width: 70%;
     margin-bottom: 2px;
   }
+}
+
+.watch-date {
+  color: #8c8c8c;
+  font-style: italic;
 }

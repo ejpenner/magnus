@@ -8,7 +8,7 @@
             <div class="panel-body">
                 @foreach($opusResults as $opus)
                     <div class="col-md-3">
-                        <div class="gallery-item">
+                        <div class="gallery-item message-item">
                             <div class="vcenter">
                                 <a href="{{ action('OpusController@show', [$opus->id]) }}">
                                     <img src="/{{ $opus->getThumbnail() }}" alt="">
