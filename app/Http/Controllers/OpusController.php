@@ -38,6 +38,17 @@ class OpusController extends Controller
     }
 
     /**
+     * Send the download file to the requesting browser
+     *
+     * @param $opus_id
+     */
+    public function download($opus_id)
+    {
+        $opus = Opus::findOrFail($opus_id);
+        return response()->download($opus->image_path, $opus->user->username.'-'.$opus->title.'-'.date('mdY').'.jpg', ['Content-Type: application/jpeg']);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -47,6 +58,12 @@ class OpusController extends Controller
         return view('opus.create');
     }
 
+    /**
+     * Multipurpose opus create page, allows selection of 0 to many
+     * galleries to add the new Opus to
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function newSubmission()
     {
         $user = Auth::user();
@@ -55,6 +72,11 @@ class OpusController extends Controller
 
     }
 
+    /**
+     * Multipurpose opus POST method
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function submit(Requests\OpusCreateRequest $request)
     {
         $user = Auth::user();
@@ -62,19 +84,6 @@ class OpusController extends Controller
         Notification::notifyWatchersNewOpus($opus, $user);
         Tag::make($opus, $request->input('tags'));
         Gallery::place($request, $opus);
-//        $gallery_ids = [];
-//        foreach($request->all() as $key => $value) {
-//            if(preg_match('/gallery_id\d+/', $key))
-//            {
-//                array_push($gallery_ids, $value);
-//            }
-//        }
-//
-//        if(count($gallery_ids) > 0) {
-//            foreach ($gallery_ids as $id) {
-//                Gallery::where('id', $id)->first()->addOpus($opus);
-//            }
-//        }
 
         return redirect()->route('opus.show', $opus->id)->with('success', 'Your work been added!');
     }
@@ -247,6 +256,13 @@ class OpusController extends Controller
         return redirect()->to(app('url')->previous())->with('success', 'The opus has been deleted!');
     }
 
+    /**
+     * Delete an opus that is inside a gallery
+     *
+     * @param $gallery_id
+     * @param $opus_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function galleryDestroy($gallery_id, $opus_id) {
         $opus = Opus::findOrFail($opus_id);
         $gallery = Gallery::findOrFail($gallery_id);

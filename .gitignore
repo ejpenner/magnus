@@ -12,6 +12,7 @@ Thumbs.db
 /public/images/*
 /public/thumbnails/*
 /public/avatars/*
+/public/users/*
 !/public/images/404/header-bg.jpg
 !/public/images/404/
 !/public/images/missing/missing-avatar.png

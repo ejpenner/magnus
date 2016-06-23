@@ -13,6 +13,7 @@
                         <a class="btn btn-default" href="{{ action('OpusController@show', $galleryNav['previous']) }}">Previous</a>
                         <a class="btn btn-default" href="{{ action('GalleryController@show', [$gallery->id]) }}">Gallery</a>
                         <a class="btn btn-default" href="{{ action('OpusController@show', $galleryNav['next']) }}">Next</a>
+                        <a class="btn btn-primary" href="{{ action('OpusController@download', [$opus->id]) }}">Download</a>
                     </div>
                 </div>
             </div>
@@ -46,14 +47,14 @@
                         @endunless
                     </div>
                     <!-- Artist comments -->
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <p>{{ $opus->comment }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="panel panel-default details-panel">
                             <div class="panel-heading">
                                 Details

@@ -38,17 +38,21 @@ Route::bind('profile', function ($value, $route) {
     return \App\User::whereSlug(strtolower($value))->first();
 });
 
+
+/**
+ * A pretty url to show opera that are in a gallery
+ */
+Route::get('gallery/{gallery}/{opus}', 'OpusController@galleryShow');
+
+
 /**
  * Gallery, opus, and comment CRUD resources
  */
 Route::resource('gallery', 'GalleryController');
 Route::resource('opus', 'OpusController');
 Route::resource('opus.comment', 'CommentController');
+Route::get('opus/{id}/download', 'OpusController@download');
 
-/**
- * A pretty url to show opera that are in a gallery
- */
-Route::get('gallery/{gallery}/{opus}',      'OpusController@galleryShow');
 
 /**
  * Profile routes
@@ -68,12 +72,11 @@ Route::get('/search/{terms}', ['uses'=> 'SearchController@searchAll', 'as'=>'sea
  * Authenticated middleware group
  */
 Route::group(['middleware' => ['auth']], function () {
-
     /**
      * Alternate create and store routes for creating Opus
      */
-    Route::get('/submit', 'OpusController@newSubmission');
-    Route::post('/submit', 'OpusController@submit');
+    Route::get('/new/submit', 'OpusController@newSubmission');
+    Route::post('/new/submit', 'OpusController@submit');
 
     /**
      * CRUD routes for opera in galleries
