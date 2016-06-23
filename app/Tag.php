@@ -10,7 +10,7 @@ class Tag extends Model
 
     /**
      * A Tag model belongs to many Opus models
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function opera()
@@ -21,9 +21,9 @@ class Tag extends Model
     /**
      * A function that takes in an Opus and a string
      * and makes Tags from the string if they don't already
-     * exist. Then for every tag that is not a duplicate, 
+     * exist. Then for every tag that is not a duplicate,
      * attach it to the Opus and sync it with Tag
-     * 
+     *
      * @param Opus $opus
      * @param $tag_string
      */
@@ -31,15 +31,13 @@ class Tag extends Model
         if($tag_string != '') {
             $tags = explode(' ', trim($tag_string));
             foreach($tags as $tag) {
-                if(Tag::where('name', $tag)->first() === null) {
-                    Tag::create(['name'=>$tag]);
-                }
+                Tag::firstOrCreate(['name'=>$tag]);
             }
             $tagIds = [];
             foreach($tags as $tag) {
                 $addTag = Tag::where('name', $tag)->first();
                 if(strtolower($addTag->name) == strtolower($tag))
-                array_push($tagIds, $addTag->id);
+                    array_push($tagIds, $addTag->id);
             }
             $opus->tags()->sync($tagIds);
         } else {

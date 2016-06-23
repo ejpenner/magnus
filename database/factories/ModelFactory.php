@@ -23,8 +23,9 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'timezone'  => $timezones[rand(0,3)],
         'remember_token' => str_random(10),
     ];
-    File::makeDirectory(public_path('images/'.$user['username']));
-    File::makeDirectory(public_path('thumbnails/'.$user['username']));
+    File::makeDirectory(public_path('users/'.$user['username'].'/images'), 0755, true);
+    File::makeDirectory(public_path('users/'.$user['username'].'/thumbnails'), 0755, true);
+    File::makeDirectory(public_path('users/'.$user['username'].'/avatars'), 0755, true);
     return $user;
 });
 
@@ -42,7 +43,9 @@ $factory->define(App\Opus::class,  function (Faker\Generator $faker){
         'image_path' => $image_path,
         'thumbnail_path' => $thumbnail_path,
         'published_at' => \Carbon\Carbon::now(),
-        'user_id' => rand(1, $usersMax),
+        'views'        => rand(1000,3000),
+        'daily_views'  => rand(100,1000), 
+        //'user_id' => rand(1, $usersMax),
     ];
 });
 
@@ -66,17 +69,18 @@ $factory->define(App\Profile::class, function (Faker\Generator $faker){
     ] ;
 });
 
-$factory->define(App\Notification::class, function (Faker\Generator $faker){
-    $handles = ['opus','comment'];
+$factory->defineAs(App\Notification::class, 'opus', function (Faker\Generator $faker){
     $opusCount = \App\Opus::count();
     $randomOpus = rand(1,$opusCount);
+    $noteStore = ['handle'=>'opus', 'opus_id'=>rand(1,$randomOpus), 'read'=>0];
+    return $noteStore;
+});
+
+$factory->defineAs(App\Notification::class, 'comment', function (Faker\Generator $faker){
     $commentCount = \App\Comment::count();
     $randomComment = rand(1, $commentCount);
-    $noteStore = [
-        ['handle'=>$handles[0], 'opus_id'=>rand(1,$randomOpus), 'content'=>\App\Opus::find($randomOpus)->first()->title, 'read'=>0],
-        ['handle'=>$handles[1], 'comment_id'=>rand(1,$randomComment), 'content'=>\App\Comment::find($randomComment)->body, 'read'=>0]
-    ];
-    return $noteStore[rand(0,1)];
+    $noteStore = ['handle'=>'comment', 'comment_id'=>rand(1,$randomComment), 'read'=>0];
+    return $noteStore;
 });
 
 $factory->define(App\Feature::class, function (Faker\Generator $faker){

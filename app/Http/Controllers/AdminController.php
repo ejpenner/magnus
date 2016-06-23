@@ -13,4 +13,9 @@ class AdminController extends Controller
         $session = $request->session()->all();
         return view('admin.session', compact('session'));
     }
+    
+    public function center()
+    {
+        
+    }
 }

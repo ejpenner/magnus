@@ -14,13 +14,15 @@ class Opus extends Model
     protected $fillable = [
         'image_path', 'thumbnail_path',
         'title','comment','user_id',
-        'published_at', 'views'
+        'published_at', 'views', 'daily_views',
+        'slug'
     ];
 
     protected $dates = ['published_at'];
 
     private $imageDirectory = 'images';
     private $thumbnailDirectory = 'thumbnails';
+    private $usersDirectory = 'users';
     private $resizeTo = 250;
 
     /**
@@ -218,7 +220,7 @@ class Opus extends Model
             //$filename = basename($this->thumbnail_path);
             return $this->thumbnail_path;
         }
-        return $this->thumbnailDirectory.'/missing.png';
+        return $this->imageDirectory.'/missing-thumb.png';
     }
     /**
      * Resize the opus' image for it's thumbnail
@@ -252,7 +254,8 @@ class Opus extends Model
     public function storeImage(User $user, $request)
     {
         $userDirectory = $user->username;
-        $destinationPath = $this->imageDirectory.'/'.$userDirectory; // upload path, goes to the public folder
+        //$destinationPath = $this->imageDirectory.'/'.$userDirectory; // upload path, goes to the public folder
+        $destinationPath = $this->usersDirectory.'/'.$userDirectory.'/'.$this->imageDirectory;
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         $fileName = date('Ymd').'_'.substr(microtime(), 2, 8).'_uploaded.'.$extension; // renaming image
         $request->file('image')->move($destinationPath, $fileName); // uploading file to given path
@@ -271,7 +274,8 @@ class Opus extends Model
     public function storeThumbnail(User $user, $request)
     {
         $userDirectory = $user->username;
-        $thumbDestination = $this->thumbnailDirectory.'/'.$userDirectory;
+        //$thumbDestination = $this->thumbnailDirectory.'/'.$userDirectory;
+        $thumbDestination = $this->usersDirectory.'/'.$userDirectory.'/'.$this->thumbnailDirectory;
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         $fileThumbnailName = date('Ymd').'_'.substr(microtime(), 2, 8).'_thumb.'.$extension;
         $thumbnail = $this->resize($this->getImage());
@@ -353,13 +357,13 @@ class Opus extends Model
      * @return array
      */
     public function metadata() {
-        if(true) {
-            $img = Image::make($this->getImage());
-            $size = ceil($img->fileSize() / 1000);
+            try {
+                $img = Image::make($this->getImage());
+                $size = ceil($img->fileSize() / 1000);
+            } catch (\Exception $e) {
+                return ['filesize' => '?' . ' KB', 'resolution' => '?' . 'x' . '?'];
+            }
             return ['filesize' => $size . ' KB', 'resolution' => $img->width() . 'x' . $img->height()];
-        } else {
-            return ['filesize' => 'unknown' . ' KB', 'resolution' => 'unknown' . 'x' . 'unknown'];
-        }
     }
 
     /**

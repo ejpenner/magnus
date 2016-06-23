@@ -15,7 +15,7 @@ Route::auth();
 /**
  * Home route
  */
-Route::get('/', 'HomeController@recent')->name('home');
+Route::get('/{filter?}', 'HomeController@recent')->name('home');
 
 /**
  * Error 401 Unauthorized Route

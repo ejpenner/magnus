@@ -14,4 +14,6 @@ Thumbs.db
 /public/avatars/*
 !/public/images/404/header-bg.jpg
 !/public/images/404/
-!/public/avatars/missing/missing.png
+!/public/images/missing/missing-avatar.png
+!/public/images/missing/missing.png
+!/public/images/missing/missing-thumb.png

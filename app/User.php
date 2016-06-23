@@ -13,6 +13,8 @@ use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
+    private $usersDirectory = 'users';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -233,7 +235,9 @@ class User extends Authenticatable
      */
     public function storeAvatar($request)
     {
-        $destinationPath = $this->avatarDirectory; // upload path, goes to the public folder
+
+        //$destinationPath = $this->avatarDirectory; // upload path, goes to the public folder
+        $destinationPath = $this->usersDirectory.'/'.$this->username.'/'.$this->avatarDirectory;
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         if($extension == null or $extension == '') {
             $extension = 'png';
@@ -289,9 +293,9 @@ class User extends Authenticatable
         {
             // Get the filename from the full path
             $filename = basename($this->avatar);
-            return '/'.$this->avatarDirectory.'/'.$filename;
+            return '/'.$this->avatar;
         }
-        return '/avatars/missing/missing.png';
+        return '/images/missing/missing-avatar.png';
     }
 
     /**

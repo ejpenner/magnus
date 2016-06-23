@@ -36,8 +36,19 @@ class HomeController extends Controller
         return view('home');
     }
     
-    public function recent() {
-        $opera = Opus::orderBy('created_at', 'desc')->paginate(16);
+    public function recent($filter = null) {
+        switch  ($filter)
+        {
+            case 'hot':
+                $opera = Opus::orderBy('daily_views', 'desc')->paginate(16);
+                break;
+            case 'popular':
+                $opera = Opus::orderBy('views', 'desc')->paginate(16);
+                break;
+            default:
+                $opera = Opus::orderBy('created_at', 'desc')->paginate(16);
+                break;
+        }
         return view('home.recent', compact('opera'));
     }
 }
