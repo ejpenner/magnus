@@ -1,7 +1,7 @@
-@foreach($galleries->chunk(4) as $i => $gallery)
+@foreach($galleries->chunk(isset($columns) ? $columns : 4) as $i => $gallery)
     <div class="row">
         @foreach($gallery as $j => $item)
-            <div class="col-md-3">
+            <div class="col-md-{{ isset($columns) ? floor(12 / $columns) : 3 }}">
                 <div class="gallery-item">
                     <div class="vcenter">
                         @if(isset($item->opera->first()->thumbnail_path))

@@ -1,0 +1,34 @@
+div.gallery-select {
+  .checkbox-vis-hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  label {
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid gray;
+    color: black;
+    .border-radius(5px);
+  }
+
+  input:focus + label {
+    //border-color: blue;
+  }
+
+  input:checked + label {
+    border-color: green;
+    color: green;
+  }
+
+  input:focus:checked + label {
+    border-color: green;
+    color: green;
+  }
+}

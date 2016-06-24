@@ -35,20 +35,27 @@ class HomeController extends Controller
     {
         return view('home');
     }
-    
-    public function recent($filter = null) {
+
+    public function recent(Request $request, $filter = null) {
+        if($request->has('limit')) {
+            $limit = $request->input('limit');
+        } else {
+            $limit = 18;
+        }
         switch  ($filter)
         {
             case 'hot':
-                $opera = Opus::orderBy('daily_views', 'desc')->paginate(16);
+                $opera = Opus::orderBy('daily_views', 'desc')->paginate($limit);
                 break;
             case 'popular':
-                $opera = Opus::orderBy('views', 'desc')->paginate(16);
+                $opera = Opus::orderBy('views', 'desc')->paginate($limit);
                 break;
             default:
-                $opera = Opus::orderBy('created_at', 'desc')->paginate(16);
+                $opera = Opus::orderBy('created_at', 'desc')->paginate($limit);
                 break;
         }
-        return view('home.recent', compact('opera'));
+
+
+        return view('home.recent', compact('opera','request'));
     }
 }

@@ -5,12 +5,14 @@
     <div class="col-md-2">
         @if($galleries->count() > 0)
             {!! Form::label('Select Galleries') !!}
-            <div class="form-group">
+            <div class="form-group gallery-select">
                 {{--<select name="gallery_id" class="form-control" id="" multiple>--}}
                     @foreach($galleries as $i => $gallery)
                         {{--<option value="{{ $gallery->id }}">{{ $gallery->name }}</option>--}}
-                        {!! Form::label($gallery->name) !!}
-                        {!! Form::checkbox('gallery_id'.$i, $gallery->id) !!}
+
+                        {{--{!! Form::checkbox('gallery_id[]', $gallery->id, null, ['class'=>'checkbox-vis-hidden', 'id'=>'gallery_id'.$i]) !!}--}}
+                    <input type="checkbox" name="gallery_ids[]" id="gallery_id{{$i}}" value="{{$gallery->id}}" class="checkbox-vis-hidden">
+                    <label for="gallery_id{{$i}}">{{ $gallery->name }}</label>
                     @endforeach
                 {{--</select>--}}
             </div>

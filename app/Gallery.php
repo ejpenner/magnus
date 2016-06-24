@@ -89,11 +89,8 @@ class Gallery extends Model
     public static function place(Request $request, Opus $opus)
     {
         $gallery_ids = [];
-        foreach($request->all() as $key => $value) {
-            if(preg_match('/gallery_id\d+/', $key))
-            {
-                array_push($gallery_ids, $value);
-            }
+        foreach($request->input('gallery_ids') as $id) {
+                array_push($gallery_ids, $id);
         }
         if(count($gallery_ids) > 0) {
             foreach ($gallery_ids as $id) {

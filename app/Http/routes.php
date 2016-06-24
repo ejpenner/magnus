@@ -37,13 +37,13 @@ Route::bind('profile', function ($value, $route) {
 /**
  * A pretty url to show opera that are in a gallery
  */
-Route::get('gallery/{gallery}/{opus}', 'OpusController@galleryShow');
+Route::get('galleria/{gallery}/{opus}', 'OpusController@galleryShow');
 
 
 /**
  * Gallery, opus, and comment CRUD resources
  */
-Route::resource('gallery', 'GalleryController');
+Route::resource('galleria', 'GalleryController');
 Route::resource('opus', 'OpusController');
 Route::resource('opus.comment', 'CommentController');
 Route::get('opus/{id}/download', 'OpusController@download');
@@ -53,7 +53,7 @@ Route::get('opus/{id}/download', 'OpusController@download');
  * Profile routes
  */
 Route::resource('profile', 'ProfileController');
-Route::get('profile/{profile}/galleries', 'ProfileController@galleries');
+Route::get('profile/{profile}/galleria', 'ProfileController@galleries');
 Route::get('profile/{profile}/opera', 'ProfileController@opera');
 Route::get('profile/{profile}/watchers', 'ProfileController@watchers');
 Route::get('profile/{profile}/watching', 'ProfileController@watching');
@@ -70,15 +70,15 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Alternate create and store routes for creating Opus
      */
-    Route::get('/new/submit', 'OpusController@newSubmission');
-    Route::post('/new/submit', 'OpusController@submit');
+    Route::get('/nova/submit', 'OpusController@newSubmission');
+    Route::post('/nova/submit', 'OpusController@submit');
 
     /**
      * CRUD routes for opera in galleries
      */
-    Route::post('gallery/{gallery}/',           'OpusController@galleryStore');
-    Route::patch('gallery/{gallery}/{opus}',    'OpusController@galleryUpdate');
-    Route::delete('gallery/{gallery}/{opus}',   'OpusController@galleryDestroy');
+    Route::post('galleria/{gallery}/',           'OpusController@galleryStore');
+    Route::patch('galleria/{gallery}/{opus}',    'OpusController@galleryUpdate');
+    Route::delete('galleria/{gallery}/{opus}',   'OpusController@galleryDestroy');
 
     /**
      * Pretty url CRUD for comments

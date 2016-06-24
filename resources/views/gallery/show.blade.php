@@ -14,13 +14,7 @@
     </div>
     <div class="col-md-10">
         <div class="container-fluid">
-            @foreach($opera->chunk(4) as $opusChunk)
-                <div class="row" >
-                    @foreach($opusChunk as $opus)
-                        @include('partials._opusGallery', ['opus'=>$opus, 'gallery'=>$gallery])
-                    @endforeach
-                </div>
-            @endforeach
+            @include('partials._opusGallery', ['opus'=>$opera, 'gallery'=>$gallery, 'columns'=>4])
             {{ $opera->render() }}
         </div>
     </div>

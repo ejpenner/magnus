@@ -17,7 +17,7 @@
 @brand-danger: @newDanger;
 @brand-success: @newSuccess;
 
-@galley-item-width: 350px;
+@min-galley-item-width: 330px;
 @min-gallery-item-height: 360px;
 @max-message-item-height: 300px;
 
@@ -147,21 +147,14 @@
   -o-transform-origin:      @x @y;
 }
 
+@import "widgets";
+
 div.gallery-item {
   position:relative;
   padding-bottom: 5px;
   padding-top: 5px;
   text-align: center;
   min-height: @min-gallery-item-height;
-
-  .gallery-operations {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    //margin-right: -50%;
-    .translate(-50%, 135px);
-    z-index: 5;
-  }
 
   img {
     .box-shadow(5px 5px 5px #888888);
@@ -176,6 +169,15 @@ div.gallery-item {
     margin-right: -50%;
     .translate(-50%, -50%);
   }
+}
+
+.gallery-operations {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  .translate(-50%, 135px);
+  z-index: 5;
+  //text-align: center;
 }
 
 div.message-item {

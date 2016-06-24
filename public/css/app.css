@@ -9283,6 +9283,36 @@ button.close {
   background-position: center top;
   background-repeat: no-repeat;
 }
+div.gallery-select .checkbox-vis-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+div.gallery-select label {
+  margin: 10px;
+  padding: 5px;
+  border: 1px solid gray;
+  color: black;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+div.gallery-select input:checked + label {
+  border-color: green;
+  color: green;
+}
+div.gallery-select input:focus:checked + label {
+  border-color: green;
+  color: green;
+}
 div.gallery-item {
   position: relative;
   padding-bottom: 5px;
@@ -9308,7 +9338,7 @@ div.gallery-item .vcenter {
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
 }
-div.gallery-operations {
+.gallery-operations {
   position: absolute;
   top: 50%;
   left: 50%;
