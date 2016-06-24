@@ -1,6 +1,6 @@
 <div class="container">
     <h3>
-        <a href="{{ action('ProfileController@show', $user->slug) }}">
+        <a class="avatar-link" href="{{ action('ProfileController@show', $user->slug) }}">
             <img class="avatar" src="{{ $user->getAvatar() }}">
         </a>
         {!! $user->decorateName() !!}

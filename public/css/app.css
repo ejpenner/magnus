@@ -9467,6 +9467,9 @@ footer {
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
 }
+a.avatar-link {
+  text-decoration: none;
+}
 .piece-show {
   display: block;
   margin-left: auto;
