@@ -18,12 +18,12 @@ class OpusSeeder extends Seeder
         $opusGalleryMax = 2;
         $tagMax = 3;
         
-        foreach($users as $user) {
+        foreach($users as $user)  {
             foreach(range(1,$opusMax) as $index) {
-                factory(\App\Opus::class)->create(['user_id'=>$user->id])->each(function($opus) {
+                factory(\App\Opus::class)->create(['user_id'=>$user->id])->each(function($opus) use ($tagMax) {
                     $tagCount = \App\Tag::count();
 
-                    foreach(range(1,3) as $j){
+                    foreach(range(1, $tagMax) as $j){
                         $tag = \App\Tag::where('id', $this->UniqueRandomNumbersWithinRange(1,$tagCount,1))->first();
                         $opus->tags()->attach($tag->id);
                     }

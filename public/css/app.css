@@ -9470,11 +9470,14 @@ footer {
 a.avatar-link {
   text-decoration: none;
 }
-.piece-show {
+.opus-display {
   display: block;
+}
+.opus-display .opus-show {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 15px;
+  max-width: 1200px;
   -webkit-box-shadow: 5px 5px 5px #888888;
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 5px 5px 5px #888888;

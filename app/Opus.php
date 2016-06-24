@@ -222,29 +222,31 @@ class Opus extends Model
         }
         return $this->imageDirectory.'/missing-thumb.png';
     }
+
     /**
      * Resize the opus' image for it's thumbnail
      *
      * @param $image
      * @return Image
      */
-    private function resize($image)
+    private function resize($image, $size = null)
     {
         $resize = Image::make($image);
 
         $ratio = $resize->width() / $resize->height();
 
         if($ratio > 1){ // image is wider than tall
-            $resize->resize($this->resizeTo, null, function ($constraint) {
+            $resize->resize(isset($size) ? $size : $this->resizeTo, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
         } else { // image is taller than wide
-            $resize->resize(null, $this->resizeTo, function ($constraint) {
+            $resize->resize(null, isset($size) ? $size : $this->resizeTo, function ($constraint) {
                 $constraint->aspectRatio();
             });
         }
         return $resize;
     }
+
     /**
      * Handle the uploaded file, rename the file, move the file, return the filepath as a string
      *

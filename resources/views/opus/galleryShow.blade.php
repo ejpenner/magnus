@@ -3,8 +3,8 @@
 @section('content')
     <div class="col-md-12">
         <div class="text-center">
-            <div class="piece-display">
-                <img class="piece-show" src="/{{ $opus->getImage() }}" alt="">
+            <div class="opus-display">
+                <img class="opus-show" src="/{{ $opus->getImage() }}" alt="">
             </div>
             <div class="text-center">
                 <div class="piece-nav">
