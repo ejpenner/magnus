@@ -52,7 +52,7 @@ var phpcbf_options = {
 };
 
 var watch_config = {
-    less: assets_dir + 'less/app.less',
+    less: assets_dir + 'less/**/*.less',
     jsbeautify: [assets_dir + 'js/**/*.js', '!' + assets_dir + 'js/{vendor,vendor/**}'],
     scripts: assets_dir + 'js/**/*.js',
     phpcbf_app: php_files[0],

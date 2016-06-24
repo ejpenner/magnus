@@ -103,28 +103,28 @@ class UserController extends Controller
         return view('auth.login');
     }
 
-    public function editAccount($id)
+    public function editAccount(User $user)
     {
-        $user = User::findOrFail($id);
+        //$user = User::findOrFail($id);
         return view('user.editAccount', compact('user'));
     }
 
-    public function manageAccount($id)
+    public function manageAccount(User $user)
     {
-         $user = User::findOrFail($id);
+         //$user = User::findOrFail($id);
         return view('user.account', compact('user'));
     }
 
-    public function changePassword($id)
+    public function changePassword(User $user)
     {
-        $user = User::findOrFail($id);
+        //$user = User::findOrFail($id);
 
         return view('user.password', compact('user'));
     }
 
-    public function changeAccountPassword($id)
+    public function changeAccountPassword(User $user)
     {
-        $user = User::findOrFail($id);
+        //$user = User::findOrFail($id);
 
         return view('user.accountPassword', compact('user'));
     }
@@ -135,16 +135,15 @@ class UserController extends Controller
      * @param Requests\PasswordRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updatePassword($user_id, Requests\PasswordRequest $request)
+    public function updatePassword(User $user, Requests\PasswordRequest $request)
     {
-        $user = User::findOrFail($user_id);
         $old_password   = Input::get('old_password');
         if (Hash::check($old_password, Auth::user()->password)) {
             $user->password = bcrypt($request->password);
             $user->update();
-            return redirect()->route('user.account', [$user->id])->with('success', true)->with('success', 'Password updated!');
+            return redirect()->route('user.account', [$user->slug])->with('success', true)->with('success', 'Password updated!');
         } else {
-            return Redirect::back()->withErrors('Password incorrect');
+            return redirect()->back()->withErrors('Password incorrect');
         }
     }
 
@@ -154,12 +153,12 @@ class UserController extends Controller
      * @param Requests\AccountRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateAccount($id, Requests\AccountRequest $request)
+    public function updateAccount(User $user, Requests\AccountRequest $request)
     {
-        $user = User::findOrFail($id);
+        //$user = User::findOrFail($id);
         
         $user->update($request->all());
-        return redirect()->route('user.account', [$user->id])->with('success', 'User updated successfully!');
+        return redirect()->route('user.account', [$user->slug])->with('success', 'User updated successfully!');
     }
 
     /**
@@ -175,8 +174,8 @@ class UserController extends Controller
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function avatarAdmin($id) {
-        $user = User::findOrFail($id);
+    public function avatarAdmin(User $user) {
+        //$user = User::findOrFail($id);
         return view('user.avatarAdmin', compact('user'));
     }
     
@@ -195,8 +194,8 @@ class UserController extends Controller
      * @param Request $request
      * @param $id
      */
-    public function uploadAvatarAdmin (Request $request, $id) {
-        $user = User::where('id', $id)->first();
+    public function uploadAvatarAdmin (Request $request, User $user) {
+        //$user = User::where('id', $id)->first();
         $user->setAvatar($request);
         $user->save();
     }
@@ -231,5 +230,10 @@ class UserController extends Controller
     {
         Watch::unwatchUser(Auth::user(), $user);
         return redirect()->to(app('url')->previous())->with('success', 'You have unwatched '.$user->name.'.');
+    }
+    
+    public function preferences(User $user)
+    {
+        dd($user);
     }
 }

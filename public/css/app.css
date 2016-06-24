@@ -9322,6 +9322,20 @@ div.gallery-select input:focus:checked + label {
   -moz-box-shadow: 2px 2px 2px #888888;
   box-shadow: 2px 2px 2px #888888;
 }
+div.flash-messages {
+  position: absolute;
+  top: 10%;
+  z-index: 10;
+  width: 60%;
+  min-width: 300px;
+}
+div.flash-messages ul {
+  list-style-type: none;
+}
+.login-panel {
+  margin-top: 30px;
+  margin-bottom: 300px;
+}
 div.gallery-item {
   position: relative;
   padding-bottom: 5px;
@@ -9346,6 +9360,7 @@ div.gallery-item .vcenter {
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
+  z-index: 4;
 }
 .gallery-operations {
   position: absolute;
@@ -9356,6 +9371,10 @@ div.gallery-item .vcenter {
   -moz-transform: translate(-50%, 135px);
   -ms-transform: translate(-50%, 135px);
   -o-transform: translate(-50%, 135px);
+  z-index: 5;
+}
+.operations-dropdown {
+  position: relative;
   z-index: 5;
 }
 div.message-item {

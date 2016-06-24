@@ -62,7 +62,7 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#"> {{ Auth::user()->name }} <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ action('ProfileController@show', Auth::user()->slug) }}"><img src="{{ Auth::user()->getAvatar() }}" width="25px" > My Profile</a></li>
-                            <li><a href="{{ action('UserController@manageAccount', Auth::user()->id) }}"><span class="fa fa-user"></span> Account</a></li>
+                            <li><a href="{{ action('UserController@manageAccount', Auth::user()->slug) }}"><span class="fa fa-user"></span> Account</a></li>
                             <li><a href="/logout"><i class="fa fa-sign-out"></i> Log Out</a></li>
                         </ul>
                     </li>

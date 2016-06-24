@@ -14,16 +14,16 @@ class OpusSeeder extends Seeder
     {
         $users = User::all();
         $galleryMax = 1;
-        $opusMax = 1;
-        $opusGalleryMax = 2;
-        $tagMax = 3;
+        $opusMax = 4;
+        $opusGalleryMax = 4;
+        $tagMax = 4;
         
         foreach($users as $user)  {
             foreach(range(1,$opusMax) as $index) {
                 factory(\App\Opus::class)->create(['user_id'=>$user->id])->each(function($opus) use ($tagMax) {
                     $tagCount = \App\Tag::count();
 
-                    foreach(range(1, $tagMax) as $j){
+                    foreach(range(1, 4) as $j){
                         $tag = \App\Tag::where('id', $this->UniqueRandomNumbersWithinRange(1,$tagCount,1))->first();
                         $opus->tags()->attach($tag->id);
                     }
@@ -44,7 +44,7 @@ class OpusSeeder extends Seeder
 
                     $tagCount = \App\Tag::count();
 
-                    foreach(range(1,$tagMax) as $j){
+                    foreach(range(1,4) as $j){
                         $tag = \App\Tag::where('id', $this->UniqueRandomNumbersWithinRange(1,$tagCount,1))->first();
                         $opus->tags()->attach($tag->id);
                         echo $tag."\n\n";;

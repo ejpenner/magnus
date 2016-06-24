@@ -14,7 +14,18 @@ class CreatePreferencesTable extends Migration
     {
         Schema::create('preferences', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->string('sex');
+            $table->integer('dob_day');
+            $table->string('dob_month');
+            $table->integer('dob_year');
+            $table->string('show_dob');
+            $table->integer('per_page');
             $table->timestamps();
+        });
+
+        Schema::table('preferences', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
         });
     }
 

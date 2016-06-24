@@ -124,6 +124,16 @@ class User extends Authenticatable
 //    }
 
     /**
+     * User has one site preferences model
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function preferences()
+    {
+        return $this->hasOne('App\Preference');
+    }
+
+    /**
      *  Return some span formatting around usernames for fancy CSS output
      * 
      * @return string

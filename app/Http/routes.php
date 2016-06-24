@@ -99,11 +99,12 @@ Route::group(['middleware' => ['auth']], function () {
      * TODO: refactor id middleware
      */
     Route::group(['middleware' => ['id']], function ($id) {
-        Route::get('users/{id}/editAccount', 'UserController@editAccount');
-        Route::patch('users/{id}/updateAccount', 'UserController@updateAccount');
-        Route::get('users/{id}/account', array('uses' => 'UserController@manageAccount', 'as' => 'user.account'));
-        Route::get('users/{id}/changeMyPassword', array('uses' => 'UserController@changeAccountPassword', 'as' => 'user.accountPassword'));
-        Route::patch('users/{id}/updatePassword', 'UserController@updatePassword');
+        Route::get('users/{users}/editAccount', 'UserController@editAccount');
+        Route::patch('users/{users}/updateAccount', 'UserController@updateAccount');
+        Route::get('users/{users}/account', array('uses' => 'UserController@manageAccount', 'as' => 'user.account'));
+        Route::get('users/{users}/changeMyPassword', array('uses' => 'UserController@changeAccountPassword', 'as' => 'user.accountPassword'));
+        Route::patch('users/{users}/updatePassword', 'UserController@updatePassword');
+        Route::get('user/{users}/preferences', 'UserController@preferences');
     });
 
     /**
@@ -139,8 +140,8 @@ Route::group(['middleware' => ['auth']], function () {
      * Global moderator middleware group
      */
     Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.globalMod').''], function () {
-        Route::get('users/{id}/avatar', 'UserController@avatarAdmin');
-        Route::post('users/{id}/avatar', 'UserController@uploadAvatarAdmin');
+        Route::get('users/{users}/avatar', 'UserController@avatarAdmin');
+        Route::post('users/{users}/avatar', 'UserController@uploadAvatarAdmin');
     });
 });
 
