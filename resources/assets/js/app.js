@@ -59,6 +59,7 @@ $(document).ready(function() {
         readFile(this, '#preview');
         readFile(this, '#preview-edit');
         $('#preview').show();
+        $('div.preview-container').show();
     });
 
     var avatarCropper = new Cropper(image, {

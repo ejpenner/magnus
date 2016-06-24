@@ -278,15 +278,26 @@ footer {
   margin-bottom: 10px;
 }
 
-#preview  {
-  max-width: 100%; /* This rule is very important, please do not ignore this! */
-  max-height: 500px;
-  display:none;
+.preview-container {
+  display: none;
 }
 
-#preview-edit  {
-  max-width: 100%; /* This rule is very important, please do not ignore this! */
-  max-height: 500px;
+div.uploader {
+  text-align: center;
+
+  #preview {
+    position: relative;
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+    //max-height: 500px;
+    .box-shadow(5px 5px 5px #888888);
+    display: none;
+  }
+
+  #preview-edit {
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+    //max-height: 500px;
+    .box-shadow(5px 5px 5px #888888);
+  }
 }
 
 .comment {
@@ -316,10 +327,7 @@ footer {
   .comment-body {
     background-color: @white;
     .border-radius();
-    //height: 100%;
     min-height: 130px;
-    //width: inherit;
-    //padding: 15px 0 10px 0;
 
     .comment-date {
       padding: 5px 10px 0px 10px;

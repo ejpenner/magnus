@@ -9483,16 +9483,27 @@ footer {
 .piece-nav {
   margin-bottom: 10px;
 }
-#preview {
-  max-width: 100%;
-  /* This rule is very important, please do not ignore this! */
-  max-height: 500px;
+.preview-container {
   display: none;
 }
-#preview-edit {
+div.uploader {
+  text-align: center;
+}
+div.uploader #preview {
+  position: relative;
   max-width: 100%;
   /* This rule is very important, please do not ignore this! */
-  max-height: 500px;
+  -webkit-box-shadow: 5px 5px 5px #888888;
+  -moz-box-shadow: 5px 5px 5px #888888;
+  box-shadow: 5px 5px 5px #888888;
+  display: none;
+}
+div.uploader #preview-edit {
+  max-width: 100%;
+  /* This rule is very important, please do not ignore this! */
+  -webkit-box-shadow: 5px 5px 5px #888888;
+  -moz-box-shadow: 5px 5px 5px #888888;
+  box-shadow: 5px 5px 5px #888888;
 }
 .comment {
   border: #eeeeee solid 2px;
