@@ -9294,8 +9294,8 @@ div.gallery-select .checkbox-vis-hidden {
   width: 1px;
 }
 div.gallery-select label {
-  margin: 10px;
-  padding: 5px;
+  margin: 5px;
+  padding: 8px;
   border: 1px solid gray;
   color: black;
   -webkit-border-radius: 5px;
@@ -9304,14 +9304,23 @@ div.gallery-select label {
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
+  -webkit-box-shadow: 1px 1px 1px #CCCCCC;
+  -moz-box-shadow: 1px 1px 1px #CCCCCC;
+  box-shadow: 1px 1px 1px #CCCCCC;
 }
 div.gallery-select input:checked + label {
   border-color: green;
   color: green;
+  -webkit-box-shadow: 2px 2px 2px #888888;
+  -moz-box-shadow: 2px 2px 2px #888888;
+  box-shadow: 2px 2px 2px #888888;
 }
 div.gallery-select input:focus:checked + label {
   border-color: green;
   color: green;
+  -webkit-box-shadow: 2px 2px 2px #888888;
+  -moz-box-shadow: 2px 2px 2px #888888;
+  box-shadow: 2px 2px 2px #888888;
 }
 div.gallery-item {
   position: relative;

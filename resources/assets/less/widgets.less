@@ -11,11 +11,12 @@ div.gallery-select {
   }
 
   label {
-    margin: 10px;
-    padding: 5px;
+    margin: 5px;
+    padding: 8px;
     border: 1px solid gray;
     color: black;
     .border-radius(5px);
+    .box-shadow(1px 1px 1px #CCCCCC);
   }
 
   input:focus + label {
@@ -25,10 +26,12 @@ div.gallery-select {
   input:checked + label {
     border-color: green;
     color: green;
+    .box-shadow(2px 2px 2px #888888);
   }
 
   input:focus:checked + label {
     border-color: green;
     color: green;
+    .box-shadow(2px 2px 2px #888888);
   }
 }
