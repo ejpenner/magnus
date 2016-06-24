@@ -1,14 +1,9 @@
 <div class="col-md-3">
     <div class="gallery-item">
-        @if(Auth::check() and (Auth::user()->isOwner($opus) or Auth::user()->atLeastHasRole(config('roles.globalModerator'))))
-            @include('partials._operations', ['model' => $opus, 'controller' => 'OpusController'])
-        @endif
         <div class="vcenter">
-            <div class="">
-                <a href="{{ action('OpusController@show', [$opus->id]) }}">
-                    <img src="/{{ $opus->getThumbnail() }}" alt="{{ $opus->title }}">
-                </a>
-            </div>
+            <a href="{{ action('OpusController@show', [$opus->id]) }}">
+                <img src="/{{ $opus->getThumbnail() }}" alt="{{ $opus->title }}">
+            </a>
             <div class="item-details">
                 <h5><strong><a href="{{ action('OpusController@show', [$opus->id]) }}">{{ $opus->title }}</a></strong>
                     @if(!isset($showName) or $showName)
@@ -16,6 +11,11 @@
                     @endif
                 </h5>
             </div>
+        </div>
+        <div class="gallery-operations">
+            @if(Auth::check() and (Auth::user()->isOwner($opus) or Auth::user()->atLeastHasRole(config('roles.globalModerator'))))
+                @include('partials._operations', ['model' => $opus, 'controller' => 'OpusController'])
+            @endif
         </div>
     </div>
 </div>

@@ -8,7 +8,7 @@
                 <img src="{{ $user->getAvatar() }}" alt="avatar">
             </div>
             <div class="col-md-8">
-                <form id="avatar-form" action="{{ action('UserController@uploadAvatarAdmin', $user->id) }}">
+                <form id="avatar-form" action="{{ action('UserController@uploadAvatarAdmin', $user->slug) }}">
                     {!! csrf_field() !!}
                     <div class="form-group">
                         <input type="file" name="avatar-src" id="avatar-file" class="form-control">

@@ -52,7 +52,6 @@ $(document).ready(function() {
 
     $('#avatar-file').change(function() {
         readURL(this);
-
     });
 
     $('#image').change(function() {

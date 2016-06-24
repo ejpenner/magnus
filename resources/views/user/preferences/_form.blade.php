@@ -30,9 +30,9 @@
     </div>
 </div>
 
-<div class="form-control">
+<div class="form-group">
     <div class="form-inline">
-        {!! Form::label('per_page', 'Display') !!}
+        {!! Form::label('Display') !!}
         {!! Form::select('per_page',[
                     18 => '18 Thumbnails per Page',
                     36 => '36 Thumbnails per Page',
@@ -42,8 +42,4 @@
     </div>
 </div>
 
-<div class="form-control">
-    <div class="form-inline">
-        {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-    </div>
-</div>
+{!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}

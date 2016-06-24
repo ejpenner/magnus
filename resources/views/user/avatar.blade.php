@@ -10,11 +10,11 @@
             <div class="col-md-8">
                 <form id="avatar-form" action="{{ action('UserController@uploadAvatar') }}">
                     {!! csrf_field() !!}
-                    <div class="form-group">
-                        <input type="file" name="avatar-src" id="avatar-file" class="form-control">
-                    </div>
                     <canvas id="avatar-cropper" width="600" height="400"></canvas>
-                    <button class="crop-submit btn btn-primary">Crop</button>
+                    <div class="form-group form-inline">
+                        <input type="file" name="avatar-src" id="avatar-file" class="form-control">
+                        <button class="crop-submit btn btn-primary">Crop</button>
+                    </div>
                 </form>
             </div>
         </div>

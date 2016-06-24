@@ -1,9 +1,6 @@
 @foreach($opera as $opus)
     <div class="col-lg-{{ isset($columns) ? floor(12 / $columns) : 4 }} col-md-4 col-sm-6 col-xs-1">
         <div class="gallery-item">
-            @if(Auth::check() and (Auth::user()->isOwner($opus) or Auth::user()->atLeastHasRole(config('roles.globalModerator'))))
-                @include('partials._operations', ['model' => $opus, 'controller' => 'OpusController'])
-            @endif
             <div class="vcenter">
                 <div class="">
                     <a href="{{ action('OpusController@show', [$opus->id]) }}">
@@ -17,6 +14,11 @@
                         @endif
                     </h5>
                 </div>
+            </div>
+            <div class="opus-operations">
+                @if(Auth::check() and (Auth::user()->isOwner($opus) or Auth::user()->atLeastHasRole(config('roles.globalModerator'))))
+                    @include('partials._operations', ['model' => $opus, 'controller' => 'OpusController'])
+                @endif
             </div>
         </div>
     </div>

@@ -66,7 +66,7 @@
                                 <tbody>
                                 <tr>
                                     <td>Views</td>
-                                    <td>{{ $opus->views }}</td>
+                                    <td>{{ $opus->views }} <small>({{ $opus->daily_views  }} Today)</small></td>
                                 </tr>
                                 <tr>
                                     <td>Submitted On</td>

@@ -22,7 +22,7 @@ class Opus extends Model
 
     private $imageDirectory = 'images';
     private $thumbnailDirectory = 'thumbnails';
-    private $usersDirectory = 'users';
+    private $usersDirectory = 'usr';
     private $resizeTo = 250;
 
     /**

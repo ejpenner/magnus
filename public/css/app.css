@@ -9332,6 +9332,77 @@ div.flash-messages {
 div.flash-messages ul {
   list-style-type: none;
 }
+.comment {
+  border: #eeeeee solid 2px;
+  background-color: #eeeeee;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  padding: 5px;
+  margin: 1px;
+}
+.comment .comment-name {
+  font-weight: bold;
+}
+.comment .comment-avatar img {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.comment .comment-delete-notification {
+  position: relative;
+  left: -35px;
+  top: -3px;
+}
+.comment .comment-body {
+  background-color: #FFFFFF;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  min-height: 130px;
+}
+.comment .comment-body .comment-date {
+  padding: 5px 10px 0px 10px;
+  color: #8c8c8c;
+}
+.comment .comment-body .comment-text {
+  margin-top: -5px;
+  padding: 15px 10px 30px 10px;
+}
+.child-comment .container.comment {
+  margin-left: 10px;
+}
+.comment-area {
+  width: auto;
+  padding: 2px 0 2px 0;
+  margin: 1px;
+}
+.comment-area .comment-name {
+  padding: 1px;
+}
+.reply-toggle .reply-btn {
+  margin-left: 10px;
+  margin-top: 2px;
+}
+.reply-form {
+  padding: 5px;
+  margin-left: 40px;
+  width: inherit;
+  display: none;
+}
+.reply-form .reply-textarea {
+  width: 70%;
+  margin-bottom: 2px;
+}
 .login-panel {
   margin-top: 30px;
   margin-bottom: 300px;
@@ -9360,21 +9431,27 @@ div.gallery-item .vcenter {
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
-  z-index: 4;
 }
 .gallery-operations {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, 135px);
-  -webkit-transform: translate(-50%, 135px);
-  -moz-transform: translate(-50%, 135px);
-  -ms-transform: translate(-50%, 135px);
-  -o-transform: translate(-50%, 135px);
+  transform: translate(-50%, 140px);
+  -webkit-transform: translate(-50%, 140px);
+  -moz-transform: translate(-50%, 140px);
+  -ms-transform: translate(-50%, 140px);
+  -o-transform: translate(-50%, 140px);
   z-index: 5;
 }
-.operations-dropdown {
-  position: relative;
+.opus-operations {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 140px);
+  -webkit-transform: translate(-50%, 140px);
+  -moz-transform: translate(-50%, 140px);
+  -ms-transform: translate(-50%, 140px);
+  -o-transform: translate(-50%, 140px);
   z-index: 5;
 }
 div.message-item {
@@ -9529,77 +9606,6 @@ div.uploader #preview-edit {
   -webkit-box-shadow: 5px 5px 5px #888888;
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 5px 5px 5px #888888;
-}
-.comment {
-  border: #eeeeee solid 2px;
-  background-color: #eeeeee;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  padding: 5px;
-  margin: 1px;
-}
-.comment .comment-name {
-  font-weight: bold;
-}
-.comment .comment-avatar img {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-}
-.comment .comment-delete-notification {
-  position: relative;
-  left: -35px;
-  top: -3px;
-}
-.comment .comment-body {
-  background-color: #FFFFFF;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  min-height: 130px;
-}
-.comment .comment-body .comment-date {
-  padding: 5px 10px 0px 10px;
-  color: #8c8c8c;
-}
-.comment .comment-body .comment-text {
-  margin-top: -5px;
-  padding: 15px 10px 30px 10px;
-}
-.child-comment .container.comment {
-  margin-left: 10px;
-}
-.comment-area {
-  width: auto;
-  padding: 2px 0 2px 0;
-  margin: 1px;
-}
-.comment-area .comment-name {
-  padding: 1px;
-}
-.reply-toggle .reply-btn {
-  margin-left: 10px;
-  margin-top: 2px;
-}
-.reply-form {
-  padding: 5px;
-  margin-left: 40px;
-  width: inherit;
-  display: none;
-}
-.reply-form .reply-textarea {
-  width: 70%;
-  margin-bottom: 2px;
 }
 .watch-date {
   color: #8c8c8c;

@@ -156,7 +156,6 @@ class UserController extends Controller
     public function updateAccount(User $user, Requests\AccountRequest $request)
     {
         //$user = User::findOrFail($id);
-        
         $user->update($request->all());
         return redirect()->route('user.account', [$user->slug])->with('success', 'User updated successfully!');
     }
@@ -234,6 +233,6 @@ class UserController extends Controller
     
     public function preferences(User $user)
     {
-        dd($user);
+        return view('user.preferences.general', compact('user'));
     }
 }
