@@ -12,6 +12,11 @@
             <form id="avatar-form" action="{{ action('UserController@uploadAvatar') }}">
                 {!! csrf_field() !!}
                 <div class="form-group form-inline">
+                    <div class="list-inline">
+                        <ul>
+                            <li>Use the mouse wheel to zoom</li>
+                        </ul>
+                    </div>
                     <input type="file" name="avatar-src" id="avatar-file" class="form-control">
                     <button class="crop-submit btn btn-primary">Crop</button>
                 </div>

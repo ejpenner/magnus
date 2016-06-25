@@ -83,15 +83,6 @@ $factory->defineAs(App\Notification::class, 'comment', function (Faker\Generator
     return $noteStore;
 });
 
-$factory->define(App\Feature::class, function (Faker\Generator $faker){
-    $galleryMax = \App\Gallery::count();
-    $pieceMax = \App\Piece::count();
-   return [
-        'gallery_id' => rand(1, $galleryMax),
-        'piece_id' => rand(1, $pieceMax)
-   ] ;
-});
-
 $factory->define(\App\Tag::class, function (Faker\Generator $faker){
    return [
        'name' => $faker->unique()->word,

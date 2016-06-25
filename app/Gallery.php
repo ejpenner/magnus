@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -97,5 +98,12 @@ class Gallery extends Model
                 Gallery::where('id', $id)->first()->addOpus($opus);
             }
         }
+    }
+
+    public static function makeDirectories(User $user)
+    {
+        File::makeDirectory(public_path('usr/'.$user->username.'/images'), 0755, true);
+        File::makeDirectory(public_path('usr/'.$user->username.'/thumbnails'), 0755, true);
+        File::makeDirectory(public_path('usr/'.$user->username.'/avatars'), 0755, true);
     }
 }

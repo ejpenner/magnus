@@ -23,7 +23,7 @@ class OpusSeeder extends Seeder
                 factory(\App\Opus::class)->create(['user_id'=>$user->id])->each(function($opus) use ($tagMax) {
                     $tagCount = \App\Tag::count();
 
-                    foreach(range(1, 4) as $j){
+                    foreach(range(1, 1) as $j){
                         $tag = \App\Tag::where('id', $this->UniqueRandomNumbersWithinRange(1,$tagCount,1))->first();
                         $opus->tags()->attach($tag->id);
                     }
@@ -33,7 +33,7 @@ class OpusSeeder extends Seeder
                 $user->galleries()->save(factory(\App\Gallery::class)->make());
             }
             foreach($user->galleries as $gallery) {
-                foreach(range(1,$opusGalleryMax) as $i) {
+
 
                     $opus = factory(\App\Opus::class)->create(['user_id'=>$user->id]);
 
@@ -44,12 +44,12 @@ class OpusSeeder extends Seeder
 
                     $tagCount = \App\Tag::count();
 
-                    foreach(range(1,4) as $j){
+                    foreach(range(1,2) as $j){
                         $tag = \App\Tag::where('id', $this->UniqueRandomNumbersWithinRange(1,$tagCount,1))->first();
                         $opus->tags()->attach($tag->id);
                         echo $tag."\n\n";;
                     }
-                }
+
             }
         }
     }

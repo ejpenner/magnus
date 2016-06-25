@@ -7,7 +7,7 @@
                 {!! Form::textarea('body', null, ['class'=>'form-control reply-textarea', 'rows'=>4]) !!}
                 {!! Form::submit('Reply', ['class'=>'btn btn-primary']) !!}
                 {!! Form::checkbox('remove_notify', 1,  1, ['id' => 'remove_notify']) !!}
-                {!! Form::label('Remove notification after reply') !!}
+                {!! Form::label('remove_notify', 'Remove notification after reply') !!}
                 {!! Form::close() !!}
             </div>
         </div>

@@ -25,18 +25,18 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
+                <span class="icon-bar">Test</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Magnus</a>
+            <a class="navbar-brand" href="{{ action('HomeController@recent') }}">Magnus</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li @if(Request::is('/')) class="active" @endif ><a href="{{ action('HomeController@recent') }}">Home</a></li>
                 <li @if(Request::is('featured')) class="active" @endif ><a href="#">Featured</a></li>
-                <li @if(Request::is('gallery')) class="active" @endif ><a href="{{ action('GalleryController@index') }}">Galleries</a></li>
-                <li @if(Request::is('submit')) class="active" @endif ><a href="{{ action('OpusController@submit') }}">Submit</a></li>
+                <li @if(Request::is('galleria')) class="active" @endif ><a href="{{ action('GalleryController@index') }}">Galleries</a></li>
+                <li @if(Request::is('nova/submit')) class="active" @endif ><a href="{{ action('OpusController@submit') }}">Submit</a></li>
                 <li @if(Request::is('search')) class="active" @endif >
                     {!! Form::open(['url'=>'/search/', 'method'=>'get', 'class'=>'navbar-form navbar-left', 'role'=>'search', 'onsubmit'=>'return false;']) !!}
                     <div class="form-group">

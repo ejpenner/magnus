@@ -80,9 +80,7 @@ class AuthController extends Controller
         ]);
 
         $user->profile()->save(new Profile(['biography'=>'Not filled out yet']));
-        File::makeDirectory(public_path('usr/'.$user->username.'/images'), 0755, true);
-        File::makeDirectory(public_path('usr/'.$user->username.'/thumbnails'), 0755, true);
-        File::makeDirectory(public_path('usr/'.$user->username.'/avatars'), 0755, true);
+        Gallery::makeDirectories($user);
 
         return $user;
     }

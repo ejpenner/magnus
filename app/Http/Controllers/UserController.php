@@ -54,8 +54,9 @@ class UserController extends Controller
         $user->save();
         $user->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
         Profile::create(['user_id'=>$user->id]);
+        Gallery::makeDirectories($user);
         
-        return redirect()->route('users.index')->with('success', 'Your user was created.');
+        return redirect()->route('users.index')->with('success', 'New user '. $user->name .' was created.');
     }
 
     public function edit(User $user)
@@ -234,5 +235,10 @@ class UserController extends Controller
     public function preferences(User $user)
     {
         return view('user.preferences.general', compact('user'));
+    }
+
+    public function storePreference(Request $request, User $user)
+    {
+        
     }
 }
