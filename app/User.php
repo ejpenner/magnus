@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
-    private $usersDirectory = 'usrs';
+    private $usersDirectory = 'usr';
 
     /**
      * The attributes that are mass assignable.
