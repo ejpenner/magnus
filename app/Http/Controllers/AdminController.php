@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Magnus\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller

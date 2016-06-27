@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Console\Commands;
+namespace Magnus\Console\Commands;
 
-use App\Opus;
+use Magnus\Opus;
 use Illuminate\Console\Command;
 
 class ClearDaily extends Command

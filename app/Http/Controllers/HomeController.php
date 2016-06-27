@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
-use App\Http\Requests;
+use Magnus\Http\Requests;
 use Illuminate\Http\Request;
 
-use App\Gallery;
-use App\Opus;
-use App\User;
+use Magnus\Gallery;
+use Magnus\Opus;
+use Magnus\User;
 
 class HomeController extends Controller
 {

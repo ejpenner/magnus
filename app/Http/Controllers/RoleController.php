@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
-use App\Http\Requests;
+use Magnus\Http\Requests;
 
-use App\Role;
-use App\Permission;
+use Magnus\Role;
+use Magnus\Permission;
 
 class RoleController extends Controller
 {

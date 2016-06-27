@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 
-use App\Http\Requests;
-use App\User;
-use App\Profile;
-use App\Permission;
-use App\Role;
-use App\Gallery;
-use App\Watch;
+use Magnus\Http\Requests;
+use Magnus\User;
+use Magnus\Profile;
+use Magnus\Permission;
+use Magnus\Role;
+use Magnus\Gallery;
+use Magnus\Watch;
 
 class UserController extends Controller
 {

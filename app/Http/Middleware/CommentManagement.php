@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Magnus\Http\Middleware;
 
 use Closure;
-use App\Comment;
+use Magnus\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 

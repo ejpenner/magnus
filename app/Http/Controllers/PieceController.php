@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Magnus\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Carbon\Carbon;
 
-use App\Piece;
-use App\Gallery;
-use App\Feature;
-use App\Tag;
-use App\Comment;
+use Magnus\Piece;
+use Magnus\Gallery;
+use Magnus\Feature;
+use Magnus\Tag;
+use Magnus\Comment;
 
 class PieceController extends Controller
 {

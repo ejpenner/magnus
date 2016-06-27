@@ -151,10 +151,10 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        Magnus\Providers\AppServiceProvider::class,
+        Magnus\Providers\AuthServiceProvider::class,
+        Magnus\Providers\EventServiceProvider::class,
+        Magnus\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Camroncade\Timezone\TimezoneServiceProvider::class

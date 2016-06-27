@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace Magnus\Events;
 
 abstract class Event
 {

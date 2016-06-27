@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Magnus;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
@@ -28,11 +28,11 @@ class Watch extends Model
     ];
     
     public function users() {
-        return $this->belongsToMany('App\User', 'user_watch', 'watcher_user_id', 'user_id')->withPivot('watched_user_id')->withTimestamps();
+        return $this->belongsToMany('Magnus\User', 'user_watch', 'watcher_user_id', 'user_id')->withPivot('watched_user_id')->withTimestamps();
     }
 
     public function user() {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('Magnus\User');
     }
 
     /**

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Magnus\Http\Middleware;
 
 use Closure;
 
-use App\Piece;
+use Magnus\Piece;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 

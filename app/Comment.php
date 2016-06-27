@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Magnus;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,24 +23,24 @@ class Comment extends Model
     ];
 
     public function user() {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('Magnus\User');
     }
 
     public function opus()
     {
-     return $this->belongsTo('App\Opus');
+     return $this->belongsTo('Magnus\Opus');
     }
     
     public function profile() {
-        return $this->belongsTo('App\Profile');
+        return $this->belongsTo('Magnus\Profile');
     }
 
     public function childComments() {
-        return $this->hasMany('App\Comment','parent_id','id');
+        return $this->hasMany('Magnus\Comment','parent_id','id');
     }
     
     public function parentComment() {
-        return $this->belongsTo('App\Comment', 'parent_id', 'id');
+        return $this->belongsTo('Magnus\Comment', 'parent_id', 'id');
     }
 
     public function allChildComments() {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Magnus;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
-    private $usersDirectory = 'users';
+    private $usersDirectory = 'usrs';
 
     /**
      * The attributes that are mass assignable.
@@ -47,7 +47,7 @@ class User extends Authenticatable
      */
     public function galleries()
     {
-        return $this->hasMany('App\Gallery');
+        return $this->hasMany('Magnus\Gallery');
     }
 
     /**
@@ -56,7 +56,7 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function opera() {
-        return $this->hasMany('App\Opus');
+        return $this->hasMany('Magnus\Opus');
     }
 
     /**
@@ -65,7 +65,7 @@ class User extends Authenticatable
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments() {
-        return $this->hasMany('App\Comment');
+        return $this->hasMany('Magnus\Comment');
     }
 
     /**
@@ -75,7 +75,7 @@ class User extends Authenticatable
      */
     public function profile()
     {
-        return $this->hasOne('App\Profile');
+        return $this->hasOne('Magnus\Profile');
     }
 
     /**
@@ -85,7 +85,7 @@ class User extends Authenticatable
      */
     public function roles()
     {
-        return $this->belongsToMany('App\Role', 'user_roles');
+        return $this->belongsToMany('Magnus\Role', 'user_roles');
     }
 
     /**
@@ -95,7 +95,7 @@ class User extends Authenticatable
      */
     public function notifications()
     {
-        return $this->belongsToMany('App\Notification', 'notification_user')->withTimestamps();
+        return $this->belongsToMany('Magnus\Notification', 'notification_user')->withTimestamps();
     }
 
     /**
@@ -105,7 +105,7 @@ class User extends Authenticatable
      */
     public function watchedUsers()
     {
-        return $this->belongsToMany('App\Watch', 'user_watch', 'watched_user_id', 'watch_id')->withPivot('watcher_user_id')->withTimestamps();
+        return $this->belongsToMany('Magnus\Watch', 'user_watch', 'watched_user_id', 'watch_id')->withPivot('watcher_user_id')->withTimestamps();
     }
 
     /**
@@ -115,13 +115,8 @@ class User extends Authenticatable
      */
     public function watchers()
     {
-        return $this->belongsToMany('App\Watch', 'user_watch', 'watcher_user_id', 'watch_id')->withPivot('watched_user_id')->withTimestamps();
+        return $this->belongsToMany('Magnus\Watch', 'user_watch', 'watcher_user_id', 'watch_id')->withPivot('watched_user_id')->withTimestamps();
     }
-//
-//    public function getCreatedAtAttribute($value)
-//    {
-//        $this->attributes['created_at'] = Carbon::parse($value)->format('F j, Y');
-//    }
 
     /**
      * User has one site preferences model
@@ -130,11 +125,11 @@ class User extends Authenticatable
      */
     public function preferences()
     {
-        return $this->hasOne('App\Preference');
+        return $this->hasOne('Magnus\Preference');
     }
 
     /**
-     *  Return some span formatting around usernames for fancy CSS output
+     *  Return some span formatting around names for fancy CSS output
      * 
      * @return string
      */
@@ -152,6 +147,11 @@ class User extends Authenticatable
         }
     }
 
+    /**
+     *  Return some span formatting around usernames for fancy CSS output
+     *
+     * @return string
+     */
     public function decorateUsername() {
         if(Role::atLeastHasRole($this, Config::get('roles.developer'))) {
             return "<span class=\"username role-developer\">$this->username</span>";
@@ -356,7 +356,7 @@ class User extends Authenticatable
     /**
      *  Notify this user of a new Opus/Comment/Activity of a user they watch
      *
-     * @param \App\Notification $notification
+     * @param \Magnus\Notification $notification
      * @return void
      */
     public function notify(Notification $notification)

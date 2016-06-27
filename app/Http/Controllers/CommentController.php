@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Magnus\Http\Requests;
 
-use App\Comment;
-use App\Opus;
-use App\Notification;
+use Magnus\Comment;
+use Magnus\Opus;
+use Magnus\Notification;
 use Illuminate\Support\Facades\Auth;
-use Mockery\Matcher\Not;
 
 class CommentController extends Controller
 {

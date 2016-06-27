@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Magnus;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +15,7 @@ class Tag extends Model
      */
     public function opera()
     {
-        return $this->belongsToMany('App\Opus')->withTimestamps();
+        return $this->belongsToMany('Magnus\Opus')->withTimestamps();
     }
 
     /**

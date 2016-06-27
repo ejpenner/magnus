@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(Magnus\User::class, function (Faker\Generator $faker) {
     $timezones = ['America/Denver', 'America/New_York', 'America/Chicago', 'America/Los_Angeles'];
         $user = [
         'name'      => $faker->name,
@@ -29,11 +29,11 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     return $user;
 });
 
-$factory->define(App\Opus::class,  function (Faker\Generator $faker){
+$factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
     $sizes = [0 => [250,160], 1 => [160,250]];
     $res = $sizes[rand(0,1)];
     $theme = '';
-    $usersMax = \App\User::count();
+    $usersMax = \Magnus\User::count();
     $faker->seed(rand(11111,99999));
     $image_path = substr($faker->image($dir = public_path('images'), $width = 600, $height=400,$theme), 38);
     $thumbnail_path = substr($faker->image($dir = public_path('thumbnails'), $width = $res[0], $height=$res[1], $theme), 38);
@@ -49,7 +49,7 @@ $factory->define(App\Opus::class,  function (Faker\Generator $faker){
     ];
 });
 
-$factory->define(App\Gallery::class, function (Faker\Generator $faker){
+$factory->define(Magnus\Gallery::class, function (Faker\Generator $faker){
     return [
         'name' => ucwords($faker->words(3, true)),
         'description' => $faker->sentence,
@@ -57,39 +57,39 @@ $factory->define(App\Gallery::class, function (Faker\Generator $faker){
     ] ;
 });
 
-$factory->define(App\Comment::class, function (Faker\Generator $faker){
+$factory->define(Magnus\Comment::class, function (Faker\Generator $faker){
    return [
        'body' => $faker->paragraph,
    ];
 });
 
-$factory->define(App\Profile::class, function (Faker\Generator $faker){
+$factory->define(Magnus\Profile::class, function (Faker\Generator $faker){
     return [
         'biography' => $faker->paragraphs(2, true),
     ] ;
 });
 
-$factory->defineAs(App\Notification::class, 'opus', function (Faker\Generator $faker){
-    $opusCount = \App\Opus::count();
+$factory->defineAs(Magnus\Notification::class, 'opus', function (Faker\Generator $faker){
+    $opusCount = \Magnus\Opus::count();
     $randomOpus = rand(1,$opusCount);
     $noteStore = ['handle'=>'opus', 'opus_id'=>rand(1,$randomOpus), 'read'=>0];
     return $noteStore;
 });
 
-$factory->defineAs(App\Notification::class, 'comment', function (Faker\Generator $faker){
-    $commentCount = \App\Comment::count();
+$factory->defineAs(Magnus\Notification::class, 'comment', function (Faker\Generator $faker){
+    $commentCount = \Magnus\Comment::count();
     $randomComment = rand(1, $commentCount);
     $noteStore = ['handle'=>'comment', 'comment_id'=>rand(1,$randomComment), 'read'=>0];
     return $noteStore;
 });
 
-$factory->define(\App\Tag::class, function (Faker\Generator $faker){
+$factory->define(\Magnus\Tag::class, function (Faker\Generator $faker){
    return [
        'name' => $faker->unique()->word,
    ]; 
 });
 
-$factory->define(\App\Watch::class, function(Faker\Generator $faker){
+$factory->define(\Magnus\Watch::class, function(Faker\Generator $faker){
    return [
        'watch_comments' => true,
        'watch_opus'     => true,

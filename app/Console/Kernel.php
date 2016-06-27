@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console;
+namespace Magnus\Console;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Scheduling\Schedule;

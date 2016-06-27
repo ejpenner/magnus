@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Magnus\Http\Requests;
 use Illuminate\Support\Facades\Auth;
-use App\Opus;
-use App\Comment;
-use App\User;
-use App\Notification;
+use Magnus\Opus;
+use Magnus\Comment;
+use Magnus\User;
+use Magnus\Notification;
 
 class NotificationController extends Controller
 {

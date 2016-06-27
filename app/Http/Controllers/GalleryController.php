@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
-use App\Feature;
+use Magnus\Feature;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Magnus\Http\Requests;
 
-use App\Gallery;
-use App\Opus;
+use Magnus\Gallery;
+use Magnus\Opus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-use App\Permission;
+use Magnus\Permission;
 
 class GalleryController extends Controller
 {

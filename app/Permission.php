@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Magnus;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,7 +37,7 @@ class Permission extends Model
     }
     
     public function role() {
-        return $this->belongsTo('App\Role');
+        return $this->belongsTo('Magnus\Role');
     }
 
     public static function hasPermission(User $user, $permission) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Magnus\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

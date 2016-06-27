@@ -23,14 +23,14 @@ Route::get('errors/401', ['as' => '401', function() {
  * Binds the {users} parameter to the slug
  */
 Route::bind('users', function ($value, $route) {
-    return \App\User::whereSlug(strtolower($value))->first();
+    return \Magnus\User::whereSlug(strtolower($value))->first();
 });
 
 /**
  *  binds User model via slug to {profile} wildcard
  */
 Route::bind('profile', function ($value, $route) {
-    return \App\User::whereSlug(strtolower($value))->first();
+    return \Magnus\User::whereSlug(strtolower($value))->first();
 });
 
 

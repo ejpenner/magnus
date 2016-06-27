@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace Magnus\Http\Controllers\Auth;
 
-use App\User;
-use App\Profile;
-use App\Gallery;
+use Magnus\User;
+use Magnus\Profile;
+use Magnus\Gallery;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Validator;
-use App\Permission;
-use App\Http\Controllers\Controller;
+use Magnus\Permission;
+use Magnus\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 

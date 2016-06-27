@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Magnus\Http\Requests;
 
-use App\Piece;
-use App\Opus;
-use App\Tag;
+use Magnus\Piece;
+use Magnus\Opus;
+use Magnus\Tag;
 
 class SearchController extends Controller
 {

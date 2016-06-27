@@ -19,7 +19,7 @@
                 @include('comment._replyChild', ['comment'=>$childComment])
             </div>
         </div>
-        @if($childComment->allChildComments->count() > 1)
+        @if($childComment->allChildComments->count() >= 2)
             <div>
                 <a class="btn btn-link" href="{{ action('CommentController@show', $childComment->id) }}">View More</a>
             </div>

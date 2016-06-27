@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Magnus\Http\Middleware;
 
 use Closure;
-use App\Role;
+use Magnus\Role;
 
 class Permission
 {

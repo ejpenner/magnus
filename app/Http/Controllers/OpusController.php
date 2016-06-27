@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests;
+use Magnus\Http\Requests;
 
-use App\Opus;
-use App\Gallery;
-use App\Tag;
-use App\Comment;
-use App\User;
-use App\Notification;
+use Magnus\Opus;
+use Magnus\Gallery;
+use Magnus\Tag;
+use Magnus\Comment;
+use Magnus\User;
+use Magnus\Notification;
 
 class OpusController extends Controller
 {

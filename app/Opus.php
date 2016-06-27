@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace Magnus;
 
-use App\Http\Requests\Request;
+use Magnus\Http\Requests\Request;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
@@ -31,7 +31,7 @@ class Opus extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('Magnus\User');
     }
 
     /**
@@ -40,7 +40,7 @@ class Opus extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments() {
-        return $this->hasMany('App\Comment');
+        return $this->hasMany('Magnus\Comment');
     }
 
     /**
@@ -50,7 +50,7 @@ class Opus extends Model
      */
     public function tags()
     {
-        return $this->belongsToMany('App\Tag')->withTimestamps();
+        return $this->belongsToMany('Magnus\Tag')->withTimestamps();
     }
 
     /**
@@ -59,7 +59,7 @@ class Opus extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function galleries() {
-        return $this->belongsToMany('App\Gallery')->withTimestamps();
+        return $this->belongsToMany('Magnus\Gallery')->withTimestamps();
     }
 
     /**
@@ -68,7 +68,7 @@ class Opus extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function notifications() {
-        return $this->hasMany('App\Notification');
+        return $this->hasMany('Magnus\Notification');
     }
 
     /**

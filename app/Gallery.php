@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Magnus;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
@@ -23,7 +23,7 @@ class Gallery extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('Magnus\User');
     }
 
     /**
@@ -31,7 +31,7 @@ class Gallery extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function opera() {
-        return $this->belongsToMany('App\Opus')->withTimestamps();
+        return $this->belongsToMany('Magnus\Opus')->withTimestamps();
     }
 
     /**

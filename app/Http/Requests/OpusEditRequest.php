@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Magnus\Http\Requests;
 
-use App\Http\Requests\Request;
+use Magnus\Http\Requests\Request;
 
 class OpusEditRequest extends Request
 {

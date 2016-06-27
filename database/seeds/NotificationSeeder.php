@@ -11,7 +11,7 @@ class NotificationSeeder extends Seeder
      */
     public function run()
     {
-        $users = \App\User::all();
+        $users = \Magnus\User::all();
         
         factory(\App\Notification::class, 'opus', 5)->create()->each(function ($notification) use ($users) {
             echo $notification."\n";

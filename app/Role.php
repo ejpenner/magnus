@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Magnus;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +14,7 @@ class Role extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function permission() {
-        return $this->hasOne('App\Permission');
+        return $this->hasOne('Magnus\Permission');
     }
 
     /**
@@ -23,7 +23,7 @@ class Role extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users() {
-        return $this->belongsToMany('App\User', 'user_roles');
+        return $this->belongsToMany('Magnus\User', 'user_roles');
     }
 
     /**

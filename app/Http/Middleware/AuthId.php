@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace Magnus\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Contracts\Auth\Guard;
-use App\Http\Requests;
+use Magnus\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 
 class AuthId
