@@ -43,7 +43,7 @@ Route::get('galleria/{gallery}/{opus}', 'OpusController@galleryShow');
 /**
  * Gallery, opus, and comment CRUD resources
  */
-Route::resource('galleria', 'GalleryController');
+Route::resource('gallery', 'GalleryController');
 Route::resource('opus', 'OpusController');
 Route::resource('opus.comment', 'CommentController');
 Route::get('opus/{id}/download', 'OpusController@download');
@@ -53,7 +53,7 @@ Route::get('opus/{id}/download', 'OpusController@download');
  * Profile routes
  */
 Route::resource('profile', 'ProfileController');
-Route::get('profile/{profile}/galleria', 'ProfileController@galleries');
+Route::get('profile/{profile}/galleries', 'ProfileController@galleries');
 Route::get('profile/{profile}/opera', 'ProfileController@opera');
 Route::get('profile/{profile}/watchers', 'ProfileController@watchers');
 Route::get('profile/{profile}/watching', 'ProfileController@watching');
@@ -76,9 +76,9 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * CRUD routes for opera in galleries
      */
-    Route::post('galleria/{gallery}/',           'OpusController@galleryStore');
-    Route::patch('galleria/{gallery}/{opus}',    'OpusController@galleryUpdate');
-    Route::delete('galleria/{gallery}/{opus}',   'OpusController@galleryDestroy');
+    Route::post('gallery/{gallery}/',           'OpusController@galleryStore');
+    Route::patch('gallery/{gallery}/{opus}',    'OpusController@galleryUpdate');
+    Route::delete('gallery/{gallery}/{opus}',   'OpusController@galleryDestroy');
 
     /**
      * Pretty url CRUD for comments
@@ -129,7 +129,7 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Administration middleware group
      */
-    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.administrator').''], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.administrator')], function () {
         Route::resource('permissions', 'PermissionController');
         Route::resource('users', 'UserController');
         Route::resource('roles', 'RoleController');
@@ -139,7 +139,7 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Global moderator middleware group
      */
-    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.globalMod').''], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.globalMod')], function () {
         Route::get('user/{users}/avatar', 'UserController@avatarAdmin');
         Route::post('user/{users}/avatar', 'UserController@uploadAvatarAdmin');
     });

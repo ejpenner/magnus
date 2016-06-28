@@ -22,7 +22,7 @@ class Opus extends Model
 
     private $imageDirectory = 'images';
     private $thumbnailDirectory = 'thumbnails';
-    private $usersDirectory = 'usr';
+    private $artDirectory = 'art';
     private $resizeTo = 250;
 
     /**
@@ -156,7 +156,7 @@ class Opus extends Model
         $seen = false;
         $viewed = session('viewed');
         if(Auth::check() and  !Auth::user()->isOwner($this)) {
-            if($request->session()->has('viewed')) {
+            if($request->session()->has('viewed')) { // check to see if viewed has been set
                 foreach ($viewed as $view) {
                     if ($this->id == $view) { // the user has seen it before
                         $seen = true;
@@ -165,11 +165,13 @@ class Opus extends Model
                 }
                 if (!$seen) {
                     $request->session()->push('viewed', $this->id);
+                    $this->daily_views = $this->daily_views + 1;
                     $this->views = $this->views + 1;
                     $this->save();
                 }
             } else {
                 $request->session()->push('viewed', $this->id);
+                $this->daily_views = $this->daily_views + 1;
                 $this->views = $this->views + 1;
                 $this->save();
             }
@@ -184,10 +186,12 @@ class Opus extends Model
                 if (!$seen) {
                     $request->session()->push('viewed', $this->id);
                     $this->views = $this->views + 1;
+                    $this->daily_views = $this->daily_views + 1;
                     $this->save();
                 }
             } else { // guest is viewing their first opus
                 $request->session()->push('viewed', $this->id);
+                $this->daily_views = $this->daily_views + 1;
                 $this->views = $this->views + 1;
                 $this->save();
             }
@@ -206,7 +210,7 @@ class Opus extends Model
             //$filename = basename($this->image_path);
             return  $this->image_path;
         }
-        return $this->imageDirectory.'/missing.png';
+        return $this->imageDirectory.'/images/missing.png';
     }
     /**
      * Returns the relative path to this opus' thumbnail image
@@ -257,13 +261,11 @@ class Opus extends Model
     {
         $userDirectory = $user->username;
         //$destinationPath = $this->imageDirectory.'/'.$userDirectory; // upload path, goes to the public folder
-        $destinationPath = $this->usersDirectory.'/'.$userDirectory.'/'.$this->imageDirectory;
+        $destinationPath = $this->artDirectory.'/'.$userDirectory.'/'.$this->imageDirectory;
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-        $fileName = date('Ymd').'_'.substr(microtime(), 2, 8).'_uploaded.'.$extension; // renaming image
+        $originalFileName = $request->file('image')->getClientOriginalName();
+        $fileName = $user->username.'-'.date('Ymd') . substr(microtime(), 2, 8).'-'.$originalFileName . $extension; // renaming image
         $request->file('image')->move($destinationPath, $fileName); // uploading file to given path
-
-        //Storage::disk('images')->put($fileName, $request->file('image'));  // put image in storage
-
         $fullPath = $destinationPath."/".$fileName; // set the image field to the full path
         return $fullPath;
     }
@@ -277,11 +279,12 @@ class Opus extends Model
     {
         $userDirectory = $user->username;
         //$thumbDestination = $this->thumbnailDirectory.'/'.$userDirectory;
-        $thumbDestination = $this->usersDirectory.'/'.$userDirectory.'/'.$this->thumbnailDirectory;
+        $thumbDestination = $this->artDirectory.'/'.$userDirectory.'/'.$this->thumbnailDirectory;
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-        $fileThumbnailName = date('Ymd').'_'.substr(microtime(), 2, 8).'_thumb.'.$extension;
+        $originalFileName = $request->file('image')->getClientOriginalName();
+        $fileName = $user->username.'-'.date('Ymd') . substr(microtime(), 2, 8).'-t'. $extension; // renaming image
         $thumbnail = $this->resize($this->getImage());
-        $fullPath = $thumbDestination."/".$fileThumbnailName;
+        $fullPath = $thumbDestination."/".$fileName;
         $thumbnail->save($fullPath);
         return $fullPath;
     }

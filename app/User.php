@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
-    private $usersDirectory = 'usr';
+    private $artDirectory = 'art';
 
     /**
      * The attributes that are mass assignable.
@@ -247,7 +247,7 @@ class User extends Authenticatable
     {
 
         //$destinationPath = $this->avatarDirectory; // upload path, goes to the public folder
-        $destinationPath = $this->usersDirectory.'/'.$this->username.'/'.$this->avatarDirectory;
+        $destinationPath = $this->artDirectory.'/'.$this->username.'/'.$this->avatarDirectory;
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         if($extension == null or $extension == '') {
             $extension = 'png';

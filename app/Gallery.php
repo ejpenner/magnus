@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 class Gallery extends Model
 {
+    private $artDirectory = 'art';
+
     protected $fillable = ['name', 'description', 'main_gallery', 'user_id'];
 
     protected $casts = [
@@ -102,8 +104,8 @@ class Gallery extends Model
 
     public static function makeDirectories(User $user)
     {
-        File::makeDirectory(public_path('usr/'.$user->username.'/images'), 0755, true);
-        File::makeDirectory(public_path('usr/'.$user->username.'/thumbnails'), 0755, true);
-        File::makeDirectory(public_path('usr/'.$user->username.'/avatars'), 0755, true);
+        File::makeDirectory(public_path('art/'.$user->username.'/images'), 0755, true);
+        File::makeDirectory(public_path('art/'.$user->username.'/thumbnails'), 0755, true);
+        File::makeDirectory(public_path('art/'.$user->username.'/avatars'), 0755, true);
     }
 }
