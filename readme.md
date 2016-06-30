@@ -26,6 +26,8 @@
 
 Bootstrap 3, CropperJS and JQuery are included in the vendor files.
 
+## Screens
+![home-page](http://i.imgur.com/MAsE6sA.png)
 
 ## Laravel Shoutout
 
