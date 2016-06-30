@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Config;
 
-use App\Role;
+use Magnus\Role;
 
 class RoleSeeder extends Seeder
 {

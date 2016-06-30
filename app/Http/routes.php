@@ -91,8 +91,11 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Notification controller and related routes
      */
-    Route::resource('messages', 'NotificationController');
+    Route::get('messages', 'NotificationController@index');
+    Route::get('messages/{id}', 'NotificationController@destroy');
+    Route::delete('messages/selected', 'NotificationController@destroySelected');
     Route::post('opus/{opus}/{comment}/{notification}', 'CommentController@storeChildRemoveNotification');
+
 
     /**
      * CRUD routes for user operations
@@ -124,6 +127,7 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.developer').'', 'prefix'=>'admin'], function () {
         Route::get('session', 'AdminController@session');
+        Route::get('test', 'AdminController@test');
     });
 
     /**

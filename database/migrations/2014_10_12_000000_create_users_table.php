@@ -35,12 +35,12 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        $users = \App\User::all();
+        $users = \Magnus\User::all();
 
         foreach($users as $user) {
             $user->deleteAvatarFile();
             
-            File::deleteDirectory(public_path('usr/'.$user->username), true);
+            File::deleteDirectory(public_path('art/'.$user->username), true);
         }
         Schema::drop('users');
     }

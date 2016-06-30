@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Opus;
+use Magnus\Opus;
 
 class CreateOpusesTable extends Migration
 {

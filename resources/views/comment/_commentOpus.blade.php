@@ -2,8 +2,8 @@
 <div class="container-fluid">
     @foreach($comments as $comment)
         @if($comment->parent_id == null)
-            <div class="comment-area">
-                <div class="container-fluid comment" id="{{ $comment->id }}">
+            <div class="comment-area row">
+                <div class="container-fluid comment" id="cid:{{ $comment->id }}">
                     <div class="col-md-2 comment-avatar">
                         <div class="text-center">
                             <a href="{{ action('ProfileController@show', $comment->user->slug) }}">

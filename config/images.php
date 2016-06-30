@@ -3,9 +3,10 @@
  * Directory names to store images in
  */
 return [
-    'avatarDirectory' => 'avatars',
+    'artDirectory' => 'art',
     'avatarResize' => 150,
     'imageDirectory' => 'images',
+    'avatarDirectory' => 'avatars',
     'thumbnailDirectory' => 'thumbnails',
-    'thumbnailResize' => 325
+    'thumbnailResize' => 250
 ];

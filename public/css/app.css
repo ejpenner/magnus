@@ -9455,7 +9455,7 @@ div.gallery-item .vcenter {
   z-index: 5;
 }
 div.message-item {
-  min-height: 300px !important;
+  min-height: 360px !important;
 }
 span.role-developer::before {
   content: "Dev";

@@ -1,7 +1,7 @@
 @if(Auth::check())
 <div class="reply-toggle container">
     <button class="btn btn-primary reply-btn pull-left btn-xs">Reply</button>
-    <div class="container reply-form form-group">
+    <div class="container reply-form">
         <div>
             {!! Form::open(['action'=>['CommentController@storeChild', $comment->opus->id, $comment->id], 'method'=>'post']) !!}
             {!! Form::textarea('body', null, ['class'=>'form-control reply-textarea', 'rows'=>4]) !!}

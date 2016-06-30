@@ -13,6 +13,8 @@ Thumbs.db
 /public/thumbnails/*
 /public/avatars/*
 /public/usr/*
+/resources/seed-pics/*
+/public/resources/*
 !/public/images/404/header-bg.jpg
 !/public/images/404/
 !/public/images/missing/missing-avatar.png

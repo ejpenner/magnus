@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
         
         $this->call(RoleSeeder::class);
         $this->call(PermissionSeeder::class);
-        $this->call(TagSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(ProfileSeeder::class);
         $this->call(OpusSeeder::class);
+        $this->call(TagSeeder::class);
         $this->call(CommentSeeder::class);
         $this->call(NotificationSeeder::class);
         $this->call(WatchSeeder::class);

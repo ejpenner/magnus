@@ -22,6 +22,11 @@ class Comment extends Model
         'deleted' => 'boolean'
     ];
 
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
+
     public function user() {
         return $this->belongsTo('Magnus\User');
     }
@@ -40,7 +45,7 @@ class Comment extends Model
     }
     
     public function parentComment() {
-        return $this->belongsTo('Magnus\Comment', 'parent_id', 'id');
+        return $this->belongsTo('Magnus\Comment', 'parent_id');
     }
 
     public function allChildComments() {
@@ -49,9 +54,9 @@ class Comment extends Model
 
     public function getCreatedAtAttribute($value) {
         if(isset(Auth::user()->timezone)) {
-            return date_format(Carbon::parse($value)->timezone(Auth::user()->timezone), 'M d, Y g:iA');
+            return Carbon::parse($value)->timezone(Auth::user()->timezone)->format('M d, Y g:iA');
         } else {
-            return Carbon::parse($value);
+            return Carbon::parse($value)->format('M d, Y g:iA');
         }
     }
 

@@ -3,9 +3,9 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
-use App\User;
-use App\Role;
-use App\Gallery;
+use Magnus\User;
+use Magnus\Role;
+use Magnus\Gallery;
 
 class UserSeeder extends Seeder
 {

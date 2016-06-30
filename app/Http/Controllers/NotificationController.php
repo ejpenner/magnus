@@ -42,6 +42,11 @@ class NotificationController extends Controller
         return view('notification.index', compact('user', 'opusResults', 'commentResults'));
     }
 
+    public function destroySelected(Request $request)
+    {
+        dd($request->all());
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -71,7 +76,7 @@ class NotificationController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -105,13 +110,16 @@ class NotificationController extends Controller
      */
     public function destroy($id)
     {
-        $user = Auth::user();
-        $notification = Notification::findOrFail($id);
-        $notification->deleteNotification($user);
-        
-        if($notification->users->count() < 1) {
-            $notification->delete();
+        if(Auth::check()) {
+            $user = Auth::user();
+            $notification = Notification::findOrFail($id);
+            $notification->deleteNotification($user);
+
+            if ($notification->users->count() < 1) {
+                $notification->delete();
+            }
+            return redirect()->to(app('url')->previous())->with('success', 'Message deleted!');
         }
-        return redirect()->to(app('url')->previous())->with('success', 'Message deleted!');
+        return redirect()->to(app('url')->previous())->withErrors('You shouldn\'t have done that');
     }
 }

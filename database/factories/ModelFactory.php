@@ -11,6 +11,10 @@
 |
 */
 
+use Intervention\Image\Facades\Image;
+
+use Illuminate\Support\Facades\File;
+
 $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
     $timezones = ['America/Denver', 'America/New_York', 'America/Chicago', 'America/Los_Angeles'];
         $user = [
@@ -30,13 +34,23 @@ $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
+
+    $files = File::glob(base_path('resources/seed-pics/*.*'));
+    $rand = rand(0, count($files)-1);
+    $src = $files[$rand];
+    $dest = public_path().'/images/'.basename($files[$rand]);
+    $tdest = public_path().'/thumbnails/'.basename($files[$rand]);
+    copy($src, $dest);
+    $thumbnail = resize($dest);
+    $thumbnail->save($tdest);
+    
     $sizes = [0 => [250,160], 1 => [160,250]];
     $res = $sizes[rand(0,1)];
     $theme = '';
-    $usersMax = \Magnus\User::count();
     $faker->seed(rand(11111,99999));
-    $image_path = substr($faker->image($dir = public_path('images'), $width = 600, $height=400,$theme), 38);
-    $thumbnail_path = substr($faker->image($dir = public_path('thumbnails'), $width = $res[0], $height=$res[1], $theme), 38);
+    $image_path = substr($dest, 38);
+    $thumbnail_path = substr($tdest, 38);
+
     return [
         'title' => ucwords($faker->words(3, true)),
         'comment' => $faker->paragraphs(2,true),
@@ -44,8 +58,7 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         'thumbnail_path' => $thumbnail_path,
         'published_at' => \Carbon\Carbon::now(),
         'views'        => rand(1000,3000),
-        'daily_views'  => rand(100,1000), 
-        //'user_id' => rand(1, $usersMax),
+        'daily_views'  => rand(100,1000),
     ];
 });
 
@@ -96,4 +109,29 @@ $factory->define(\Magnus\Watch::class, function(Faker\Generator $faker){
        'watch_activity' => true
    ];
 });
+
+/**
+ * Resize the opus' image for it's thumbnail
+ *
+ * @param $image
+ * @return Image
+ */
+function resize($image, $size = 250)
+{
+    $resize = Image::make($image);
+
+    $ratio = $resize->width() / $resize->height();
+
+    if($ratio > 1){ // image is wider than tall
+        $resize->resize(isset($size) ? $size : $this->resizeTo, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+    } else { // image is taller than wide
+        $resize->resize(null, isset($size) ? $size : $this->resizeTo, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+    }
+    return $resize;
+}
+
 

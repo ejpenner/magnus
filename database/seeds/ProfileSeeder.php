@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
-use App\User;
-use App\Profile;
+use Magnus\User;
+use Magnus\Profile;
 
 class ProfileSeeder extends Seeder
 {

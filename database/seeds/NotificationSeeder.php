@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Magnus\Notification;
+use Magnus\User;
 
 class NotificationSeeder extends Seeder
 {
@@ -11,16 +13,16 @@ class NotificationSeeder extends Seeder
      */
     public function run()
     {
-        $users = \Magnus\User::all();
+        $users = User::all();
         
-        factory(\App\Notification::class, 'opus', 5)->create()->each(function ($notification) use ($users) {
+        factory(Notification::class, 'opus', 5)->create()->each(function ($notification) use ($users) {
             echo $notification."\n";
             foreach($users as $user) {
                 $user->notifications()->attach($notification->id);
             }
         });
 
-        factory(\App\Notification::class, 'comment', 5)->create()->each(function ($notification) use ($users) {
+        factory(Notification::class, 'comment', 5)->create()->each(function ($notification) use ($users) {
             echo $notification."\n";
             foreach($users as $user) {
                 $user->notifications()->attach($notification->id);

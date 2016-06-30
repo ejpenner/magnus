@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Magnus\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
 {
@@ -17,5 +18,11 @@ class AdminController extends Controller
     public function center()
     {
         
+    }
+
+    public function test()
+    {
+        $files = File::glob(base_path('resources/seed-pics/*.*'));
+        dd($files[rand(1,10)]);
     }
 }

@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Permission;
-use App\Role;
+use Magnus\Permission;
+use Magnus\Role;
 
 class PermissionSeeder extends Seeder
 {
