@@ -52,7 +52,7 @@ class SearchController extends Controller
 //
 //                    }
 //                });//->groupBy('opuses.id');
-        $havingClause = '';
+
         $tag_ids = [];
         foreach($terms as $term)
         {
@@ -67,26 +67,28 @@ class SearchController extends Controller
         }
 
         if(count($tag_ids) > 0) {
-            $havingClause = 'HAVING opus_tag.tag_id IN (' . implode($tag_ids, ', ') . ') ';
+            $havingClause = 'opus_tag.tag_id IN (' . implode($tag_ids, ', ') . ') ';
+        } else {
+            $havingClause = '';
         }
 
-        $query = 'SELECT opuses.*, opus_tag.tag_id
-                  FROM opuses
-                  INNER JOIN opus_tag ON opuses.id = opus_tag.opus_id
-                  INNER JOIN tags ON tags.id = opus_tag.tag_id
-                  GROUP BY opuses.id, opus_tag.tag_id
-                 '.$havingClause;
+        $query = Opus::query();
+        $query->join('opus_tag', 'opus_tag.opus_id', '=', 'id')
+            ->join('tags', 'tags.id', '=', 'opus_tag.tag_id')
+            ->select('opuses.*', 'opus_tag.tag_id')
+            ->groupBy('opuses.id','opus_tag.tag_id')
+            ->havingRaw($havingClause);
 
-//        $query = Tag::query();
-//        $query->join('opus_tag', 'opus_tag.tag_id', '=', 'tags.id');
-//        $query->join('opuses', 'opuses.id', '=', 'opus_tag.opus_id');
-//        //$query->where('name', '=', 'nulla');
-//        //$query->where('name', '=', 'est');
-//        $query->groupBy('tags.id');
-//        $query->
-//        $results = $query->get();
-        $results = DB::select($query);
-        dd($results);
+//        $query = 'SELECT opuses.*, opus_tag.tag_id
+//                  FROM opuses
+//                  INNER JOIN opus_tag ON opuses.id = opus_tag.opus_id
+//                  INNER JOIN tags ON tags.id = opus_tag.tag_id
+//                  GROUP BY opuses.id, opus_tag.tag_id
+//                  HAVING '.$havingClause;
+
+
+        $results = $query->paginate(24);
+
         return view('search.index', compact('results'));
     }
 
