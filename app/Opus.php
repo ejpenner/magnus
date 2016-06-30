@@ -210,7 +210,7 @@ class Opus extends Model
             //$filename = basename($this->image_path);
             return  $this->image_path;
         }
-        return $this->imageDirectory.'/images/missing.png';
+        return $this->imageDirectory.'/images/missing/missing.png';
     }
     /**
      * Returns the relative path to this opus' thumbnail image
@@ -224,7 +224,7 @@ class Opus extends Model
             //$filename = basename($this->thumbnail_path);
             return $this->thumbnail_path;
         }
-        return $this->imageDirectory.'/missing-thumb.png';
+        return $this->imageDirectory.'/missing/missing-thumb.png';
     }
 
     /**
@@ -262,9 +262,9 @@ class Opus extends Model
         $userDirectory = $user->username;
         //$destinationPath = $this->imageDirectory.'/'.$userDirectory; // upload path, goes to the public folder
         $destinationPath = $this->artDirectory.'/'.$userDirectory.'/'.$this->imageDirectory;
-        $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
+        //$extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         $originalFileName = $request->file('image')->getClientOriginalName();
-        $fileName = $user->username.'-'.date('Ymd') . substr(microtime(), 2, 8).'-'.$originalFileName . $extension; // renaming image
+        $fileName = $user->username.'-'.date('Ymd') . substr(microtime(), 2, 8).'-'.$originalFileName; // renaming image
         $request->file('image')->move($destinationPath, $fileName); // uploading file to given path
         $fullPath = $destinationPath."/".$fileName; // set the image field to the full path
         return $fullPath;
@@ -281,8 +281,8 @@ class Opus extends Model
         //$thumbDestination = $this->thumbnailDirectory.'/'.$userDirectory;
         $thumbDestination = $this->artDirectory.'/'.$userDirectory.'/'.$this->thumbnailDirectory;
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-        $originalFileName = $request->file('image')->getClientOriginalName();
-        $fileName = $user->username.'-'.date('Ymd') . substr(microtime(), 2, 8).'-t'. $extension; // renaming image
+        //$originalFileName = $request->file('image')->getClientOriginalName();
+        $fileName = $user->username.'-'.date('Ymd') . substr(microtime(), 2, 8).'-t.'. $extension; // renaming image
         $thumbnail = $this->resize($this->getImage());
         $fullPath = $thumbDestination."/".$fileName;
         $thumbnail->save($fullPath);

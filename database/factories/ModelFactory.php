@@ -1,18 +1,6 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| Here you may define all of your model factories. Model factories give
-| you a convenient way to create models for testing and seeding your
-| database. Just tell the factory how a default model should look.
-|
-*/
-
 use Intervention\Image\Facades\Image;
-
 use Illuminate\Support\Facades\File;
 
 $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
@@ -37,9 +25,10 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
 
     $files = File::glob(base_path('resources/seed-pics/*.*'));
     $rand = rand(0, count($files)-1);
+    $numbers = substr(microtime(), 2, 8);
     $src = $files[$rand];
     $dest = public_path().'/images/'.basename($files[$rand]);
-    $tdest = public_path().'/thumbnails/'.basename($files[$rand]);
+    $tdest = public_path().'/thumbnails/'.$numbers.basename($files[$rand]);
     copy($src, $dest);
     $thumbnail = resize($dest);
     $thumbnail->save($tdest);

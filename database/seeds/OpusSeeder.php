@@ -33,15 +33,18 @@ class OpusSeeder extends Seeder
             foreach(range(1,$galleryMax) as $index) {
                 $user->galleries()->save(factory(Gallery::class)->make());
             }
+            
             foreach($user->galleries as $gallery) {
 
+                foreach(range(1,$opusGalleryMax) as $i)
+                {
+                    $opusG = factory(Opus::class)->create(['user_id'=>$user->id]);
 
-                $opusG = factory(Opus::class)->create(['user_id'=>$user->id]);
+                    echo $opusG."\n\n";;
 
-                echo $opusG."\n\n";;
-
-                $opusG->save();
-                $gallery->opera()->attach($opusG->id);
+                    $opusG->save();
+                    $gallery->opera()->attach($opusG->id);
+                }
 
             }
         }

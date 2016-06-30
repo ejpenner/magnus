@@ -83,7 +83,9 @@ class OpusController extends Controller
         $opus = Opus::make($request, $user);
         Notification::notifyWatchersNewOpus($opus, $user);
         Tag::make($opus, $request->input('tags'));
-        Gallery::place($request, $opus);
+        if($request->has('gallery_ids[]')) {
+            Gallery::place($request, $opus);
+        }
 
         return redirect()->route('opus.show', $opus->id)->with('success', 'Your work been added!');
     }

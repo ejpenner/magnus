@@ -22,7 +22,8 @@ class AdminController extends Controller
 
     public function test()
     {
-        $files = File::glob(base_path('resources/seed-pics/*.*'));
-        dd($files[rand(1,10)]);
+//        $files = File::glob(base_path('resources/seed-pics/*.*'));
+//        dd($files[rand(1,10)]);
+        //dd(public_path('art/Vilest'));
     }
 }
