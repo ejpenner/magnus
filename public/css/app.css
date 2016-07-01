@@ -9283,6 +9283,23 @@ button.close {
   background-position: center top;
   background-repeat: no-repeat;
 }
+.search-area {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+}
+.search-area > div {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+.searchbox {
+  display: flex;
+  flex-direction: column;
+}
+.searchbox > input {
+  flex: 1;
+}
 div.gallery-select .checkbox-vis-hidden {
   border: 0;
   clip: rect(0 0 0 0);

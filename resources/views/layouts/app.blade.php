@@ -39,8 +39,12 @@
                 <li @if(Request::is('nova/submit')) class="active" @endif ><a href="{{ action('OpusController@submit') }}">Submit</a></li>
                 <li @if(Request::is('search')) class="active" @endif >
                     {!! Form::open(['url'=>'/search/', 'method'=>'get', 'class'=>'navbar-form navbar-left', 'role'=>'search', 'onsubmit'=>'return false;']) !!}
-                    <div class="form-group">
-                        {!! Form::text('search-terms', null, ['class'=>'form-control', 'placeholder'=>'Search...', 'name'=>'q']) !!}
+                    <div class="row form-group">
+                        <div class="search-area">
+                            <div class="search-box">
+                                {!! Form::text('search-terms', null, ['class'=>'form-control', 'placeholder'=>'Search...', 'name'=>'q']) !!}
+                            </div>
+                        </div>
                     </div>
                     {!! Form::submit('Search', ['class' => 'form-control btn btn-primary', 'onclick'=>'window.location.href=this.form.action +\'/\'+ this.form.q.value;']) !!}
                     {!! Form::close() !!}

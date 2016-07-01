@@ -26,12 +26,24 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
     $files = File::glob(base_path('resources/seed-pics/*.*'));
     $rand = rand(0, count($files)-1);
     $numbers = substr(microtime(), 2, 8);
-    $src = $files[$rand];
-    $dest = public_path().'/images/'.basename($files[$rand]);
-    $tdest = public_path().'/thumbnails/'.$numbers.basename($files[$rand]);
-    copy($src, $dest);
-    $thumbnail = resize($dest);
-    $thumbnail->save($tdest);
+
+    try {
+        $src = $files[$rand];
+        $dest = public_path().'/images/'.basename($files[$rand]);
+        $tdest = public_path().'/thumbnails/'.$numbers.basename($files[$rand]);
+        copy($src, $dest);
+        $thumbnail = resize($dest);
+        $thumbnail->save($tdest);
+    } catch (\Exception $e) {
+        $rand = rand(0, count($files)-1);
+        $src = $files[$rand];
+        $dest = public_path().'/images/'.basename($files[$rand]);
+        $tdest = public_path().'/thumbnails/'.$numbers.basename($files[$rand]);
+        copy($src, $dest);
+        $thumbnail = resize($dest);
+        $thumbnail->save($tdest);
+    }
+
     
     $sizes = [0 => [250,160], 1 => [160,250]];
     $res = $sizes[rand(0,1)];

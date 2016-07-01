@@ -53,7 +53,8 @@ class SearchController extends Controller
 //                });//->groupBy('opuses.id');
 
         $tag_ids = [];
-        $cleaned_terms = [];
+        $termList = [];
+        $whereClause = '';
         foreach($terms as $term)
         {
             $term = trim($term);
@@ -64,8 +65,12 @@ class SearchController extends Controller
                     array_push($tag_ids, $tag->id);
                 } catch (\Exception $e) {}
             } else {
-                array_push($cleaned_terms, filter_var($term, FILTER_SANITIZE_STRING));
+                array_push($termList, filter_var($term, FILTER_SANITIZE_STRING));
             }
+        }
+
+        foreach ($termList as $term) {
+            $whereClause .= 'OR WHERE ';
         }
 
         if(count($tag_ids) > 0) {
@@ -74,32 +79,20 @@ class SearchController extends Controller
             $havingClause = '1 = 1';
         }
 
-        $query = Opus::query();
-        $query->join('opus_tag', 'opus_tag.opus_id', '=', 'opuses.id')
-            ->join('tags', 'tags.id', '=', 'opus_tag.tag_id')
-            ->select('opuses.*', 'opus_tag.tag_id', 'opus_tag.opus_id')
-            ->groupBy('tag_id', 'opus_id')
-            ->havingRaw($havingClause);
-
-        $query = 'SELECT opuses.*, opus_tag.*, users.slug as uslug
+        $query = 'SELECT opuses.*, opus_tag.*, users.slug AS uslug, users.username
                   FROM opuses
                   INNER JOIN opus_tag ON opuses.id = opus_tag.opus_id
                   INNER JOIN tags ON tags.id = opus_tag.tag_id
                   INNER JOIN users ON users.id = opuses.user_id
                   GROUP BY opus_tag.opus_id
-                  HAVING '.$havingClause;
+                  HAVING '.$havingClause.'
+                  '.$whereClause;
 
-
-//        $results = $query->paginate(24);
         $results = DB::select($query);
 
-        $paginatedResults = new Paginator(
-            $results, //a fake range of total items, you can use range(1, count($collection))
-            count($results), //count as in 1st parameter
-            24, //items per page
+        $paginatedResults = new Paginator($results, count($results), 24,
             \Illuminate\Pagination\Paginator::resolveCurrentPage(), //resolve the path
-            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
-        );
+            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]);
         
         return view('search.index', compact('paginatedResults'));
     }
