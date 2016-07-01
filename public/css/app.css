@@ -9349,6 +9349,12 @@ div.flash-messages {
 div.flash-messages ul {
   list-style-type: none;
 }
+.search-box {
+  margin-left: 10px;
+}
+.search-box input[type="text"] {
+  width: 400px;
+}
 .comment {
   border: #eeeeee solid 2px;
   background-color: #eeeeee;
@@ -9590,7 +9596,7 @@ a.avatar-link {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 15px;
-  max-width: 1200px;
+  max-width: 1500px;
   -webkit-box-shadow: 5px 5px 5px #888888;
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 5px 5px 5px #888888;

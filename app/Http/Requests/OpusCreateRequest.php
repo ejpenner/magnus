@@ -25,7 +25,7 @@ class OpusCreateRequest extends Request
     {
         return [
             'image' => 'required',
-            'title' => 'required|min:3'
+            'title' => 'required|min:3|max:60'
         ];
     }
 }

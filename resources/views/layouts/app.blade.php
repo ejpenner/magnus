@@ -42,9 +42,11 @@
                     <div class="row form-group">
                         <div class="search-area">
                             <div class="search-box">
-                                {!! Form::text('search-terms', null, ['class'=>'form-control', 'placeholder'=>'Search...', 'name'=>'q']) !!}
+                                {{--{!! Form::text('search-terms', null, ['class'=>'form-control', 'placeholder'=>'Search...', 'name'=>'q']) !!}--}}
+                                <input type="text" class="form-control" placeholder="Search..." name="q" value="{{ Magnus::getSearchQuery() }}" id="search-terms">
                             </div>
                         </div>
+
                     </div>
                     {!! Form::submit('Search', ['class' => 'form-control btn btn-primary', 'onclick'=>'window.location.href=this.form.action +\'/\'+ this.form.q.value;']) !!}
                     {!! Form::close() !!}

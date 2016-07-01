@@ -4,6 +4,7 @@ namespace Magnus\Helpers;
 use Illuminate\Support\Facades\Config;
 use Magnus\Role;
 use Magnus\User;
+use Illuminate\Support\Facades\Request;
 
 class Helpers
 {
@@ -32,5 +33,10 @@ class Helpers
         } else {
             return false;
         }
+    }
+    
+    public static function getSearchQuery()
+    {
+        return Request::is('search/*') ? urldecode(Request::segment(2)) : '';
     }
 }

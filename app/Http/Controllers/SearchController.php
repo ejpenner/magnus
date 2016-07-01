@@ -25,33 +25,6 @@ class SearchController extends Controller
         $parameters = str_replace(' ', '+', $parameters);
         $terms = explode('+', $parameters);
 
-//        $query = Opus::query();
-//        $query->join('opus_tag', 'opus_tag.opus_id', '=', 'id')
-//            ->join('tags', 'tags.id', '=', 'opus_tag.tag_id')
-//            ->select('opuses.*', 'opus_tag.tag_id')
-//            ->where(function ($q) use ($terms){
-//                $tagsArray = [];
-//                foreach($terms as $i => $term) {
-//                    $term = trim($term);
-//                        if(strpos($term, '@') !== false) {
-//                            $term = preg_replace('/@/', '', $term);
-//                            $q->where('tags.name', '=', $term);
-//                        } else {
-//                            $q->where('tags.name', '=', $term);
-//                        }
-//
-//                        if(strpos($term, '@') !== false) {
-//                            $term = preg_replace('/@/', '', $term);
-//                            $q->where('name', 'like', $term);
-//                        } else {
-//                            $q->orWhere('name', '=', $term);
-//                            $q->orWhere('title', 'like', "%$term%");
-//                            $q->orWhere('comment', 'like', "%$term%");
-//                    }
-//
-//                    }
-//                });//->groupBy('opuses.id');
-
         $tag_ids = [];
         $termList = [];
         $whereClause = '';
@@ -60,7 +33,7 @@ class SearchController extends Controller
             $term = trim($term);
             if(strpos($term, '@') !== false) {
                 try {
-                    $term = preg_replace('/@/', '', $term);
+                    $term = preg_replace('/@/', '', filter_var($term, FILTER_SANITIZE_STRING));
                     $tag = Tag::where('name', $term)->first();
                     array_push($tag_ids, $tag->id);
                 } catch (\Exception $e) {}
@@ -69,8 +42,18 @@ class SearchController extends Controller
             }
         }
 
-        foreach ($termList as $term) {
-            $whereClause .= 'OR WHERE ';
+        if(count($termList) > 0) {
+            $whereClause = 'WHERE ';
+            foreach ($termList as $i => $term) {
+                if($i < 1) {
+                    $whereClause .=  ' users.username = \'' . $term . '\'
+                                 OR opuses.title LIKE \'' . $term . '%\' ';
+                } else {
+                    $whereClause .=  ' OR users.username = \'' . $term . '\'
+                                 OR opuses.title LIKE \'' . $term . '%\' ';
+                }
+
+            }
         }
 
         if(count($tag_ids) > 0) {
@@ -84,9 +67,9 @@ class SearchController extends Controller
                   INNER JOIN opus_tag ON opuses.id = opus_tag.opus_id
                   INNER JOIN tags ON tags.id = opus_tag.tag_id
                   INNER JOIN users ON users.id = opuses.user_id
+                  ' . $whereClause . '
                   GROUP BY opus_tag.opus_id
-                  HAVING '.$havingClause.'
-                  '.$whereClause;
+                  HAVING ' . $havingClause;
 
         $results = DB::select($query);
 

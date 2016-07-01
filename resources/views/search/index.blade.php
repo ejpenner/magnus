@@ -4,11 +4,11 @@
     @if(count($paginatedResults) > 0)
         <div class="container-fluid">
             <h4>Search results for: <small>{{ urldecode(substr(Request::path(), 7)) }}</small></h4>
-        </div>
-        <div class="text-center">
-                    @foreach($paginatedResults as $result)
-                        @include('search.partials._result', ['opus' => $result])
-                    @endforeach
+            <div class="text-center">
+                @foreach($paginatedResults as $result)
+                    @include('search.partials._result', ['opus' => $result])
+                @endforeach
+            </div>
         </div>
         <div class="container">
             {{ $paginatedResults->render() }}
