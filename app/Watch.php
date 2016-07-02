@@ -8,11 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Watch extends Model
 {
-    /**
-     * This model represents users watching another user. A user who is
-     * watching another user will receive notifications of updates and
-     * actions the watched user has made
-     */
+
     protected $table="watches";
 
     protected $fillable = [

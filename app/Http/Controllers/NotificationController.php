@@ -38,13 +38,26 @@ class NotificationController extends Controller
         $commentQuery->select('comments.id', 'comments.created_at', 'comments.user_id', 'comments.parent_id', 'comments.profile_id', 'comments.body', 'notification_user.notification_id', 'comments.opus_id');
         $commentQuery->orderBy('comments.created_at', 'desc');
         $commentResults = $commentQuery->get();
-        
+
         return view('notification.index', compact('user', 'opusResults', 'commentResults'));
     }
 
     public function destroySelected(Request $request)
     {
-        dd($request->all());
+        if (Auth::check() and $request->has('notification_ids')) {
+            $user = Auth::user();
+            foreach ($request->input('notification_ids') as $id) {
+                $notification = Notification::findOrFail($id);
+                $notification->deleteNotification($user);
+
+                if ($notification->users->count() < 1) {
+                    $notification->delete();
+                }
+            }
+            return redirect()->to(app('url')->previous())->with('success', 'Messages deleted!');
+        }
+
+        return abort('401');
     }
 
     /**

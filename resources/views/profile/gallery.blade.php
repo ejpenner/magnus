@@ -17,7 +17,7 @@
                         <p>{{ $item->description }}</p>
                         <a href="{{ action('ProfileController@show', $item->user->slug) }}">{{ $item->user->name }}</a>
 
-                        @if(Auth::check() and (Auth::user()->atLeastHasRole(Config::get('roles.globalModerator')) or Auth::user()->isOwner($item)))
+                        @if(Auth::check() and (Auth::user()->atLeastHasRole(Config::get('roles.gmod-code')) or Auth::user()->isOwner($item)))
                             <div class="clearfix">
                                 @include('gallery._editModal', ['id'=>$i.'-'.$j, 'gallery'=>$item])
                                 {!! Form::model($item, ['method'=>'delete', 'class'=>'delete-confirm operations', 'action'=>['GalleryController@destroy', $item->id]]) !!}

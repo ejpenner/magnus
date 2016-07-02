@@ -24,7 +24,7 @@ class CommentRequest extends Request
     public function rules()
     {
         return [
-            'body' => 'required|min:3'
+            'body' => 'required|min:3|max:3000'
         ];
     }
 }

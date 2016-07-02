@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    protected $fillable = ['role_name', 'level'];
+    protected $fillable = ['role_name', 'level', 'role_code'];
 
     /**
      * Role model has 1:1 relationship with Permission model
@@ -35,7 +35,7 @@ class Role extends Model
      */
     public static function atLeastHasRole(User $user, $role) {
         foreach($user->roles as $userRole) {
-            if($userRole->level >= Role::where('role_name', $role)->value('level')) {
+            if($userRole->level >= Role::where('role_code', $role)->value('level')) {
                 return true;
             }
         }
@@ -50,7 +50,7 @@ class Role extends Model
      */
     public static function hasRole(User $user, $role) {
         foreach($user->roles as $userRole) {
-            if($userRole->level == Role::where('role_name', $role)->value('level')) {
+            if($userRole->level == Role::where('role_code', $role)->value('level')) {
                 return true;
             }
         }

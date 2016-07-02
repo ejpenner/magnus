@@ -125,7 +125,7 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Developer middleware group
      */
-    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.developer').'', 'prefix'=>'admin'], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.dev-code').'', 'prefix'=>'admin'], function () {
         Route::get('session', 'AdminController@session');
         Route::get('test', 'AdminController@test');
     });
@@ -133,7 +133,7 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Administration middleware group
      */
-    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.administrator')], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.admin-code')], function () {
         Route::resource('permissions', 'PermissionController');
         Route::resource('users', 'UserController');
         Route::resource('roles', 'RoleController');
@@ -143,7 +143,7 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Global moderator middleware group
      */
-    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.globalMod')], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.gmod-code')], function () {
         Route::get('user/{users}/avatar', 'UserController@avatarAdmin');
         Route::post('user/{users}/avatar', 'UserController@uploadAvatarAdmin');
     });

@@ -42,7 +42,6 @@
                     <div class="row form-group">
                         <div class="search-area">
                             <div class="search-box">
-                                {{--{!! Form::text('search-terms', null, ['class'=>'form-control', 'placeholder'=>'Search...', 'name'=>'q']) !!}--}}
                                 <input type="text" class="form-control" placeholder="Search..." name="q" value="{{ Magnus::getSearchQuery() }}" id="search-terms">
                             </div>
                         </div>
@@ -53,7 +52,7 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                @if(Auth::check() and Auth::user()->atLeastHasRole(Config::get('roles.administrator')))
+                @if(Auth::check() and Auth::user()->atLeastHasRole(Config::get('roles.admin-code')))
                     <li @if(Request::is('admin')) class="active dropdown" @else class="dropdown" @endif>
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Panel <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -85,10 +84,10 @@
         @include('partials._flash')
         @include('partials._errors')
     </div>
-    @unless(Auth::check() and Auth::user()->hasRole(Config::get('roles.banned')))
+    @unless(Auth::check() and Auth::user()->hasRole(Config::get('roles.banned-code')))
         @yield('content')
     @else
-        <p>You are banned :(</p>
+        <h2>You are banned :(</h2>
     @endunless
 </div>
 <footer class="container-fluid text-center">

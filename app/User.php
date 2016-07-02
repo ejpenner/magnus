@@ -134,13 +134,13 @@ class User extends Authenticatable
      * @return string
      */
     public function decorateName() {
-        if(Role::atLeastHasRole($this, Config::get('roles.developer'))) {
+        if(Role::atLeastHasRole($this, Config::get('roles.dev-code'))) {
             return "<span class=\"username role-developer\">$this->name</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.administrator'))) {
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.admin-code'))) {
             return "<span class=\"username role-administrator\">$this->name</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.globalMod'))) {
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.gmod-code'))) {
             return "<span class=\"username role-globalModerator\">$this->name</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.moderator'))) {
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.mod-code'))) {
             return "<span class=\"username role-moderator\">$this->name</span>";
         } else {
             return "<span class=\"username\">$this->name</span>";
@@ -153,15 +153,15 @@ class User extends Authenticatable
      * @return string
      */
     public function decorateUsername() {
-        if(Role::atLeastHasRole($this, Config::get('roles.developer'))) {
+        if(Role::atLeastHasRole($this, Config::get('roles.dev-code'))) {
             return "<span class=\"username role-developer\">$this->username</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.administrator'))) {
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.admin-code'))) {
             return "<span class=\"username role-administrator\">$this->username</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.globalMod'))) {
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.gmod-code'))) {
             return "<span class=\"username role-globalModerator\">$this->username</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.moderator'))) {
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.mod-code'))) {
             return "<span class=\"username role-moderator\">$this->username</span>";
-        } elseif(Role::hasRole($this, Config::get('roles.banned'))) {
+        } elseif(Role::hasRole($this, Config::get('roles.banned-code'))) {
             return "<span class=\"username role-banned\">$this->username</span>";
         } else {
             return "<span class=\"username\">$this->username</span>";
@@ -364,6 +364,11 @@ class User extends Authenticatable
         $this->notifications()->attach($notification->id);
     }
 
+    /**
+     *  Delete notification ID from the user's message center
+     *
+     * @param Notification $notification
+     */
     public function deleteNotification(Notification $notification)
     {
         $this->notifications()->detach($notification->id);

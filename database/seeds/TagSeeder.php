@@ -13,11 +13,9 @@ class TagSeeder extends Seeder
      */
     public function run()
     {
-        factory(Tag::class, 60)->create();
+        factory(Tag::class, 45)->create();
 
         $opera = Opus::all();
-
-
         $tagCount = Tag::count();
 
         foreach($opera as $opus){

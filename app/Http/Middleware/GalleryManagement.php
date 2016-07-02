@@ -21,7 +21,7 @@ class GalleryManagement
         $gallery_id = $request->route('gallery');
         $gallery = Gallery::where('id', $gallery_id)->first();
 
-        if (!Auth::check() or Auth::user()->atLeastHasRole(Config::get('roles.globalModerator')) or Auth::user()->isOwner($gallery)) {
+        if (!Auth::check() or Auth::user()->atLeastHasRole(Config::get('roles.gmod-code')) or Auth::user()->isOwner($gallery)) {
             return $next($request);
         } else {
             return redirect()->back()->withErrors('You are not permitted to complete that action or view that page.');

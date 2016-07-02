@@ -24,7 +24,7 @@ class OpusCreateRequest extends Request
     public function rules()
     {
         return [
-            'image' => 'required',
+            'image' => 'required|mimes:jpeg,bmp,png',
             'title' => 'required|min:3|max:60'
         ];
     }

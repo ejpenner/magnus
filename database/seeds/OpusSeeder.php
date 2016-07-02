@@ -21,19 +21,19 @@ class OpusSeeder extends Seeder
         $opusMax = 10;
         $opusGalleryMax = 10;
         $tagMax = 4;
-        
+
         foreach($users as $user)  {
             foreach(range(1,$opusMax) as $index) {
                 factory(Opus::class)->create(['user_id'=>$user->id])->each(function($opus) use ($tagMax) {
                     $tagCount = Tag::count();
-                    
+
                 });
             }
 
             foreach(range(1,$galleryMax) as $index) {
                 $user->galleries()->save(factory(Gallery::class)->make());
             }
-            
+
             foreach($user->galleries as $gallery) {
 
                 foreach(range(1,$opusGalleryMax) as $i)
@@ -48,13 +48,5 @@ class OpusSeeder extends Seeder
 
             }
         }
-
-
-    }
-
-    private function UniqueRandomNumbersWithinRange($min, $max, $quantity) {
-        $numbers = range($min, $max);
-        shuffle($numbers);
-        return array_slice($numbers, 0, $quantity);
     }
 }

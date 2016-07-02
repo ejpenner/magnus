@@ -3,7 +3,6 @@
 namespace Magnus;
 
 use Magnus\Http\Requests\Request;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;

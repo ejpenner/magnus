@@ -24,7 +24,8 @@ class OpusEditRequest extends Request
     public function rules()
     {
         return [
-            'title' => 'required|min:3|max:60'
+            'title' => 'required|min:3|max:60',
+            'image' => 'mimes:jpeg,bmp,png'
         ];
     }
 }
