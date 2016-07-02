@@ -10,7 +10,8 @@
                     </div>
                 </div>
                 <div class="col-md-10">
-                    <div class="row"><span class="comment-name">{{ $childComment->user->name }}</span> > <a href="{{ Request::url() }}#cid:{{ $comment->id }}">{{ $comment->user->name }}</a></div>
+                    <div class="row"><span class="comment-name">{!! $childComment->user->decorateUsername() !!}</span>
+                        > <a href="{{ Request::url() }}#cid:{{ $comment->id }}">{!! $comment->user->decorateUsername()  !!}</a></div>
                     <div class="comment-body">
                         <div class="comment-date">{{ $childComment->created_at }}</div>
                         <p class="comment-text">{{ $childComment->body }}</p>

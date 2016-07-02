@@ -19,15 +19,15 @@ class Helpers
     public static function username($id)
     {
         $user = User::findOrFail($id);
-        if (Role::atLeastHasRole($user, Config::get('roles.developer'))) {
+        if (Role::atLeastHasRole($user, Config::get('roles.dev-code'))) {
             return "<span class=\"username role-developer\">$user->username</span>";
-        } elseif (Role::atLeastHasRole($user, Config::get('roles.administrator'))) {
+        } elseif (Role::atLeastHasRole($user, Config::get('roles.admin-code'))) {
             return "<span class=\"username role-administrator\">$user->username</span>";
-        } elseif (Role::atLeastHasRole($user, Config::get('roles.globalMod'))) {
+        } elseif (Role::atLeastHasRole($user, Config::get('roles.gmod-code'))) {
             return "<span class=\"username role-globalModerator\">$user->username</span>";
-        } elseif (Role::atLeastHasRole($user, Config::get('roles.moderator'))) {
+        } elseif (Role::atLeastHasRole($user, Config::get('roles.mod-code'))) {
             return "<span class=\"username role-moderator\">$user->username</span>";
-        } elseif (Role::hasRole($user, Config::get('roles.banned'))) {
+        } elseif (Role::hasRole($user, Config::get('roles.banned-code'))) {
             return "<span class=\"username role-banned\">$user->username</span>";
         } else {
             return "<span class=\"username\">$user->username</span>";

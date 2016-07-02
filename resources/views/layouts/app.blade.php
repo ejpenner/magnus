@@ -33,10 +33,23 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li @if(Request::is('/')) class="active" @endif ><a href="{{ action('HomeController@recent') }}">Home</a></li>
-                <li @if(Request::is('featured')) class="active" @endif ><a href="#">Featured</a></li>
-                <li @if(Request::is('galleria')) class="active" @endif ><a href="{{ action('GalleryController@index') }}">Galleries</a></li>
-                <li @if(Request::is('nova/submit')) class="active" @endif ><a href="{{ action('OpusController@submit') }}">Submit</a></li>
+                <li class="dropdown" @if(Request::is('/')) class="active" @endif >
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ action('HomeController@recent') }}"> Home <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ action('HomeController@recent', 'hot') }}">Hot</a></li>
+                        <li><a href="{{ action('HomeController@recent', 'popular') }}">Popular</a></li>
+                        <li><a href="{{ action('HomeController@recent') }}">New</a></li>
+                    </ul>
+                </li>
+                <li @if(Request::is('featured')) class="active" @endif >
+                    <a href="#">Featured</a>
+                </li>
+                <li @if(Request::is('galleria')) class="active" @endif >
+                    <a href="{{ action('GalleryController@index') }}">Galleries</a>
+                </li>
+                <li @if(Request::is('nova/submit')) class="active" @endif >
+                    <a href="{{ action('OpusController@submit') }}">Submit</a>
+                </li>
                 <li @if(Request::is('search')) class="active" @endif >
                     {!! Form::open(['url'=>'/search/', 'method'=>'get', 'class'=>'navbar-form navbar-left', 'role'=>'search', 'onsubmit'=>'return false;']) !!}
                     <div class="row form-group">

@@ -12,7 +12,7 @@
                         </div>
                     </div>
                     <div class="col-md-10">
-                        <div class="row"><span class="comment-name">{{ $comment->user->name }}</span></div>
+                        <div class="row"><span class="comment-name">{!! $comment->user->decorateUsername()  !!}</span></div>
                         <div class="comment-body">
                             <div class="comment-date">{{ $comment->created_at }}</div>
                             <p class="comment-text">{{ $comment->body }}</p>
