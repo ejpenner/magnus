@@ -1,5 +1,4 @@
 <?php
-
 namespace Magnus;
 
 use Magnus\Http\Requests\Request;
@@ -13,7 +12,7 @@ class Opus extends Model
 {
     protected $fillable = [
         'image_path', 'thumbnail_path',
-        'title','comment','user_id',
+        'title', 'comment', 'user_id',
         'published_at', 'views', 'daily_views',
         'slug'
     ];

@@ -36,7 +36,7 @@
         {!! Form::select('per_page',[
                     18 => '18 Thumbnails per Page',
                     36 => '36 Thumbnails per Page',
-                    56 => '56 Thumbnails per Page',],
+                    54 => '54 Thumbnails per Page',],
                     null,
                     ['class' => 'form-control']) !!}
     </div>

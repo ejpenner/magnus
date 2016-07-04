@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
 use Magnus\Role;
 use Magnus\User;
 
@@ -53,7 +54,6 @@ class Helpers
 
     /**
      * If on the search page, put the query in the search box
-     * 
      * @return string
      */
     public static function getSearchQuery()
@@ -64,7 +64,7 @@ class Helpers
 
     /**
      * Returns a collection of users that watch this user
-     *
+     * @param User $user
      * @return static
      */
     public static function listWatchers(User $user)
@@ -78,10 +78,10 @@ class Helpers
         }
         return $watcherList;
     }
-
+    
     /**
-     *  Returns a collection of users that this user watches
-     *
+     * Returns a collection of users that this user watches
+     * @param User $user
      * @return static
      */
     public function listWatchedUsers(User $user)
@@ -98,11 +98,30 @@ class Helpers
         return $watcherList;
     }
 
+    /**
+     * Makes directories for a given string
+     * @param $username
+     */
     public static function makeDirectories($username)
     {
         $username = strtolower($username);
         File::makeDirectory(public_path('art/'.$username.'/images'), 0755, true);
         File::makeDirectory(public_path('art/'.$username.'/thumbnails'), 0755, true);
         File::makeDirectory(public_path('art/'.$username.'/avatars'), 0755, true);
+    }
+
+    /**
+     * Helper function to determine Role checks and owner checks on views
+     * @param $object
+     * @param $role
+     * @return bool
+     */
+    public static function isOwnerOrHasRole($object, $role)
+    {
+        if(self::isOwner(Auth::user(), $object) or Auth::user()->atLeastHasRole($role))
+        {
+            return true;
+        }
+        return false;
     }
 }

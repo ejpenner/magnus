@@ -3,12 +3,11 @@
 namespace Magnus\Http\Middleware;
 
 use Closure;
-
-use Magnus\Piece;
+use Magnus\Helpers\Helpers;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
+use Magnus\Opus;
 
-class PieceManagement
+class OpusManagement
 {
     /**
      * Handle an incoming request.
@@ -19,10 +18,10 @@ class PieceManagement
      */
     public function handle($request, Closure $next)
     {
-        $piece_id = $request->route('piece');
-        $piece = Piece::where('id', $piece_id)->first();
+        $id = $request->route('opus');
+        $opus = Opus::where('id', $id)->first();
 
-        if (Auth::user()->atLeastHasRole(Config::get('roles.gmod-code')) or Auth::user()->isOwner($piece)) {
+        if (Auth::check() and Helpers::isOwnerOrHasRole($opus, config('roles.mod-code'))) {
             return $next($request);
         } else {
             return redirect()->back()->withErrors('You are not permitted to complete that action or view that page.');

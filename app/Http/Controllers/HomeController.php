@@ -5,9 +5,7 @@ namespace Magnus\Http\Controllers;
 use Magnus\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Magnus\Gallery;
 use Magnus\Opus;
-use Magnus\User;
 
 class HomeController extends Controller
 {
@@ -18,12 +16,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(
-            'auth',
-            [
-                'only' => ['create','edit','destroy']
-            ]
-        );
+        $this->middleware('auth', ['only' => ['create','edit','destroy']]);
     }
 
     /**
@@ -78,7 +71,7 @@ class HomeController extends Controller
         }
 
         $opera = $opera->paginate($limit);
-
+        
         return view('home.recent', compact('opera','request'));
     }
 }

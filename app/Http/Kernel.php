@@ -2,8 +2,6 @@
 
 namespace Magnus\Http;
 
-use Magnus\Http\Middleware\CommentManagement;
-use Magnus\Http\Middleware\Permission;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -55,5 +53,6 @@ class Kernel extends HttpKernel
         'account'   => \Magnus\Http\Middleware\Account::class,
         'gallery'   => \Magnus\Http\Middleware\GalleryManagement::class,
         'comment'   => \Magnus\Http\Middleware\CommentManagement::class,
+        'opus'      => \Magnus\Http\Middleware\OpusManagement::class
     ];
 }

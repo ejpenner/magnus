@@ -11,7 +11,7 @@
                 </h5>
             </div>
             <div class="gallery-operations">
-                @if(Auth::check() and (Auth::user()->isOwner($opus) or Auth::user()->atLeastHasRole(config('roles.gmod-code'))))
+                @if(Auth::check() and Magnus::isOwnerOrHasRole($opus, config('roles.moderator')))
                     @include('partials._operations', ['model' => $opus, 'controller' => 'OpusController'])
                 @endif
             </div>

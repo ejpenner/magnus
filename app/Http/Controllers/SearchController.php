@@ -1,16 +1,12 @@
 <?php
-
 namespace Magnus\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use Magnus\Http\Requests;
-
-use Illuminate\Support\Facades\DB;
-use Magnus\Opus;
-use Magnus\Tag;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Pagination\LengthAwarePaginator as Paginator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Magnus\Http\Requests;
+use Magnus\Tag;
 
 class SearchController extends Controller
 {
@@ -23,10 +19,12 @@ class SearchController extends Controller
     {
         if($request->has('limit')) {
             $limit = $request->input('limit');
+        } elseif (Auth::check()) {
+            $limit = Auth::user()->preferences->per_page;
         } else {
             $limit = config('images.defaultLimit');
         }
-        
+
         $request->session()->put('searchString', $parameters);
         $parameters = str_replace(' ', '+', $parameters);
         $terms = explode('+', $parameters);
@@ -35,6 +33,15 @@ class SearchController extends Controller
         $termList = [];
         $whereClause = '';
         $tagClause = '';
+     //   $count = null;
+//        if(Auth::check())
+//        {
+//            $count = Auth::user()->preferences->per_page;
+//        }
+        $input = [
+            'page' => $request->input('page') ?? 1,
+            'count' => $limit
+        ];
 
         foreach($terms as $term)
         {
@@ -44,7 +51,9 @@ class SearchController extends Controller
                     $term = preg_replace('/@/', '', filter_var($term, FILTER_SANITIZE_STRING));
                     $tag = Tag::where('name', $term)->first();
                     array_push($tag_ids, $tag->id);
-                } catch (\Exception $e) {}
+                } catch (\Exception $e) {
+                    array_push($termList, filter_var($term, FILTER_SANITIZE_STRING));
+                }
             } else {
                 array_push($termList, filter_var($term, FILTER_SANITIZE_STRING));
             }
@@ -52,13 +61,12 @@ class SearchController extends Controller
 
         if(count($tag_ids) > 0) {
             $tagClause = 'WHERE ';
-            foreach ($tag_ids as $i => $id) {
+            foreach ($tag_ids as $i => $tag) {
                 if($i < 1) {
-                    $tagClause .=  ' t.id = ' . $id . ' ';
+                    $tagClause .=  ' t.id = ' . $tag . ' ';
                 } else {
-                    $tagClause .=  ' OR t.id = ' . $id . ' ';
+                    $tagClause .=  ' OR t.id = ' . $tag . ' ';
                 }
-
             }
         }
 
@@ -67,10 +75,10 @@ class SearchController extends Controller
             foreach ($termList as $i => $term) {
                 if($i < 1) {
                     $whereClause .=  ' u.username = \'' . $term . '\'
-                                 OR o.title LIKE \'%' . $term . '%\' ';
+                                 OR o.title LIKE \'% ' . $term . ' %\' ';
                 } else {
                     $whereClause .=  ' OR u.username = \'' . $term . '\'
-                                 OR o.title LIKE \'%' . $term . '%\' ';
+                                 OR o.title LIKE \'% ' . $term . ' %\' ';
                 }
 
             }
@@ -81,23 +89,39 @@ class SearchController extends Controller
                   INNER JOIN opus_tag ot ON o.id = ot.opus_id
                   INNER JOIN tags t ON t.id = ot.tag_id
                   INNER JOIN users u ON u.id = o.user_id
-				  RIGHT OUTER JOIN 
-				    (SELECT DISTINCT o.id AS id, count(*) as matched
-					 FROM opuses o JOIN opus_tag ot ON o.id = ot.opus_id
-					 JOIN tags t ON ot.tag_id = t.id
-					 '. $tagClause .'
-					 GROUP BY o.id) AS matching_tags ON o.id = matching_tags.id 
-                     '. $whereClause .'
-                GROUP BY o.id, matching_tags.matched
-                ORDER BY matched DESC';
+                  RIGHT OUTER JOIN 
+				      (SELECT DISTINCT o.id AS id, count(*) as matched
+					   FROM opuses o JOIN opus_tag ot ON o.id = ot.opus_id
+					   JOIN tags t ON ot.tag_id = t.id
+					   '. $tagClause .'
+					   GROUP BY o.id) AS matching_tags ON o.id = matching_tags.id 
+                  '. $whereClause .'
+                  GROUP BY o.id, matching_tags.matched
+                  ORDER BY matched DESC ';
 
+        $query .= 'LIMIT '.$input['count'].' OFFSET '.(($input['page'] - 1) * $input['count']).';';
 
+        $totalQuery = 'SELECT COUNT(*) as total
+                       FROM opuses o
+                       INNER JOIN opus_tag ot ON o.id = ot.opus_id
+                       INNER JOIN tags t ON t.id = ot.tag_id
+                       INNER JOIN users u on u.id = o.user_id
+                       RIGHT OUTER JOIN
+				           (SELECT DISTINCT o.id AS id, count(*) as matched
+					        FROM opuses o JOIN opus_tag ot ON o.id = ot.opus_id
+					        JOIN tags t ON ot.tag_id = t.id
+					        '. $tagClause .'
+                            GROUP BY o.id) AS matching_tags ON o.id = matching_tags.id '.$whereClause.' 
+                       GROUP BY o.id, matching_tags.matched
+                       ORDER BY matched DESC';
+
+        $total = count(DB::select($totalQuery));
         $results = DB::select($query);
 
-        $paginatedResults = new Paginator($results, count($results), $limit,
+        $paginatedResults = new Paginator($results, $total, $limit,
             \Illuminate\Pagination\Paginator::resolveCurrentPage(), //resolve the path
             ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]);
-        
+
         return view('search.index', compact('paginatedResults'));
     }
 

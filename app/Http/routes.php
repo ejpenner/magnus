@@ -44,7 +44,8 @@ Route::get('/gallery/{gallery}/{opus}', 'OpusController@galleryShow');
  */
 Route::resource('gallery', 'GalleryController');
 Route::resource('opus', 'OpusController');
-Route::resource('opus.comment', 'CommentController');
+//Route::resource('opus.comment', 'CommentController');
+Route::get('opus/{opus}/comment/{comment}', 'CommentController@show');
 Route::get('opus/{id}/download', 'OpusController@download');
 
 
@@ -84,7 +85,9 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::get('comments/{comment}', 'CommentController@show');
     Route::post('opus/{opus}/{comment}', 'CommentController@storeChild');
+    Route::post('opus/{opus}/comment', 'CommentController@store');
     Route::patch('opus/{opus}/{comment}', 'CommentController@updateChild');
+    Route::delete('opus/{opus}/comment/{comment}', 'CommentController@destroy');
     Route::delete('opus/{opus}/{comment}', 'CommentController@destroyChild');
 
     /**
@@ -101,11 +104,9 @@ Route::group(['middleware' => ['auth']], function () {
      * TODO: refactor id middleware
      */
     Route::group(['middleware' => ['account']], function () {
-        //Route::get('account/{users}/edit', 'AccountController@editAccount')->name('account.edit');
         Route::patch('account/{users}/update', 'AccountController@updateAccount')->name('account.update');
         Route::get('account/{users}', 'AccountController@manageAccount')->name('account.manage');
         Route::patch('account/{users}/updatePassword', 'AccountController@updatePassword')->name('password.update');
-        //Route::get('account/{users}/preferences', 'AccountController@preferences')->name('account.preference');
         Route::patch('account/{users}/preferences', 'AccountController@updatePreferences')->name('account.preferences.update');
     });
 
