@@ -18,7 +18,7 @@
                                     <h5>
                                         <strong><a href="{{ action('OpusController@show', [$opus->id]) }}">{{ $opus->title }}</a></strong>
                                         <br>
-                                        <a href="{{ action('ProfileController@show', $opus->user->slug) }}">{!! $user->decorateUsername() !!}</a>
+                                        <a href="{{ action('ProfileController@show', $opus->user->slug) }}">{!! $opus->user->decorateUsername() !!}</a>
                                     </h5>
                                     <div>
                                         <a href="{{ action('NotificationController@destroy', $opus->notification_id) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</a>

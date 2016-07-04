@@ -9,7 +9,7 @@
     <div class="col-md-9">
         <div class="avatar-modal">
             <canvas id="avatar-cropper" style="width:600px; height:400px"></canvas>
-            <form id="avatar-form" action="{{ action('UserController@uploadAvatar') }}">
+            <form id="avatar-form" action="{{ action('AccountController@uploadAvatar', $user->slug) }}">
                 {!! csrf_field() !!}
                 <div class="form-group form-inline">
                     <div class="list-inline">

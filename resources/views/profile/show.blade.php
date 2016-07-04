@@ -34,7 +34,7 @@
                     </div>
                     <div class="panel-body">
                         <ul>
-                            @foreach($user->listWatchedUsers() as $watcher)
+                            @foreach(Magnus::listWatchedUsers($user) as $watcher)
                                 <li><a href="{{ action('ProfileController@show', $watcher->slug) }}">{{ $watcher->name }}</a></li>
                             @endforeach
                         </ul>
@@ -49,7 +49,7 @@
                     </div>
                     <div class="panel-body">
                         <ul>
-                            @foreach($user->listWatchers() as $watcher)
+                            @foreach(Magnus::listWatchers($user) as $watcher)
                                 <li><a href="{{ action('ProfileController@show', $watcher->slug) }}">{{ $watcher->name }}</a></li>
                             @endforeach
                         </ul>

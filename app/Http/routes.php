@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Config;
  */
 Route::model('users', 'User');
 Route::model('profile', 'Profile');
+//Route::model('opus', 'Opus');
 
 /**
  * Binds the {users} parameter to the slug
@@ -106,6 +107,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['account']], function () {
         Route::patch('account/{users}/update', 'AccountController@updateAccount')->name('account.update');
         Route::get('account/{users}', 'AccountController@manageAccount')->name('account.manage');
+        Route::post('account/{users}/avatar', 'AccountController@uploadAvatar')->name('account.avatar');
         Route::patch('account/{users}/updatePassword', 'AccountController@updatePassword')->name('password.update');
         Route::patch('account/{users}/preferences', 'AccountController@updatePreferences')->name('account.preferences.update');
     });
@@ -145,8 +147,8 @@ Route::group(['middleware' => ['auth']], function () {
      * Global moderator middleware group
      */
     Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.gmod-code')], function () {
-        Route::get('user/{users}/avatar', 'UserController@avatarAdmin');
-        Route::post('user/{users}/avatar', 'UserController@uploadAvatarAdmin');
+        Route::get('account/{users}/avatar', 'AccountController@avatarAdmin');
+        Route::post('account/{users}/avatar', 'AccountController@uploadAvatarAdmin');
     });
 });
 

@@ -23,7 +23,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password',
         'permission_id', 'slug', 'username',
-        'avatar', 'timezone'
+        'avatar', 'timezone', 'directory'
     ];
 
     /**
@@ -301,8 +301,6 @@ class User extends Authenticatable
     {
         if(!empty($this->avatar) && File::exists($this->avatar))
         {
-            // Get the filename from the full path
-            $filename = basename($this->avatar);
             return '/'.$this->avatar;
         }
         return '/images/missing/missing-avatar.png';
@@ -372,42 +370,6 @@ class User extends Authenticatable
     public function deleteNotification(Notification $notification)
     {
         $this->notifications()->detach($notification->id);
-    }
-
-    /**
-     * Returns a collection of users that watch this user
-     *
-     * @return static
-     */
-    public function listWatchers()
-    {
-        $watcherList = Collection::make();
-        foreach($this->watchedUsers as $i => $watcher) {
-            if($i >= 10) {
-                return $watcherList;
-            }
-            $watcherList->push(User::where('id', $watcher->pivot->watcher_user_id)->first());
-        }
-        return $watcherList;
-    }
-
-    /**
-     *  Returns a collection of users that this user watches
-     *
-     * @return static
-     */
-    public function listWatchedUsers()
-    {
-        $watcherList = Collection::make();
-        foreach($this->watchers as $i => $watcher) {
-            if($this->id != $watcher->pivot->watched_user_id) {
-                if($i >= 10) {
-                    return $watcherList;
-                }
-                $watcherList->push(User::where('id', $watcher->pivot->watched_user_id)->first());
-            }
-        }
-        return $watcherList;
     }
 
     /**

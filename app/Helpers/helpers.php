@@ -88,11 +88,11 @@ class Helpers
      * @param User $user
      * @return static
      */
-    public function listWatchedUsers(User $user)
+    public static function listWatchedUsers(User $user)
     {
         $watcherList = Collection::make();
         foreach($user->watchers as $i => $watcher) {
-            if($this->id != $watcher->pivot->watched_user_id) {
+            if($user->id != $watcher->pivot->watched_user_id) {
                 if($i >= 10) {
                     return $watcherList;
                 }

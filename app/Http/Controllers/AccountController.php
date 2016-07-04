@@ -74,8 +74,8 @@ class AccountController extends Controller
      * Upload user avatar for users
      * @param Request $request
      */
-    public function uploadAvatar(Request $request) {
-        $user = User::where('id', Auth::user()->id)->first();
+    public function uploadAvatar(Request $request, User $user) {
+        //$user = User::where('id', Auth::user()->id)->first();
         $user->setAvatar($request);
         $user->save();
     }
