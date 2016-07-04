@@ -235,9 +235,7 @@ class Opus extends Model
      */
     public function getImage()
     {
-        if (!empty($this->image_path) && File::exists($this->image_path)) {  // $exists = Storage::disk('images')->has(basename($this->image_path));
-            // Get the filename from the full path
-            //$filename = basename($this->image_path);
+        if (!empty($this->image_path) and File::exists($this->image_path)) {  // $exists = Storage::disk('images')->has(basename($this->image_path));
             return  $this->image_path;
         }
         return $this->imageDirectory.'/images/missing/missing.png';
@@ -249,9 +247,7 @@ class Opus extends Model
      */
     public function getThumbnail()
     {
-        if (!empty($this->thumbnail_path) && File::exists($this->thumbnail_path)) {
-            // Get the filename from the full path
-            //$filename = basename($this->thumbnail_path);
+        if (!empty($this->thumbnail_path) and File::exists($this->thumbnail_path)) {
             return $this->thumbnail_path;
         }
         return $this->imageDirectory.'/missing/missing-thumb.png';
@@ -289,16 +285,34 @@ class Opus extends Model
      */
     public function storeImage(User $user, $request)
     {
-        $userDirectory = $user->username;
+        $userDirectory = strtolower($user->username);
         //$destinationPath = $this->imageDirectory.'/'.$userDirectory; // upload path, goes to the public folder
         $destinationPath = $this->artDirectory.'/'.$userDirectory.'/'.$this->imageDirectory;
-        //$extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         $originalFileName = $request->file('image')->getClientOriginalName();
         $fileName = $user->username.'-'.date('Ymd') . substr(microtime(), 2, 8).'-'.$originalFileName; // renaming image
         $request->file('image')->move($destinationPath, $fileName); // uploading file to given path
         $fullPath = $destinationPath."/".$fileName; // set the image field to the full path
         return $fullPath;
     }
+
+    /**
+     * Handle the uploaded file, rename the file, move the file, return the filepath as a string
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string
+     */
+    public function storeImageV2(User $user, $request, $newDirectory)
+    {
+        $userDirectory = strtolower($user->username);
+        //$destinationPath = $this->imageDirectory.'/'.$userDirectory; // upload path, goes to the public folder
+        $destinationPath = $newDirectory;
+        $originalFileName = $request->file('image')->getClientOriginalName();
+        $fileName = $user->username.'-'.date('Ymd') . substr(microtime(), 2, 8).'-'.$originalFileName; // renaming image
+        $request->file('image')->move($destinationPath, $fileName); // uploading file to given path
+        $fullPath = $destinationPath."/".$fileName; // set the image field to the full path
+        return $fullPath;
+    }
+
     /**
      * Using the uploaded file, create a thumbnail and save it into the thumbnail folder
      *
@@ -307,8 +321,7 @@ class Opus extends Model
      */
     public function storeThumbnail(User $user, $request)
     {
-        $userDirectory = $user->username;
-        //$thumbDestination = $this->thumbnailDirectory.'/'.$userDirectory;
+        $userDirectory = strtolower($user->username);
         $thumbDestination = $this->artDirectory.'/'.$userDirectory.'/'.$this->thumbnailDirectory;
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         //$originalFileName = $request->file('image')->getClientOriginalName();
@@ -401,6 +414,18 @@ class Opus extends Model
             return ['filesize' => $size . ' KB', 'resolution' => $img->width() . 'x' . $img->height()];
     }
 
+    private function makeDirectory(User $user)
+    {
+        $dirName = 'art/'.$user->username.'/'.substr(microtime(),11);
+        File::makeDirectory(public_path($dirName), 4664, true);
+        return $dirName;
+    }
+
+    public function setSlug()
+    {
+        $this->slug = substr(microtime(),13).'-'.str_slug($this->title);
+        $this->save();
+    }
     /**
      * Static make function to replace the logic in the Opus controller
      * @param Request $request
@@ -412,8 +437,10 @@ class Opus extends Model
         $opus = new Opus($request->all());
         $opus->published_at = Carbon::now();
         $opus = $user->opera()->save($opus);
+        //$opusDirectory = self::makeDirectory($user);
         $opus->setImage($user, $request);
         $opus->setThumbnail($user, $request);
+        $opus->setSlug();
 
         return $opus;
     }

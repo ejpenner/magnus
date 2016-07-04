@@ -70,7 +70,7 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Alternate create and store routes for creating Opus
      */
-    Route::get('/submit', 'OpusController@newSubmission')->name('');
+    Route::get('/submit', 'OpusController@newSubmission')->name('submit');
     Route::post('/submit', 'OpusController@submit');
 
     /**

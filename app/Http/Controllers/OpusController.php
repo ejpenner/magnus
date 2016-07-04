@@ -21,8 +21,7 @@ class OpusController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth',    ['except'  => ['show','index','galleryShow']]);
-        $this->middleware('opus', ['except'  => ['show','index','galleryShow']]);
+        $this->middleware('opus', ['except'  => ['show','index','galleryShow','create','newSubmission','submit']]);
     }
 
     /**

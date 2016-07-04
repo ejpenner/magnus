@@ -45,9 +45,13 @@ class Helpers
      */
     public static function isOwner(User $user, $object)
     {
-        if ($user->id == $object->user_id) {
-            return true;
-        } else {
+        try {
+            if ($user->id == $object->user_id) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -105,9 +109,9 @@ class Helpers
     public static function makeDirectories($username)
     {
         $username = strtolower($username);
-        File::makeDirectory(public_path('art/'.$username.'/images'), 0755, true);
-        File::makeDirectory(public_path('art/'.$username.'/thumbnails'), 0755, true);
-        File::makeDirectory(public_path('art/'.$username.'/avatars'), 0755, true);
+        File::makeDirectory(public_path('art/'.$username.'/images'), 4664, true);
+        File::makeDirectory(public_path('art/'.$username.'/thumbnails'), 4664, true);
+        File::makeDirectory(public_path('art/'.$username.'/avatars'), 4664, true);
     }
 
     /**
