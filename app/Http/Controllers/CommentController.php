@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Magnus\Http\Requests;
 
-use App\Comment;
-use App\Opus;
-use App\Notification;
+use Magnus\Comment;
+use Magnus\Opus;
+use Magnus\Notification;
 use Illuminate\Support\Facades\Auth;
-use Mockery\Matcher\Not;
 
 class CommentController extends Controller
 {
@@ -56,7 +55,7 @@ class CommentController extends Controller
 
         Notification::notifyUserNewComment($opus->user, $newComment);
 
-        return redirect()->to(app('url')->previous(). '#'.$newComment->id)->with('success', 'Message posted!');
+        return redirect()->to(app('url')->previous(). '#cid:'.$newComment->id)->with('success', 'Message posted!');
     }
 
     /**
@@ -87,7 +86,7 @@ class CommentController extends Controller
 
         Notification::notifyUserNewReply($comment->user, $newComment->user, $newComment);
 
-        return redirect()->to(app('url')->previous(). '#'.$newComment->id)->with('success', 'Message posted!');
+        return redirect()->to(app('url')->previous(). '#cid:'.$newComment->id)->with('success', 'Message posted!');
     }
 
     /**
@@ -112,7 +111,7 @@ class CommentController extends Controller
             $notification = Notification::where('id', $notification_id)->first();
             Auth::user()->deleteNotification($notification);
         }
-        return redirect()->to(app('url')->previous(). '#'.$newComment->id)->with('success', 'Message posted!');
+        return redirect()->to(app('url')->previous(). '#cid:'.$newComment->id)->with('success', 'Message posted!');
     }
 
     /**

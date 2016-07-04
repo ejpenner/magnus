@@ -1,12 +1,12 @@
 <?php
 
-namespace App;
+namespace Magnus;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
 {
-    protected $fillable = ['handle','content','type','read', 'opus_id','comment_id','message_id'];
+    protected $fillable = ['handle', 'read', 'opus_id','comment_id','message_id'];
     protected $casts = ['read'=>'boolean'];
 
     /**
@@ -15,7 +15,7 @@ class Notification extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users() {
-        return $this->belongsToMany('App\User', 'notification_user')->withTimestamps();
+        return $this->belongsToMany('Magnus\User', 'notification_user')->withTimestamps();
     }
 
     /**
@@ -24,7 +24,7 @@ class Notification extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function comment() {
-        return $this->belongsTo('App\Comment');
+        return $this->belongsTo('Magnus\Comment');
     }
 
     /**
@@ -33,7 +33,7 @@ class Notification extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function opus() {
-        return $this->belongsTo('App\Opus');
+        return $this->belongsTo('Magnus\Opus');
     }
 
     public function opusNotification(Opus $opus, User $user)
@@ -48,7 +48,20 @@ class Notification extends Model
     
     public function deleteNotification(User $user)
     {
-        $user->notifications()->detach($this->id);
+        if($this->hasOwner($user)) {
+            $user->notifications()->detach($this->id);
+        }
+    }
+
+    private function hasOwner(User $user)
+    {
+        foreach ($this->users as $notifiedUsers)
+        {
+            if($user->id == $notifiedUsers->id) {
+                return true;
+            }
+        }
+        return abort(401);
     }
 
     /**

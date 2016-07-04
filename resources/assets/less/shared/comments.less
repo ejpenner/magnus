@@ -1,0 +1,74 @@
+.comment {
+  border: @gray-lighter solid 2px;
+  background-color: @gray-lighter;
+  .border-radius();
+  padding:5px;
+  margin:1px;
+
+  .comment-name {
+    font-weight: bold;
+  }
+
+  .comment-avatar {
+    //padding: 20px;
+    img {
+      .border-radius(5px);
+    }
+  }
+
+  .comment-delete-notification {
+    position: relative;
+    left: -35px;
+    top: -3px;
+  }
+
+  .comment-body {
+    background-color: @white;
+    .border-radius();
+    min-height: 130px;
+
+    .comment-date {
+      padding: 5px 10px 0px 10px;
+      color: #8c8c8c;
+    }
+
+    .comment-text {
+      margin-top: -5px;
+      padding: 15px 10px 30px 10px;
+    }
+  }
+}
+
+.child-comment {
+  .container.comment {
+    margin-left: 10px;
+  }
+}
+
+.comment-area {
+  width: auto;
+  padding:2px 0 2px 0;
+  margin:1px;
+
+  .comment-name {
+    padding: 1px;
+  }
+}
+
+.reply-toggle {
+  .reply-btn {
+    margin-left: 10px;
+    margin-top: 2px;
+  }
+}
+
+.reply-form {
+  padding: 5px;
+  margin-left: 40px;
+  width:inherit;
+  display: none;
+  .reply-textarea {
+    width: 70%;
+    margin-bottom: 2px;
+  }
+}

@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
-        
+
     }
 
     /**
@@ -35,13 +35,12 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        $users = \App\User::all();
+        $users = \Magnus\User::all();
 
         foreach($users as $user) {
             $user->deleteAvatarFile();
-            File::deleteDirectory(public_path('images/'.$user->username));
-            File::deleteDirectory(public_path('thumbnails/'.$user->username));
         }
+        File::cleanDirectory(public_path('art'));
         Schema::drop('users');
     }
 }

@@ -13,9 +13,9 @@
                 </div>
                 <div class="col-md-10">
                     <div class="row">
-                        <span class="comment-name">{{ $comment->user->name }}</span>
+                        <span class="comment-name">{!! $comment->user->decorateUsername() !!}</span>
                         @if($comment->parent_id != null)
-                            > <a href="{{ action('CommentController@show', $comment->parent_id) }}">{{ $comment->parentComment->user->name }}</a>
+                            > <a href="{{ action('CommentController@show', $comment->parent_id) }}">{!! $comment->parentComment->user->decorateUsername() !!}</a>
                         @endif
                     </div>
                     <div class="comment-body">

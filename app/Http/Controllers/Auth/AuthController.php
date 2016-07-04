@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace Magnus\Http\Controllers\Auth;
 
-use App\User;
-use App\Profile;
-use App\Gallery;
+use Magnus\User;
+use Magnus\Profile;
+use Magnus\Gallery;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Validator;
-use App\Permission;
-use App\Http\Controllers\Controller;
+use Magnus\Permission;
+use Magnus\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
@@ -80,9 +80,7 @@ class AuthController extends Controller
         ]);
 
         $user->profile()->save(new Profile(['biography'=>'Not filled out yet']));
-        File::makeDirectory(public_path('images/'.$user->username));
-        File::makeDirectory(public_path('thumbnails/'.$user->username));
-        //$user->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
+        Gallery::makeDirectories($user);
 
         return $user;
     }

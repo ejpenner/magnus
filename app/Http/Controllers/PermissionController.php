@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Magnus\Http\Requests;
 
-use App\Permission;
-use App\User;
+use Magnus\Permission;
+use Magnus\User;
 
 class PermissionController extends Controller
 {

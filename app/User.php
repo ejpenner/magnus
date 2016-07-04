@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Magnus;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,6 +13,8 @@ use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
+    private $artDirectory = 'art';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -40,40 +42,40 @@ class User extends Authenticatable
 
     /**
      * User has 0:M relationship with Gallery model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function galleries()
     {
-        return $this->hasMany('App\Gallery');
+        return $this->hasMany('Magnus\Gallery');
     }
 
     /**
      * User model has 0:M relationship with Opus model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function opera() {
-        return $this->hasMany('App\Opus');
+        return $this->hasMany('Magnus\Opus');
     }
 
     /**
      * User model has 0:M relationship with Comment model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments() {
-        return $this->hasMany('App\Comment');
+        return $this->hasMany('Magnus\Comment');
     }
 
     /**
      *  User model's 1:1 relationship with Profile model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function profile()
     {
-        return $this->hasOne('App\Profile');
+        return $this->hasOne('Magnus\Profile');
     }
 
     /**
@@ -83,7 +85,7 @@ class User extends Authenticatable
      */
     public function roles()
     {
-        return $this->belongsToMany('App\Role', 'user_roles');
+        return $this->belongsToMany('Magnus\Role', 'user_roles');
     }
 
     /**
@@ -93,17 +95,17 @@ class User extends Authenticatable
      */
     public function notifications()
     {
-        return $this->belongsToMany('App\Notification', 'notification_user')->withTimestamps();
+        return $this->belongsToMany('Magnus\Notification', 'notification_user')->withTimestamps();
     }
 
     /**
      *  List of users as Watch models that this user watches
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function watchedUsers()
     {
-        return $this->belongsToMany('App\Watch', 'user_watch', 'watched_user_id', 'watch_id')->withPivot('watcher_user_id')->withTimestamps();
+        return $this->belongsToMany('Magnus\Watch', 'user_watch', 'watched_user_id', 'watch_id')->withPivot('watcher_user_id')->withTimestamps();
     }
 
     /**
@@ -113,43 +115,53 @@ class User extends Authenticatable
      */
     public function watchers()
     {
-        return $this->belongsToMany('App\Watch', 'user_watch', 'watcher_user_id', 'watch_id')->withPivot('watched_user_id')->withTimestamps();
+        return $this->belongsToMany('Magnus\Watch', 'user_watch', 'watcher_user_id', 'watch_id')->withPivot('watched_user_id')->withTimestamps();
     }
-//
-//    public function getCreatedAtAttribute($value)
-//    {
-//        $this->attributes['created_at'] = Carbon::parse($value)->format('F j, Y');
-//    }
 
     /**
-     *  Return some span formatting around usernames for fancy CSS output
-     * 
+     * User has one site preferences model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function preferences()
+    {
+        return $this->hasOne('Magnus\Preference');
+    }
+
+    /**
+     *  Return some span formatting around names for fancy CSS output
+     *
      * @return string
      */
     public function decorateName() {
-        if(Role::atLeastHasRole($this, Config::get('roles.developer'))) {
+        if(Role::atLeastHasRole($this, Config::get('roles.dev-code'))) {
             return "<span class=\"username role-developer\">$this->name</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.administrator'))) {
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.admin-code'))) {
             return "<span class=\"username role-administrator\">$this->name</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.globalMod'))) {
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.gmod-code'))) {
             return "<span class=\"username role-globalModerator\">$this->name</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.moderator'))) {
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.mod-code'))) {
             return "<span class=\"username role-moderator\">$this->name</span>";
         } else {
             return "<span class=\"username\">$this->name</span>";
         }
     }
 
+    /**
+     *  Return some span formatting around usernames for fancy CSS output
+     *
+     * @return string
+     */
     public function decorateUsername() {
-        if(Role::atLeastHasRole($this, Config::get('roles.developer'))) {
+        if(Role::atLeastHasRole($this, Config::get('roles.dev-code'))) {
             return "<span class=\"username role-developer\">$this->username</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.administrator'))) {
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.admin-code'))) {
             return "<span class=\"username role-administrator\">$this->username</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.globalMod'))) {
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.gmod-code'))) {
             return "<span class=\"username role-globalModerator\">$this->username</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.moderator'))) {
+        } elseif(Role::atLeastHasRole($this, Config::get('roles.mod-code'))) {
             return "<span class=\"username role-moderator\">$this->username</span>";
-        } elseif(Role::hasRole($this, Config::get('roles.banned'))) {
+        } elseif(Role::hasRole($this, Config::get('roles.banned-code'))) {
             return "<span class=\"username role-banned\">$this->username</span>";
         } else {
             return "<span class=\"username\">$this->username</span>";
@@ -162,9 +174,9 @@ class User extends Authenticatable
      * @param $action: string
      * @return bool|void
      */
-    public function hasPermission($permission) 
+    public function hasPermission($permission)
     {
-        
+
     }
 
     /**
@@ -233,7 +245,9 @@ class User extends Authenticatable
      */
     public function storeAvatar($request)
     {
-        $destinationPath = $this->avatarDirectory; // upload path, goes to the public folder
+
+        //$destinationPath = $this->avatarDirectory; // upload path, goes to the public folder
+        $destinationPath = $this->artDirectory.'/'.$this->username.'/'.$this->avatarDirectory;
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         if($extension == null or $extension == '') {
             $extension = 'png';
@@ -289,9 +303,9 @@ class User extends Authenticatable
         {
             // Get the filename from the full path
             $filename = basename($this->avatar);
-            return '/'.$this->avatarDirectory.'/'.$filename;
+            return '/'.$this->avatar;
         }
-        return '/avatars/missing/missing.png';
+        return '/images/missing/missing-avatar.png';
     }
 
     /**
@@ -342,7 +356,7 @@ class User extends Authenticatable
     /**
      *  Notify this user of a new Opus/Comment/Activity of a user they watch
      *
-     * @param \App\Notification $notification
+     * @param \Magnus\Notification $notification
      * @return void
      */
     public function notify(Notification $notification)
@@ -350,6 +364,11 @@ class User extends Authenticatable
         $this->notifications()->attach($notification->id);
     }
 
+    /**
+     *  Delete notification ID from the user's message center
+     *
+     * @param Notification $notification
+     */
     public function deleteNotification(Notification $notification)
     {
         $this->notifications()->detach($notification->id);
@@ -400,10 +419,18 @@ class User extends Authenticatable
     public function isWatched(User $user)
     {
         $watch = Watch::where('user_id',$user->id)->where('watcher_user_id', $this->id)->count();
-        if($watch != 0 ){
-            return true;
-        } else {
-            return false;
-        }
+//        $watches = Watch::where('user_id',$user->id)->get();
+        if ($watch > 0) return true;
+//        $watch = Watch::where('user_id',$user->id)->first();
+//
+//        foreach ($watches as $watch)
+//        {
+//            dd($watch->users);
+//            if($watch->pivot->watcher_user_id == $this->id)
+//            {
+//                return true;
+//            }
+//        }
+        return false;
     }
 }

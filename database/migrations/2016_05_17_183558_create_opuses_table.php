@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Opus;
+use Magnus\Opus;
 
 class CreateOpusesTable extends Migration
 {
@@ -19,7 +19,9 @@ class CreateOpusesTable extends Migration
             $table->string('thumbnail_path');
             $table->string('title');
             $table->text('comment')->nullable();
+            $table->string('slug');
             $table->integer('views');
+            $table->integer('daily_views');
             $table->timestamp('published_at');
             $table->timestamps();
         });

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Magnus\Http\Requests;
 
-use App\Http\Requests\Request;
+use Magnus\Http\Requests\Request;
 
 class UserEditRequest extends Request
 {
@@ -24,7 +24,7 @@ class UserEditRequest extends Request
     public function rules()
     {
         return [
-            'name'=>'required|min:3|max:32',
+            'name'=>'required|min:3|max:40',
             'email'=>'required|email',
             'password'=>'min:8'
         ];

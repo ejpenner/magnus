@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Magnus\Http\Requests;
 
-use App\Http\Requests\Request;
+use Magnus\Http\Requests\Request;
 
 class AccountRequest extends Request
 {
@@ -24,7 +24,7 @@ class AccountRequest extends Request
     public function rules()
     {
         return [
-            'name'=>'required|min:3',
+            'name'=>'required|min:3|max:64',
             'email'=>'required|email'
         ];
     }

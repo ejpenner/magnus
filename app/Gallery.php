@@ -1,13 +1,16 @@
 <?php
 
-namespace App;
+namespace Magnus;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class Gallery extends Model
 {
+    private $artDirectory = 'art';
+
     protected $fillable = ['name', 'description', 'main_gallery', 'user_id'];
 
     protected $casts = [
@@ -22,7 +25,7 @@ class Gallery extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('Magnus\User');
     }
 
     /**
@@ -30,7 +33,7 @@ class Gallery extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function opera() {
-        return $this->belongsToMany('App\Opus')->withTimestamps();
+        return $this->belongsToMany('Magnus\Opus')->withTimestamps();
     }
 
     /**
@@ -89,16 +92,21 @@ class Gallery extends Model
     public static function place(Request $request, Opus $opus)
     {
         $gallery_ids = [];
-        foreach($request->all() as $key => $value) {
-            if(preg_match('/gallery_id\d+/', $key))
-            {
-                array_push($gallery_ids, $value);
-            }
+        foreach($request->input('gallery_ids') as $id) {
+                array_push($gallery_ids, $id);
         }
         if(count($gallery_ids) > 0) {
             foreach ($gallery_ids as $id) {
                 Gallery::where('id', $id)->first()->addOpus($opus);
             }
         }
+    }
+
+    public static function makeDirectories(User $user)
+    {
+        $username = strtolower($user->username);
+        File::makeDirectory(public_path('art/'.$username.'/images'), 0755, true);
+        File::makeDirectory(public_path('art/'.$username.'/thumbnails'), 0755, true);
+        File::makeDirectory(public_path('art/'.$username.'/avatars'), 0755, true);
     }
 }

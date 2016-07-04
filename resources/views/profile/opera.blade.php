@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('profile._header', ['profile'=>$profile,'user'=>$user])
+    @include('profile._header', ['user'=>$user, 'details'=>false])
     <div class="col-md-10 col-md-offset-1">
         <div class="container-fluid">
             @foreach($opera->chunk(4) as $operaChunk)

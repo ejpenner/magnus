@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
-use App\Feature;
+use Magnus\Feature;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Magnus\Http\Requests;
 
-use App\Gallery;
-use App\Opus;
+use Magnus\Gallery;
+use Magnus\Opus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-use App\Permission;
+use Magnus\Permission;
 
 class GalleryController extends Controller
 {
@@ -122,7 +122,7 @@ class GalleryController extends Controller
     public function destroy($id)
     {
         $gallery = Gallery::findOrFail($id);
-        if(Auth::user()->isOwner($gallery) or Auth::user()->atLeastHasRole(config('role.moderator'))) {
+        if(Auth::user()->isOwner($gallery) or Auth::user()->atLeastHasRole(config('role.mod-code'))) {
             $gallery->delete();
             return redirect()->to(app('url')->previous())->with('success', 'Gallery successfully deleted!');
         } else {

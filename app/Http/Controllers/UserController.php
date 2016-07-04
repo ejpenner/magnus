@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 
-use App\Http\Requests;
-use App\User;
-use App\Profile;
-use App\Permission;
-use App\Role;
-use App\Gallery;
-use App\Watch;
+use Magnus\Http\Requests;
+use Magnus\User;
+use Magnus\Profile;
+use Magnus\Permission;
+use Magnus\Role;
+use Magnus\Gallery;
+use Magnus\Watch;
 
 class UserController extends Controller
 {
@@ -54,8 +54,9 @@ class UserController extends Controller
         $user->save();
         $user->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
         Profile::create(['user_id'=>$user->id]);
+        Gallery::makeDirectories($user);
         
-        return redirect()->route('users.index')->with('success', 'Your user was created.');
+        return redirect()->route('users.index')->with('success', 'New user '. $user->name .' was created.');
     }
 
     public function edit(User $user)
@@ -101,104 +102,6 @@ class UserController extends Controller
     public function login()
     {
         return view('auth.login');
-    }
-
-    public function editAccount($id)
-    {
-        $user = User::findOrFail($id);
-        return view('user.editAccount', compact('user'));
-    }
-
-    public function manageAccount($id)
-    {
-         $user = User::findOrFail($id);
-        return view('user.account', compact('user'));
-    }
-
-    public function changePassword($id)
-    {
-        $user = User::findOrFail($id);
-
-        return view('user.password', compact('user'));
-    }
-
-    public function changeAccountPassword($id)
-    {
-        $user = User::findOrFail($id);
-
-        return view('user.accountPassword', compact('user'));
-    }
-
-    /**
-     * Update password route
-     * @param $user_id
-     * @param Requests\PasswordRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function updatePassword($user_id, Requests\PasswordRequest $request)
-    {
-        $user = User::findOrFail($user_id);
-        $old_password   = Input::get('old_password');
-        if (Hash::check($old_password, Auth::user()->password)) {
-            $user->password = bcrypt($request->password);
-            $user->update();
-            return redirect()->route('user.account', [$user->id])->with('success', true)->with('success', 'Password updated!');
-        } else {
-            return Redirect::back()->withErrors('Password incorrect');
-        }
-    }
-
-    /**
-     * Non-power user account update route
-     * @param $id
-     * @param Requests\AccountRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function updateAccount($id, Requests\AccountRequest $request)
-    {
-        $user = User::findOrFail($id);
-        
-        $user->update($request->all());
-        return redirect()->route('user.account', [$user->id])->with('success', 'User updated successfully!');
-    }
-
-    /**
-     * Returns the change avatar view
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function avatar() {
-        return view('user.avatar');
-    }
-
-    /**
-     * Route for power users to change other user's avatars
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function avatarAdmin($id) {
-        $user = User::findOrFail($id);
-        return view('user.avatarAdmin', compact('user'));
-    }
-    
-    /**
-     * Upload user avatar for users
-     * @param Request $request
-     */
-    public function uploadAvatar(Request $request) {
-        $user = User::where('id', Auth::user()->id)->first();
-        $user->setAvatar($request);
-        $user->save();
-    }
-
-    /**
-     * Upload an avatar for any user, for admin use
-     * @param Request $request
-     * @param $id
-     */
-    public function uploadAvatarAdmin (Request $request, $id) {
-        $user = User::where('id', $id)->first();
-        $user->setAvatar($request);
-        $user->save();
     }
 
     /**

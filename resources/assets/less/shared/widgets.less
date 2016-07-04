@@ -1,0 +1,70 @@
+div.gallery-select {
+  .checkbox-vis-hidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  label {
+    margin: 5px;
+    padding: 8px;
+    border: 1px solid gray;
+    color: black;
+    .border-radius(5px);
+    .box-shadow(1px 1px 1px #CCCCCC);
+  }
+
+  input:focus + label {
+    //border-color: blue;
+  }
+
+  input:checked + label {
+    border-color: green;
+    color: green;
+    .box-shadow(2px 2px 2px #888888);
+  }
+
+  input:focus:checked + label {
+    border-color: green;
+    color: green;
+    .box-shadow(2px 2px 2px #888888);
+  }
+}
+
+div.flash-messages {
+  position: absolute;
+  top: 10%;
+  z-index: 10;
+  width: 60%;
+  min-width: 300px;
+  //margin-left:-10%;
+  //left:50%;
+
+  ul {
+    list-style-type:none;
+  }
+}
+
+
+
+  .search-box {
+    margin-left: 10px;
+    //width: 900px;
+    //display: inline-flex;
+    //flex-direction: row;
+    //justify-content: flex-start;
+    //
+    input[type="text"]:focus {
+      //flex-grow: 2;
+    }
+
+    input[type="text"] {
+      width: 400px;
+    }
+
+  }

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Magnus\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 
-use App\User;
-use App\Profile;
-use App\Gallery;
-use App\Piece;
-use App\Opus;
+use Magnus\User;
+use Magnus\Profile;
+use Magnus\Gallery;
+use Magnus\Piece;
+use Magnus\Opus;
 
 class ProfileController extends Controller
 {

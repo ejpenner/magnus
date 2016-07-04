@@ -3,8 +3,10 @@
 @section('content')
     <div class="col-md-12">
         <div class="text-center">
-            <div class="piece-display">
-                <img class="piece-show" src="/{{ $opus->getImage() }}" alt="">
+            <div class="container-fluid">
+                <div class="opus-display">
+                    <img class="opus-show" src="/{{ $opus->getImage() }}" alt="">
+                </div>
             </div>
             @if(isset($galleryNav))
             <div class="text-center">
@@ -46,18 +48,18 @@
                         @endunless
                     </div>
                     <!-- Artist comments -->
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <p>{{ $opus->comment }}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="panel panel-default details-panel">
                             <div class="panel-heading">
                                 Details
-                                @if(Auth::check() and (Auth::user()->isOwner($opus) or Auth::user()->atLeastHasRole(config('roles.moderator'))))
+                                @if(Auth::check() and (Auth::user()->isOwner($opus) or Auth::user()->atLeastHasRole(config('roles.mod-code'))))
                                     <div class="pull-right operations">
                                         {!! Form::model($opus, ['method'=>'delete', 'class'=>'delete-confirm operations',
                                                                'action'=>['OpusController@destroy', $opus->id]]) !!}
@@ -65,6 +67,7 @@
                                             <button type="button" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</button>
                                         </a>
                                         <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
+                                        <a class="btn btn-primary btn-xs" href="{{ action('OpusController@download', [$opus->id]) }}">Download</a>
                                         {!! Form::close() !!}
                                     </div>
                                 @endif
@@ -73,7 +76,7 @@
                                 <tbody>
                                 <tr>
                                     <td>Views</td>
-                                    <td>{{ $opus->views }}</td>
+                                    <td>{{ $opus->views }} <small>({{ $opus->daily_views  }} Today)</small></td>
                                 </tr>
                                 <tr>
                                     <td>Submitted On</td>

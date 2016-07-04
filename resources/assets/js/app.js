@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+    $(".alert-success").slideDown(400);
+
     window.setTimeout(function() {
         $(".alert-success").fadeTo(500, 0).slideUp(500, function() {
             $(this).remove();
@@ -52,13 +54,13 @@ $(document).ready(function() {
 
     $('#avatar-file').change(function() {
         readURL(this);
-
     });
 
     $('#image').change(function() {
         readFile(this, '#preview');
         readFile(this, '#preview-edit');
         $('#preview').show();
+        $('div.preview-container').show();
     });
 
     var avatarCropper = new Cropper(image, {

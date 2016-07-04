@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Magnus;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,25 +22,30 @@ class Comment extends Model
         'deleted' => 'boolean'
     ];
 
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
+
     public function user() {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('Magnus\User');
     }
 
     public function opus()
     {
-     return $this->belongsTo('App\Opus');
+     return $this->belongsTo('Magnus\Opus');
     }
     
     public function profile() {
-        return $this->belongsTo('App\Profile');
+        return $this->belongsTo('Magnus\Profile');
     }
 
     public function childComments() {
-        return $this->hasMany('App\Comment','parent_id','id');
+        return $this->hasMany('Magnus\Comment','parent_id','id');
     }
     
     public function parentComment() {
-        return $this->belongsTo('App\Comment', 'parent_id', 'id');
+        return $this->belongsTo('Magnus\Comment', 'parent_id');
     }
 
     public function allChildComments() {
@@ -49,9 +54,9 @@ class Comment extends Model
 
     public function getCreatedAtAttribute($value) {
         if(isset(Auth::user()->timezone)) {
-            return date_format(Carbon::parse($value)->timezone(Auth::user()->timezone), 'M d, Y g:iA');
+            return Carbon::parse($value)->timezone(Auth::user()->timezone)->format('M d, Y g:iA');
         } else {
-            return Carbon::parse($value);
+            return Carbon::parse($value)->format('M d, Y g:iA');
         }
     }
 

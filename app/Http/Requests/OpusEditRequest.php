@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Magnus\Http\Requests;
 
-use App\Http\Requests\Request;
+use Magnus\Http\Requests\Request;
 
 class OpusEditRequest extends Request
 {
@@ -24,7 +24,8 @@ class OpusEditRequest extends Request
     public function rules()
     {
         return [
-            'title' => 'required|min:3'
+            'title' => 'required|min:3|max:60',
+            'image' => 'mimes:jpeg,bmp,png'
         ];
     }
 }

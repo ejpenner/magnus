@@ -17,9 +17,12 @@
 @brand-danger: @newDanger;
 @brand-success: @newSuccess;
 
-@galley-item-width: 350px;
+@min-galley-item-width: 330px;
 @min-gallery-item-height: 360px;
-@max-message-item-height: 300px;
+@max-message-item-height: 360px;
+
+@badge-bg: @newPrimary;
+
 
 /* Dropdown hover */
 .dropdown:hover .dropdown-menu {
@@ -43,6 +46,27 @@
   background-repeat: no-repeat;
 }
 
+
+//.search-area {
+//  display: flex;
+//  flex-direction: row;
+//  align-items: stretch;
+//  justify-content: space-between;
+//}
+//
+//.search-area > div {
+//  flex: 0 0 50%;
+//  max-width: 50%;
+//}
+//
+//.searchbox {
+//    display: flex;
+//    flex-direction: column;
+//}
+//
+//.searchbox > input {
+//  flex: 1;
+//}
 
 .border-radius (@radius: 10px) {
   -webkit-border-radius: @radius;
@@ -147,6 +171,14 @@
   -o-transform-origin:      @x @y;
 }
 
+@import "shared/widgets";
+@import "shared/comments";
+
+.login-panel {
+  margin-top: 30px;
+  margin-bottom: 300px;
+}
+
 div.gallery-item {
   position:relative;
   padding-bottom: 5px;
@@ -158,15 +190,6 @@ div.gallery-item {
     .box-shadow(5px 5px 5px #888888);
   }
 
-  .gallery-operations {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    //margin-right: -50%;
-    .translate(-50%, 135px);
-    z-index: 5;
-  }
-
   /* horizontal and vertical for opera and galleries */
   .vcenter {
     position: absolute;
@@ -176,6 +199,24 @@ div.gallery-item {
     margin-right: -50%;
     .translate(-50%, -50%);
   }
+}
+
+.gallery-operations {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  .translate(-50%, 140px);
+  z-index: 5;
+  //text-align: center;
+}
+
+.opus-operations {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  .translate(-50%, 140px);
+  z-index: 5;
+  //text-align: center;
 }
 
 div.message-item {
@@ -259,12 +300,21 @@ footer {
   .border-radius(5px);
 }
 
-.piece-show {
+a.avatar-link {
+  text-decoration: none;
+}
+
+
+.opus-display {
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 15px;
-  .box-shadow(5px 5px 5px #888888);
+  .opus-show {
+    //display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+    max-width: 1500px;
+    .box-shadow(5px 5px 5px #888888);
+  }
 }
 
 .piece-info {
@@ -276,92 +326,25 @@ footer {
   margin-bottom: 10px;
 }
 
-#preview  {
-  max-width: 100%; /* This rule is very important, please do not ignore this! */
-  max-height: 500px;
-  display:none;
-}
-
-#preview-edit  {
-  max-width: 100%; /* This rule is very important, please do not ignore this! */
-  max-height: 500px;
-}
-
-.comment {
-  border: @gray-lighter solid 2px;
-  background-color: @gray-lighter;
-  .border-radius();
-  padding:5px;
-  margin:1px;
-
-  .comment-name {
-    font-weight: bold;
-  }
-
-  .comment-avatar {
-    //padding: 20px;
-    img {
-      .border-radius(5px);
-    }
-  }
-
-  .comment-delete-notification {
-    position: relative;
-    left: -35px;
-    top: -3px;
-  }
-
-  .comment-body {
-    background-color: @white;
-    .border-radius();
-    //height: 100%;
-    min-height: 130px;
-    //width: inherit;
-    //padding: 15px 0 10px 0;
-
-    .comment-date {
-      padding: 5px 10px 0px 10px;
-      color: #8c8c8c;
-    }
-
-    .comment-text {
-      margin-top: -5px;
-      padding: 15px 10px 30px 10px;
-    }
-  }
-}
-
-.child-comment {
-  .container.comment {
-    margin-left: 10px;
-  }
-}
-
-.comment-area {
-  width: auto;
-  padding:2px 0 2px 0;
-  margin:1px;
-
-  .comment-name {
-    padding: 1px;
-  }
-}
-
-.reply-toggle {
-  .reply-btn {
-    margin-left: 10px;
-    margin-top: 2px;
-  }
-}
-
-.reply-form {
-  padding: 5px;
-  margin-left: 40px;
-  width:inherit;
+.preview-container {
   display: none;
-  .reply-textarea {
-    width: 70%;
-    margin-bottom: 2px;
+}
+
+div.uploader {
+  text-align: center;
+
+  #preview {
+    position: relative;
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+    //max-height: 500px;
+    .box-shadow(5px 5px 5px #888888);
+    display: none;
+  }
+
+  #preview-edit {
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+    //max-height: 500px;
+    .box-shadow(5px 5px 5px #888888);
   }
 }
 

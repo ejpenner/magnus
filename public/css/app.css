@@ -7136,7 +7136,7 @@ a.label:focus {
   vertical-align: middle;
   white-space: nowrap;
   text-align: center;
-  background-color: #777777;
+  background-color: #829aa0;
   border-radius: 10px;
 }
 .badge:empty {
@@ -9283,6 +9283,136 @@ button.close {
   background-position: center top;
   background-repeat: no-repeat;
 }
+div.gallery-select .checkbox-vis-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+div.gallery-select label {
+  margin: 5px;
+  padding: 8px;
+  border: 1px solid gray;
+  color: black;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  -webkit-box-shadow: 1px 1px 1px #CCCCCC;
+  -moz-box-shadow: 1px 1px 1px #CCCCCC;
+  box-shadow: 1px 1px 1px #CCCCCC;
+}
+div.gallery-select input:checked + label {
+  border-color: green;
+  color: green;
+  -webkit-box-shadow: 2px 2px 2px #888888;
+  -moz-box-shadow: 2px 2px 2px #888888;
+  box-shadow: 2px 2px 2px #888888;
+}
+div.gallery-select input:focus:checked + label {
+  border-color: green;
+  color: green;
+  -webkit-box-shadow: 2px 2px 2px #888888;
+  -moz-box-shadow: 2px 2px 2px #888888;
+  box-shadow: 2px 2px 2px #888888;
+}
+div.flash-messages {
+  position: absolute;
+  top: 10%;
+  z-index: 10;
+  width: 60%;
+  min-width: 300px;
+}
+div.flash-messages ul {
+  list-style-type: none;
+}
+.search-box {
+  margin-left: 10px;
+}
+.search-box input[type="text"] {
+  width: 400px;
+}
+.comment {
+  border: #eeeeee solid 2px;
+  background-color: #eeeeee;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  padding: 5px;
+  margin: 1px;
+}
+.comment .comment-name {
+  font-weight: bold;
+}
+.comment .comment-avatar img {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.comment .comment-delete-notification {
+  position: relative;
+  left: -35px;
+  top: -3px;
+}
+.comment .comment-body {
+  background-color: #FFFFFF;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  min-height: 130px;
+}
+.comment .comment-body .comment-date {
+  padding: 5px 10px 0px 10px;
+  color: #8c8c8c;
+}
+.comment .comment-body .comment-text {
+  margin-top: -5px;
+  padding: 15px 10px 30px 10px;
+}
+.child-comment .container.comment {
+  margin-left: 10px;
+}
+.comment-area {
+  width: auto;
+  padding: 2px 0 2px 0;
+  margin: 1px;
+}
+.comment-area .comment-name {
+  padding: 1px;
+}
+.reply-toggle .reply-btn {
+  margin-left: 10px;
+  margin-top: 2px;
+}
+.reply-form {
+  padding: 5px;
+  margin-left: 40px;
+  width: inherit;
+  display: none;
+}
+.reply-form .reply-textarea {
+  width: 70%;
+  margin-bottom: 2px;
+}
+.login-panel {
+  margin-top: 30px;
+  margin-bottom: 300px;
+}
 div.gallery-item {
   position: relative;
   padding-bottom: 5px;
@@ -9296,17 +9426,6 @@ div.gallery-item img {
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 5px 5px 5px #888888;
 }
-div.gallery-item .gallery-operations {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 135px);
-  -webkit-transform: translate(-50%, 135px);
-  -moz-transform: translate(-50%, 135px);
-  -ms-transform: translate(-50%, 135px);
-  -o-transform: translate(-50%, 135px);
-  z-index: 5;
-}
 div.gallery-item .vcenter {
   position: absolute;
   vertical-align: middle;
@@ -9319,8 +9438,30 @@ div.gallery-item .vcenter {
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
 }
+.gallery-operations {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 140px);
+  -webkit-transform: translate(-50%, 140px);
+  -moz-transform: translate(-50%, 140px);
+  -ms-transform: translate(-50%, 140px);
+  -o-transform: translate(-50%, 140px);
+  z-index: 5;
+}
+.opus-operations {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 140px);
+  -webkit-transform: translate(-50%, 140px);
+  -moz-transform: translate(-50%, 140px);
+  -ms-transform: translate(-50%, 140px);
+  -o-transform: translate(-50%, 140px);
+  z-index: 5;
+}
 div.message-item {
-  min-height: 300px !important;
+  min-height: 360px !important;
 }
 span.role-developer::before {
   content: "Dev";
@@ -9428,11 +9569,17 @@ footer {
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
 }
-.piece-show {
+a.avatar-link {
+  text-decoration: none;
+}
+.opus-display {
   display: block;
+}
+.opus-display .opus-show {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 15px;
+  max-width: 1500px;
   -webkit-box-shadow: 5px 5px 5px #888888;
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 5px 5px 5px #888888;
@@ -9444,87 +9591,27 @@ footer {
 .piece-nav {
   margin-bottom: 10px;
 }
-#preview {
-  max-width: 100%;
-  /* This rule is very important, please do not ignore this! */
-  max-height: 500px;
+.preview-container {
   display: none;
 }
-#preview-edit {
-  max-width: 100%;
-  /* This rule is very important, please do not ignore this! */
-  max-height: 500px;
+div.uploader {
+  text-align: center;
 }
-.comment {
-  border: #eeeeee solid 2px;
-  background-color: #eeeeee;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  padding: 5px;
-  margin: 1px;
-}
-.comment .comment-name {
-  font-weight: bold;
-}
-.comment .comment-avatar img {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-}
-.comment .comment-delete-notification {
+div.uploader #preview {
   position: relative;
-  left: -35px;
-  top: -3px;
-}
-.comment .comment-body {
-  background-color: #FFFFFF;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  min-height: 130px;
-}
-.comment .comment-body .comment-date {
-  padding: 5px 10px 0px 10px;
-  color: #8c8c8c;
-}
-.comment .comment-body .comment-text {
-  margin-top: -5px;
-  padding: 15px 10px 30px 10px;
-}
-.child-comment .container.comment {
-  margin-left: 10px;
-}
-.comment-area {
-  width: auto;
-  padding: 2px 0 2px 0;
-  margin: 1px;
-}
-.comment-area .comment-name {
-  padding: 1px;
-}
-.reply-toggle .reply-btn {
-  margin-left: 10px;
-  margin-top: 2px;
-}
-.reply-form {
-  padding: 5px;
-  margin-left: 40px;
-  width: inherit;
+  max-width: 100%;
+  /* This rule is very important, please do not ignore this! */
+  -webkit-box-shadow: 5px 5px 5px #888888;
+  -moz-box-shadow: 5px 5px 5px #888888;
+  box-shadow: 5px 5px 5px #888888;
   display: none;
 }
-.reply-form .reply-textarea {
-  width: 70%;
-  margin-bottom: 2px;
+div.uploader #preview-edit {
+  max-width: 100%;
+  /* This rule is very important, please do not ignore this! */
+  -webkit-box-shadow: 5px 5px 5px #888888;
+  -moz-box-shadow: 5px 5px 5px #888888;
+  box-shadow: 5px 5px 5px #888888;
 }
 .watch-date {
   color: #8c8c8c;

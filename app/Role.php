@@ -1,12 +1,12 @@
 <?php
 
-namespace App;
+namespace Magnus;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    protected $fillable = ['role_name', 'level'];
+    protected $fillable = ['role_name', 'level', 'role_code'];
 
     /**
      * Role model has 1:1 relationship with Permission model
@@ -14,7 +14,7 @@ class Role extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function permission() {
-        return $this->hasOne('App\Permission');
+        return $this->hasOne('Magnus\Permission');
     }
 
     /**
@@ -23,7 +23,7 @@ class Role extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users() {
-        return $this->belongsToMany('App\User', 'user_roles');
+        return $this->belongsToMany('Magnus\User', 'user_roles');
     }
 
     /**
@@ -35,7 +35,7 @@ class Role extends Model
      */
     public static function atLeastHasRole(User $user, $role) {
         foreach($user->roles as $userRole) {
-            if($userRole->level >= Role::where('role_name', $role)->value('level')) {
+            if($userRole->level >= Role::where('role_code', $role)->value('level')) {
                 return true;
             }
         }
@@ -50,7 +50,7 @@ class Role extends Model
      */
     public static function hasRole(User $user, $role) {
         foreach($user->roles as $userRole) {
-            if($userRole->level == Role::where('role_name', $role)->value('level')) {
+            if($userRole->level == Role::where('role_code', $role)->value('level')) {
                 return true;
             }
         }

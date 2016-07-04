@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Magnus\Http\Requests;
 
-use App\Http\Requests\Request;
+use Magnus\Http\Requests\Request;
 
 class CommentRequest extends Request
 {
@@ -24,7 +24,7 @@ class CommentRequest extends Request
     public function rules()
     {
         return [
-            'body' => 'required|min:3'
+            'body' => 'required|min:3|max:3000'
         ];
     }
 }

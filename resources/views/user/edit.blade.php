@@ -2,17 +2,18 @@
 
 @section('content')
     <div class="container">
-    {!! Form::model($user, ['method'=>'PATCH','action'=>['UserController@update',$user->slug]]) !!}
-        <div class="col-md-6">
-            @include('user._formAdmin')
-        </div>
-    {!! Form::close() !!}
-        <div class="col-md-6">
-            <h3>{!! $user->decorateName() !!}</h3>
-            <div class="row">
-                <img class="avatar" src="{{ $user->getAvatar() }}" alt="avatar">
-                <a href="{{ action('UserController@avatarAdmin', $user->id) }}">Change avatar</a>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Change Avatar
+            </div>
+            <div class="panel-body">
+                @include('user.partials._avatarAdmin')
             </div>
         </div>
+        {!! Form::model($user, ['method'=>'PATCH','action'=>['UserController@update',$user->slug]]) !!}
+            <div class="col-md-6">
+                @include('user.partials._formAdmin')
+            </div>
+        {!! Form::close() !!}
     </div>
 @endsection

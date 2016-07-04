@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Magnus\Http\Requests;
 use Illuminate\Support\Facades\Auth;
-use App\Opus;
-use App\Comment;
-use App\User;
-use App\Notification;
+use Magnus\Opus;
+use Magnus\Comment;
+use Magnus\User;
+use Magnus\Notification;
 
 class NotificationController extends Controller
 {
@@ -38,8 +38,27 @@ class NotificationController extends Controller
         $commentQuery->select('comments.id', 'comments.created_at', 'comments.user_id', 'comments.parent_id', 'comments.profile_id', 'comments.body', 'notification_user.notification_id', 'comments.opus_id');
         $commentQuery->orderBy('comments.created_at', 'desc');
         $commentResults = $commentQuery->get();
-        
+
         return view('notification.index', compact('user', 'opusResults', 'commentResults'));
+    }
+
+    public function destroySelected(Request $request)
+    {
+        if (Auth::check() and $request->has('notification_ids')) {
+            $user = Auth::user();
+            foreach ($request->input('notification_ids') as $id) {
+                $notification = Notification::findOrFail($id);
+                $notification->deleteNotification($user);
+          
+
+                if ($notification->users->count() < 1) {
+                    $notification->delete();
+                }
+            }
+            return redirect()->to(app('url')->previous())->with('success', 'Messages deleted!');
+        }
+
+        return abort('401');
     }
 
     /**
@@ -71,7 +90,7 @@ class NotificationController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -103,15 +122,18 @@ class NotificationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $user = Auth::user();
-        $notification = Notification::findOrFail($id);
-        $notification->deleteNotification($user);
-        
-        if($notification->users->count() < 1) {
-            $notification->delete();
+        if(Auth::check()) {
+            $user = Auth::user();
+            $notification = Notification::findOrFail($id);
+            $notification->deleteNotification($user);
+
+            if ($notification->users->count() < 1) {
+                $notification->delete();
+            }
+            return redirect()->to(app('url')->previous())->with('success', 'Message deleted!');
         }
-        return redirect()->to(app('url')->previous())->with('success', 'Message deleted!');
+        return redirect()->to(app('url')->previous())->withErrors('You shouldn\'t have done that');
     }
 }

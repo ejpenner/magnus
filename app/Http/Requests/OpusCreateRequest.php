@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Magnus\Http\Requests;
 
-use App\Http\Requests\Request;
+use Magnus\Http\Requests\Request;
 
 class OpusCreateRequest extends Request
 {
@@ -24,8 +24,8 @@ class OpusCreateRequest extends Request
     public function rules()
     {
         return [
-            'image' => 'required',
-            'title' => 'required|min:3'
+            'image' => 'required|mimes:jpeg,bmp,png',
+            'title' => 'required|min:3|max:60'
         ];
     }
 }

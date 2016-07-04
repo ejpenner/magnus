@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Watch;
-use App\User;
+use Magnus\Watch;
+use Magnus\User;
 
 class WatchSeeder extends Seeder
 {

@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
+use Magnus\Http\Requests;
 
-use App\Piece;
-use App\Opus;
-use App\Tag;
+use Illuminate\Support\Facades\DB;
+use Magnus\Opus;
+use Magnus\Tag;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 
 class SearchController extends Controller
 {
@@ -17,33 +19,86 @@ class SearchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function searchAll($parameters)
+    public function searchAll(Request $request, $parameters)
     {
-
-
+        if($request->has('limit')) {
+            $limit = $request->input('limit');
+        } else {
+            $limit = config('images.defaultLimit');
+        }
+        
+        $request->session()->put('searchString', $parameters);
         $parameters = str_replace(' ', '+', $parameters);
         $terms = explode('+', $parameters);
 
-        $query = Opus::query();
-        $query->join('opus_tag', 'opus_tag.opus_id', '=', 'id')
-            ->join('tags', 'tags.id', '=', 'opus_tag.tag_id')
-            ->where(function ($q) use ($terms){
-                foreach($terms as $term) {
-                    $term = trim($term);
-                    if(strpos($term, '@') !== false) {
-                        $term = preg_replace('/@/', '', $term);
-                        $q->orWhere('name', '=', $term);
-                    } else {
-                        $q->orWhere('name', '=', $term);
-                        $q->orWhere('title', 'like', "%$term%");
-                        $q->orWhere('comment', 'like', "%$term%");
-                    }
-                }})
-            ->groupBy('opuses.id');
+        $tag_ids = [];
+        $termList = [];
+        $whereClause = '';
+        $tagClause = '';
 
-        $results = $query->paginate(24);
+        foreach($terms as $term)
+        {
+            $term = trim($term);
+            if(strpos($term, '@') !== false) {
+                try {
+                    $term = preg_replace('/@/', '', filter_var($term, FILTER_SANITIZE_STRING));
+                    $tag = Tag::where('name', $term)->first();
+                    array_push($tag_ids, $tag->id);
+                } catch (\Exception $e) {}
+            } else {
+                array_push($termList, filter_var($term, FILTER_SANITIZE_STRING));
+            }
+        }
+
+        if(count($tag_ids) > 0) {
+            $tagClause = 'WHERE ';
+            foreach ($tag_ids as $i => $id) {
+                if($i < 1) {
+                    $tagClause .=  ' t.id = ' . $id . ' ';
+                } else {
+                    $tagClause .=  ' OR t.id = ' . $id . ' ';
+                }
+
+            }
+        }
+
+        if(count($termList) > 0) {
+            $whereClause = 'WHERE ';
+            foreach ($termList as $i => $term) {
+                if($i < 1) {
+                    $whereClause .=  ' u.username = \'' . $term . '\'
+                                 OR o.title LIKE \'%' . $term . '%\' ';
+                } else {
+                    $whereClause .=  ' OR u.username = \'' . $term . '\'
+                                 OR o.title LIKE \'%' . $term . '%\' ';
+                }
+
+            }
+        }
+
+        $query = 'SELECT o.*, u.name, u.slug uslug, matching_tags.matched
+                  FROM opuses o
+                  INNER JOIN opus_tag ot ON o.id = ot.opus_id
+                  INNER JOIN tags t ON t.id = ot.tag_id
+                  INNER JOIN users u ON u.id = o.user_id
+				  RIGHT OUTER JOIN 
+				    (SELECT DISTINCT o.id AS id, count(*) as matched
+					 FROM opuses o JOIN opus_tag ot ON o.id = ot.opus_id
+					 JOIN tags t ON ot.tag_id = t.id
+					 '. $tagClause .'
+					 GROUP BY o.id) AS matching_tags ON o.id = matching_tags.id 
+                     '. $whereClause .'
+                GROUP BY o.id, matching_tags.matched
+                ORDER BY matched DESC';
+
+
+        $results = DB::select($query);
+
+        $paginatedResults = new Paginator($results, count($results), $limit,
+            \Illuminate\Pagination\Paginator::resolveCurrentPage(), //resolve the path
+            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]);
         
-        return view('search.index', compact('results'));
+        return view('search.index', compact('paginatedResults'));
     }
 
     /**

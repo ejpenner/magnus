@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http;
+namespace Magnus\Http;
 
-use App\Http\Middleware\CommentManagement;
-use App\Http\Middleware\Permission;
+use Magnus\Http\Middleware\CommentManagement;
+use Magnus\Http\Middleware\Permission;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -26,11 +26,11 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            \App\Http\Middleware\EncryptCookies::class,
+            \Magnus\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
+            \Magnus\Http\Middleware\VerifyCsrfToken::class,
         ],
 
         'api' => [
@@ -46,14 +46,14 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \App\Http\Middleware\Authenticate::class,
+        'auth' => \Magnus\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'guest' => \Magnus\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'permission' => \App\Http\Middleware\Permission::class,
-        'id'        => \App\Http\Middleware\AuthId::class,
-        'gallery'   => \App\Http\Middleware\GalleryManagement::class,
-        'comment'   => \App\Http\Middleware\CommentManagement::class,
+        'permission' => \Magnus\Http\Middleware\Permission::class,
+        'account'   => \Magnus\Http\Middleware\Account::class,
+        'gallery'   => \Magnus\Http\Middleware\GalleryManagement::class,
+        'comment'   => \Magnus\Http\Middleware\CommentManagement::class,
     ];
 }

@@ -8,14 +8,23 @@ Route::model('users', 'User');
 Route::model('profile', 'Profile');
 
 /**
+ * Binds the {users} parameter to the slug
+ */
+Route::bind('users', function ($value, $route) {
+    return \Magnus\User::whereSlug(strtolower($value))->first();
+});
+
+/**
+ *  binds User model via slug to {profile} wildcard
+ */
+Route::bind('profile', function ($value, $route) {
+    return \Magnus\User::whereSlug(strtolower($value))->first();
+});
+
+/**
  * generated auth routes
  */
 Route::auth();
-
-/**
- * Home route
- */
-Route::get('/', 'HomeController@recent')->name('home');
 
 /**
  * Error 401 Unauthorized Route
@@ -25,18 +34,10 @@ Route::get('errors/401', ['as' => '401', function() {
 }]);
 
 /**
- * Binds the {users} parameter to the slug
+ * A pretty url to show opera that are in a gallery
  */
-Route::bind('users', function ($value, $route) {
-    return \App\User::whereSlug(strtolower($value))->first();
-});
+Route::get('/gallery/{gallery}/{opus}', 'OpusController@galleryShow');
 
-/**
- *  binds User model via slug to {profile} wildcard
- */
-Route::bind('profile', function ($value, $route) {
-    return \App\User::whereSlug(strtolower($value))->first();
-});
 
 /**
  * Gallery, opus, and comment CRUD resources
@@ -44,11 +45,8 @@ Route::bind('profile', function ($value, $route) {
 Route::resource('gallery', 'GalleryController');
 Route::resource('opus', 'OpusController');
 Route::resource('opus.comment', 'CommentController');
+Route::get('opus/{id}/download', 'OpusController@download');
 
-/**
- * A pretty url to show opera that are in a gallery
- */
-Route::get('gallery/{gallery}/{opus}',      'OpusController@galleryShow');
 
 /**
  * Profile routes
@@ -68,11 +66,10 @@ Route::get('/search/{terms}', ['uses'=> 'SearchController@searchAll', 'as'=>'sea
  * Authenticated middleware group
  */
 Route::group(['middleware' => ['auth']], function () {
-
     /**
      * Alternate create and store routes for creating Opus
      */
-    Route::get('/submit', 'OpusController@newSubmission');
+    Route::get('/submit', 'OpusController@newSubmission')->name('');
     Route::post('/submit', 'OpusController@submit');
 
     /**
@@ -93,19 +90,23 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Notification controller and related routes
      */
-    Route::resource('messages', 'NotificationController');
+    Route::get('messages', 'NotificationController@index');
+    Route::get('messages/{id}', 'NotificationController@destroy');
+    Route::delete('messages/selected', 'NotificationController@destroySelected');
     Route::post('opus/{opus}/{comment}/{notification}', 'CommentController@storeChildRemoveNotification');
 
+
     /**
-     * CRUD routes for user operations
+     * CRUD routes for user account operations
      * TODO: refactor id middleware
      */
-    Route::group(['middleware' => ['id']], function ($id) {
-        Route::get('users/{id}/editAccount', 'UserController@editAccount');
-        Route::patch('users/{id}/updateAccount', 'UserController@updateAccount');
-        Route::get('users/{id}/account', array('uses' => 'UserController@manageAccount', 'as' => 'user.account'));
-        Route::get('users/{id}/changeMyPassword', array('uses' => 'UserController@changeAccountPassword', 'as' => 'user.accountPassword'));
-        Route::patch('users/{id}/updatePassword', 'UserController@updatePassword');
+    Route::group(['middleware' => ['account']], function () {
+        //Route::get('account/{users}/edit', 'AccountController@editAccount')->name('account.edit');
+        Route::patch('account/{users}/update', 'AccountController@updateAccount')->name('account.update');
+        Route::get('account/{users}', 'AccountController@manageAccount')->name('account.manage');
+        Route::patch('account/{users}/updatePassword', 'AccountController@updatePassword')->name('password.update');
+        //Route::get('account/{users}/preferences', 'AccountController@preferences')->name('account.preference');
+        Route::patch('account/{users}/preferences', 'AccountController@updatePreferences')->name('account.preferences.update');
     });
 
     /**
@@ -123,14 +124,16 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Developer middleware group
      */
-    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.developer').'', 'prefix'=>'admin'], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.dev-code'), 'prefix'=>'admin'], function () {
         Route::get('session', 'AdminController@session');
+        Route::get('test', 'AdminController@test');
+        Route::get('/', 'AdminController@index');
     });
 
     /**
      * Administration middleware group
      */
-    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.administrator').''], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.admin-code')], function () {
         Route::resource('permissions', 'PermissionController');
         Route::resource('users', 'UserController');
         Route::resource('roles', 'RoleController');
@@ -140,8 +143,13 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Global moderator middleware group
      */
-    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.globalMod').''], function () {
-        Route::get('users/{id}/avatar', 'UserController@avatarAdmin');
-        Route::post('users/{id}/avatar', 'UserController@uploadAvatarAdmin');
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.gmod-code')], function () {
+        Route::get('user/{users}/avatar', 'UserController@avatarAdmin');
+        Route::post('user/{users}/avatar', 'UserController@uploadAvatarAdmin');
     });
 });
+
+/**
+ * Home route
+ */
+Route::get('/{filter?}/{period?}', 'HomeController@recent')->name('home');

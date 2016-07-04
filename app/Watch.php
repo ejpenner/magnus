@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Magnus;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
@@ -8,12 +8,8 @@ use Illuminate\Support\Facades\Auth;
 
 class Watch extends Model
 {
-    /**
-     * This model represents users watching another user. A user who is
-     * watching another user will receive notifications of updates and
-     * actions the watched user has made
-     */
-    protected $table="watches";
+
+    protected $table = "watches";
 
     protected $fillable = [
         'user_id', 'watcher_user_id', 'watch_opus',
@@ -28,11 +24,11 @@ class Watch extends Model
     ];
     
     public function users() {
-        return $this->belongsToMany('App\User', 'user_watch', 'watcher_user_id', 'user_id')->withPivot('watched_user_id')->withTimestamps();
+        return $this->belongsToMany('Magnus\User', 'user_watch', 'watch_id', 'watcher_user_id')->withPivot('watched_user_id')->withTimestamps();
     }
 
     public function user() {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('Magnus\User');
     }
 
     /**

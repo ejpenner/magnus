@@ -1,8 +1,7 @@
 <?php
+namespace Magnus\Console\Commands;
 
-namespace App\Console\Commands;
-
-use Illuminate\Support\Facades\DB;
+use Magnus\Opus;
 use Illuminate\Console\Command;
 
 class ClearDaily extends Command
@@ -39,12 +38,13 @@ class ClearDaily extends Command
     public function handle()
     {
         $this->info('Resetting daily Opus views...');
-        $opera = DB::table('opuses')->get();
+        $opera = Opus::all();
         $progressBar = $this->output->createProgressBar(count($opera));
         foreach($opera as $opus) {
-            $opus->update(['daily_views' => 0]);
+            $opus->save(['daily_views' => 0]);
             $progressBar->advance();
         }
         $progressBar->finish();
+        $this->info("\n");
     }
 }

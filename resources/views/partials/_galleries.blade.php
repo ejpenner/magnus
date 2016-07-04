@@ -1,7 +1,7 @@
-@foreach($galleries->chunk(4) as $i => $gallery)
+@foreach($galleries->chunk(isset($columns) ? $columns : 4) as $i => $gallery)
     <div class="row">
         @foreach($gallery as $j => $item)
-            <div class="col-md-3">
+            <div class="col-md-{{ isset($columns) ? floor(12 / $columns) : 3 }}">
                 <div class="gallery-item">
                     <div class="vcenter">
                         @if(isset($item->opera->first()->thumbnail_path))
@@ -11,13 +11,14 @@
                         @endif
                         <h5><a href="{{ action('GalleryController@show', $item->id) }}">{{ $item->name }}</a></h5>
                     </div>
-                    <div class="gallery-operations">
-                        @if(Auth::check() and (Auth::user()->atLeastHasRole(config('roles.globalModerator')) or Auth::user()->isOwner($item)))
-                            <div class="clearfix">
-                                @include('partials._galleryOperationsDropdown', ['id'=>$i.'-'.$j, 'gallery'=>$item])
-                            </div>
-                        @endif
-                    </div>
+                    @if(Auth::check() and (Auth::user()->atLeastHasRole(config('roles.gmod-code')) or Auth::user()->isOwner($item)))
+                        <div class="gallery-operations">
+                            @include('partials._galleryOperationsDropdown', ['id' => $i.'-'.$j, 'gallery' => $item])
+                        </div>
+                        <div>
+                            @include('partials._galleryOperationsModal', ['id' => $i.'-'.$j, 'gallery' => $item])
+                        </div>
+                    @endif
                 </div>
             </div>
         @endforeach

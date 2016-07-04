@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
-use App\User;
-use App\Gallery;
+use Magnus\User;
+use Magnus\Gallery;
 
 class GallerySeeder extends Seeder
 {
