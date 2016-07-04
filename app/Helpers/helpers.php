@@ -4,6 +4,7 @@ namespace Magnus\Helpers;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use Magnus\Role;
 use Magnus\User;
 
@@ -95,5 +96,13 @@ class Helpers
             }
         }
         return $watcherList;
+    }
+
+    public static function makeDirectories($username)
+    {
+        $username = strtolower($username);
+        File::makeDirectory(public_path('art/'.$username.'/images'), 0755, true);
+        File::makeDirectory(public_path('art/'.$username.'/thumbnails'), 0755, true);
+        File::makeDirectory(public_path('art/'.$username.'/avatars'), 0755, true);
     }
 }

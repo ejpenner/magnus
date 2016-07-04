@@ -4,7 +4,7 @@ namespace Magnus\Http\Controllers;
 
 use Magnus\Http\Requests;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 use Magnus\Gallery;
 use Magnus\Opus;
 use Magnus\User;
@@ -36,25 +36,48 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function recent(Request $request, $filter = null) {
+    public function recent(Request $request, $filter = null, $period = null) {
         if($request->has('limit')) {
             $limit = $request->input('limit');
+        } elseif (Auth::check()) {
+            $limit = Auth::user()->preferences->per_page;
         } else {
-            $limit = 18;
+            $limit = config('images.defaultLimit');
         }
-        switch  ($filter)
-        {
+
+        switch ($filter) {
             case 'hot':
-                $opera = Opus::orderBy('daily_views', 'desc')->paginate($limit);
+                $opera = Opus::orderBy('daily_views', 'desc');
                 break;
             case 'popular':
-                $opera = Opus::orderBy('views', 'desc')->paginate($limit);
+                $opera = Opus::views();
                 break;
             default:
-                $opera = Opus::orderBy('created_at', 'desc')->paginate($limit);
+                $opera = Opus::newest();
                 break;
         }
 
+        if($period != null) {
+            switch ($period) {
+                case 'today':
+                    $opera = $opera->today();
+                    break;
+                case '72h':
+                    $opera = $opera->hoursAgo(72);
+                    break;
+                case '48h':
+                    $opera = $opera->hoursAgo(48);
+                    break;
+                case '24h':
+                    $opera = $opera->hoursAgo(24);
+                    break;
+                case 'week':
+                    $opera = $opera->daysAgo(7);
+                    break;
+            }
+        }
+
+        $opera = $opera->paginate($limit);
 
         return view('home.recent', compact('opera','request'));
     }

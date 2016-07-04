@@ -109,6 +109,38 @@ class Opus extends Model
         $query->where('published_at', '=>', Carbon::now());
     }
 
+    public function scopeHoursAgo($query, $time = 24)
+    {
+        $hoursAgo = new Carbon("-$time hours");
+        $query->whereDate('created_at', '>', $hoursAgo->toDateString());
+    }
+
+    public function scopeToday($query)
+    {
+        $query->whereDate('created_at', '>', Carbon::yesterday()->toDateString());
+    }
+
+    public function scopeDays($query, $days = 3)
+    {
+        $daysAgo = new Carbon("-$days days");
+        return $query->whereDate('created_at', '>', $daysAgo->toDateString());
+    }
+
+    public function scopePopular($query)
+    {
+        $query->orderBy('views', 'desc');
+    }
+    
+    public function scopeNewest($query)
+    {
+        $query->orderBy('created_at', 'desc');
+    }
+
+    public function scopeViews($query)
+    {
+        $query->orderBy('views', 'desc');
+    }
+
     /**
      * Setter for published_at attribute
      * @param $date

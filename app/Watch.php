@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class Watch extends Model
 {
 
-    protected $table="watches";
+    protected $table = "watches";
 
     protected $fillable = [
         'user_id', 'watcher_user_id', 'watch_opus',
@@ -24,7 +24,7 @@ class Watch extends Model
     ];
     
     public function users() {
-        return $this->belongsToMany('Magnus\User', 'user_watch', 'watcher_user_id', 'user_id')->withPivot('watched_user_id')->withTimestamps();
+        return $this->belongsToMany('Magnus\User', 'user_watch', 'watch_id', 'watcher_user_id')->withPivot('watched_user_id')->withTimestamps();
     }
 
     public function user() {

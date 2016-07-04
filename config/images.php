@@ -8,5 +8,6 @@ return [
     'imageDirectory' => 'images',
     'avatarDirectory' => 'avatars',
     'thumbnailDirectory' => 'thumbnails',
-    'thumbnailResize' => 250
+    'thumbnailResize' => 250,
+    'defaultLimit' => 24
 ];

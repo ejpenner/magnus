@@ -21,6 +21,9 @@
 @min-gallery-item-height: 360px;
 @max-message-item-height: 360px;
 
+@badge-bg: @newPrimary;
+
+
 /* Dropdown hover */
 .dropdown:hover .dropdown-menu {
   display: block;
@@ -42,7 +45,6 @@
   background-position: center top;
   background-repeat: no-repeat;
 }
-
 
 
 //.search-area {
@@ -169,8 +171,8 @@
   -o-transform-origin:      @x @y;
 }
 
-@import "widgets";
-@import "comments";
+@import "shared/widgets";
+@import "shared/comments";
 
 .login-panel {
   margin-top: 30px;

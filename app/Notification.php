@@ -48,7 +48,20 @@ class Notification extends Model
     
     public function deleteNotification(User $user)
     {
-        $user->notifications()->detach($this->id);
+        if($this->hasOwner($user)) {
+            $user->notifications()->detach($this->id);
+        }
+    }
+
+    private function hasOwner(User $user)
+    {
+        foreach ($this->users as $notifiedUsers)
+        {
+            if($user->id == $notifiedUsers->id) {
+                return true;
+            }
+        }
+        return abort(401);
     }
 
     /**

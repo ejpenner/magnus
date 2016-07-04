@@ -42,7 +42,7 @@ class User extends Authenticatable
 
     /**
      * User has 0:M relationship with Gallery model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function galleries()
@@ -52,7 +52,7 @@ class User extends Authenticatable
 
     /**
      * User model has 0:M relationship with Opus model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function opera() {
@@ -61,7 +61,7 @@ class User extends Authenticatable
 
     /**
      * User model has 0:M relationship with Comment model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments() {
@@ -70,7 +70,7 @@ class User extends Authenticatable
 
     /**
      *  User model's 1:1 relationship with Profile model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function profile()
@@ -100,7 +100,7 @@ class User extends Authenticatable
 
     /**
      *  List of users as Watch models that this user watches
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function watchedUsers()
@@ -120,7 +120,7 @@ class User extends Authenticatable
 
     /**
      * User has one site preferences model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function preferences()
@@ -130,7 +130,7 @@ class User extends Authenticatable
 
     /**
      *  Return some span formatting around names for fancy CSS output
-     * 
+     *
      * @return string
      */
     public function decorateName() {
@@ -174,9 +174,9 @@ class User extends Authenticatable
      * @param $action: string
      * @return bool|void
      */
-    public function hasPermission($permission) 
+    public function hasPermission($permission)
     {
-        
+
     }
 
     /**
@@ -419,10 +419,18 @@ class User extends Authenticatable
     public function isWatched(User $user)
     {
         $watch = Watch::where('user_id',$user->id)->where('watcher_user_id', $this->id)->count();
-        if($watch != 0 ){
-            return true;
-        } else {
-            return false;
-        }
+//        $watches = Watch::where('user_id',$user->id)->get();
+        if ($watch > 0) return true;
+//        $watch = Watch::where('user_id',$user->id)->first();
+//
+//        foreach ($watches as $watch)
+//        {
+//            dd($watch->users);
+//            if($watch->pivot->watcher_user_id == $this->id)
+//            {
+//                return true;
+//            }
+//        }
+        return false;
     }
 }

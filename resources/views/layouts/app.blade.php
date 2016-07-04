@@ -34,7 +34,9 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li class="dropdown" @if(Request::is('/')) class="active" @endif >
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ action('HomeController@recent') }}"> Home <span class="caret"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{ action('HomeController@recent') }}">
+                        Home <i class="caret"></i>
+                    </a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ action('HomeController@recent', 'hot') }}">Hot</a></li>
                         <li><a href="{{ action('HomeController@recent', 'popular') }}">Popular</a></li>
@@ -75,12 +77,14 @@
                     </li>
                 @endif
                 @if(Auth::check())
-                    <li><a href="{{ action('NotificationController@index') }}">Messages <small>({{ Auth::user()->messageCount() }})</small></a></li>
+                    <li><a href="{{ action('NotificationController@index') }}">Messages <span class="badge">{{ Auth::user()->messageCount() }}</span></a></li>
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> {{ Auth::user()->name }} <span class="caret"></span></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            {{ Auth::user()->name }} <span class="caret"></span>
+                        </a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ action('ProfileController@show', Auth::user()->slug) }}"><img src="{{ Auth::user()->getAvatar() }}" width="25px" > My Profile</a></li>
-                            <li><a href="{{ action('UserController@manageAccount', Auth::user()->slug) }}"><span class="fa fa-user"></span> Account</a></li>
+                            <li><a href="{{ action('AccountController@manageAccount', Auth::user()->slug) }}"><span class="fa fa-user"></span> Account</a></li>
                             <li><a href="/logout"><i class="fa fa-sign-out"></i> Log Out</a></li>
                         </ul>
                     </li>

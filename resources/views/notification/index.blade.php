@@ -57,7 +57,7 @@
                                         <span class="comment-name">{{ $comment->user->name }}</span>
                                             <span class="pull-right comment-delete-notification">
                                                 {!! Form::model($comment, ['method'=>'delete', 'class'=>'delete-confirm operations', 'action'=>['NotificationController@destroy', $comment->notification_id]]) !!}
-                                                <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</button>
+                                                    <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</button>
                                                 {!! Form::close() !!}
                                             </span>
                                     </div>

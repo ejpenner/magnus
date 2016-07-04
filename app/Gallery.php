@@ -104,8 +104,9 @@ class Gallery extends Model
 
     public static function makeDirectories(User $user)
     {
-        File::makeDirectory(public_path('art/'.$user->username.'/images'), 0755, true);
-        File::makeDirectory(public_path('art/'.$user->username.'/thumbnails'), 0755, true);
-        File::makeDirectory(public_path('art/'.$user->username.'/avatars'), 0755, true);
+        $username = strtolower($user->username);
+        File::makeDirectory(public_path('art/'.$username.'/images'), 0755, true);
+        File::makeDirectory(public_path('art/'.$username.'/thumbnails'), 0755, true);
+        File::makeDirectory(public_path('art/'.$username.'/avatars'), 0755, true);
     }
 }

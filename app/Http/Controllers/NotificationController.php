@@ -49,6 +49,7 @@ class NotificationController extends Controller
             foreach ($request->input('notification_ids') as $id) {
                 $notification = Notification::findOrFail($id);
                 $notification->deleteNotification($user);
+          
 
                 if ($notification->users->count() < 1) {
                     $notification->delete();
@@ -121,7 +122,7 @@ class NotificationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         if(Auth::check()) {
             $user = Auth::user();

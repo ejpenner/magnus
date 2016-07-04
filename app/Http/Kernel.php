@@ -52,7 +52,7 @@ class Kernel extends HttpKernel
         'guest' => \Magnus\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'permission' => \Magnus\Http\Middleware\Permission::class,
-        'id'        => \Magnus\Http\Middleware\AuthId::class,
+        'account'   => \Magnus\Http\Middleware\Account::class,
         'gallery'   => \Magnus\Http\Middleware\GalleryManagement::class,
         'comment'   => \Magnus\Http\Middleware\CommentManagement::class,
     ];

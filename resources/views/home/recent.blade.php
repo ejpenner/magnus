@@ -7,6 +7,6 @@
         </div>
     </div>
     <div class="container">
-        <span class="pull-left">{{ $opera->appends(['limit'=>($request->has('limit') ? $request->input('limit') : 18 )])->render() }}</span>
+        <span class="pull-left">{{ $opera->appends(['limit'=>($request->has('limit') ? $request->input('limit') : null )])->render() }}</span>
     </div>
 @endsection

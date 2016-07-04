@@ -21,6 +21,12 @@ class SearchController extends Controller
      */
     public function searchAll(Request $request, $parameters)
     {
+        if($request->has('limit')) {
+            $limit = $request->input('limit');
+        } else {
+            $limit = config('images.defaultLimit');
+        }
+        
         $request->session()->put('searchString', $parameters);
         $parameters = str_replace(' ', '+', $parameters);
         $terms = explode('+', $parameters);
@@ -28,6 +34,8 @@ class SearchController extends Controller
         $tag_ids = [];
         $termList = [];
         $whereClause = '';
+        $tagClause = '';
+
         foreach($terms as $term)
         {
             $term = trim($term);
@@ -42,38 +50,51 @@ class SearchController extends Controller
             }
         }
 
-        if(count($termList) > 0) {
-            $whereClause = 'WHERE ';
-            foreach ($termList as $i => $term) {
+        if(count($tag_ids) > 0) {
+            $tagClause = 'WHERE ';
+            foreach ($tag_ids as $i => $id) {
                 if($i < 1) {
-                    $whereClause .=  ' users.username = \'' . $term . '\'
-                                 OR opuses.title LIKE \'' . $term . '%\' ';
+                    $tagClause .=  ' t.id = ' . $id . ' ';
                 } else {
-                    $whereClause .=  ' OR users.username = \'' . $term . '\'
-                                 OR opuses.title LIKE \'' . $term . '%\' ';
+                    $tagClause .=  ' OR t.id = ' . $id . ' ';
                 }
 
             }
         }
 
-        if(count($tag_ids) > 0) {
-            $havingClause = 'opus_tag.tag_id IN (' . implode($tag_ids, ', ') . ') ';
-        } else {
-            $havingClause = '1 = 1';
+        if(count($termList) > 0) {
+            $whereClause = 'WHERE ';
+            foreach ($termList as $i => $term) {
+                if($i < 1) {
+                    $whereClause .=  ' u.username = \'' . $term . '\'
+                                 OR o.title LIKE \'%' . $term . '%\' ';
+                } else {
+                    $whereClause .=  ' OR u.username = \'' . $term . '\'
+                                 OR o.title LIKE \'%' . $term . '%\' ';
+                }
+
+            }
         }
 
-        $query = 'SELECT opuses.*, opus_tag.*, users.slug AS uslug, users.username
-                  FROM opuses
-                  INNER JOIN opus_tag ON opuses.id = opus_tag.opus_id
-                  INNER JOIN tags ON tags.id = opus_tag.tag_id
-                  INNER JOIN users ON users.id = opuses.user_id
-                  ' . $whereClause . '
-                  GROUP BY opus_tag.opus_id
-                  HAVING ' . $havingClause;
+        $query = 'SELECT o.*, u.name, u.slug uslug, matching_tags.matched
+                  FROM opuses o
+                  INNER JOIN opus_tag ot ON o.id = ot.opus_id
+                  INNER JOIN tags t ON t.id = ot.tag_id
+                  INNER JOIN users u ON u.id = o.user_id
+				  RIGHT OUTER JOIN 
+				    (SELECT DISTINCT o.id AS id, count(*) as matched
+					 FROM opuses o JOIN opus_tag ot ON o.id = ot.opus_id
+					 JOIN tags t ON ot.tag_id = t.id
+					 '. $tagClause .'
+					 GROUP BY o.id) AS matching_tags ON o.id = matching_tags.id 
+                     '. $whereClause .'
+                GROUP BY o.id, matching_tags.matched
+                ORDER BY matched DESC';
+
 
         $results = DB::select($query);
 
-        $paginatedResults = new Paginator($results, count($results), 24,
+        $paginatedResults = new Paginator($results, count($results), $limit,
             \Illuminate\Pagination\Paginator::resolveCurrentPage(), //resolve the path
             ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]);
         

@@ -8,18 +8,6 @@ Route::model('users', 'User');
 Route::model('profile', 'Profile');
 
 /**
- * generated auth routes
- */
-Route::auth();
-
-/**
- * Error 401 Unauthorized Route
- */
-Route::get('errors/401', ['as' => '401', function() {
-    return view('errors.401');
-}]);
-
-/**
  * Binds the {users} parameter to the slug
  */
 Route::bind('users', function ($value, $route) {
@@ -33,11 +21,22 @@ Route::bind('profile', function ($value, $route) {
     return \Magnus\User::whereSlug(strtolower($value))->first();
 });
 
+/**
+ * generated auth routes
+ */
+Route::auth();
+
+/**
+ * Error 401 Unauthorized Route
+ */
+Route::get('errors/401', ['as' => '401', function() {
+    return view('errors.401');
+}]);
 
 /**
  * A pretty url to show opera that are in a gallery
  */
-Route::get('galleria/{gallery}/{opus}', 'OpusController@galleryShow');
+Route::get('/gallery/{gallery}/{opus}', 'OpusController@galleryShow');
 
 
 /**
@@ -70,8 +69,8 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Alternate create and store routes for creating Opus
      */
-    Route::get('/nova/submit', 'OpusController@newSubmission');
-    Route::post('/nova/submit', 'OpusController@submit');
+    Route::get('/submit', 'OpusController@newSubmission')->name('');
+    Route::post('/submit', 'OpusController@submit');
 
     /**
      * CRUD routes for opera in galleries
@@ -98,16 +97,16 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     /**
-     * CRUD routes for user operations
+     * CRUD routes for user account operations
      * TODO: refactor id middleware
      */
-    Route::group(['middleware' => ['id']], function ($id) {
-        Route::get('user/{users}/editAccount', 'UserController@editAccount');
-        Route::patch('user/{users}/updateAccount', 'UserController@updateAccount');
-        Route::get('user/{users}/account', ['uses' => 'UserController@manageAccount', 'as' => 'user.account']);
-        Route::get('user/{users}/changeMyPassword', array('uses' => 'UserController@changeAccountPassword', 'as' => 'user.accountPassword'));
-        Route::patch('user/{users}/updatePassword', 'UserController@updatePassword');
-        Route::get('user/{users}/preferences', 'UserController@preferences');
+    Route::group(['middleware' => ['account']], function () {
+        //Route::get('account/{users}/edit', 'AccountController@editAccount')->name('account.edit');
+        Route::patch('account/{users}/update', 'AccountController@updateAccount')->name('account.update');
+        Route::get('account/{users}', 'AccountController@manageAccount')->name('account.manage');
+        Route::patch('account/{users}/updatePassword', 'AccountController@updatePassword')->name('password.update');
+        //Route::get('account/{users}/preferences', 'AccountController@preferences')->name('account.preference');
+        Route::patch('account/{users}/preferences', 'AccountController@updatePreferences')->name('account.preferences.update');
     });
 
     /**
@@ -125,9 +124,10 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Developer middleware group
      */
-    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.dev-code').'', 'prefix'=>'admin'], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.dev-code'), 'prefix'=>'admin'], function () {
         Route::get('session', 'AdminController@session');
         Route::get('test', 'AdminController@test');
+        Route::get('/', 'AdminController@index');
     });
 
     /**
@@ -152,4 +152,4 @@ Route::group(['middleware' => ['auth']], function () {
 /**
  * Home route
  */
-Route::get('/{filter?}', 'HomeController@recent')->name('home');
+Route::get('/{filter?}/{period?}', 'HomeController@recent')->name('home');

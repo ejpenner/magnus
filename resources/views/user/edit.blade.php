@@ -10,9 +10,10 @@
                 @include('user.partials._avatarAdmin')
             </div>
         </div>
-    {!! Form::model($user, ['method'=>'PATCH','action'=>['UserController@update',$user->slug]]) !!}
-        <div class="col-md-6">
-            @include('user._formAdmin')
-        </div>
-    {!! Form::close() !!}
+        {!! Form::model($user, ['method'=>'PATCH','action'=>['UserController@update',$user->slug]]) !!}
+            <div class="col-md-6">
+                @include('user.partials._formAdmin')
+            </div>
+        {!! Form::close() !!}
+    </div>
 @endsection

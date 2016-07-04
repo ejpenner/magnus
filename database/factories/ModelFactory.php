@@ -2,22 +2,22 @@
 
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
+use Magnus\Helpers\Helpers;
+use Carbon\Carbon;
 
 $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
     $timezones = ['America/Denver', 'America/New_York', 'America/Chicago', 'America/Los_Angeles'];
-        $user = [
+    $user = [
         'name'      => $faker->name,
         'email'     => $faker->safeEmail,
         'username'  => $faker->userName,
         'password'  => bcrypt('password'),
         'slug'      => str_slug($faker->userName),
-        'avatar'    => substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
+        //'avatar'    => substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
         'timezone'  => $timezones[rand(0,3)],
         'remember_token' => str_random(10),
     ];
-    File::makeDirectory(public_path('art/'.$user['username'].'/images'), 0755, true);
-    File::makeDirectory(public_path('art/'.$user['username'].'/thumbnails'), 0755, true);
-    File::makeDirectory(public_path('art/'.$user['username'].'/avatars'), 0755, true);
+    Helpers::makeDirectories($user['username']);
     return $user;
 });
 
@@ -44,7 +44,7 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         $thumbnail->save($tdest);
     }
 
-    
+
     $sizes = [0 => [250,160], 1 => [160,250]];
     $res = $sizes[rand(0,1)];
     $theme = '';
@@ -72,9 +72,9 @@ $factory->define(Magnus\Gallery::class, function (Faker\Generator $faker){
 });
 
 $factory->define(Magnus\Comment::class, function (Faker\Generator $faker){
-   return [
-       'body' => $faker->paragraph,
-   ];
+    return [
+        'body' => $faker->paragraph,
+    ];
 });
 
 $factory->define(Magnus\Profile::class, function (Faker\Generator $faker){
@@ -98,17 +98,29 @@ $factory->defineAs(Magnus\Notification::class, 'comment', function (Faker\Genera
 });
 
 $factory->define(\Magnus\Tag::class, function (Faker\Generator $faker){
-   return [
-       'name' => $faker->unique()->word,
-   ]; 
+    return [
+        'name' => $faker->unique()->word,
+    ];
 });
 
 $factory->define(\Magnus\Watch::class, function(Faker\Generator $faker){
-   return [
-       'watch_comments' => true,
-       'watch_opus'     => true,
-       'watch_activity' => true
-   ];
+    return [
+        'watch_comments' => true,
+        'watch_opus'     => true,
+        'watch_activity' => true
+    ];
+});
+
+$factory->define(\Magnus\Preference::class, function(Faker\Generator $faker) {
+    $show = ['full','half','none'];
+    $dob = \Magnus\Preference::makeDOB(rand(0,28), $faker->month, $faker->year);
+    return [
+        'sex' => rand(0,1) ? 'male' : 'female',
+        'date_of_birth' => $dob,
+        'show_sex' => rand(0,1),
+        'show_dob' => $show[rand(0,2)],
+        'per_page' => 24
+    ];
 });
 
 /**

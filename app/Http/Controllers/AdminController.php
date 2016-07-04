@@ -15,9 +15,9 @@ class AdminController extends Controller
         return view('admin.session', compact('session'));
     }
     
-    public function center()
+    public function index()
     {
-        
+        return view('admin.index');
     }
 
     public function test()

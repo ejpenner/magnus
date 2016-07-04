@@ -6,7 +6,7 @@
         <h3>{{ $user->name }} - <small>{{ $user->username }}</small></h3>
         <hr>
         {!! Form::model($user, ['method'=>'PATCH','action'=>['UserController@update',$user->slug]]) !!}
-        @include('user._formAdmin', [$permissions])
+        @include('user.partials._formAdmin', [$permissions])
         {!! Form::close() !!}
     </div>
 @endsection

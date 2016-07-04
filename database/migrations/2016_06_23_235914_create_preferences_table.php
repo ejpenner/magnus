@@ -16,6 +16,8 @@ class CreatePreferencesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('sex');
+            $table->boolean('show_sex');
+            $table->date('date_of_birth');
             $table->integer('dob_day');
             $table->string('dob_month');
             $table->integer('dob_year');

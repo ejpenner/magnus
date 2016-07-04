@@ -5,7 +5,7 @@
         <div class="container">
             <h3>Create User</h3>
             {!! Form::open(['action'=>'UserController@store','class'=>'']) !!}
-            @include('user._formAdmin')
+            @include('user.partials._formAdmin')
             {!! Form::close() !!}
         </div>
     </div>
