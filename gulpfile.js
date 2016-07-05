@@ -1,15 +1,15 @@
 var gulp = require('gulp');
-var prettify = require('gulp-jsbeautifier');
 var phpcbf = require('gulp-phpcbf');
-var concat = require('gulp-concat');
+var prettify = require('gulp-jsbeautifier');
 var less = require('gulp-less');
 var browserify = require('browserify');
+var concat = require('gulp-concat');
 var strictify = require('strictify');
 var babelify = require('babelify');
 var source = require('vinyl-source-stream');
 var watchify = require('gulp-watchify');
+var runSequence = require('run-sequence');
 var cache = require('gulp-cached');
-var through2 = require('through2');
 
 var assets_dir = './resources/assets/';
 
@@ -18,6 +18,7 @@ var vendor_js_files = [
     assets_dir + "js/vendor/angular.min.js",
     assets_dir + "js/vendor/cropper.js",
     assets_dir + "js/vendor/bootstrap.min.js",
+    assets_dir + "js/vendor/unveil.js",
     assets_dir + "js/vendor/ng-resource.min.js",
     assets_dir + "js/vendor/ng-table.js",
     assets_dir + "js/vendor/ng-infinite-scroll.js"
@@ -129,8 +130,8 @@ gulp.task('default', [
     'vendor-scripts',
     'angular',
     'scripts',
-    // 'phpcbf-app',
-    // 'phpcbf-config'
+    'phpcbf-app',
+    'phpcbf-config'
 ]);
 
 gulp.task('watch', function() {

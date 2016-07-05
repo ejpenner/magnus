@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
+use Magnus\Gallery;
+use Magnus\Opus;
 use Magnus\Role;
 use Magnus\User;
 
@@ -14,7 +16,7 @@ class Helpers
 {
     /**
      * Returns a decorated username based on  the id supplied
-     * 
+     *
      * @param $id
      * @return string
      */
@@ -38,7 +40,7 @@ class Helpers
 
     /**
      * Check to see if the user owns the object
-     * 
+     *
      * @param User $user
      * @param $object
      * @return bool
@@ -82,7 +84,7 @@ class Helpers
         }
         return $watcherList;
     }
-    
+
     /**
      * Returns a collection of users that this user watches
      * @param User $user
@@ -112,6 +114,7 @@ class Helpers
         File::makeDirectory(public_path('art/'.$username.'/images'), 4664, true);
         File::makeDirectory(public_path('art/'.$username.'/thumbnails'), 4664, true);
         File::makeDirectory(public_path('art/'.$username.'/avatars'), 4664, true);
+        File::makeDirectory(public_path('art/'.$username.'/previews'), 4664, true);
     }
 
     /**
@@ -127,5 +130,139 @@ class Helpers
             return true;
         }
         return false;
+    }
+
+    /**
+     *  Make a navigator array with the id of the next and previous
+     *  opus in a gallery
+     * @param $gallery
+     * @param $opus
+     * @return array
+     */
+    public static function galleryNavigator(Gallery $gallery, Opus $opus)
+    {
+        $pieceNav = [];
+        $galleryNav = [
+            'next' => null,
+            'current' => $opus->id,
+            'previous' => null
+        ];
+        $foundMax = false;
+        $foundMin = false;
+
+        // get all the Opus ID in the gallery into an array
+        foreach ($gallery->opera as $currentOpus) {
+            array_push($pieceNav, $currentOpus->id);
+        }
+
+        // if there are only two opera in a gallery, the next and previous
+        // links should be the opus it is not
+        if(count($pieceNav) < 2) {
+            $galleryNav['next'] = $pieceNav[0];
+            $galleryNav['previous'] = $pieceNav[0];
+
+            return $galleryNav;
+        }
+
+        // logic for a gallery with only three opera
+        if(count($pieceNav) < 3) {
+            if($pieceNav[0] == $opus->id) {
+                $galleryNav['next'] = $pieceNav[1];
+                $galleryNav['previous'] = $pieceNav[1];
+            } else {
+                $galleryNav['next'] = $pieceNav[0];
+                $galleryNav['previous'] = $pieceNav[0];
+            }
+            $galleryNav['current'] = $opus->id;
+
+            return $galleryNav;
+        }
+
+        // logic for a gallery with more than three opera in it
+        foreach ($pieceNav as $i => $id) {
+            if($opus->id == max($pieceNav) and $foundMax == false) {
+                $foundMinMax = true;
+                if($galleryNav['next'] == null) {
+                    $galleryNav['next'] = min($pieceNav);
+                }
+            } elseif($id > $opus->id) {
+                if ($galleryNav['next'] == null) {
+                    $galleryNav['next'] = $pieceNav[$i];
+                }
+            }elseif($opus->id == min($pieceNav) and $foundMin == false) {
+                $foundMaxMin = true;
+                $galleryNav['previous'] = max($pieceNav);
+            } elseif($id < $opus->id) {
+                $galleryNav['previous'] = $pieceNav[$i];
+            }
+        }
+        return $galleryNav;
+    }
+
+    /**
+     *  Make a navigator array with the id of the next and previous
+     *  opus in a gallery
+     * @param $gallery
+     * @param $opus
+     * @return array
+     */
+    public static function navigator($opera, Opus $opus)
+    {
+        $pieceNav = [];
+        $galleryNav = [
+            'next' => null,
+            'current' => $opus->id,
+            'previous' => null
+        ];
+        $foundMax = false;
+        $foundMin = false;
+
+        // get all the Opus ID in the gallery into an array
+        foreach ($opera as $o) {
+            array_push($pieceNav, $o->id);
+        }
+
+        // if there are only two opera in a gallery, the next and previous
+        // links should be the opus it is not
+        if(count($pieceNav) < 2) {
+            $galleryNav['next'] = $pieceNav[0];
+            $galleryNav['previous'] = $pieceNav[0];
+
+            return $galleryNav;
+        }
+
+        // logic for a gallery with only three opera
+        if(count($pieceNav) < 3) {
+            if($pieceNav[0] == $opus->id) {
+                $galleryNav['next'] = $pieceNav[1];
+                $galleryNav['previous'] = $pieceNav[1];
+            } else {
+                $galleryNav['next'] = $pieceNav[0];
+                $galleryNav['previous'] = $pieceNav[0];
+            }
+            $galleryNav['current'] = $opus->id;
+
+            return $galleryNav;
+        }
+
+        // logic for a gallery with more than three opera in it
+        foreach ($pieceNav as $i => $id) {
+            if($opus->id == max($pieceNav) and $foundMax == false) {
+                $foundMinMax = true;
+                if($galleryNav['next'] == null) {
+                    $galleryNav['next'] = min($pieceNav);
+                }
+            } elseif($id > $opus->id) {
+                if ($galleryNav['next'] == null) {
+                    $galleryNav['next'] = $pieceNav[$i];
+                }
+            }elseif($opus->id == min($pieceNav) and $foundMin == false) {
+                $foundMaxMin = true;
+                $galleryNav['previous'] = max($pieceNav);
+            } elseif($id < $opus->id) {
+                $galleryNav['previous'] = $pieceNav[$i];
+            }
+        }
+        return $galleryNav;
     }
 }

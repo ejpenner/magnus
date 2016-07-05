@@ -13,7 +13,29 @@ class TagSeeder extends Seeder
      */
     public function run()
     {
-        factory(Tag::class, 60)->create();
+        Tag::create(['name' => 'ayy']);
+        Tag::create(['name' => 'lmao']);
+        Tag::create(['name' => 'traditional']);
+        Tag::create(['name' => 'digital']);
+        Tag::create(['name' => 'painting']);
+        Tag::create(['name' => 'sketch']);
+        Tag::create(['name' => 'watercolor']);
+        Tag::create(['name' => 'colored']);
+        Tag::create(['name' => 'pencil']);
+        Tag::create(['name' => 'photography']);
+        Tag::create(['name' => 'abstract']);
+        Tag::create(['name' => 'canvas']);
+        Tag::create(['name' => 'surreal']);
+        Tag::create(['name' => 'nouveau']);
+        Tag::create(['name' => 'art']);
+        Tag::create(['name' => 'architecture']);
+        Tag::create(['name' => 'portrait']);
+        Tag::create(['name' => 'landscape']);
+        Tag::create(['name' => 'still_life']);
+        Tag::create(['name' => 'nude']);
+        Tag::create(['name' => 'self-portrait']);
+
+        factory(Tag::class, 40)->create();
 
         $opera = Opus::all();
         $tagCount = Tag::count();

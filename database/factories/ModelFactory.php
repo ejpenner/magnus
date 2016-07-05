@@ -31,7 +31,11 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         $src = $files[$rand];
         $dest = public_path().'/images/'.basename($files[$rand]);
         $tdest = public_path().'/thumbnails/'.$numbers.basename($files[$rand]);
+        $pdest = public_path().'/previews/'.$numbers.basename($files[$rand]);
+
         copy($src, $dest);
+        $preview = resize($dest, 800);
+        $preview->save($pdest);
         $thumbnail = resize($dest);
         $thumbnail->save($tdest);
     } catch (\Exception $e) {
@@ -39,7 +43,11 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         $src = $files[$rand];
         $dest = public_path().'/images/'.basename($files[$rand]);
         $tdest = public_path().'/thumbnails/'.$numbers.basename($files[$rand]);
+        $pdest = public_path().'/previews/'.$numbers.basename($files[$rand]);
+
         copy($src, $dest);
+        $preview = resize($src, 800);
+        $preview->save($pdest);
         $thumbnail = resize($dest);
         $thumbnail->save($tdest);
     }
@@ -51,6 +59,8 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
     $faker->seed(rand(11111,99999));
     $image_path = substr($dest, 38);
     $thumbnail_path = substr($tdest, 38);
+    $preview_path = substr($pdest, 38);
+
     $created = Carbon::instance($faker->dateTimeBetween('-2 months', 'now'));
 
     return [
@@ -58,6 +68,7 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         'comment'           => $faker->paragraphs(2,true),
         'image_path'        => $image_path,
         'thumbnail_path'    => $thumbnail_path,
+        'preview_path'      => $preview_path,
         'published_at'      => $created,
         'created_at'        => $created,
         'views'             => rand(1000,3000),
