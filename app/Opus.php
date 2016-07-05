@@ -215,11 +215,24 @@ class Opus extends Model
      */
     public function getImage()
     {
-        if (!empty($this->image_path) and File::exists($this->image_path)) {  // $exists = Storage::disk('images')->has(basename($this->image_path));
+        if (!empty($this->image_path) and File::exists($this->image_path)) {
             return  $this->image_path;
         }
         return $this->imageDirectory.'/images/missing/missing.png';
     }
+
+    /**
+     * Returns a relative path to this opus' image
+     * @return string
+     */
+    public function getPreview()
+    {
+        if (!empty($this->preview_path) and File::exists($this->preview_path)) {
+            return  $this->preview_path;
+        }
+        return $this->imageDirectory.'/images/missing/missing.png';
+    }
+
     /**
      * Returns the relative path to this opus' thumbnail image
      * @return string

@@ -9390,6 +9390,9 @@ div.flash-messages ul {
 .comment:target {
   background-color: #afcbd1;
 }
+#fullview {
+  display: none;
+}
 /* Dropdown hover */
 .dropdown:hover .dropdown-menu {
   display: block;

@@ -5,7 +5,9 @@
         <div class="text-center">
             <div class="container-fluid">
                 <div class="opus-display">
-                    <img class="opus-show" src="/{{ $opus->getImage() }}" alt="">
+                    {{--<img class="opus-show" src="/{{ $opus->getImage() }}" alt="">--}}
+                    <img id="preview" src="/{{ $opus->getPreview() }}" alt="preview">
+                    <img id="fullview" src="/images/assets/loading.gif" alt="full view" data-src="/{{ $opus->getImage() }}">
                 </div>
             </div>
             @if(isset($galleryNav))

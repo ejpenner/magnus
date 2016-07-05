@@ -50,7 +50,7 @@ class CreateOpusesTable extends Migration
 
         foreach ($opuses as $opus) {
              if($opus->deleteImages()) {
-                 echo " deleted\n";
+                 echo "deleted\n";
              }
         }
 
