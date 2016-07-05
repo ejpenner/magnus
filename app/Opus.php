@@ -17,7 +17,7 @@ class Opus extends Model
         'slug'
     ];
 
-    protected $dates = ['published_at'];
+    protected $dates = ['published_at','created_at'];
     private $imageDirectory = 'images';
     private $thumbnailDirectory = 'thumbnails';
     private $artDirectory = 'art';
@@ -129,7 +129,7 @@ class Opus extends Model
     {
         $query->orderBy('views', 'desc');
     }
-    
+
     public function scopeNewest($query)
     {
         $query->orderBy('created_at', 'desc');
@@ -179,7 +179,7 @@ class Opus extends Model
 
     /**
      * Increment the pageview of this Opus if conditions are met
-     * 
+     *
      * @param $request
      */
     public function pageview($request) {
@@ -405,13 +405,13 @@ class Opus extends Model
      * @return array
      */
     public function metadata() {
-            try {
-                $img = Image::make($this->getImage());
-                $size = ceil($img->fileSize() / 1000);
-            } catch (\Exception $e) {
-                return ['filesize' => '?' . ' KB', 'resolution' => '?' . 'x' . '?'];
-            }
-            return ['filesize' => $size . ' KB', 'resolution' => $img->width() . 'x' . $img->height()];
+        try {
+            $img = Image::make($this->getImage());
+            $size = ceil($img->fileSize() / 1000);
+        } catch (\Exception $e) {
+            return ['filesize' => '?' . ' KB', 'resolution' => '?' . 'x' . '?'];
+        }
+        return ['filesize' => $size . ' KB', 'resolution' => $img->width() . 'x' . $img->height()];
     }
 
     private function makeDirectory(User $user)
@@ -421,11 +421,15 @@ class Opus extends Model
         return $dirName;
     }
 
+    /**
+     * Set the slug of the opus
+     */
     public function setSlug()
     {
-        $this->slug = substr(microtime(),13).'-'.str_slug($this->title);
+        $this->slug = substr(microtime(),15).'-'.str_slug($this->title);
         $this->save();
     }
+
     /**
      * Static make function to replace the logic in the Opus controller
      * @param Request $request
@@ -443,5 +447,16 @@ class Opus extends Model
         $opus->setSlug();
 
         return $opus;
+    }
+
+    public function hasTag(Tag $newTag)
+    {
+        if($this->tags->count() > 0){
+            foreach ($this->tags as $tag) {
+                if($tag->id == $newTag->id)
+                    return true;
+            }
+        }
+        return false;
     }
 }

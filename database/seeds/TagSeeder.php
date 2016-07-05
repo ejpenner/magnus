@@ -13,15 +13,16 @@ class TagSeeder extends Seeder
      */
     public function run()
     {
-        factory(Tag::class, 45)->create();
+        factory(Tag::class, 60)->create();
 
         $opera = Opus::all();
         $tagCount = Tag::count();
 
         foreach($opera as $opus){
-            foreach(range(1,3) as $i) {
+            foreach(range(1,6) as $i) {
                 $tag = Tag::where('id', $this->UniqueRandomNumbersWithinRange(1, $tagCount, 1))->first();
-                $opus->tags()->attach($tag->id);
+                if(!$opus->hasTag($tag))
+                    $opus->tags()->attach($tag->id);
             }
         }
 

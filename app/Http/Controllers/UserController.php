@@ -133,6 +133,6 @@ class UserController extends Controller
     public function unwatchUser(Request $request, User $user)
     {
         Watch::unwatchUser(Auth::user(), $user);
-        return redirect()->to(app('url')->previous())->with('success', 'You have unwatched '.$user->name.'.');
+        return redirect()->to(app('url')->previous())->with('success', 'You have unwatched '.$user->name);
     }
 }

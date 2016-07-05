@@ -1,4 +1,4 @@
-<div class="col-lg-2 col-md-4">
+<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
     <div class="gallery-item">
         <div class="vcenter">
             <a href="{{ action('OpusController@show', [$opus->id]) }}">

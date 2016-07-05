@@ -12,25 +12,23 @@
     <style></style>
 </head>
 <body>
-
 <div class="jumbotron" id="header-background">
     <div class="container text-center">
     </div>
 </div>
-
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar">Test</span>
+                <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{{ action('HomeController@recent') }}">Magnus</a>
         </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
+        <div class="collapse navbar-collapse" id="magnus-navbar">
             <ul class="nav navbar-nav">
-                <li class="dropdown" @if(Request::is('/')) class="active" @endif >
+                <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="{{ action('HomeController@recent') }}">
                         Home <i class="caret"></i>
                     </a>
@@ -43,22 +41,23 @@
                 <li @if(Request::is('featured')) class="active" @endif >
                     <a href="#">Featured</a>
                 </li>
-                <li @if(Request::is('galleria')) class="active" @endif >
+                <li @if(Request::is('gallery')) class="active" @endif >
                     <a href="{{ action('GalleryController@index') }}">Galleries</a>
                 </li>
-                <li @if(Request::is('nova/submit')) class="active" @endif >
+                <li @if(Request::is('submit')) class="active" @endif >
                     <a href="{{ action('OpusController@submit') }}">Submit</a>
                 </li>
-                <li @if(Request::is('search')) class="active" @endif >
-                    {!! Form::open(['url'=>'/search/', 'method'=>'get', 'class'=>'navbar-form navbar-left', 'role'=>'search', 'onsubmit'=>'return false;']) !!}
-                    <div class="row form-group">
+                <li @if(Request::is('search')) class="active" @endif>
+                    {!! Form::open(['url'=>'/search/', 'method'=>'get', 'class'=>'navbar-left navbar-form', 'role'=>'search', 'onsubmit'=>'return false;']) !!}
                         <div class="search-area">
-                            <div class="search-box">
+                            <div class="search-box input-group">
                                 <input type="text" class="form-control" placeholder="Search tags using @tag" name="q" value="{{ Magnus::getSearchQuery() }}" id="search-terms">
+                                <span class="input-group-btn">
+                                    {!! Form::submit('Search', ['class' => 'btn btn-primary',
+                                                     'onclick'=>'window.location.href=this.form.action +\'/\' + this.form.q.value + \'?sort=relevance&order=desc\';']) !!}
+                                </span>
                             </div>
                         </div>
-                    </div>
-                    {!! Form::submit('Search', ['class' => 'form-control btn btn-primary', 'onclick'=>'window.location.href=this.form.action +\'/\'+ this.form.q.value;']) !!}
                     {!! Form::close() !!}
                 </li>
             </ul>
@@ -73,14 +72,22 @@
                     </li>
                 @endif
                 @if(Auth::check())
-                    <li><a href="{{ action('NotificationController@index') }}">Messages <span class="badge">{{ Auth::user()->messageCount() }}</span></a></li>
+                    <li>
+                        <a href="{{ action('NotificationController@index') }}">
+                            Messages <span class="badge">{{ Auth::user()->messageCount() }}</span>
+                        </a>
+                    </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             {{ Auth::user()->name }} <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ action('ProfileController@show', Auth::user()->slug) }}"><img src="{{ Auth::user()->getAvatar() }}" width="25px" > My Profile</a></li>
-                            <li><a href="{{ action('AccountController@manageAccount', Auth::user()->slug) }}"><span class="fa fa-user"></span> Account</a></li>
+                            <li><a href="{{ action('ProfileController@show', Auth::user()->slug) }}">
+                                    <img src="{{ Auth::user()->getAvatar() }}" width="25px"> My Profile</a>
+                            </li>
+                            <li><a href="{{ action('AccountController@manageAccount', Auth::user()->slug) }}">
+                                <span class="fa fa-user"></span> Account</a>
+                            </li>
                             <li><a href="/logout"><i class="fa fa-sign-out"></i> Log Out</a></li>
                         </ul>
                     </li>

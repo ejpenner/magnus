@@ -33,11 +33,12 @@ class Tag extends Model
             foreach($tags as $tag) {
                 Tag::firstOrCreate(['name'=>$tag]);
             }
+
             $tagIds = [];
             foreach($tags as $tag) {
                 $addTag = Tag::where('name', $tag)->first();
                 if(strtolower($addTag->name) == strtolower($tag))
-                    array_push($tagIds, $addTag->id);
+                        array_push($tagIds, $addTag->id);
             }
             $opus->tags()->sync($tagIds);
         } else {

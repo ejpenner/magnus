@@ -8,14 +8,14 @@ use Carbon\Carbon;
 $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
     $timezones = ['America/Denver', 'America/New_York', 'America/Chicago', 'America/Los_Angeles'];
     $user = [
-        'name'      => $faker->name,
-        'email'     => $faker->safeEmail,
-        'username'  => $faker->userName,
-        'password'  => bcrypt('password'),
-        'slug'      => str_slug($faker->userName),
-        //'avatar'    => substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
-        'timezone'  => $timezones[rand(0,3)],
-        'remember_token' => str_random(10),
+        'name'              => $faker->name,
+        'email'             => $faker->safeEmail,
+        'username'          => $faker->userName,
+        'password'          => bcrypt('password'),
+        'slug'              => str_slug($faker->userName),
+        'avatar'            => substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
+        'timezone'          => $timezones[rand(0,3)],
+        'remember_token'    => str_random(10),
     ];
     Helpers::makeDirectories($user['username']);
     return $user;
@@ -51,23 +51,25 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
     $faker->seed(rand(11111,99999));
     $image_path = substr($dest, 38);
     $thumbnail_path = substr($tdest, 38);
+    $created = Carbon::instance($faker->dateTimeBetween('-2 months', 'now'));
 
     return [
-        'title' => ucwords($faker->words(3, true)),
-        'comment' => $faker->paragraphs(2,true),
-        'image_path' => $image_path,
-        'thumbnail_path' => $thumbnail_path,
-        'published_at' => \Carbon\Carbon::now(),
-        'views'        => rand(1000,3000),
-        'daily_views'  => rand(100,1000),
+        'title'             => ucwords($faker->words(3, true)),
+        'comment'           => $faker->paragraphs(2,true),
+        'image_path'        => $image_path,
+        'thumbnail_path'    => $thumbnail_path,
+        'published_at'      => $created,
+        'created_at'        => $created,
+        'views'             => rand(1000,3000),
+        'daily_views'       => rand(100,1000),
     ];
 });
 
 $factory->define(Magnus\Gallery::class, function (Faker\Generator $faker){
     return [
-        'name' => ucwords($faker->words(3, true)),
-        'description' => $faker->sentence,
-        'main_gallery' => 0,
+        'name'          => ucwords($faker->words(3, true)),
+        'description'   => $faker->sentence,
+        'main_gallery'  => 0,
     ] ;
 });
 
@@ -80,13 +82,17 @@ $factory->define(Magnus\Comment::class, function (Faker\Generator $faker){
 $factory->define(Magnus\Profile::class, function (Faker\Generator $faker){
     return [
         'biography' => $faker->paragraphs(2, true),
-    ] ;
+    ];
 });
 
 $factory->defineAs(Magnus\Notification::class, 'opus', function (Faker\Generator $faker){
     $opusCount = \Magnus\Opus::count();
     $randomOpus = rand(1,$opusCount);
-    $noteStore = ['handle'=>'opus', 'opus_id'=>rand(1,$randomOpus), 'read'=>0];
+    $noteStore = [
+        'handle'    => 'opus',
+        'opus_id'   => rand(1,$randomOpus),
+        'read'      => 0
+    ];
     return $noteStore;
 });
 

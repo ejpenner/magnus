@@ -24,10 +24,7 @@ class OpusSeeder extends Seeder
 
         foreach($users as $user)  {
             foreach(range(1,$opusMax) as $index) {
-                factory(Opus::class)->create(['user_id'=>$user->id])->each(function($opus) use ($tagMax) {
-                    $tagCount = Tag::count();
-
-                });
+                factory(Opus::class)->create(['user_id'=>$user->id]);
             }
 
             foreach(range(1,$galleryMax) as $index) {

@@ -5442,26 +5442,26 @@ fieldset[disabled] .btn-success.focus {
 }
 .btn-info {
   color: #fff;
-  background-color: #5bc0de;
-  border-color: #46b8da;
+  background-color: #355197;
+  border-color: #2e4784;
 }
 .btn-info:focus,
 .btn-info.focus {
   color: #fff;
-  background-color: #31b0d5;
-  border-color: #1b6d85;
+  background-color: #283d71;
+  border-color: #0d1426;
 }
 .btn-info:hover {
   color: #fff;
-  background-color: #31b0d5;
-  border-color: #269abc;
+  background-color: #283d71;
+  border-color: #1e2f57;
 }
 .btn-info:active,
 .btn-info.active,
 .open > .dropdown-toggle.btn-info {
   color: #fff;
-  background-color: #31b0d5;
-  border-color: #269abc;
+  background-color: #283d71;
+  border-color: #1e2f57;
 }
 .btn-info:active:hover,
 .btn-info.active:hover,
@@ -5473,8 +5473,8 @@ fieldset[disabled] .btn-success.focus {
 .btn-info.active.focus,
 .open > .dropdown-toggle.btn-info.focus {
   color: #fff;
-  background-color: #269abc;
-  border-color: #1b6d85;
+  background-color: #1e2f57;
+  border-color: #0d1426;
 }
 .btn-info:active,
 .btn-info.active,
@@ -5490,11 +5490,11 @@ fieldset[disabled] .btn-info:focus,
 .btn-info.disabled.focus,
 .btn-info[disabled].focus,
 fieldset[disabled] .btn-info.focus {
-  background-color: #5bc0de;
-  border-color: #46b8da;
+  background-color: #355197;
+  border-color: #2e4784;
 }
 .btn-info .badge {
-  color: #5bc0de;
+  color: #355197;
   background-color: #fff;
 }
 .btn-warning {
@@ -7105,11 +7105,11 @@ a.label:focus {
   background-color: #577a5a;
 }
 .label-info {
-  background-color: #5bc0de;
+  background-color: #355197;
 }
 .label-info[href]:hover,
 .label-info[href]:focus {
-  background-color: #31b0d5;
+  background-color: #283d71;
 }
 .label-warning {
   background-color: #f0ad4e;
@@ -7386,7 +7386,7 @@ a.thumbnail.active {
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .progress-bar-info {
-  background-color: #5bc0de;
+  background-color: #355197;
 }
 .progress-striped .progress-bar-info {
   background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
@@ -9264,25 +9264,6 @@ button.close {
 .cropper-disabled .cropper-point {
   cursor: not-allowed;
 }
-/* Dropdown hover */
-.dropdown:hover .dropdown-menu {
-  display: block;
-}
-/* Remove the navbar's default rounded borders and increase the bottom margin */
-.navbar {
-  border-top: solid #829aa0 3px !important;
-  margin-bottom: 15px !important;
-  border-radius: 0 !important;
-}
-/* Remove the jumbotron's default bottom margin */
-.jumbotron {
-  color: #c2bfc9 !important;
-  margin-bottom: 0 !important;
-  height: 100px !important;
-  background-image: url("/images/404/header-bg.jpg");
-  background-position: center top;
-  background-repeat: no-repeat;
-}
 div.gallery-select .checkbox-vis-hidden {
   border: 0;
   clip: rect(0 0 0 0);
@@ -9324,7 +9305,7 @@ div.gallery-select input:focus:checked + label {
 }
 div.flash-messages {
   position: absolute;
-  top: 10%;
+  top: 15%;
   z-index: 10;
   width: 60%;
   min-width: 300px;
@@ -9334,12 +9315,9 @@ div.flash-messages ul {
 }
 .search-box {
   margin-left: 10px;
-}
-.search-box input[type="text"] {
-  width: 400px;
+  width: 150%;
 }
 .comment {
-  border: #eeeeee solid 2px;
   background-color: #eeeeee;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -9408,6 +9386,28 @@ div.flash-messages ul {
 .reply-form .reply-textarea {
   width: 70%;
   margin-bottom: 2px;
+}
+.comment:target {
+  background-color: #afcbd1;
+}
+/* Dropdown hover */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+/* Remove the navbar's default rounded borders and increase the bottom margin */
+.navbar {
+  border-top: solid #829aa0 3px !important;
+  margin-bottom: 15px !important;
+  border-radius: 0 !important;
+}
+/* Remove the jumbotron's default bottom margin */
+.jumbotron {
+  color: #c2bfc9 !important;
+  margin-bottom: 0 !important;
+  height: 100px !important;
+  background-image: url("/images/404/header-bg.jpg");
+  background-position: center top;
+  background-repeat: no-repeat;
 }
 .login-panel {
   margin-top: 30px;
