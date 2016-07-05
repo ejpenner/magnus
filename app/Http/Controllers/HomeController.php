@@ -31,9 +31,11 @@ class HomeController extends Controller
 
     public function recent(Request $request, $filter = null, $period = null)
     {
+        $filterSegment = !is_null($request->segment(1)) ? $request->segment(1) : 'newest';
+
         if ($request->has('limit')) {
             $limit = $request->input('limit');
-        } elseif (Auth::check()) {
+        } elseif (Auth::check() and !$request->has('limit')) {
             $limit = Auth::user()->preferences->per_page;
         } else {
             $limit = config('images.defaultLimit');
@@ -41,10 +43,13 @@ class HomeController extends Controller
 
         switch ($filter) {
             case 'hot':
-                $opera = Opus::orderBy('daily_views', 'desc');
+                $opera = Opus::hot();
                 break;
             case 'popular':
-                $opera = Opus::views();
+                $opera = Opus::popular();
+                break;
+            case 'newest':
+                $opera = Opus::newest();
                 break;
             default:
                 $opera = Opus::newest();
@@ -68,11 +73,14 @@ class HomeController extends Controller
                 case 'week':
                     $opera = $opera->daysAgo(7);
                     break;
+                case 'month':
+                    $opera = $opera->daysAgo(30);
+                    break;
             }
         }
 
         $opera = $opera->paginate($limit);
         
-        return view('home.recent', compact('opera', 'request'));
+        return view('home.recent', compact('opera', 'request', 'filterSegment'));
     }
 }

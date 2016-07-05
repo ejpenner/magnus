@@ -209,10 +209,10 @@ class SearchController extends Controller
 					        FROM opuses o JOIN opus_tag ot ON o.id = ot.opus_id
 					        JOIN tags t ON ot.tag_id = t.id
 					        ' . $tagClause . '
-                            GROUP BY o.id) AS matching_tags ON o.id = matching_tags.id '.$whereClause.' 
+                            GROUP BY o.id) AS matching_tags ON o.id = matching_tags.id 
+                            '.$whereClause.' 
                             ' . $period . '
-                       GROUP BY o.id, matching_tags.matched
-                       ' . $sort;
+                       GROUP BY o.id, matching_tags.matched';
 
         $total = count(DB::select($totalQuery));
         $results = DB::select($query);

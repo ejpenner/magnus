@@ -130,7 +130,7 @@ class Opus extends Model
      * @param int $days
      * @return mixed
      */
-    public function scopeDays($query, $days = 3)
+    public function scopeDaysAgo($query, $days = 3)
     {
         $daysAgo = new Carbon("-$days days");
         return $query->whereDate('created_at', '>', $daysAgo->toDateString());
