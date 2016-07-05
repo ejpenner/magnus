@@ -1,5 +1,6 @@
 /vendor
 /node_modules
+
 /public/storage
 /public/js
 /public/css
@@ -12,9 +13,10 @@ Thumbs.db
 /public/images/*
 /public/thumbnails/*
 /public/avatars/*
-/public/usr/*
 /resources/seed-pics/*
-/public/resources/*
+
+!/public/images
+!/public/images/missing
 !/public/images/404/header-bg.jpg
 !/public/images/404/
 !/public/images/missing/missing-avatar.png
