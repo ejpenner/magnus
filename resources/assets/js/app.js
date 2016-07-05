@@ -12,6 +12,17 @@ $(document).ready(function() {
         return confirm('Are you sure you want to delete this?');
     });
 
+    $('#preview').click(function() {
+        console.log('hey clicked me');
+        // $('#fullview').trigger("unveil").show();
+        // $(this).hide();
+    });
+
+    $('#fullview').click(function() {
+        // $(this).hide();
+        // $('#preview').show();
+    });
+
     $(window).scroll(function() {
         var x = $(this).scrollTop();
         $('#header-background').css('background-position', '100% ' + parseInt(-x) + 'px' + ', 0% ' + parseInt(-x) + 'px, center top');
@@ -110,18 +121,5 @@ $(document).ready(function() {
         window.setTimeout(function() {
             location.reload();
         }, 2000)
-    });
-
-
-
-    $('#preview').click(function(e) {
-        console.log('hey clicked me');
-        // $('#fullview').trigger("unveil").show();
-        // $(this).hide();
-    });
-
-    $('#fullview').click(function(e) {
-        // $(this).hide();
-        // $('#preview').show();
     });
 });
