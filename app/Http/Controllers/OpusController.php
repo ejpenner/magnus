@@ -77,7 +77,7 @@ class OpusController extends Controller
         $opus = Opus::make($request, $user);
         Notification::notifyWatchersNewOpus($opus, $user);
         Tag::make($opus, $request->input('tags'));
-        if($request->has('gallery_ids[]')) {
+        if ($request->has('gallery_ids[]')) {
             Gallery::place($request, $opus);
         }
 
@@ -132,10 +132,10 @@ class OpusController extends Controller
         $opus->pageview($request);
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
-        if(isset($gallery)) {
+        if (isset($gallery)) {
             $galleryNav = $this->makeNavigator($gallery, $opus);
         }
-        return view('opus.show', compact('opus','gallery','comments','metadata','galleryNav'));
+        return view('opus.show', compact('opus', 'gallery', 'comments', 'metadata', 'galleryNav'));
     }
 
     /**
@@ -156,7 +156,7 @@ class OpusController extends Controller
         $metadata = $opus->metadata();
         $galleryNav = Helpers::galleryNavigator($gallery, $opus);
 
-        return view('opus.galleryShow', compact('opus','gallery','comments','metadata','galleryNav'));
+        return view('opus.galleryShow', compact('opus', 'gallery', 'comments', 'metadata', 'galleryNav'));
     }
 
     /**
@@ -181,16 +181,16 @@ class OpusController extends Controller
         $opus = Opus::findOrFail($id);
         $user = User::findOrFail($opus->user_id);
 
-        if($request->file('image') !== null) {
+        if ($request->file('image') !== null) {
             $imageStatus = $opus->updateImage($user, $request);
         }
 
         // update everything except the image and published at
         $request->has('title') ? $opus->setSlug() : null;
-        $opus->update($request->except('image','published_at'));
+        $opus->update($request->except('image', 'published_at'));
 
         // check if tags have changed
-        if($request->has('tags')) {
+        if ($request->has('tags')) {
             Tag::make($opus, $request->input('tags'));
         }
 
@@ -210,16 +210,16 @@ class OpusController extends Controller
         $opus = Opus::findOrFail($opus_id);
         $user = User::findOrFail($opus->user_id);
 
-        if($request->file('image') !== null) {
+        if ($request->file('image') !== null) {
             $imageStatus = $opus->updateImage($user, $request);
         }
 
         // update everything except the image and published at
         $request->has('title') ? $opus->setSlug() : null;
-        $opus->update($request->except('image','published_at'));
+        $opus->update($request->except('image', 'published_at'));
 
         // check if tags have changed
-        if($request->has('tags')) {
+        if ($request->has('tags')) {
             Tag::make($opus, $request->input('tags'));
         }
 
@@ -248,7 +248,8 @@ class OpusController extends Controller
      * @param $opus_id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function galleryDestroy($gallery_id, $opus_id) {
+    public function galleryDestroy($gallery_id, $opus_id)
+    {
         $opus = Opus::findOrFail($opus_id);
         $gallery = Gallery::findOrFail($gallery_id);
         $gallery->opera()->detach($opus->id);

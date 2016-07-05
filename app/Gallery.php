@@ -32,7 +32,8 @@ class Gallery extends Model
      * Gallery model belongs to many Opera
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function opera() {
+    public function opera()
+    {
         return $this->belongsToMany('Magnus\Opus')->withTimestamps();
     }
 
@@ -40,7 +41,8 @@ class Gallery extends Model
      * Attribute updated_at mutator
      * @param $value
      */
-    public function setUpdatedAtAttribute($value) {
+    public function setUpdatedAtAttribute($value)
+    {
         $this->attributes['updated_at'] = $value;
     }
 
@@ -92,10 +94,10 @@ class Gallery extends Model
     public static function place(Request $request, Opus $opus)
     {
         $gallery_ids = [];
-        foreach($request->input('gallery_ids') as $id) {
+        foreach ($request->input('gallery_ids') as $id) {
                 array_push($gallery_ids, $id);
         }
-        if(count($gallery_ids) > 0) {
+        if (count($gallery_ids) > 0) {
             foreach ($gallery_ids as $id) {
                 Gallery::where('id', $id)->first()->addOpus($opus);
             }

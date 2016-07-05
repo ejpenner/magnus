@@ -110,13 +110,14 @@ class UserController extends Controller
      * @param User $user
      * @return $this|\Illuminate\Http\RedirectResponse\
      */
-    public function watchUser(Request $request, User $user) {
-        foreach(Auth::user()->watchedUsers as $watched) {
-            if($user->id == $watched->user_id) {
+    public function watchUser(Request $request, User $user)
+    {
+        foreach (Auth::user()->watchedUsers as $watched) {
+            if ($user->id == $watched->user_id) {
                 return redirect()->to(app('url')->previous())->withErrors('You are already watching this user!');
             }
         }
-        if(Auth::user()-> id != $user->id) {
+        if (Auth::user()-> id != $user->id) {
             Watch::watchUser(Auth::user(), $user, $request);
             return redirect()->to(app('url')->previous())->with('success', 'You have added ' . $user->name . ' to your watch list!');
         } else {
@@ -125,7 +126,7 @@ class UserController extends Controller
     }
 
     /**
-     * 
+     *
      * @param Request $request
      * @param User $user
      * @return \Illuminate\Http\RedirectResponse

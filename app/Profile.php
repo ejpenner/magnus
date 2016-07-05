@@ -22,7 +22,8 @@ class Profile extends Model
      * A profile model has many comment models
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function comments() {
+    public function comments()
+    {
         return $this->hasMany('Magnus\Comment');
     }
 }

@@ -124,7 +124,7 @@ class NotificationController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        if(Auth::check()) {
+        if (Auth::check()) {
             $user = Auth::user();
             $notification = Notification::findOrFail($id);
             $notification->deleteNotification($user);

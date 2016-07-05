@@ -36,7 +36,8 @@ class Opus extends Model
      * Opus has a 0:M relationship with Comment model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function comments() {
+    public function comments()
+    {
         return $this->hasMany('Magnus\Comment');
     }
 
@@ -53,7 +54,8 @@ class Opus extends Model
      * Opus model has a M:N relationship with Gallery model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function galleries() {
+    public function galleries()
+    {
         return $this->belongsToMany('Magnus\Gallery')->withTimestamps();
     }
 
@@ -61,7 +63,8 @@ class Opus extends Model
      * Opus model has a 1:M relationship with Notification model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function notifications() {
+    public function notifications()
+    {
         return $this->hasMany('Magnus\Notification');
     }
 
@@ -87,7 +90,8 @@ class Opus extends Model
      * Query scope that only returns Opus that are published
      * @param $query
      */
-    public function scopePublished($query) {
+    public function scopePublished($query)
+    {
         $query->where('published_at', '<=', Carbon::now());
     }
 
@@ -174,8 +178,9 @@ class Opus extends Model
      * @param $value
      * @return bool|string|static
      */
-    public function getCreatedAtAttribute($value) {
-        if(isset(Auth::user()->timezone)) {
+    public function getCreatedAtAttribute($value)
+    {
+        if (isset(Auth::user()->timezone)) {
             return date_format(Carbon::parse($value)->timezone(Auth::user()->timezone), 'M d, Y g:iA');
         } else {
             return date_format(Carbon::parse($value), 'F d, Y');
@@ -187,8 +192,9 @@ class Opus extends Model
      * @param $value
      * @return bool|string
      */
-    public function getPublishedAtAttribute($value){
-        if(isset(Auth::user()->timezone)) {
+    public function getPublishedAtAttribute($value)
+    {
+        if (isset(Auth::user()->timezone)) {
             return date_format(Carbon::parse($value)->timezone(Auth::user()->timezone), 'F d, Y');
         } else {
             return date_format(Carbon::parse($value), 'F d, Y');
@@ -200,7 +206,7 @@ class Opus extends Model
      */
     public function setSlug()
     {
-        $this->slug = substr(microtime(),15).'-'.str_slug($this->title);
+        $this->slug = substr(microtime(), 15).'-'.str_slug($this->title);
     }
 
     /**
@@ -237,7 +243,7 @@ class Opus extends Model
 
         $ratio = $resize->width() / $resize->height();
 
-        if($ratio > 1){ // image is wider than tall
+        if ($ratio > 1) { // image is wider than tall
             $resize->resize(isset($size) ? $size : $this->resizeTo, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
@@ -340,10 +346,9 @@ class Opus extends Model
     public function deleteImages()
     {
         $path = public_path();
-        if (File::delete($path.'/'.$this->image_path) 
-            and File::delete($path.'/'.$this->thumbnail_path) 
-            and File::delete($path.'/'.$this->preview_path))
-        {
+        if (File::delete($path.'/'.$this->image_path)
+            and File::delete($path.'/'.$this->thumbnail_path)
+            and File::delete($path.'/'.$this->preview_path)) {
             return true;
         }
         return false;
@@ -374,7 +379,8 @@ class Opus extends Model
      *  Return an array of tagnames as a string
      * @return string
      */
-    public function stringifyTags() {
+    public function stringifyTags()
+    {
         return implode(' ', array_pluck($this->tags->toArray(), 'name'));
     }
 
@@ -382,7 +388,8 @@ class Opus extends Model
      * Return an array containing some metadata about the image
      * @return array
      */
-    public function metadata() {
+    public function metadata()
+    {
         try {
             $img = Image::make($this->getImage());
             $size = ceil($img->fileSize() / 1000);
@@ -394,7 +401,7 @@ class Opus extends Model
 
     private function makeDirectory(User $user)
     {
-        $dirName = 'art/'.$user->username.'/'.substr(microtime(),11);
+        $dirName = 'art/'.$user->username.'/'.substr(microtime(), 11);
         File::makeDirectory(public_path($dirName), 4664, true);
         return $dirName;
     }
@@ -422,10 +429,11 @@ class Opus extends Model
 
     public function hasTag(Tag $newTag)
     {
-        if($this->tags->count() > 0){
+        if ($this->tags->count() > 0) {
             foreach ($this->tags as $tag) {
-                if($tag->id == $newTag->id)
+                if ($tag->id == $newTag->id) {
                     return true;
+                }
             }
         }
         return false;
@@ -435,11 +443,12 @@ class Opus extends Model
      * Increment the pageview of this Opus if conditions are met
      * @param $request
      */
-    public function pageview($request) {
+    public function pageview($request)
+    {
         $seen = false;
         $viewed = session('viewed');
-        if(Auth::check() and  !Auth::user()->isOwner($this)) {
-            if($request->session()->has('viewed')) { // check to see if viewed has been set
+        if (Auth::check() and  !Auth::user()->isOwner($this)) {
+            if ($request->session()->has('viewed')) { // check to see if viewed has been set
                 foreach ($viewed as $view) {
                     if ($this->id == $view) { // the user has seen it before
                         $seen = true;
@@ -459,7 +468,7 @@ class Opus extends Model
                 $this->save();
             }
         } else { // viewer is a guest
-            if($request->session()->has('viewed')) { // guest has seen another opus already
+            if ($request->session()->has('viewed')) { // guest has seen another opus already
                 foreach ($viewed as $view) {
                     if ($this->id == $view) { // the user has seen it before
                         $seen = true;
@@ -480,5 +489,4 @@ class Opus extends Model
             }
         }
     }
-
 }

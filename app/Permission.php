@@ -36,13 +36,15 @@ class Permission extends Model
         return $this->attributes['schema_name'];
     }
     
-    public function role() {
+    public function role()
+    {
         return $this->belongsTo('Magnus\Role');
     }
 
-    public static function hasPermission(User $user, $permission) {
-        foreach($user->roles as $userRoles) {
-            foreach($userRoles->permission->attributes as $key => $value) {
+    public static function hasPermission(User $user, $permission)
+    {
+        foreach ($user->roles as $userRoles) {
+            foreach ($userRoles->permission->attributes as $key => $value) {
                 $permissions = Permission::where('schema_name', $userRoles->role_name)->value($permission);
             }
         }

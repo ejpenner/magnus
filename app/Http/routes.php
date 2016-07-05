@@ -30,7 +30,7 @@ Route::auth();
 /**
  * Error 401 Unauthorized Route
  */
-Route::get('errors/401', ['as' => '401', function() {
+Route::get('errors/401', ['as' => '401', function () {
     return view('errors.401');
 }]);
 
@@ -77,9 +77,9 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * CRUD routes for opera in galleries
      */
-    Route::post('gallery/{gallery}/',           'OpusController@galleryStore');
-    Route::patch('gallery/{gallery}/{opus}',    'OpusController@galleryUpdate');
-    Route::delete('gallery/{gallery}/{opus}',   'OpusController@galleryDestroy');
+    Route::post('gallery/{gallery}/', 'OpusController@galleryStore');
+    Route::patch('gallery/{gallery}/{opus}', 'OpusController@galleryUpdate');
+    Route::delete('gallery/{gallery}/{opus}', 'OpusController@galleryDestroy');
 
     /**
      * Pretty url CRUD for comments

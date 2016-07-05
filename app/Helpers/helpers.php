@@ -11,7 +11,6 @@ use Magnus\Opus;
 use Magnus\Role;
 use Magnus\User;
 
-
 class Helpers
 {
     /**
@@ -76,8 +75,8 @@ class Helpers
     public static function listWatchers(User $user)
     {
         $watcherList = Collection::make();
-        foreach($user->watchedUsers as $i => $watcher) {
-            if($i >= 10) {
+        foreach ($user->watchedUsers as $i => $watcher) {
+            if ($i >= 10) {
                 return $watcherList;
             }
             $watcherList->push(User::where('id', $watcher->pivot->watcher_user_id)->first());
@@ -93,9 +92,9 @@ class Helpers
     public static function listWatchedUsers(User $user)
     {
         $watcherList = Collection::make();
-        foreach($user->watchers as $i => $watcher) {
-            if($user->id != $watcher->pivot->watched_user_id) {
-                if($i >= 10) {
+        foreach ($user->watchers as $i => $watcher) {
+            if ($user->id != $watcher->pivot->watched_user_id) {
+                if ($i >= 10) {
                     return $watcherList;
                 }
                 $watcherList->push(User::where('id', $watcher->pivot->watched_user_id)->first());
@@ -125,8 +124,7 @@ class Helpers
      */
     public static function isOwnerOrHasRole($object, $role)
     {
-        if(self::isOwner(Auth::user(), $object) or Auth::user()->atLeastHasRole($role))
-        {
+        if (self::isOwner(Auth::user(), $object) or Auth::user()->atLeastHasRole($role)) {
             return true;
         }
         return false;
@@ -157,7 +155,7 @@ class Helpers
 
         // if there are only two opera in a gallery, the next and previous
         // links should be the opus it is not
-        if(count($pieceNav) < 2) {
+        if (count($pieceNav) < 2) {
             $galleryNav['next'] = $pieceNav[0];
             $galleryNav['previous'] = $pieceNav[0];
 
@@ -165,8 +163,8 @@ class Helpers
         }
 
         // logic for a gallery with only three opera
-        if(count($pieceNav) < 3) {
-            if($pieceNav[0] == $opus->id) {
+        if (count($pieceNav) < 3) {
+            if ($pieceNav[0] == $opus->id) {
                 $galleryNav['next'] = $pieceNav[1];
                 $galleryNav['previous'] = $pieceNav[1];
             } else {
@@ -180,19 +178,19 @@ class Helpers
 
         // logic for a gallery with more than three opera in it
         foreach ($pieceNav as $i => $id) {
-            if($opus->id == max($pieceNav) and $foundMax == false) {
+            if ($opus->id == max($pieceNav) and $foundMax == false) {
                 $foundMinMax = true;
-                if($galleryNav['next'] == null) {
+                if ($galleryNav['next'] == null) {
                     $galleryNav['next'] = min($pieceNav);
                 }
-            } elseif($id > $opus->id) {
+            } elseif ($id > $opus->id) {
                 if ($galleryNav['next'] == null) {
                     $galleryNav['next'] = $pieceNav[$i];
                 }
-            }elseif($opus->id == min($pieceNav) and $foundMin == false) {
+            } elseif ($opus->id == min($pieceNav) and $foundMin == false) {
                 $foundMaxMin = true;
                 $galleryNav['previous'] = max($pieceNav);
-            } elseif($id < $opus->id) {
+            } elseif ($id < $opus->id) {
                 $galleryNav['previous'] = $pieceNav[$i];
             }
         }
@@ -224,7 +222,7 @@ class Helpers
 
         // if there are only two opera in a gallery, the next and previous
         // links should be the opus it is not
-        if(count($pieceNav) < 2) {
+        if (count($pieceNav) < 2) {
             $galleryNav['next'] = $pieceNav[0];
             $galleryNav['previous'] = $pieceNav[0];
 
@@ -232,8 +230,8 @@ class Helpers
         }
 
         // logic for a gallery with only three opera
-        if(count($pieceNav) < 3) {
-            if($pieceNav[0] == $opus->id) {
+        if (count($pieceNav) < 3) {
+            if ($pieceNav[0] == $opus->id) {
                 $galleryNav['next'] = $pieceNav[1];
                 $galleryNav['previous'] = $pieceNav[1];
             } else {
@@ -247,19 +245,19 @@ class Helpers
 
         // logic for a gallery with more than three opera in it
         foreach ($pieceNav as $i => $id) {
-            if($opus->id == max($pieceNav) and $foundMax == false) {
+            if ($opus->id == max($pieceNav) and $foundMax == false) {
                 $foundMinMax = true;
-                if($galleryNav['next'] == null) {
+                if ($galleryNav['next'] == null) {
                     $galleryNav['next'] = min($pieceNav);
                 }
-            } elseif($id > $opus->id) {
+            } elseif ($id > $opus->id) {
                 if ($galleryNav['next'] == null) {
                     $galleryNav['next'] = $pieceNav[$i];
                 }
-            }elseif($opus->id == min($pieceNav) and $foundMin == false) {
+            } elseif ($opus->id == min($pieceNav) and $foundMin == false) {
                 $foundMaxMin = true;
                 $galleryNav['previous'] = max($pieceNav);
-            } elseif($id < $opus->id) {
+            } elseif ($id < $opus->id) {
                 $galleryNav['previous'] = $pieceNav[$i];
             }
         }

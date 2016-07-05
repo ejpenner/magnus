@@ -1,15 +1,16 @@
+var browserify = require('browserify');
+var babelify = require('babelify');
 var gulp = require('gulp');
+var cache = require('gulp-cached');
 var phpcbf = require('gulp-phpcbf');
 var prettify = require('gulp-jsbeautifier');
 var less = require('gulp-less');
-var browserify = require('browserify');
 var concat = require('gulp-concat');
 var strictify = require('strictify');
-var babelify = require('babelify');
 var source = require('vinyl-source-stream');
 var watchify = require('gulp-watchify');
 var runSequence = require('run-sequence');
-var cache = require('gulp-cached');
+var through2 = require('through2');
 
 var assets_dir = './resources/assets/';
 
@@ -47,7 +48,7 @@ var php_files = [
 
 //PHPcbf options
 var phpcbf_options = {
-    bin: 'phpcbf',
+    bin: 'vendor/bin/phpcbf',
     standard: 'PSR2',
     warningSeverity: 0
 };
@@ -128,7 +129,7 @@ gulp.task('js', [
 gulp.task('default', [
     'less',
     'vendor-scripts',
-    'angular',
+    //'angular',
     'scripts',
     'phpcbf-app',
     'phpcbf-config'

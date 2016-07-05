@@ -52,10 +52,10 @@ class ProfileController extends Controller
         $query->join('user_watch', 'users.id', '=', 'user_watch.watcher_user_id');
         $query->where('user_watch.watched_user_id', $user->id);
         $query->orderBy('user_watch.created_at', 'desc');
-        $query->select('users.name','users.username','users.id','users.slug','user_watch.created_at');
+        $query->select('users.name', 'users.username', 'users.id', 'users.slug', 'user_watch.created_at');
         $watchers = $query->paginate(50);
 
-        if($user->name != null) {
+        if ($user->name != null) {
             return view('profile.watchers', compact('user', 'watchers'));
         } else {
             return abort(404);
@@ -68,9 +68,9 @@ class ProfileController extends Controller
         $query->join('user_watch', 'users.id', '=', 'user_watch.watched_user_id');
         $query->where('user_watch.watcher_user_id', $user->id);
         $query->orderBy('user_watch.created_at', 'desc');
-        $query->select('users.name','users.username','users.id','users.slug','user_watch.created_at');
+        $query->select('users.name', 'users.username', 'users.id', 'users.slug', 'user_watch.created_at');
         $watchers = $query->paginate(50);
-        if($user->name != null) {
+        if ($user->name != null) {
             return view('profile.watching', compact('user', 'watchers'));
         } else {
             return abort(404);
@@ -82,20 +82,22 @@ class ProfileController extends Controller
      *
      * @param User $user
      */
-    public function galleries(User $user) {
+    public function galleries(User $user)
+    {
         $galleries = Gallery::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(12);
         return view('profile.gallery', compact('galleries'));
     }
 
     /**
      * return all the opus of a user
-     * 
+     *
      * @param User $user
      */
-    public function opera(User $user) {
+    public function opera(User $user)
+    {
         $profile = Profile::where('user_id', $user->id)->first();
         $opera = Opus::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(24);
-        return view('profile.opera', compact('user','profile','opera'));
+        return view('profile.opera', compact('user', 'profile', 'opera'));
     }
 
 
@@ -104,7 +106,8 @@ class ProfileController extends Controller
      *
      * @param User $user
      */
-    public function submissions(User $user) {
+    public function submissions(User $user)
+    {
 
     }
 
@@ -129,7 +132,7 @@ class ProfileController extends Controller
         $profile = Profile::where('user_id', $user->id)->first();
         $galleries = Gallery::where('user_id', $user->id)->limit(4)->orderBy('updated_at', 'desc')->get();
         $opera = Opus::where('user_id', $user->id)->limit(8)->orderBy('created_at', 'desc')->get();
-        if($user->name != null) {
+        if ($user->name != null) {
             return view('profile.show', compact('profile', 'user', 'galleries', 'opera'));
         } else {
             return abort(404);

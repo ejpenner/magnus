@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
 {
-    public function session(Request $request) {
+    public function session(Request $request)
+    {
         $session = $request->session()->all();
         return view('admin.session', compact('session'));
     }

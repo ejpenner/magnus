@@ -41,7 +41,7 @@ class ClearDaily extends Command
         $this->info('Resetting daily Opus views...');
         $opera = Opus::all();
         $progressBar = $this->output->createProgressBar(count($opera));
-        foreach($opera as $opus) {
+        foreach ($opera as $opus) {
             $opus->save(['daily_views' => 0]);
             $progressBar->advance();
         }

@@ -14,7 +14,8 @@ class Notification extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users() {
+    public function users()
+    {
         return $this->belongsToMany('Magnus\User', 'notification_user')->withTimestamps();
     }
 
@@ -23,7 +24,8 @@ class Notification extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function comment() {
+    public function comment()
+    {
         return $this->belongsTo('Magnus\Comment');
     }
 
@@ -32,7 +34,8 @@ class Notification extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function opus() {
+    public function opus()
+    {
         return $this->belongsTo('Magnus\Opus');
     }
 
@@ -42,22 +45,22 @@ class Notification extends Model
         $user->notifications()->attach($this->id);
     }
 
-    public function notify(User $user) {
+    public function notify(User $user)
+    {
         $user->notifications()->attach($this->id);
     }
     
     public function deleteNotification(User $user)
     {
-        if($this->hasOwner($user)) {
+        if ($this->hasOwner($user)) {
             $user->notifications()->detach($this->id);
         }
     }
 
     private function hasOwner(User $user)
     {
-        foreach ($this->users as $notifiedUsers)
-        {
-            if($user->id == $notifiedUsers->id) {
+        foreach ($this->users as $notifiedUsers) {
+            if ($user->id == $notifiedUsers->id) {
                 return true;
             }
         }
@@ -77,7 +80,7 @@ class Notification extends Model
             'content' => $opus->title
         ]);
 
-        foreach($user->watchers as $watcher) {
+        foreach ($user->watchers as $watcher) {
             $u = User::find($watcher->user_id);
             $notification->notify($u);
         }
@@ -92,8 +95,7 @@ class Notification extends Model
      */
     public static function notifyUserNewReply(User $op, User $replier, Comment $newComment)
     {
-        if ($op->id != $replier->id) // if op is not replying to their own comment
-        {
+        if ($op->id != $replier->id) { // if op is not replying to their own comment
             $notify = Notification::create(['handle' => 'comment', 'comment_id' => $newComment->id, 'content' => $newComment->body]);
             $notify->notify($op);
         }

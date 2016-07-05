@@ -34,7 +34,7 @@ class SearchController extends Controller
      */
     public function searchAll(Request $request, $parameters)
     {
-        if($request->has('limit')) {
+        if ($request->has('limit')) {
             $limit = $request->input('limit');
         } elseif (Auth::check()) {
             $limit = Auth::user()->preferences->per_page;
@@ -51,14 +51,13 @@ class SearchController extends Controller
         $orderUrl = 'desc';
         $periodUrl = '';
         $input = [
-            'page' => $request->input('page') ?? 1,
+            'page' => $request->has('page') ? $request->input('page') : 1,
             'count' => $limit
         ];
 
-        foreach($terms as $term)
-        {
+        foreach ($terms as $term) {
             $term = trim($term);
-            if(strpos($term, '@') !== false) { // Search by tag only
+            if (strpos($term, '@') !== false) { // Search by tag only
                 try {
                     $term = preg_replace('/@/', '', filter_var($term, FILTER_SANITIZE_STRING));
                     $tag = Tag::where('name', $term)->first();
@@ -71,10 +70,10 @@ class SearchController extends Controller
             }
         }
 
-        if(count($tag_ids) > 0) {
+        if (count($tag_ids) > 0) {
             $tagClause = 'WHERE ';
             foreach ($tag_ids as $i => $tag) {
-                if($i < 1) {
+                if ($i < 1) {
                     $tagClause .=  ' t.id = ' . $tag . ' ';
                 } else {
                     $tagClause .=  ' OR t.id = ' . $tag . ' ';
@@ -82,22 +81,21 @@ class SearchController extends Controller
             }
         }
 
-        if(count($termList) > 0) {
+        if (count($termList) > 0) {
             $whereClause = 'WHERE ';
             foreach ($termList as $i => $term) {
-                if($i < 1) {
+                if ($i < 1) {
                     $whereClause .=  ' u.username = \'' . $term . '\'
                                  OR o.title LIKE \'%' . $term . ' %\'';
                 } else {
                     $whereClause .=  ' OR u.username = \'' . $term . '\'
                                  OR o.title LIKE \'%' . $term . '%\' ';
                 }
-
             }
         }
 
-        if($request->has('sort')) {
-            if($request->has('order')) {
+        if ($request->has('sort')) {
+            if ($request->has('order')) {
                 switch (strtolower($request->input('order'))) {
                     case 'asc':
                         $order = 'ASC';
@@ -141,9 +139,9 @@ class SearchController extends Controller
             $sortUrl = 'relevance';
         }
 
-        if($request->has('time')) {
+        if ($request->has('time')) {
             $now = new Carbon();
-            if(count($termList) > 0) {
+            if (count($termList) > 0) {
                 $period = ' AND ';
             } else {
                 $period = ' WHERE ';
@@ -219,11 +217,15 @@ class SearchController extends Controller
         $total = count(DB::select($totalQuery));
         $results = DB::select($query);
 
-        $paginatedResults = new Paginator($results, $total, $limit,
+        $paginatedResults = new Paginator(
+            $results,
+            $total,
+            $limit,
             \Illuminate\Pagination\Paginator::resolveCurrentPage(), //resolve the path
-            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]);
+            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+        );
 
-        return view('search.index', compact('paginatedResults','sortUrl','orderUrl','periodUrl'));
+        return view('search.index', compact('paginatedResults', 'sortUrl', 'orderUrl', 'periodUrl'));
     }
 
     /**

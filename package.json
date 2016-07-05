@@ -6,19 +6,20 @@
   },
   "devDependencies": {
     "babelify": "*",
-    "browserify": "^13.0.0",
-    "gulp": "^3.8.8",
+    "browserify": "~13.0.0",
+    "gulp": "*",
     "gulp-concat": "*",
     "gulp-less": "*",
-    "watchify": "^3.1.0",
+    "watchify": "*",
     "gulp-jsbeautifier": "*",
     "gulp-phpcbf": "*",
     "gulp-watchify": "*",
     "strictify": "^0.2.0",
-    "gulp-cached": "^1.1.0",
+    "gulp-cached": "*",
     "vinyl-source-stream": "*",
-    "stream-http": "^2.2.0",
-    "through2": "^2.0.1",
+    "through2": "*",
+    "http-stream": "*",
+    "run-sequence": "*",
     "laravel-elixir": "*",
     "laravel-elixir-phpcs": "*"
   },
@@ -26,4 +27,3 @@
 
   }
 }
-

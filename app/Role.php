@@ -10,19 +10,21 @@ class Role extends Model
 
     /**
      * Role model has 1:1 relationship with Permission model
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function permission() {
+    public function permission()
+    {
         return $this->hasOne('Magnus\Permission');
     }
 
     /**
-     * Role model has a M:N relationship with User model 
-     * 
+     * Role model has a M:N relationship with User model
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users() {
+    public function users()
+    {
         return $this->belongsToMany('Magnus\User', 'user_roles');
     }
 
@@ -33,9 +35,10 @@ class Role extends Model
      * @param $role
      * @return bool
      */
-    public static function atLeastHasRole(User $user, $role) {
-        foreach($user->roles as $userRole) {
-            if($userRole->level >= Role::where('role_code', $role)->value('level')) {
+    public static function atLeastHasRole(User $user, $role)
+    {
+        foreach ($user->roles as $userRole) {
+            if ($userRole->level >= Role::where('role_code', $role)->value('level')) {
                 return true;
             }
         }
@@ -48,9 +51,10 @@ class Role extends Model
      * @param $role
      * @return bool
      */
-    public static function hasRole(User $user, $role) {
-        foreach($user->roles as $userRole) {
-            if($userRole->level == Role::where('role_code', $role)->value('level')) {
+    public static function hasRole(User $user, $role)
+    {
+        foreach ($user->roles as $userRole) {
+            if ($userRole->level == Role::where('role_code', $role)->value('level')) {
                 return true;
             }
         }

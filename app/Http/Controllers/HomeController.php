@@ -29,8 +29,9 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function recent(Request $request, $filter = null, $period = null) {
-        if($request->has('limit')) {
+    public function recent(Request $request, $filter = null, $period = null)
+    {
+        if ($request->has('limit')) {
             $limit = $request->input('limit');
         } elseif (Auth::check()) {
             $limit = Auth::user()->preferences->per_page;
@@ -50,7 +51,7 @@ class HomeController extends Controller
                 break;
         }
 
-        if($period != null) {
+        if ($period != null) {
             switch ($period) {
                 case 'today':
                     $opera = $opera->today();
@@ -72,6 +73,6 @@ class HomeController extends Controller
 
         $opera = $opera->paginate($limit);
         
-        return view('home.recent', compact('opera','request'));
+        return view('home.recent', compact('opera', 'request'));
     }
 }

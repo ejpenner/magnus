@@ -55,7 +55,8 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function opera() {
+    public function opera()
+    {
         return $this->hasMany('Magnus\Opus');
     }
 
@@ -64,7 +65,8 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function comments() {
+    public function comments()
+    {
         return $this->hasMany('Magnus\Comment');
     }
 
@@ -133,14 +135,15 @@ class User extends Authenticatable
      *
      * @return string
      */
-    public function decorateName() {
-        if(Role::atLeastHasRole($this, Config::get('roles.dev-code'))) {
+    public function decorateName()
+    {
+        if (Role::atLeastHasRole($this, Config::get('roles.dev-code'))) {
             return "<span class=\"username role-developer\">$this->name</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.admin-code'))) {
+        } elseif (Role::atLeastHasRole($this, Config::get('roles.admin-code'))) {
             return "<span class=\"username role-administrator\">$this->name</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.gmod-code'))) {
+        } elseif (Role::atLeastHasRole($this, Config::get('roles.gmod-code'))) {
             return "<span class=\"username role-globalModerator\">$this->name</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.mod-code'))) {
+        } elseif (Role::atLeastHasRole($this, Config::get('roles.mod-code'))) {
             return "<span class=\"username role-moderator\">$this->name</span>";
         } else {
             return "<span class=\"username\">$this->name</span>";
@@ -152,16 +155,17 @@ class User extends Authenticatable
      *
      * @return string
      */
-    public function decorateUsername() {
-        if(Role::atLeastHasRole($this, Config::get('roles.dev-code'))) {
+    public function decorateUsername()
+    {
+        if (Role::atLeastHasRole($this, Config::get('roles.dev-code'))) {
             return "<span class=\"username role-developer\">$this->username</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.admin-code'))) {
+        } elseif (Role::atLeastHasRole($this, Config::get('roles.admin-code'))) {
             return "<span class=\"username role-administrator\">$this->username</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.gmod-code'))) {
+        } elseif (Role::atLeastHasRole($this, Config::get('roles.gmod-code'))) {
             return "<span class=\"username role-globalModerator\">$this->username</span>";
-        } elseif(Role::atLeastHasRole($this, Config::get('roles.mod-code'))) {
+        } elseif (Role::atLeastHasRole($this, Config::get('roles.mod-code'))) {
             return "<span class=\"username role-moderator\">$this->username</span>";
-        } elseif(Role::hasRole($this, Config::get('roles.banned-code'))) {
+        } elseif (Role::hasRole($this, Config::get('roles.banned-code'))) {
             return "<span class=\"username role-banned\">$this->username</span>";
         } else {
             return "<span class=\"username\">$this->username</span>";
@@ -187,7 +191,7 @@ class User extends Authenticatable
      */
     public function hasRole($role)
     {
-        if(Role::hasRole($this, $role)) {
+        if (Role::hasRole($this, $role)) {
             return true;
         }
         return false;
@@ -201,7 +205,7 @@ class User extends Authenticatable
      */
     public function atLeastHasRole($role)
     {
-        if(Role::atLeastHasRole($this, $role)) {
+        if (Role::atLeastHasRole($this, $role)) {
             return true;
         }
         return false;
@@ -249,7 +253,7 @@ class User extends Authenticatable
         //$destinationPath = $this->avatarDirectory; // upload path, goes to the public folder
         $destinationPath = $this->artDirectory.'/'.$this->username.'/'.$this->avatarDirectory;
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-        if($extension == null or $extension == '') {
+        if ($extension == null or $extension == '') {
             $extension = 'png';
         }
         $fileName = substr(microtime(), 2, 8).'_uploaded.'.$extension; // renaming image
@@ -267,7 +271,7 @@ class User extends Authenticatable
      */
     public function setAvatar($request)
     {
-        if($this->avatar != null or $this->avatar != '') {
+        if ($this->avatar != null or $this->avatar != '') {
             $this->deleteAvatarFile();
         }
         $this->avatar = $this->storeAvatar($request);
@@ -285,8 +289,8 @@ class User extends Authenticatable
     public function resize($image)
     {
         $resize = Image::make($image);
-        $resize->resize($this->avatarResize, null, function ( $constraint )
-        {
+        $resize->resize($this->avatarResize, null, function ($constraint) {
+        
             $constraint->aspectRatio();
         });
         return $resize;
@@ -299,8 +303,7 @@ class User extends Authenticatable
      */
     public function getAvatar()
     {
-        if(!empty($this->avatar) && File::exists($this->avatar))
-        {
+        if (!empty($this->avatar) && File::exists($this->avatar)) {
             return '/'.$this->avatar;
         }
         return '/images/missing/missing-avatar.png';
@@ -314,8 +317,7 @@ class User extends Authenticatable
     public function deleteAvatarFile()
     {
         $path = public_path();
-        if(File::delete($path.'/'.$this->avatar))
-        {
+        if (File::delete($path.'/'.$this->avatar)) {
             return true;
         }
         return false;
@@ -326,9 +328,10 @@ class User extends Authenticatable
      *
      * @return array|string
      */
-    public function listRoles() {
+    public function listRoles()
+    {
         $roles = [];
-        foreach($this->roles as $role) {
+        foreach ($this->roles as $role) {
             array_push($roles, $role->role_name);
         }
         $roles = implode(', ', $roles);
@@ -380,9 +383,11 @@ class User extends Authenticatable
      */
     public function isWatched(User $user)
     {
-        $watch = Watch::where('user_id',$user->id)->where('watcher_user_id', $this->id)->count();
+        $watch = Watch::where('user_id', $user->id)->where('watcher_user_id', $this->id)->count();
 //        $watches = Watch::where('user_id',$user->id)->get();
-        if ($watch > 0) return true;
+        if ($watch > 0) {
+            return true;
+        }
 //        $watch = Watch::where('user_id',$user->id)->first();
 //
 //        foreach ($watches as $watch)

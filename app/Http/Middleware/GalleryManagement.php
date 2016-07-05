@@ -7,7 +7,6 @@ use Magnus\Gallery;
 use Illuminate\Support\Facades\Auth;
 use Magnus\Helpers\Helpers;
 
-
 class GalleryManagement
 {
     /**

@@ -9,7 +9,7 @@ class Permission
 {
     /**
      * Handle an incoming request based on the type of permission
-     * and permission level specified. 
+     * and permission level specified.
      * @param $request
      * @param Closure $next
      * @param $type
