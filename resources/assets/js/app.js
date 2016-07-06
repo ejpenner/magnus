@@ -13,15 +13,15 @@ $(document).ready(function() {
     });
 
     $('#preview').click(function() {
-        console.log('hey clicked me');
-        // $('#fullview').trigger("unveil").show();
-        // $(this).hide();
+        $('#fullview').show().unveil();
+        $(this).toggle();
     });
 
     $('#fullview').click(function() {
-        // $(this).hide();
-        // $('#preview').show();
+        $(this).toggle();
+        $('#preview').toggle();
     });
+
 
     $(window).scroll(function() {
         var x = $(this).scrollTop();

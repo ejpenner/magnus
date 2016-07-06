@@ -105,55 +105,6 @@ div.message-item {
   min-height: @max-message-item-height !important;
 }
 
-span.role-developer::before {
-  content: "Dev";
-  margin-right: 3px;
-  padding: 2px;
-  font-size: 90%;
-  position: relative;
-  color: @white;
-  .border-radius(5px);
-  .gradient(#a45dba, #552f51);
-}
-
-span.role-administrator::before {
-  content: "Admin";
-  margin-right: 3px;
-  padding: 2px;
-  font-size: 90%;
-  position: relative;
-  color: @white;
-  .border-radius(5px);
-  .gradient(#c03622, #552522);
-}
-
-span.role-globalModerator::before {
-  content: "Conflict Resolution Officer";
-  margin-right: 3px;
-  padding: 2px;
-  font-size: 90%;
-  position: relative;
-  color: @white;
-  .border-radius(5px);
-  .gradient(#48ad42, #1a551a);
-}
-
-span.role-moderator::before {
-  content: "Mod";
-  margin-right: 3px;
-  padding: 2px;
-  font-size: 90%;
-  position: relative;
-  color: @white;
-  .border-radius(5px);
-  .gradient(#292ec6, #1a2363);
-}
-
-span.role-banned {
-  text-decoration: line-through;
-  color: @gray-light;
-}
-
 .gallery-container {
   margin-bottom: 15px;
 }
@@ -190,11 +141,10 @@ a.avatar-link {
 .opus-display {
   display: block;
   .opus-show {
-    //display: block;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 15px;
-    max-width: 1500px;
+    //max-width: 1500px;
     .box-shadow(5px 5px 5px #888888);
   }
 }
@@ -205,6 +155,7 @@ a.avatar-link {
 }
 
 .piece-nav {
+  margin-top: 5px;
   margin-bottom: 10px;
 }
 

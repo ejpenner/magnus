@@ -1,5 +1,4 @@
 <?php
-
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 use Magnus\Helpers\Helpers;
@@ -34,7 +33,7 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         $pdest = public_path().'/previews/'.$numbers.basename($files[$rand]);
 
         copy($src, $dest);
-        $preview = resize($dest, 800);
+        $preview = resize($dest, 680);
         $preview->save($pdest);
         $thumbnail = resize($dest);
         $thumbnail->save($tdest);
@@ -46,17 +45,12 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         $pdest = public_path().'/previews/'.$numbers.basename($files[$rand]);
 
         copy($src, $dest);
-        $preview = resize($src, 800);
+        $preview = resize($src, 680);
         $preview->save($pdest);
         $thumbnail = resize($dest);
         $thumbnail->save($tdest);
     }
 
-
-    $sizes = [0 => [250,160], 1 => [160,250]];
-    $res = $sizes[rand(0,1)];
-    $theme = '';
-    $faker->seed(rand(11111,99999));
     $image_path = substr($dest, 38);
     $thumbnail_path = substr($tdest, 38);
     $preview_path = substr($pdest, 38);

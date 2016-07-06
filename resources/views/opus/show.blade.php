@@ -4,11 +4,7 @@
     <div class="col-md-12">
         <div class="text-center">
             <div class="container-fluid">
-                <div class="opus-display">
-                    {{--<img class="opus-show" src="/{{ $opus->getImage() }}" alt="">--}}
-                    <img id="preview" src="/{{ $opus->getPreview() }}" alt="preview">
-                    <img id="fullview" src="/images/assets/loading.gif" alt="full view" data-src="/{{ $opus->getImage() }}">
-                </div>
+                @include('opus.partials._image')
             </div>
             @if(isset($galleryNav))
             <div class="text-center">

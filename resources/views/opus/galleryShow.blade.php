@@ -3,9 +3,7 @@
 @section('content')
     <div class="col-md-12">
         <div class="text-center">
-            <div class="opus-display">
-                <img class="opus-show" src="/{{ $opus->getImage() }}" alt="">
-            </div>
+            @include('opus.partials._image')
             <div class="text-center">
                 <div class="piece-nav">
                     <div class="btn-group">

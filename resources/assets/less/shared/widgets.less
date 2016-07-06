@@ -67,3 +67,53 @@ div.flash-messages {
     }
 
   }
+
+span.role-developer::before {
+  content: "Dev";
+  margin-right: 3px;
+  padding: 2px;
+  font-size: 90%;
+  position: relative;
+  color: @white;
+  .border-radius(5px);
+  .gradient(#a45dba, #552f51);
+}
+
+span.role-administrator::before {
+  content: "Admin";
+  margin-right: 3px;
+  padding: 2px;
+  font-size: 90%;
+  position: relative;
+  color: @white;
+  .border-radius(5px);
+  .gradient(#c03622, #552522);
+}
+
+span.role-globalModerator::before {
+  content: "Conflict Resolution Officer";
+  margin-right: 3px;
+  padding: 2px;
+  font-size: 90%;
+  position: relative;
+  color: @white;
+  .border-radius(5px);
+  .gradient(#48ad42, #1a551a);
+}
+
+span.role-moderator::before {
+  content: "Mod";
+  margin-right: 3px;
+  padding: 2px;
+  font-size: 90%;
+  position: relative;
+  color: @white;
+  .border-radius(5px);
+  .gradient(#292ec6, #1a2363);
+}
+
+span.role-banned {
+  text-decoration: line-through;
+  color: @gray-light;
+}
+
