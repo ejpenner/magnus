@@ -93,12 +93,8 @@ class Gallery extends Model
     
     public static function place(Request $request, Opus $opus)
     {
-        $gallery_ids = [];
-        foreach ($request->input('gallery_ids') as $id) {
-                array_push($gallery_ids, $id);
-        }
-        if (count($gallery_ids) > 0) {
-            foreach ($gallery_ids as $id) {
+        if (count($request->input('gallery_ids')) > 0) {
+            foreach ($request->input('gallery_ids') as $id) {
                 Gallery::where('id', $id)->first()->addOpus($opus);
             }
         }

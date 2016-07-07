@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\Auth;
 use Magnus\User;
 use Magnus\Profile;
 use Magnus\Gallery;
-use Magnus\Piece;
+use Magnus\Helpers\Helpers;
 use Magnus\Opus;
 
 class ProfileController extends Controller
 {
+
 
     public function __construct()
     {
@@ -36,7 +37,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         $profile = Profile::where('user_id', $user->id)->first();
         $galleries = Gallery::where('user_id', $user->id)->limit(4)->get();
-        $opera = Opus::where('user_id', $user->id)->orderBy('created_at', 'desc')->limit(8)->get();
+        $opera = Opus::where('user_id', $user->id)->orderBy('created_at', 'desc')->limit(6)->get();
 
         return view('profile.show', compact('profile', 'user', 'galleries', 'opera'));
     }
@@ -84,7 +85,7 @@ class ProfileController extends Controller
      */
     public function galleries(User $user)
     {
-        $galleries = Gallery::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(12);
+        $galleries = Gallery::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(Helpers::perPage());
         return view('profile.gallery', compact('galleries'));
     }
 
@@ -96,7 +97,7 @@ class ProfileController extends Controller
     public function opera(User $user)
     {
         $profile = Profile::where('user_id', $user->id)->first();
-        $opera = Opus::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(24);
+        $opera = Opus::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(Helpers::perPage());
         return view('profile.opera', compact('user', 'profile', 'opera'));
     }
 
@@ -131,7 +132,7 @@ class ProfileController extends Controller
     {
         $profile = Profile::where('user_id', $user->id)->first();
         $galleries = Gallery::where('user_id', $user->id)->limit(4)->orderBy('updated_at', 'desc')->get();
-        $opera = Opus::where('user_id', $user->id)->limit(8)->orderBy('created_at', 'desc')->get();
+        $opera = Opus::where('user_id', $user->id)->limit(6)->orderBy('created_at', 'desc')->get();
         if ($user->name != null) {
             return view('profile.show', compact('profile', 'user', 'galleries', 'opera'));
         } else {

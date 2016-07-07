@@ -71,18 +71,16 @@ class OpusController extends Controller
      * Multipurpose opus POST method that allows storage in galleries.
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function submit(Requests\OpusCreateRequest $request)
-    {
-        $user = Auth::user();
-        $opus = Opus::make($request, $user);
-        Notification::notifyWatchersNewOpus($opus, $user);
-        Tag::make($opus, $request->input('tags'));
-        if ($request->has('gallery_ids[]')) {
-            Gallery::place($request, $opus);
-        }
-
-        return redirect()->route('opus.show', $opus->slug)->with('success', 'Your work been added!');
-    }
+//    public function submit(Requests\OpusCreateRequest $request)
+//    {
+//        $user = Auth::user();
+//        $opus = Opus::make($request, $user);
+//        Notification::notifyWatchersNewOpus($opus, $user);
+//        Tag::make($opus, $request->input('tags'));
+//        Gallery::place($request, $opus);
+//
+//        return redirect()->route('opus.show', $opus->slug)->with('success', 'Your work been added!');
+//    }
 
     /**
      * Store a newly created resource in storage.
@@ -95,29 +93,29 @@ class OpusController extends Controller
         $opus = Opus::make($request, $user);
         Notification::notifyWatchersNewOpus($opus, $user);
         Tag::make($opus, $request->input('tags'));
-        if ($request->has('gallery_ids[]')) {
-            Gallery::place($request, $opus);
-        }
+        Gallery::place($request, $opus);
 
         return redirect()->route('opus.show', $opus->slug)->with('success', 'Your work been added!');
     }
 
     /**
-     *  Show an opus
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Show an opus
+     * @param Request $request
+     * @param Opus $opus
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(Request $request, Opus $opus)
     {
         $opus->pageview($request);
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
-        $galleryNav = Helpers::navigator($opus->user->opera, $opus);
-        return view('opus.show', compact('opus', 'comments', 'metadata', 'galleryNav'));
+        $navigator = Helpers::navigator($opus->user->opera, $opus);
+
+        return view('opus.show', compact('opus', 'comments', 'metadata', 'navigator'));
     }
 
     /**
-     *  Show an opus that is a part of a gallery
+     *  Show an opus that is a part of a gallery with the gallery URI scheme
      * @param $gallery_id
      * @param $opus_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -128,15 +126,15 @@ class OpusController extends Controller
         $opus->pageview($request);
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
-        $galleryNav = Helpers::galleryNavigator($gallery, $opus);
+        $navigator = Helpers::galleryNavigator($gallery, $opus);
 
-        return view('opus.galleryShow', compact('opus', 'gallery', 'comments', 'metadata', 'galleryNav'));
+        return view('opus.show', compact('opus', 'gallery', 'comments', 'metadata', 'navigator'));
     }
-
+    
     /**
      * Show the form for editing the specified resource.
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Opus $opus
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Opus $opus)
     {
@@ -182,23 +180,22 @@ class OpusController extends Controller
      * @param $piece_id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function galleryUpdate(Requests\OpusEditRequest $request, $gallery_id, Opus $opus)
-    {
-        if ($request->file('image') !== null) {
-            $imageStatus = $opus->updateImage($opus->user, $request);
-        }
-
-        // update everything except the image and published at
-        $request->has('title') ? $opus->setSlug() : null;
-        $opus->update($request->except('image', 'published_at'));
-
-        // check if tags have changed
-        if ($request->has('tags')) {
-            Tag::make($opus, $request->input('tags'));
-        }
-
-        return redirect()->route('opus.show', [$opus->slug])->with('success', 'Updated opus successfully!');
-    }
+//    public function galleryUpdate(Requests\OpusEditRequest $request, $gallery_id, Opus $opus)
+//    {
+//        if ($request->file('image') !== null) {
+//            $imageStatus = $opus->updateImage($opus->user, $request);
+//        }
+//        // update everything except the image and published at
+//        $request->has('title') ? $opus->setSlug() : null;
+//        $opus->update($request->except('image', 'published_at'));
+//
+//        // check if tags have changed
+//        if ($request->has('tags')) {
+//            Tag::make($opus, $request->input('tags'));
+//        }
+//
+//        return redirect()->route('opus.show', [$opus->slug])->with('success', 'Updated opus successfully!');
+//    }
 
     /**
      * Delete an opus and its files
@@ -228,13 +225,13 @@ class OpusController extends Controller
      * @param $opus_id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function galleryDestroy($gallery_id, $opus_id)
-    {
-        $opus = Opus::findOrFail($opus_id);
-        $gallery = Gallery::findOrFail($gallery_id);
-        $gallery->opera()->detach($opus->id);
-        $opus->delete();
-
-        return redirect()->route('gallery.show', $gallery_id)->with('success', 'The piece has been deleted!');
-    }
+//    public function galleryDestroy($gallery_id, $opus_id)
+//    {
+//        $opus = Opus::findOrFail($opus_id);
+//        $gallery = Gallery::findOrFail($gallery_id);
+//        $gallery->opera()->detach($opus->id);
+//        $opus->delete();
+//
+//        return redirect()->route('gallery.show', $gallery_id)->with('success', 'The piece has been deleted!');
+//    }
 }

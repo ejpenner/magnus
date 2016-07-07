@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@include('partials._cropperScript')
 @section('content')
     <div class="container">
         <div class="panel panel-default">

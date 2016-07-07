@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@include('partials._cropperScript')
 @section('content')
     <div class="container-fluid">
         <h3>Account Management</h3>

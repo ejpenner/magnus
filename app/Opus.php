@@ -18,6 +18,7 @@ class Opus extends Model
 
     protected $dates = ['published_at','created_at'];
     private $resizeTo = 250;
+    private $resizeExtension = 'jpg';
 
     /**
      * Opus has a M:1 relationship with User model
@@ -310,7 +311,7 @@ class Opus extends Model
 
         $previewSize = $request->has('preview_size') ? $request->input('preview_size') : 680;
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-        $fileName = $user->username.'-'.date('Ymd') .'-'. substr(microtime(), 2, 8).'-p.'. $extension; // renaming image
+        $fileName = $user->username.'-'.date('Ymd') .'-'. substr(microtime(), 2, 8).'-p.'. $this->resizeExtension; // renaming image
         $thumbnail = $this->resize($this->getImage(), $previewSize);
         $fullPath = $this->directory."/".$fileName;
         $thumbnail->save($fullPath);
@@ -326,7 +327,7 @@ class Opus extends Model
     public function storeThumbnail(User $user, $request)
     {
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
-        $fileName = $user->username.'-'.date('Ymd') .'-'. substr(microtime(), 12, 8).'-t.'. $extension; // renaming image
+        $fileName = $user->username.'-'.date('Ymd') .'-'. substr(microtime(), 12, 8).'-t.'. $this->resizeExtension; // renaming image
         $thumbnail = $this->resize($this->getImage());
         $fullPath = $this->directory."/".$fileName;
         $thumbnail->save($fullPath);

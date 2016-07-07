@@ -50,7 +50,7 @@ Route::get('/gallery/{gallery}/{opus}', 'OpusController@galleryShow');
 Route::resource('gallery', 'GalleryController');
 Route::resource('opus', 'OpusController');
 //Route::resource('opus.comment', 'CommentController');
-Route::get('opus/{opus}/comment/{comment}', 'CommentController@show');
+Route::get('comments/{comment}', 'CommentController@show');
 Route::get('opus/{opus}/download', 'OpusController@download');
 
 
@@ -76,7 +76,7 @@ Route::group(['middleware' => ['auth']], function () {
      * Alternate create and store routes for creating Opus
      */
     Route::get('/submit', 'OpusController@newSubmission')->name('submit');
-    Route::post('/submit', 'OpusController@submit');
+    Route::post('/submit/new', 'OpusController@store');
 
     /**
      * CRUD routes for opera in galleries
@@ -88,7 +88,6 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Pretty url CRUD for comments
      */
-    Route::get('comments/{comment}', 'CommentController@show');
     Route::post('opus/{opus}/{comment}', 'CommentController@storeChild');
     Route::post('opus/{opus}/comment', 'CommentController@store');
     Route::patch('opus/{opus}/{comment}', 'CommentController@updateChild');

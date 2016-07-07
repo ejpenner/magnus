@@ -1,9 +1,9 @@
-@if($galleryNav != null and isset($gallery))
+@if($navigator != null and isset($gallery))
     <div class="text-center">
         <div class="piece-nav">
             <div class="btn-group">
-                <a class="btn btn-default" href="{{ action('OpusController@galleryShow', [$gallery->id, $galleryNav['previous']]) }}">Previous</a>
-                <a class="btn btn-default" href="{{ action('OpusController@galleryShow', [$gallery->id, $galleryNav['next']]) }}">Next</a>
+                <a class="btn btn-default" href="{{ action('OpusController@galleryShow', [$gallery->id, $navigator['previous']]) }}">Previous</a>
+                <a class="btn btn-default" href="{{ action('OpusController@galleryShow', [$gallery->id, $navigator['next']]) }}">Next</a>
             </div>
         </div>
     </div>
@@ -11,8 +11,8 @@
     <div class="text-center">
         <div class="piece-nav">
             <div class="btn-group">
-                <a class="btn btn-default" href="{{ action('OpusController@show', [$galleryNav['previous']]) }}">Previous</a>
-                <a class="btn btn-default" href="{{ action('OpusController@show', [$galleryNav['next']]) }}">Next</a>
+                <a class="btn btn-default" href="{{ action('OpusController@show', [$navigator['previous']]) }}">Previous</a>
+                <a class="btn btn-default" href="{{ action('OpusController@show', [$navigator['next']]) }}">Next</a>
             </div>
         </div>
     </div>

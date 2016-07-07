@@ -8,7 +8,7 @@
     <script src="{{ asset('/js/vendor.js') }}"></script>
     <script src="{{ asset('/js/app.js') }}"></script>
     <link href="{{ asset('css/app.css') }}" media="screen" rel="stylesheet" type="text/css"/>
-
+    @yield('header')
     <style></style>
 </head>
 <body>
@@ -45,7 +45,7 @@
                     <a href="{{ action('GalleryController@index') }}">Galleries</a>
                 </li>
                 <li @if(Request::is('submit')) class="active" @endif >
-                    <a href="{{ action('OpusController@submit') }}">Submit</a>
+                    <a href="{{ action('OpusController@newSubmission') }}">Submit</a>
                 </li>
                 <li @if(Request::is('search')) class="active" @endif>
                     {!! Form::open(['url'=>'/search/', 'method'=>'get', 'class'=>'navbar-left navbar-form', 'role'=>'search', 'onsubmit'=>'return false;']) !!}

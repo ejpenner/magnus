@@ -72,15 +72,17 @@ $(document).ready(function() {
         $('div.preview-container').show();
     });
 
-    var avatarCropper = new Cropper(image, {
-        aspectRatio: 1,
-        crop: function(e) {
-            // console.log(e.detail.x);
-            // console.log(e.detail.y);
-            // console.log(e.detail.width);
-            // console.log(e.detail.height);
-        }
-    });
+    try {
+        var avatarCropper = new Cropper(image, {
+            aspectRatio: 1,
+            crop: function(e) {
+                // console.log(e.detail.x);
+                // console.log(e.detail.y);
+                // console.log(e.detail.width);
+                // console.log(e.detail.height);
+            }
+        });
+    } catch (e) {}
 
     $('.crop-submit').on('click', function(e) {
         console.log('Cropping avatar');
