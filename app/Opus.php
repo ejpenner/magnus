@@ -206,7 +206,7 @@ class Opus extends Model
      */
     public function setSlug()
     {
-        $this->slug = substr(microtime(), 15).'-'.str_slug($this->title);
+        $this->slug = substr(microtime(), 15).'-'.str_slug('-', $this->title);
     }
 
     /**
@@ -394,7 +394,11 @@ class Opus extends Model
      */
     public function stringifyTags()
     {
-        return implode(' ', array_pluck($this->tags->toArray(), 'name'));
+        if($this->tags->count() > 0) {
+            return implode(' ', array_pluck($this->tags->toArray(), 'name'));
+        } else {
+            return null;
+        }
     }
 
     /**

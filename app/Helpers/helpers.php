@@ -194,6 +194,11 @@ class Helpers
                 $galleryNav['previous'] = $pieceNav[$i];
             }
         }
+        $prev_id = $galleryNav['previous'];
+        $next_id = $galleryNav['next'];
+        $galleryNav['previous'] = Opus::where('id', $prev_id)->value('slug');
+        $galleryNav['next'] = Opus::where('id', $next_id)->value('slug');
+
         return $galleryNav;
     }
 
@@ -245,8 +250,7 @@ class Helpers
 
         // logic for a gallery with more than three opera in it
         foreach ($pieceNav as $i => $id) {
-            if ($opus->id == max($pieceNav) and $foundMax == false) {
-                $foundMinMax = true;
+            if ($opus->id == max($pieceNav)) {
                 if ($galleryNav['next'] == null) {
                     $galleryNav['next'] = min($pieceNav);
                 }
@@ -254,13 +258,17 @@ class Helpers
                 if ($galleryNav['next'] == null) {
                     $galleryNav['next'] = $pieceNav[$i];
                 }
-            } elseif ($opus->id == min($pieceNav) and $foundMin == false) {
-                $foundMaxMin = true;
+            } elseif ($opus->id == min($pieceNav)) {
                 $galleryNav['previous'] = max($pieceNav);
             } elseif ($id < $opus->id) {
                 $galleryNav['previous'] = $pieceNav[$i];
             }
         }
+        $prev_id = $galleryNav['previous'];
+        $next_id = $galleryNav['next'];
+        $galleryNav['previous'] = Opus::where('id', $prev_id)->value('slug');
+        $galleryNav['next'] = Opus::where('id', $next_id)->value('slug');
+
         return $galleryNav;
     }
 }

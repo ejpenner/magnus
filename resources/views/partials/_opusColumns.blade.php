@@ -3,12 +3,12 @@
         <div class="gallery-item">
             <div class="vcenter">
                 <div class="">
-                    <a href="{{ action('OpusController@show', [$opus->id]) }}">
+                    <a href="{{ action('OpusController@show', [$opus->slug]) }}">
                         <img src="/{{ $opus->getThumbnail() }}" alt="{{ $opus->title }}">
                     </a>
                 </div>
                 <div class="item-details">
-                    <h5><strong><a href="{{ action('OpusController@show', [$opus->id]) }}">{{ $opus->title }}</a></strong>
+                    <h5><strong><a href="{{ action('OpusController@show', [$opus->slug]) }}">{{ $opus->title }}</a></strong>
                         @if(!isset($showName) or $showName)
                             <br><a href="{{ action('ProfileController@show', $opus->user->slug) }}">{!! $opus->user->decorateUsername() !!}</a>
                         @endif
@@ -17,7 +17,7 @@
             </div>
             <div class="opus-operations">
                 @if(Auth::check() and (Auth::user()->isOwner($opus) or Magnus::isOwnerOrHasRole($opus, config('roles.moderator'))))
-                    @include('partials._operations', ['model' => $opus, 'controller' => 'OpusController'])
+                    @include('partials._operationsDropdownSlug', ['model' => $opus, 'controller' => 'OpusController'])
                 @endif
             </div>
         </div>

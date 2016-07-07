@@ -1,9 +1,7 @@
 $(document).ready(function() {
 
-    $(".alert-success").slideDown(400);
-
     window.setTimeout(function() {
-        $(".alert-success").fadeTo(500, 0).slideUp(500, function() {
+        $('.alert-success').fadeTo(500, 0).slideUp(500, function() {
             $(this).remove();
         });
     }, 3000);
@@ -58,7 +56,7 @@ $(document).ready(function() {
         }
     }
 
-    $(".reply-toggle").click(function() {
+    $('.reply-toggle').click(function() {
         $(this).children().show();
         $(this).children('.reply-btn').hide();
     });
@@ -77,10 +75,10 @@ $(document).ready(function() {
     var avatarCropper = new Cropper(image, {
         aspectRatio: 1,
         crop: function(e) {
-            console.log(e.detail.x);
-            console.log(e.detail.y);
-            console.log(e.detail.width);
-            console.log(e.detail.height);
+            // console.log(e.detail.x);
+            // console.log(e.detail.y);
+            // console.log(e.detail.width);
+            // console.log(e.detail.height);
         }
     });
 

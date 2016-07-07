@@ -6,18 +6,8 @@
             <div class="container-fluid">
                 @include('opus.partials._image')
             </div>
-            @if(isset($galleryNav))
-            <div class="text-center">
-                <div class="piece-nav">
-                    <div class="btn-group">
-                        <a class="btn btn-default" href="{{ action('OpusController@show', $galleryNav['previous']) }}">Previous</a>
-                        <a class="btn btn-default" href="{{ action('GalleryController@show', [$gallery->id]) }}">Gallery</a>
-                        <a class="btn btn-default" href="{{ action('OpusController@show', $galleryNav['next']) }}">Next</a>
-                    </div>
-                </div>
-            </div>
-            @endif
         </div>
+        @include('opus.partials._navigator')
         {{--panel start--}}
         <div class="container">
             <div class="panel panel-default">
@@ -60,12 +50,12 @@
                                 @if(Auth::check() and Magnus::isOwnerOrHasRole($opus, config('roles.moderator')))
                                     <div class="pull-right operations">
                                         {!! Form::model($opus, ['method'=>'delete', 'class'=>'delete-confirm operations',
-                                                               'action'=>['OpusController@destroy', $opus->id]]) !!}
-                                        <a href="{{ action('OpusController@edit', [$opus->id]) }}">
+                                                               'action'=>['OpusController@destroy', $opus->slug]]) !!}
+                                        <a href="{{ action('OpusController@edit', [$opus->slug]) }}">
                                             <button type="button" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</button>
                                         </a>
                                         <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
-                                        <a class="btn btn-primary btn-xs" href="{{ action('OpusController@download', [$opus->id]) }}">Download</a>
+                                        <a class="btn btn-primary btn-xs" href="{{ action('OpusController@download', [$opus->slug]) }}">Download</a>
                                         {!! Form::close() !!}
                                     </div>
                                 @endif

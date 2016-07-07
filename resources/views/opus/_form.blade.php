@@ -1,4 +1,7 @@
 <div class="form-group">
+    <input type="file" name="image" id="image" class="form-control">
+</div>
+<div class="form-group">
     {!! Form::label('title', 'Submission Title') !!}
     {!! Form::text('title', null, ['class'=>'form-control']) !!}
     @if ($errors->has('title'))
@@ -13,7 +16,7 @@
 </div>
 <div class="form-group">
     {!! Form::label('tags', 'Tags') !!}
-    {!! Form::text('tags', null, ['class'=>'form-control']) !!}
+    {!! Form::text('tags', isset($tagString) ? $tagString : null, ['class'=>'form-control']) !!}
     <div class="alert alert-info">Be sure to separate tags with spaces</div>
 </div>
 @if($galleries->count() > 0)
@@ -31,7 +34,4 @@
         </div>
     </div>
 @endif
-<div class="form-group">
-    <input type="file" name="image" id="image" class="form-control">
-</div>
 {!! Form::submit('Submit', ['class' => 'form-control']) !!}

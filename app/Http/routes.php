@@ -6,20 +6,24 @@ use Illuminate\Support\Facades\Config;
  */
 Route::model('users', 'User');
 Route::model('profile', 'Profile');
-//Route::model('opus', 'Opus');
+Route::model('opus', 'Opus');
+
+Route::bind('opus', function ($value, $route){
+    return \Magnus\Opus::whereSlug(strtolower($value))->firstOrFail();
+});
 
 /**
  * Binds the {users} parameter to the slug
  */
 Route::bind('users', function ($value, $route) {
-    return \Magnus\User::whereSlug(strtolower($value))->first();
+    return \Magnus\User::whereSlug(strtolower($value))->firstOrFail();
 });
 
 /**
  *  binds User model via slug to {profile} wildcard
  */
 Route::bind('profile', function ($value, $route) {
-    return \Magnus\User::whereSlug(strtolower($value))->first();
+    return \Magnus\User::whereSlug(strtolower($value))->firstOrFail();
 });
 
 /**
@@ -37,7 +41,7 @@ Route::get('errors/401', ['as' => '401', function () {
 /**
  * A pretty url to show opera that are in a gallery
  */
-Route::get('/gallery/{gallery}/{opus}', 'OpusController@galleryShow');
+//Route::get('/gallery/{gallery}/{opus}', 'OpusController@galleryShow');
 
 
 /**
@@ -47,7 +51,7 @@ Route::resource('gallery', 'GalleryController');
 Route::resource('opus', 'OpusController');
 //Route::resource('opus.comment', 'CommentController');
 Route::get('opus/{opus}/comment/{comment}', 'CommentController@show');
-Route::get('opus/{id}/download', 'OpusController@download');
+Route::get('opus/{opus}/download', 'OpusController@download');
 
 
 /**
@@ -77,9 +81,9 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * CRUD routes for opera in galleries
      */
-    Route::post('gallery/{gallery}/', 'OpusController@galleryStore');
-    Route::patch('gallery/{gallery}/{opus}', 'OpusController@galleryUpdate');
-    Route::delete('gallery/{gallery}/{opus}', 'OpusController@galleryDestroy');
+    //Route::post('gallery/{gallery}/', 'OpusController@galleryStore');
+    //Route::patch('gallery/{gallery}/{opus}', 'OpusController@galleryUpdate');
+    //Route::delete('gallery/{gallery}/{opus}', 'OpusController@galleryDestroy');
 
     /**
      * Pretty url CRUD for comments

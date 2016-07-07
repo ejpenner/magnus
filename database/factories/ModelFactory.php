@@ -56,10 +56,11 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
     $preview_path = substr($pdest, 38);
 
     $created = Carbon::instance($faker->dateTimeBetween('-2 months', 'now'));
-
+        $title = $faker->words(3, true);
     return [
-        'title'             => ucwords($faker->words(3, true)),
+        'title'             => ucwords($title),
         'comment'           => $faker->paragraphs(2,true),
+        'slug'              => substr(microtime(), 2,8).'-'.str_slug($title),
         'image_path'        => $image_path,
         'thumbnail_path'    => $thumbnail_path,
         'preview_path'      => $preview_path,

@@ -39,9 +39,9 @@ class OpusController extends Controller
      * Send the download file to the requesting browser
      * @param $opus_id
      */
-    public function download($opus_id)
+    public function download(Opus $opus)
     {
-        $opus = Opus::findOrFail($opus_id);
+        //$opus = Opus::findOrFail($opus_id);
         return response()->download($opus->image_path, $opus->user->username.'-'.$opus->title.'-'.date('mdY').'.jpg', ['Content-Type: application/jpeg']);
     }
 
@@ -81,7 +81,7 @@ class OpusController extends Controller
             Gallery::place($request, $opus);
         }
 
-        return redirect()->route('opus.show', $opus->id)->with('success', 'Your work been added!');
+        return redirect()->route('opus.show', $opus->slug)->with('success', 'Your work been added!');
     }
 
     /**
@@ -95,26 +95,11 @@ class OpusController extends Controller
         $opus = Opus::make($request, $user);
         Notification::notifyWatchersNewOpus($opus, $user);
         Tag::make($opus, $request->input('tags'));
+        if ($request->has('gallery_ids[]')) {
+            Gallery::place($request, $opus);
+        }
 
-        return redirect()->route('opus.show', $opus->id)->with('success', 'Your work been added!');
-    }
-
-    /**
-     * Controller method for showing /gallery/{gallery}/{opus} routes
-     * @param Requests\OpusCreateRequest $request
-     * @param $gallery_id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function galleryStore(Requests\OpusCreateRequest $request, $gallery_id)
-    {
-        $user = Auth::user();
-        $opus = Opus::make($request, $user);
-        Notification::notifyWatchersNewOpus($user, $opus);
-        Tag::make($opus, $request->input('tags'));
-        $gallery = Gallery::findOrFail($gallery_id);
-        $gallery->addOpus($opus);
-
-        return redirect()->route('opus.show', $opus->id)->with('success', 'Your work been added!');
+        return redirect()->route('opus.show', $opus->slug)->with('success', 'Your work been added!');
     }
 
     /**
@@ -122,9 +107,9 @@ class OpusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $opus_id)
+    public function show(Request $request, Opus $opus)
     {
-        $opus = Opus::findOrFail($opus_id);
+        //$opus = Opus::findOrFail($opus_id);
         $query = Gallery::query();
         $query->join('gallery_opus', 'galleries.id', '=', 'gallery_opus.gallery_id')
             ->where('gallery_opus.opus_id', $opus->id);
@@ -144,9 +129,9 @@ class OpusController extends Controller
      * @param $opus_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function galleryShow(Request $request, $gallery_id, $opus_id)
+    public function galleryShow(Request $request, $gallery_id, Opus $opus)
     {
-        $opus = Opus::findOrFail($opus_id);
+        //$opus = Opus::findOrFail($opus_id);
         $query = Gallery::query();
         $query->join('gallery_opus', 'galleries.id', '=', 'gallery_opus.gallery_id')
             ->where('gallery_opus.opus_id', $opus->id);
@@ -164,10 +149,12 @@ class OpusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Opus $opus)
     {
-        $opus = Opus::findOrFail($id);
-        return view('opus.edit', compact('opus'));
+        //$opus = Opus::findOrFail($id);
+        $galleries = Gallery::where('user_id', $opus->user_id)->get();
+        $tagString = $opus->stringifyTags();
+        return view('opus.edit', compact('opus','galleries','tagString'));
     }
 
     /**
@@ -176,9 +163,9 @@ class OpusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Opus $opus)
     {
-        $opus = Opus::findOrFail($id);
+        //$opus = Opus::findOrFail($id);
         $user = User::findOrFail($opus->user_id);
 
         if ($request->file('image') !== null) {
@@ -194,7 +181,11 @@ class OpusController extends Controller
             Tag::make($opus, $request->input('tags'));
         }
 
-        return redirect()->route('opus.show', [$opus->id])->with('success', 'Updated opus successfully!');
+        if ($request->has('gallery_ids[]')) {
+            Gallery::place($request, $opus);
+        }
+
+        return redirect()->route('opus.show', [$opus->slug])->with('success', 'Updated opus successfully!');
     }
 
     /**
@@ -205,9 +196,9 @@ class OpusController extends Controller
      * @param $piece_id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function galleryUpdate(Requests\OpusEditRequest $request, $gallery_id, $opus_id)
+    public function galleryUpdate(Requests\OpusEditRequest $request, $gallery_id, Opus $opus)
     {
-        $opus = Opus::findOrFail($opus_id);
+       // $opus = Opus::findOrFail($opus_id);
         $user = User::findOrFail($opus->user_id);
 
         if ($request->file('image') !== null) {
@@ -223,7 +214,7 @@ class OpusController extends Controller
             Tag::make($opus, $request->input('tags'));
         }
 
-        return redirect()->route('opus.show', [$opus->id])->with('success', 'Updated opus successfully!');
+        return redirect()->route('opus.show', [$opus->slug])->with('success', 'Updated opus successfully!');
     }
 
     /**
@@ -232,9 +223,9 @@ class OpusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Opus $opus)
     {
-        $opus = Opus::findOrFail($id);
+        //$opus = Opus::findOrFail($id);
         $opus->deleteImages();
         $opus->delete();
 

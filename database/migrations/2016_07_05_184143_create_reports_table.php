@@ -14,7 +14,22 @@ class CreateReportsTable extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('reporter_user_id')->unsigned();
+            $table->integer('reported_user_id')->unsigned();
+            $table->integer('opus_id')->unsigned()->nullable();
+            $table->integer('comment_id')->unsigned()->nullable();
+            $table->string('report_code');
+            $table->string('report_status');
+            $table->string('action_code');
+            $table->string('report_body', 800);
             $table->timestamps();
+        });
+
+        Schema::table('reports', function (Blueprint $table) {
+            $table->foreign('reporter_user_id')->references('id')->on('users');
+            $table->foreign('reported_user_id')->references('id')->on('users');
+            $table->foreign('opus_id')->references('id')->on('opuses');
+            $table->foreign('comment_id')->references('id')->on('comments');
         });
     }
 
