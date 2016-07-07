@@ -109,17 +109,10 @@ class OpusController extends Controller
      */
     public function show(Request $request, Opus $opus)
     {
-        //$opus = Opus::findOrFail($opus_id);
-        $query = Gallery::query();
-        $query->join('gallery_opus', 'galleries.id', '=', 'gallery_opus.gallery_id')
-            ->where('gallery_opus.opus_id', $opus->id);
-        $gallery = $query->first();
         $opus->pageview($request);
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
-        if (isset($gallery)) {
-            $galleryNav = Helpers::galleryNavigator($gallery, $opus);
-        }
+        $galleryNav = Helpers::navigator($opus->user->opera, $opus);
         return view('opus.show', compact('opus', 'gallery', 'comments', 'metadata', 'galleryNav'));
     }
 
@@ -131,11 +124,7 @@ class OpusController extends Controller
      */
     public function galleryShow(Request $request, $gallery_id, Opus $opus)
     {
-        //$opus = Opus::findOrFail($opus_id);
-        $query = Gallery::query();
-        $query->join('gallery_opus', 'galleries.id', '=', 'gallery_opus.gallery_id')
-            ->where('gallery_opus.opus_id', $opus->id);
-        $gallery = $query->first();
+        $gallery = Gallery::findOrFail($gallery_id);
         $opus->pageview($request);
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
@@ -165,11 +154,8 @@ class OpusController extends Controller
      */
     public function update(Request $request, Opus $opus)
     {
-        //$opus = Opus::findOrFail($id);
-        $user = User::findOrFail($opus->user_id);
-
         if ($request->file('image') !== null) {
-            $imageStatus = $opus->updateImage($user, $request);
+            $imageStatus = $opus->updateImage($opus->user, $request);
         }
 
         // update everything except the image and published at
@@ -198,11 +184,8 @@ class OpusController extends Controller
      */
     public function galleryUpdate(Requests\OpusEditRequest $request, $gallery_id, Opus $opus)
     {
-       // $opus = Opus::findOrFail($opus_id);
-        $user = User::findOrFail($opus->user_id);
-
         if ($request->file('image') !== null) {
-            $imageStatus = $opus->updateImage($user, $request);
+            $imageStatus = $opus->updateImage($opus->user, $request);
         }
 
         // update everything except the image and published at

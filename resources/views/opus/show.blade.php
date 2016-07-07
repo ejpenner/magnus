@@ -7,7 +7,7 @@
                 @include('opus.partials._image')
             </div>
         </div>
-        @include('opus.partials._navigator')
+        @include('opus.partials._navigator', ['galleryNav'=>$galleryNav])
         {{--panel start--}}
         <div class="container">
             <div class="panel panel-default">
@@ -87,7 +87,7 @@
         </div>
         <div class="container-fluid">
             <div class="col-md-offset-2 col-md-8">
-                @include('comment._commentOpus', ['comments'=>$opus->comments, 'gallery'=>$gallery, 'opus'=>$opus])
+                @include('comment._commentOpus', ['comments'=>$opus->comments, 'opus'=>$opus])
             </div>
         </div>
     </div>

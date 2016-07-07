@@ -41,7 +41,7 @@ Route::get('errors/401', ['as' => '401', function () {
 /**
  * A pretty url to show opera that are in a gallery
  */
-//Route::get('/gallery/{gallery}/{opus}', 'OpusController@galleryShow');
+Route::get('/gallery/{gallery}/{opus}', 'OpusController@galleryShow');
 
 
 /**

@@ -1,3 +1,4 @@
+@if($galleryNav != null)
 <div class="text-center">
     <div class="piece-nav">
         <div class="btn-group">
@@ -6,6 +7,7 @@
         </div>
     </div>
 </div>
+@endif
 @if($opus->galleries->count() > 0)
     <div class="container">
         <div class="panel panel-default">

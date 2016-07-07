@@ -1,5 +1,5 @@
 @foreach($opera as $opus)
-    <div class="col-lg-{{ isset($columns) ? floor(12 / $columns) : 4 }} col-md-4 col-sm-6 col-xs-1">
+    <div class="col-lg-{{ isset($columns) ? floor(12 / $columns) : 2 }} col-md-4 col-sm-6 col-xs-1">
         <div class="gallery-item">
             <div class="vcenter">
                 <div class="">
@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="opus-operations">
-                @if(Auth::check() and (Auth::user()->isOwner($opus) or Magnus::isOwnerOrHasRole($opus, config('roles.moderator'))))
+                @if(Auth::check() and Magnus::isOwnerOrHasRole($opus, config('roles.moderator')))
                     @include('partials._operationsDropdownSlug', ['model' => $opus, 'controller' => 'OpusController'])
                 @endif
             </div>

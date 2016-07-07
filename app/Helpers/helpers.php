@@ -179,16 +179,16 @@ class Helpers
         // logic for a gallery with more than three opera in it
         foreach ($pieceNav as $i => $id) {
             if ($opus->id == max($pieceNav) and $foundMax == false) {
-                $foundMinMax = true;
-                if ($galleryNav['next'] == null) {
+                $foundMax = true;
+//                if ($galleryNav['next'] == null) {
                     $galleryNav['next'] = min($pieceNav);
-                }
+//                }
             } elseif ($id > $opus->id) {
-                if ($galleryNav['next'] == null) {
+//                if ($galleryNav['next'] == null) {
                     $galleryNav['next'] = $pieceNav[$i];
-                }
+//                }
             } elseif ($opus->id == min($pieceNav) and $foundMin == false) {
-                $foundMaxMin = true;
+                $foundMin = true;
                 $galleryNav['previous'] = max($pieceNav);
             } elseif ($id < $opus->id) {
                 $galleryNav['previous'] = $pieceNav[$i];
@@ -250,16 +250,18 @@ class Helpers
 
         // logic for a gallery with more than three opera in it
         foreach ($pieceNav as $i => $id) {
-            if ($opus->id == max($pieceNav)) {
+            if ($opus->id == max($pieceNav) and $foundMax == false) {
                 if ($galleryNav['next'] == null) {
                     $galleryNav['next'] = min($pieceNav);
+                    $foundMax = true;
                 }
             } elseif ($id > $opus->id) {
                 if ($galleryNav['next'] == null) {
                     $galleryNav['next'] = $pieceNav[$i];
                 }
-            } elseif ($opus->id == min($pieceNav)) {
+            } elseif ($opus->id == min($pieceNav) and $foundMin == false) {
                 $galleryNav['previous'] = max($pieceNav);
+                $foundMin = true;
             } elseif ($id < $opus->id) {
                 $galleryNav['previous'] = $pieceNav[$i];
             }
@@ -268,7 +270,6 @@ class Helpers
         $next_id = $galleryNav['next'];
         $galleryNav['previous'] = Opus::where('id', $prev_id)->value('slug');
         $galleryNav['next'] = Opus::where('id', $next_id)->value('slug');
-
         return $galleryNav;
     }
 }
