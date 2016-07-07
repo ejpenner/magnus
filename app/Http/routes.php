@@ -58,10 +58,10 @@ Route::get('opus/{opus}/download', 'OpusController@download');
  * Profile routes
  */
 Route::resource('profile', 'ProfileController');
-Route::get('profile/{profile}/galleries', 'ProfileController@galleries');
-Route::get('profile/{profile}/opera', 'ProfileController@opera');
-Route::get('profile/{profile}/watchers', 'ProfileController@watchers');
-Route::get('profile/{profile}/watching', 'ProfileController@watching');
+Route::get('profile/{profile}/galleries', 'ProfileController@galleries')->name('profile.galleries');
+Route::get('profile/{profile}/opera', 'ProfileController@opera')->name('profile.opera');
+Route::get('profile/{profile}/watchers', 'ProfileController@watchers')->name('profile.watchers');
+Route::get('profile/{profile}/watching', 'ProfileController@watching')->name('profile.watching');
 
 /**
  * Search route

@@ -14,9 +14,10 @@ class CreateOpusesTable extends Migration
     {
         Schema::create('opuses', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('image_path', 300);
-            $table->string('thumbnail_path', 300);
-            $table->string('preview_path', 300);
+            $table->string('image_path', 512);
+            $table->string('thumbnail_path', 512);
+            $table->string('preview_path', 512);
+            $table->string('directory');
             $table->string('title', 255);
             $table->text('comment')->nullable();
             $table->string('slug', 255);
