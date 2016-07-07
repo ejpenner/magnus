@@ -113,7 +113,7 @@ class OpusController extends Controller
         $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
         $galleryNav = Helpers::navigator($opus->user->opera, $opus);
-        return view('opus.show', compact('opus', 'gallery', 'comments', 'metadata', 'galleryNav'));
+        return view('opus.show', compact('opus', 'comments', 'metadata', 'galleryNav'));
     }
 
     /**

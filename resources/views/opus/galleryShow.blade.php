@@ -6,17 +6,8 @@
             <div class="container-fluid">
                 @include('opus.partials._image')
             </div>
-            @include('opus.partials._navigator')
-            {{--<div class="text-center">--}}
-                {{--<div class="piece-nav">--}}
-                    {{--<div class="btn-group">--}}
-                        {{--<a class="btn btn-default" href="{{ action('OpusController@galleryShow', [$gallery->id, $galleryNav['previous']]) }}">Previous</a>--}}
-                        {{--<a class="btn btn-default" href="{{ action('GalleryController@show', [$gallery->id]) }}">Gallery</a>--}}
-                        {{--<a class="btn btn-default" href="{{ action('OpusController@galleryShow', [$gallery->id, $galleryNav['next']]) }}">Next</a>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
         </div>
+        @include('opus.partials._navigator')
         {{--panel start--}}
         <div class="container">
             <div class="panel panel-default">
