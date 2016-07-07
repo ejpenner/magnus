@@ -7,7 +7,7 @@
                 @include('opus.partials._image', ['opus' => $opus])
             </div>
         </div>
-        @include('opus.partials._navigator', ['navigator' => $navigator, 'gallery'=>$gallery])
+        @include('opus.partials._navigator', ['navigator' => $navigator])
         {{--panel start--}}
         @include('opus.partials._opusDetails', ['opus' => $opus, 'metadata' => $metadata])
         <div class="container-fluid">

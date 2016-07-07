@@ -11,7 +11,7 @@
                         Galleries
                     </div>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body gallery-sidebar">
                     @include('partials._galleries', ['galleries' => $user->galleries, 'columns' => 1])
                 </div>
             </div>

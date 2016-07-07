@@ -3,7 +3,9 @@
 @import "cropper/cropper";
 @import "shared/mixins";
 @import "shared/widgets";
+@import "shared/opus";
 @import "shared/comments";
+@import "shared/profile";
 
 @404-image: url("/images/404/404-space.jpg");
 @header-bg: url("/images/404/header-bg.jpg");
@@ -24,82 +26,16 @@
 @brand-success: @newSuccess;
 
 @min-galley-item-width: 330px;
-@min-gallery-item-height: 360px;
-@max-message-item-height: 360px;
+@min-gallery-item-height: 330px;
+@max-message-item-height: 330px;
 
 @badge-bg: @newPrimary;
-
-
-#fullview {
-  display:none;
-}
-
-/* Dropdown hover */
-.dropdown:hover .dropdown-menu {
-  display: block;
-}
-
-/* Remove the navbar's default rounded borders and increase the bottom margin */
-.navbar {
-  border-top: solid @newPrimary 3px !important;
-  margin-bottom: 15px !important;
-  border-radius: 0 !important;
-}
-
-/* Remove the jumbotron's default bottom margin */
-.jumbotron {
-  color: #c2bfc9 !important;
-  margin-bottom: 0 !important;
-  height: 100px !important;
-  background-image: @header-bg;
-  background-position: center top;
-  background-repeat: no-repeat;
-}
 
 .login-panel {
   margin-top: 30px;
   margin-bottom: 300px;
 }
 
-div.gallery-item {
-  position:relative;
-  padding-bottom: 5px;
-  padding-top: 5px;
-  text-align: center;
-  min-height: @min-gallery-item-height;
-
-  img {
-    .box-shadow(5px 5px 5px #888888);
-  }
-
-  /* horizontal and vertical for opera and galleries */
-  .vcenter {
-    position: absolute;
-    vertical-align: middle;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    .translate(-50%, -50%);
-  }
-}
-
-.gallery-operations {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  .translate(-50%, 140px);
-  z-index: 5;
-  //text-align: center;
-}
-
-.opus-operations {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  .translate(-50%, 140px);
-  z-index: 5;
-  //text-align: center;
-}
 
 div.message-item {
   min-height: @max-message-item-height !important;
@@ -108,6 +44,7 @@ div.message-item {
 .gallery-container {
   margin-bottom: 15px;
 }
+
 
 // details panel on piece.show
 .details-panel {
@@ -135,51 +72,6 @@ footer {
 
 a.avatar-link {
   text-decoration: none;
-}
-
-
-.opus-display {
-  display: block;
-  .opus-show {
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 15px;
-    //max-width: 1500px;
-    .box-shadow(5px 5px 5px #888888);
-  }
-}
-
-.piece-info {
-  display:block;
-  margin-bottom: 15px;
-}
-
-.piece-nav {
-  margin-top: 5px;
-  margin-bottom: 10px;
-}
-
-.preview-container {
-  display: none;
-}
-
-div.uploader {
-  text-align: center;
-
-  #preview {
-    position: relative;
-    max-width: 100%; /* This rule is very important, please do not ignore this! */
-    //max-height: 500px;
-    .box-shadow(5px 5px 5px #888888);
-    display: none;
-  }
-
-  #preview-edit {
-    position: relative;
-    max-width: 100%; /* This rule is very important, please do not ignore this! */
-    //max-height: 500px;
-    .box-shadow(5px 5px 5px #888888);
-  }
 }
 
 .watch-date {

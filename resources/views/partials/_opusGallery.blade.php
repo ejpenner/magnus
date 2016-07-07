@@ -12,7 +12,7 @@
             </div>
             <div class="gallery-operations">
                 @if(Auth::check() and Magnus::isOwnerOrHasRole($opus, config('roles.moderator')))
-                    @include('partials._operations', ['model' => $opus, 'controller' => 'OpusController'])
+                    @include('partials._operationsDropdownSlug', ['model' => $opus, 'controller' => 'OpusController'])
                 @endif
             </div>
         </div>

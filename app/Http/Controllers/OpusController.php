@@ -141,7 +141,7 @@ class OpusController extends Controller
         //$opus = Opus::findOrFail($id);
         $galleries = Gallery::where('user_id', $opus->user_id)->get();
         $tagString = $opus->stringifyTags();
-        return view('opus.edit', compact('opus','galleries','tagString'));
+        return view('opus.edit', compact('opus', 'galleries', 'tagString'));
     }
 
     /**
@@ -165,7 +165,7 @@ class OpusController extends Controller
             Tag::make($opus, $request->input('tags'));
         }
 
-        if ($request->has('gallery_ids[]')) {
+        if ($request->has('gallery_ids')) {
             Gallery::place($request, $opus);
         }
 
@@ -210,7 +210,7 @@ class OpusController extends Controller
         $opus->delete();
         $redirect = app('url')->previous();
 
-        if(strpos($redirect, 'opus') !== false and $isOwner) { // the deletion was from opus.show
+        if (strpos($redirect, 'opus') !== false and $isOwner) { // the deletion was from opus.show
             return redirect()->route('profile.opera', Auth::user()->slug)->with('success', 'The opus has been deleted!');
         } elseif (strpos($redirect, 'opus') !== false and !$isOwner) {
             return redirect()->route('home')->with('success', 'The opus has been deleted!');

@@ -8,7 +8,7 @@ Route::model('users', 'User');
 Route::model('profile', 'Profile');
 Route::model('opus', 'Opus');
 
-Route::bind('opus', function ($value, $route){
+Route::bind('opus', function ($value, $route) {
     return \Magnus\Opus::whereSlug(strtolower($value))->firstOrFail();
 });
 

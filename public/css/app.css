@@ -9401,6 +9401,117 @@ span.role-banned {
   text-decoration: line-through;
   color: #777777;
 }
+/* Dropdown hover */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+/* Remove the navbar's default rounded borders and increase the bottom margin */
+.navbar {
+  border-top: solid #829aa0 3px !important;
+  margin-bottom: 15px !important;
+  border-radius: 0 !important;
+}
+/* Remove the jumbotron's default bottom margin */
+.jumbotron {
+  color: #c2bfc9 !important;
+  margin-bottom: 0 !important;
+  height: 100px !important;
+  background-image: url("/images/404/header-bg.jpg");
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+#fullview {
+  display: none;
+}
+div.gallery-item {
+  position: relative;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  text-align: center;
+  height: 330px;
+  /* horizontal and vertical for opera and galleries */
+}
+div.gallery-item img {
+  -webkit-box-shadow: 5px 5px 5px #888888;
+  -moz-box-shadow: 5px 5px 5px #888888;
+  box-shadow: 5px 5px 5px #888888;
+}
+div.gallery-item .vcenter {
+  position: absolute;
+  vertical-align: middle;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+}
+.gallery-operations {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 145px);
+  -webkit-transform: translate(-50%, 145px);
+  -moz-transform: translate(-50%, 145px);
+  -ms-transform: translate(-50%, 145px);
+  -o-transform: translate(-50%, 145px);
+  z-index: 5;
+}
+.opus-operations {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 145px);
+  -webkit-transform: translate(-50%, 145px);
+  -moz-transform: translate(-50%, 145px);
+  -ms-transform: translate(-50%, 145px);
+  -o-transform: translate(-50%, 145px);
+  z-index: 5;
+}
+.opus-display {
+  display: block;
+}
+.opus-display .opus-show {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+  -webkit-box-shadow: 5px 5px 5px #888888;
+  -moz-box-shadow: 5px 5px 5px #888888;
+  box-shadow: 5px 5px 5px #888888;
+}
+.piece-info {
+  display: block;
+  margin-bottom: 15px;
+}
+.piece-nav {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+.preview-container {
+  display: none;
+}
+div.uploader {
+  text-align: center;
+}
+div.uploader #preview {
+  position: relative;
+  max-width: 100%;
+  /* This rule is very important, please do not ignore this! */
+  -webkit-box-shadow: 5px 5px 5px #888888;
+  -moz-box-shadow: 5px 5px 5px #888888;
+  box-shadow: 5px 5px 5px #888888;
+  display: none;
+}
+div.uploader #preview-edit {
+  position: relative;
+  max-width: 100%;
+  /* This rule is very important, please do not ignore this! */
+  -webkit-box-shadow: 5px 5px 5px #888888;
+  -moz-box-shadow: 5px 5px 5px #888888;
+  box-shadow: 5px 5px 5px #888888;
+}
 .comment {
   background-color: #eeeeee;
   -webkit-border-radius: 10px;
@@ -9474,81 +9585,26 @@ span.role-banned {
 .comment:target {
   background-color: #afcbd1;
 }
-#fullview {
-  display: none;
+div.gallery-sidebar .gallery-operations {
+  transform: translate(-50%, 90px);
+  -webkit-transform: translate(-50%, 90px);
+  -moz-transform: translate(-50%, 90px);
+  -ms-transform: translate(-50%, 90px);
+  -o-transform: translate(-50%, 90px);
 }
-/* Dropdown hover */
-.dropdown:hover .dropdown-menu {
-  display: block;
+div.gallery-sidebar .gallery-item {
+  height: 250px !important;
 }
-/* Remove the navbar's default rounded borders and increase the bottom margin */
-.navbar {
-  border-top: solid #829aa0 3px !important;
-  margin-bottom: 15px !important;
-  border-radius: 0 !important;
-}
-/* Remove the jumbotron's default bottom margin */
-.jumbotron {
-  color: #c2bfc9 !important;
-  margin-bottom: 0 !important;
-  height: 100px !important;
-  background-image: url("/images/404/header-bg.jpg");
-  background-position: center top;
-  background-repeat: no-repeat;
+div.gallery-sidebar img {
+  max-width: 200px;
+  max-height: 200px;
 }
 .login-panel {
   margin-top: 30px;
   margin-bottom: 300px;
 }
-div.gallery-item {
-  position: relative;
-  padding-bottom: 5px;
-  padding-top: 5px;
-  text-align: center;
-  min-height: 360px;
-  /* horizontal and vertical for opera and galleries */
-}
-div.gallery-item img {
-  -webkit-box-shadow: 5px 5px 5px #888888;
-  -moz-box-shadow: 5px 5px 5px #888888;
-  box-shadow: 5px 5px 5px #888888;
-}
-div.gallery-item .vcenter {
-  position: absolute;
-  vertical-align: middle;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-}
-.gallery-operations {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 140px);
-  -webkit-transform: translate(-50%, 140px);
-  -moz-transform: translate(-50%, 140px);
-  -ms-transform: translate(-50%, 140px);
-  -o-transform: translate(-50%, 140px);
-  z-index: 5;
-}
-.opus-operations {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 140px);
-  -webkit-transform: translate(-50%, 140px);
-  -moz-transform: translate(-50%, 140px);
-  -ms-transform: translate(-50%, 140px);
-  -o-transform: translate(-50%, 140px);
-  z-index: 5;
-}
 div.message-item {
-  min-height: 360px !important;
+  min-height: 330px !important;
 }
 .gallery-container {
   margin-bottom: 15px;
@@ -9574,47 +9630,6 @@ footer {
 }
 a.avatar-link {
   text-decoration: none;
-}
-.opus-display {
-  display: block;
-}
-.opus-display .opus-show {
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 15px;
-  -webkit-box-shadow: 5px 5px 5px #888888;
-  -moz-box-shadow: 5px 5px 5px #888888;
-  box-shadow: 5px 5px 5px #888888;
-}
-.piece-info {
-  display: block;
-  margin-bottom: 15px;
-}
-.piece-nav {
-  margin-top: 5px;
-  margin-bottom: 10px;
-}
-.preview-container {
-  display: none;
-}
-div.uploader {
-  text-align: center;
-}
-div.uploader #preview {
-  position: relative;
-  max-width: 100%;
-  /* This rule is very important, please do not ignore this! */
-  -webkit-box-shadow: 5px 5px 5px #888888;
-  -moz-box-shadow: 5px 5px 5px #888888;
-  box-shadow: 5px 5px 5px #888888;
-  display: none;
-}
-div.uploader #preview-edit {
-  max-width: 100%;
-  /* This rule is very important, please do not ignore this! */
-  -webkit-box-shadow: 5px 5px 5px #888888;
-  -moz-box-shadow: 5px 5px 5px #888888;
-  box-shadow: 5px 5px 5px #888888;
 }
 .watch-date {
   color: #8c8c8c;

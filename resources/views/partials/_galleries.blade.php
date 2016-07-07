@@ -13,10 +13,10 @@
                     </div>
                     @if(Auth::check() and Magnus::isOwnerOrHasRole($item, config('roles.moderator')))
                         <div class="gallery-operations">
-                            @include('partials._galleryOperationsDropdown', ['id' => $i.'-'.$j, 'gallery' => $item])
+                            @include('partials._galleryOperationsDropdown', ['id' => 'gallery-'.$i.'-'.$j, 'gallery' => $item])
                         </div>
                         <div>
-                            @include('partials._galleryOperationsModal', ['id' => $i.'-'.$j, 'gallery' => $item])
+                            @include('partials._galleryOperationsModal', ['id' => 'gallery-'.$i.'-'.$j, 'gallery' => $item])
                         </div>
                     @endif
                 </div>

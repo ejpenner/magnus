@@ -388,7 +388,8 @@ class Opus extends Model
         return false;
     }
     
-    public function deleteDirectory() {
+    public function deleteDirectory()
+    {
         $this->deleteImages();
         File::deleteDirectory($this->directory);
     }
@@ -420,7 +421,7 @@ class Opus extends Model
      */
     public function stringifyTags()
     {
-        if($this->tags->count() > 0) {
+        if ($this->tags->count() > 0) {
             return implode(' ', array_pluck($this->tags->toArray(), 'name'));
         } else {
             return null;

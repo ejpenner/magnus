@@ -68,7 +68,7 @@ class Helpers
     
     public static function perPage()
     {
-        if(Request::has('limit')) {
+        if (Request::has('limit')) {
             return Request::input('limit');
         } elseif (Auth::check() and !Request::has('limit')) {
             return Auth::user()->preferences->per_page;
