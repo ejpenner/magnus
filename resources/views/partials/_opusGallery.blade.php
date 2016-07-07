@@ -2,10 +2,10 @@
     <div class="col-lg-{{ isset($columns) ? floor(12 / $columns) : 3 }} col-md-3 col-sm-4 col-xs-12">
         <div class="gallery-item">
             <div class="vcenter">
-                <a href="{{ action('OpusController@galleryShow', [$gallery->id, $opus->id]) }}">
+                <a href="{{ action('OpusController@show', [$gallery->id, $opus->id]) }}">
                     <img src="/{{ $opus->getThumbnail() }}" alt=""></a>
                 <h5>
-                    <strong><a href="{{ action('OpusController@galleryShow', [$gallery->id, $opus->id]) }}">{{ $opus->title }}</a></strong>
+                    <strong><a href="{{ action('OpusController@show', [$gallery->id, $opus->id]) }}">{{ $opus->title }}</a></strong>
                     <br>
                     <a href="{{ action('ProfileController@show', $opus->user->slug) }}">{{ $opus->user->name }}</a>
                 </h5>

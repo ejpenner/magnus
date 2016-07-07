@@ -37,7 +37,7 @@ Route::get('errors/401', ['as' => '401', function () {
 /**
  * A pretty url to show opera that are in a gallery
  */
-Route::get('/gallery/{gallery}/{opus}', 'OpusController@galleryShow');
+//Route::get('/gallery/{gallery}/{opus}', 'OpusController@galleryShow');
 
 
 /**
@@ -46,7 +46,7 @@ Route::get('/gallery/{gallery}/{opus}', 'OpusController@galleryShow');
 Route::resource('gallery', 'GalleryController');
 Route::resource('opus', 'OpusController');
 //Route::resource('opus.comment', 'CommentController');
-Route::get('opus/{opus}/comment/{comment}', 'CommentController@show');
+Route::get('opus/{opus}/comment/{comment}', 'CommentController@show')->name('comment.tree');
 Route::get('opus/{id}/download', 'OpusController@download');
 
 
@@ -54,10 +54,10 @@ Route::get('opus/{id}/download', 'OpusController@download');
  * Profile routes
  */
 Route::resource('profile', 'ProfileController');
-Route::get('profile/{profile}/galleries', 'ProfileController@galleries');
-Route::get('profile/{profile}/opera', 'ProfileController@opera');
-Route::get('profile/{profile}/watchers', 'ProfileController@watchers');
-Route::get('profile/{profile}/watching', 'ProfileController@watching');
+Route::get('profile/{profile}/galleries', 'ProfileController@galleries')->name('profile.galleries');
+Route::get('profile/{profile}/opera', 'ProfileController@opera')->name('profile.opera');
+Route::get('profile/{profile}/watchers', 'ProfileController@watchers')->name('profile.watchers');
+Route::get('profile/{profile}/watching', 'ProfileController@watching')->name('profile.watching');
 
 /**
  * Search route

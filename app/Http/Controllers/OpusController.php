@@ -232,13 +232,19 @@ class OpusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Opus $opus)
     {
-        $opus = Opus::findOrFail($id);
-        $opus->deleteImages();
+        $isOwner = Auth::user()->isOwner($opus);
+        $opus->deleteDirectory();
         $opus->delete();
+        $redirect = app('url')->previous();
 
-        return redirect()->to(app('url')->previous())->with('success', 'The opus has been deleted!');
+        if(strpos($redirect, 'opus') !== false and $isOwner) { // the deletion was from opus.show
+            return redirect()->route('profile.opera', Auth::user()->slug)->with('success', 'The opus has been deleted!');
+        } elseif (strpos($redirect, 'opus') !== false and !$isOwner) {
+            return redirect()->route('home')->with('success', 'The opus has been deleted!');
+        }
+        return redirect()->to($redirect)->with('success', 'The opus has been deleted!');
     }
 
     /**
