@@ -65,6 +65,10 @@ class Opus extends Model
         return $this->hasMany('Magnus\Notification');
     }
 
+    public function favorite() {
+        return $this->hasOne('App\Favorite');
+    }
+
     /**
      * get a list of tag ids associated with the current piece
      * @return array

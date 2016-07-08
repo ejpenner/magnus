@@ -61,6 +61,15 @@ class User extends Authenticatable
     }
 
     /**
+     * User has a M:N relationship with Favorites
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function favorites()
+    {
+        return $this->belongsToMany('Magnus\Favorite', 'favorite_user')->withTimestamps();
+    }
+
+    /**
      * User model has 0:M relationship with Comment model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

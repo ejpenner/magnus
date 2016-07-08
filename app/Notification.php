@@ -3,6 +3,7 @@
 namespace Magnus;
 
 use Illuminate\Database\Eloquent\Model;
+use Magnus\Http\Controllers\NotificationController;
 
 class Notification extends Model
 {
@@ -87,9 +88,22 @@ class Notification extends Model
     }
 
     /**
+     * Notify user one of their opus has been favorited
+     */
+    public static function notifyCreatorNewFavorite(Favorite $favorite)
+    {
+        $notification = Notification::create([
+            'handle' => 'favorite',
+            'opus_id' => $favorite->opus_id
+        ]);
+        $creator = $favorite->opus->user;
+        $notification->notify($creator);
+    }
+
+    /**
      * A static method to create a reply notification and deliver it to $op
      *
-     * @param User $op
+     * @param User $op original poster
      * @param User $replier
      * @param Comment $newComment
      */
@@ -104,7 +118,7 @@ class Notification extends Model
     /**
      * A static method to create a top-level comment notification and deliver it to $op
      *
-     * @param User $op
+     * @param User $op original poster
      * @param User $replier
      * @param Comment $newComment
      */
@@ -112,5 +126,23 @@ class Notification extends Model
     {
         $notify = Notification::create(['handle' => 'comment', 'comment_id' => $comment->id, 'content' => $comment->body]);
         $notify->notify($op);
+    }
+
+    public static function notifyUserNewWatch()
+    {
+
+    }
+
+    public static function notifyUserNewActivity()
+    {
+
+    }
+
+    /**
+     * Mass notification method
+     */
+    public static function notifyAll()
+    {
+
     }
 }

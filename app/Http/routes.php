@@ -102,6 +102,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('messages/selected', 'NotificationController@destroySelected');
     Route::post('opus/{opus}/{comment}/{notification}', 'CommentController@storeChildRemoveNotification');
 
+    /**
+     * Favorite routes
+     */
+    Route::post('fav/{opus}/add', 'FavoriteController@store')->name('favorite.add');
+    Route::delete('fav/{opus}/remove', 'FavoriteController@destroy')->name('favorite.remove');
+    Route::get('fav/{opus}/', 'FavoriteController@show')->name('favorite.show');
 
     /**
      * CRUD routes for user account operations
@@ -143,7 +149,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('permissions', 'PermissionController');
         Route::resource('users', 'UserController');
         Route::resource('roles', 'RoleController');
-
     });
 
     /**

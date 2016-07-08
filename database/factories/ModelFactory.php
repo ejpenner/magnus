@@ -3,6 +3,8 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 use Magnus\Helpers\Helpers;
 use Carbon\Carbon;
+use Magnus\Opus;
+use Magnus\User;
 
 $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
     $timezones = ['America/Denver', 'America/New_York', 'America/Chicago', 'America/Los_Angeles'];
@@ -134,6 +136,12 @@ $factory->define(\Magnus\Preference::class, function(Faker\Generator $faker) {
         'per_page' => 24
     ];
 });
+
+//$factory->define(\Magnus\Favorite::class, function (){
+//   $opus_total = Opus::count();
+//    $user_count = User::count();
+//
+//});
 
 /**
  * Resize the opus' image for it's thumbnail
