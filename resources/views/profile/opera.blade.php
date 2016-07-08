@@ -3,7 +3,7 @@
 @section('content')
     @include('profile._header', ['user' => $user, 'details' => false])
     <div class="container-fluid">
-        <div class="col-lg-2 col-md-2">
+        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
 
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-10 col-md-10">
+        <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
             @include('partials._opusColumns', ['columns'=>4, 'opera' => $opera])
         </div>
     </div>

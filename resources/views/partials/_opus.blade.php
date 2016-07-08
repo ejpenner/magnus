@@ -1,9 +1,7 @@
 <div class="col-md-3">
     <div class="gallery-item">
         <div class="vcenter">
-            <a href="{{ action('OpusController@show', [$opus->slug]) }}">
-                <img src="/{{ $opus->getThumbnail() }}" alt="{{ $opus->title }}">
-            </a>
+            @include('partials._opusThumbnail', ['opus'=>$opus, 'action'=>'OpusController@show', 'params'=>[$opus->slug]])
             <div class="item-details">
                 <h5><strong><a href="{{ action('OpusController@show', [$opus->slug]) }}">{{ $opus->title }}</a></strong>
                     @if(!isset($showName) or $showName)

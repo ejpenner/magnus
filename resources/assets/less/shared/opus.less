@@ -2,6 +2,36 @@
   display:none;
 }
 
+div .thumbnail-wrap {
+  position: relative;
+}
+
+.opus-image, .opus-overlay {
+  display: block;
+}
+
+.opus-overlay {
+  .opacity(.3);
+  position: absolute; right: auto; bottom: 0;
+
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+
+}
+
+.opus-overlay:hover {
+  .opacity(1);
+}
+
+.opus-overlay:focus {
+  .opacity(1);
+}
+
+.menu-overlay {
+
+}
+
 div.gallery-item {
   position:relative;
   padding-bottom: 5px;

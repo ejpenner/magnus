@@ -65,6 +65,13 @@ $(document).ready(function() {
         readURL(this);
     });
 
+    // $('.opus-overlay').on('hover', function() {
+    //     console.log('overlay trigger');
+    //     $(this).fadeIn(300);
+    // }, function() {
+    //     $(this).fadeOut(300);
+    // });
+
     $('#image').change(function() {
         readFile(this, '#preview');
         readFile(this, '#preview-edit');

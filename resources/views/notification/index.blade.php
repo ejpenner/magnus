@@ -13,7 +13,7 @@
                             <div class="gallery-item message-item">
                                 <div class="vcenter">
                                     <a href="{{ action('OpusController@show', [$opus->slug]) }}">
-                                        <img src="/{{ $opus->getThumbnail() }}" alt="">
+                                        <img src="/{{ $opus->getThumbnail() }}" alt="{{ $opus->title }}">
                                     </a>
                                     <h5>
                                         <strong><a href="{{ action('OpusController@show', [$opus->slug]) }}">{{ $opus->title }}</a></strong>

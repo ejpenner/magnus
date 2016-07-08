@@ -17,4 +17,6 @@ class Favorite extends Model
     {
         return $this->belongsTo('Magnus\Opuis');
     }
+    
+    public static
 }

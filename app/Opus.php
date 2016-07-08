@@ -259,8 +259,6 @@ class Opus extends Model
         $opus->setThumbnail($user, $request);
         $opus->setSlug();
         $opus->save();
-        //$opus->save();
-
         return $opus;
     }
 
@@ -481,48 +479,46 @@ class Opus extends Model
      */
     public function pageview($request)
     {
+        if (Auth::check() and !Auth::user()->isOwner($this)) {
+            $this->viewOpus($request);
+        } else {
+            $this->viewOpus($request);
+        }
+    }
+
+    /**
+     * Increment's the opus pageview by one
+     * @param $request
+     */
+    private function _viewOpus($request)
+    {
+        $request->session()->push('viewed', $this->id);
+        $this->views = $this->views + 1;
+        $this->daily_views = $this->daily_views + 1;
+        $this->save();
+    }
+
+    /**
+     * Determines if the opus id is  in the session, if not
+     * increment the page view by one
+     * @param $request
+     */
+    private function viewOpus($request)
+    {
         $seen = false;
         $viewed = session('viewed');
-        if (Auth::check() and  !Auth::user()->isOwner($this)) {
-            if ($request->session()->has('viewed')) { // check to see if viewed has been set
-                foreach ($viewed as $view) {
-                    if ($this->id == $view) { // the user has seen it before
-                        $seen = true;
-                        break;
-                    }
+        if ($request->session()->has('viewed')) { // check to see if viewed has been set
+            foreach ($viewed as $view) {
+                if ($this->id == $view) { // the user has seen it before
+                    $seen = true;
+                    break;
                 }
-                if (!$seen) {
-                    $request->session()->push('viewed', $this->id);
-                    $this->daily_views = $this->daily_views + 1;
-                    $this->views = $this->views + 1;
-                    $this->save();
-                }
-            } else {
-                $request->session()->push('viewed', $this->id);
-                $this->daily_views = $this->daily_views + 1;
-                $this->views = $this->views + 1;
-                $this->save();
             }
-        } else { // viewer is a guest
-            if ($request->session()->has('viewed')) { // guest has seen another opus already
-                foreach ($viewed as $view) {
-                    if ($this->id == $view) { // the user has seen it before
-                        $seen = true;
-                        break;
-                    }
-                }
-                if (!$seen) {
-                    $request->session()->push('viewed', $this->id);
-                    $this->views = $this->views + 1;
-                    $this->daily_views = $this->daily_views + 1;
-                    $this->save();
-                }
-            } else { // guest is viewing their first opus
-                $request->session()->push('viewed', $this->id);
-                $this->daily_views = $this->daily_views + 1;
-                $this->views = $this->views + 1;
-                $this->save();
+            if (!$seen) {
+                $this->_viewOpus($request);
             }
+        } else {
+            $this->_viewOpus($request);
         }
     }
 }

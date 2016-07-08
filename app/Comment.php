@@ -2,10 +2,9 @@
 
 namespace Magnus;
 
-use Illuminate\Database\Eloquent\Model;
-
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {

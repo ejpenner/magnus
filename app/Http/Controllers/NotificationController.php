@@ -26,7 +26,7 @@ class NotificationController extends Controller
         $query->join('notifications', 'opuses.id', '=', 'notifications.opus_id');
         $query->join('notification_user', 'notification_user.notification_id', '=', 'notifications.id');
         $query->where('notification_user.user_id', $user->id);
-        $query->select('opuses.id', 'opuses.user_id', 'opuses.image_path', 'opuses.thumbnail_path', 'opuses.title', 'notification_user.notification_id');
+        $query->select('opuses.id', 'opuses.user_id', 'opuses.image_path', 'opuses.thumbnail_path', 'opuses.title', 'notification_user.notification_id', 'opuses.slug');
         $query->orderBy('opuses.created_at', 'desc');
         $opusResults = $query->get();
 

@@ -1,6 +1,6 @@
-<div class="btn-group">
+<div class="dropup">
     <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Actions <span class="caret"></span>
+        Actions <span class="fa fa-wrench"></span>
     </button>
     <ul class="dropdown-menu">
         {!! Form::model($model, ['method'=>'delete', 'class'=>'delete-confirm operations',
