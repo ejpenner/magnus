@@ -3,39 +3,46 @@
 namespace Magnus;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 
 class Permission extends Model
 {
-    protected $fillable = [
-        'schema_name', 'role_id',
-        'create','read','edit','destroy',
-        'create_all','read_all','edit_all','destroy_all',
-        'gallery_all','piece_all','comment_all','private_message_all',
-        'private_message_access', 'banned'
+    protected $guarded = [
+        'id', 'role_id'
     ];
 
     protected $casts = [
-      'create' => 'boolean',
-      'read' => 'boolean',
-      'edit' => 'boolean',
-      'destroy' => 'boolean',
-      'create_all' => 'boolean',
-      'read_all' => 'boolean',
-      'edit_all' => 'boolean',
-      'destroy_all' => 'boolean',
-      'gallery_all' => 'boolean',
-      'piece_all' => 'boolean',
-      'comment_all' => 'boolean',
-      'private_message_all' => 'boolean',
-      'private_message_access' => 'boolean',
-      'banned' => 'boolean',
+        'create' => 'boolean',
+        'read' => 'boolean',
+        'edit' => 'boolean',
+        'destroy' => 'boolean',
+        'create_all' => 'boolean',
+        'read_all' => 'boolean',
+        'edit_all' => 'boolean',
+        'destroy_all' => 'boolean',
+        'gallery_all' => 'boolean',
+        'piece_all' => 'boolean',
+        'comment_all' => 'boolean',
+        'private_message_all' => 'boolean',
+        'private_message_access' => 'boolean',
+        'banned' => 'boolean',
+        'user_opus_create' => 'boolean',
+        'user_opus_edit' => 'boolean',
+        'user_opus_destroy' => 'boolean',
+        'user_comment_create' => 'boolean',
+        'user_comment_edit' => 'boolean',
+        'user_comment_destroy' => 'boolean',
+        'user_gallery_create' => 'boolean',
+        'user_gallery_edit' => 'boolean',
+        'user_gallery_destroy' => 'boolean',
+
     ];
-    
+
     public function getSchemaName()
     {
         return $this->attributes['schema_name'];
     }
-    
+
     public function role()
     {
         return $this->belongsTo('Magnus\Role');
@@ -44,9 +51,13 @@ class Permission extends Model
     public static function hasPermission(User $user, $permission)
     {
         foreach ($user->roles as $userRoles) {
-            foreach ($userRoles->permission->attributes as $key => $value) {
-                $permissions = Permission::where('schema_name', $userRoles->role_name)->value($permission);
+            try {
+                $hasPermissions = Permission::where('schema_name', $userRoles->role_name)->value($permission); // fetch the permission column name
+                return $hasPermissions;
+            } catch (\Exception $e) {
+                return false;
             }
+
         }
         return false;
     }

@@ -4,6 +4,7 @@ namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Magnus\Permission;
 use Magnus\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -27,6 +28,7 @@ class AdminController extends Controller
 //        dd($files[rand(1,10)]);
         //dd(public_path('art/Vilest'));
         //dd(strrpos(app('url')->previous(), 'opus'));
-        dd(app('url')->previous());
+        //dd(app('url')->previous());
+        dd(Permission::hasPermission(Auth::user(), 'user_gallery_destroy'));
     }
 }
