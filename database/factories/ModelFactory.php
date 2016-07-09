@@ -24,8 +24,8 @@ $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
 
 $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
 
-    //$files = File::glob(base_path('resources/seed-pics/*.*'));
-    $files = File::glob(base_path('resources/heroku-deploy-seed-pics/*.*'));
+    $files = File::glob(base_path('resources/seed-pics/*.*'));
+    //$files = File::glob(base_path('resources/heroku-deploy-seed-pics/*.*'));
     $rand = rand(0, count($files)-1);
     $numbers = substr(microtime(), 2, 8);
 
