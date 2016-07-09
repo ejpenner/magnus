@@ -98,8 +98,7 @@ $factory->defineAs(Magnus\Notification::class, 'opus', function (Faker\Generator
     $randomOpus = rand(1,$opusCount);
     $noteStore = [
         'handle'    => 'opus',
-        'opus_id'   => rand(1,$randomOpus),
-        'read'      => 0
+        'opus_id'   => rand(1,$randomOpus)
     ];
     return $noteStore;
 });
@@ -107,7 +106,7 @@ $factory->defineAs(Magnus\Notification::class, 'opus', function (Faker\Generator
 $factory->defineAs(Magnus\Notification::class, 'comment', function (Faker\Generator $faker){
     $commentCount = \Magnus\Comment::count();
     $randomComment = rand(1, $commentCount);
-    $noteStore = ['handle'=>'comment', 'comment_id'=>rand(1,$randomComment), 'read'=>0];
+    $noteStore = ['handle'=>'comment', 'comment_id'=>rand(1,$randomComment)];
     return $noteStore;
 });
 

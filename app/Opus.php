@@ -65,8 +65,13 @@ class Opus extends Model
         return $this->hasMany('Magnus\Notification');
     }
 
-    public function favorite() {
-        return $this->hasOne('App\Favorite');
+    /**
+     * An opus can be favorite'd by many users
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function favorite()
+    {
+        return $this->hasMany('App\Favorite');
     }
 
     /**
@@ -382,9 +387,12 @@ class Opus extends Model
     public function deleteImages()
     {
         $path = public_path();
-        if (File::delete($path.'/'.$this->image_path)
-            and File::delete($path.'/'.$this->thumbnail_path)
-            and File::delete($path.'/'.$this->preview_path)) {
+        File::delete($path.'/'.$this->image_path);
+        File::delete($path.'/'.$this->thumbnail_path);
+        File::delete($path.'/'.$this->preview_path);
+        if (!File::exists($path.'/'.$this->image_path)
+            and !File::exists($path.'/'.$this->preview_path)
+            and !File::exists($path.'/'.$this->thumbnail_path)) {
             return true;
         }
         return false;

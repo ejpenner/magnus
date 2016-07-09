@@ -30,10 +30,13 @@ class FavoriteSeeder extends Seeder
             foreach(range(1,5) as $i)
             {
                 $fav = $favorites->first();
-                if(!$fav->add($user)) {
+                $add = $fav->add($user);
+                if(!$add) {
                     $favorites = $favorites->shuffle();
                     $fav = $favorites->first();
                     $fav->add($user);
+                    Notification::notifyCreatorNewFavorite($fav);
+                } else {
                     Notification::notifyCreatorNewFavorite($fav);
                 }
                 $favorites = $favorites->shuffle();

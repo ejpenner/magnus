@@ -7,12 +7,10 @@ use Magnus\Http\Controllers\NotificationController;
 
 class Notification extends Model
 {
-    protected $fillable = ['handle', 'read', 'opus_id','comment_id','message_id'];
-    protected $casts = ['read'=>'boolean'];
+    protected $guarded = ['id'];
 
     /**
      * Notification has a M:N relationship with User model
-     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
@@ -22,7 +20,6 @@ class Notification extends Model
 
     /**
      * Notification has a 1:1 relationship with Comment
-     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function comment()
@@ -32,7 +29,6 @@ class Notification extends Model
 
     /**
      * Notification has a 1:1 relationship with Opus model
-     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function opus()
@@ -40,21 +36,46 @@ class Notification extends Model
         return $this->belongsTo('Magnus\Opus');
     }
 
-    public function opusNotification(Opus $opus, User $user)
+    /**
+     * Notification belongs to one user as a watcher for watch
+     * notifications
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function watcher()
     {
-        $this->opus_id = $opus->id;
-        $user->notifications()->attach($this->id);
+        return $this->hasOne('Magnus\User', 'watcher_user_id');
     }
 
+    /**
+     * A Notification belongs to one favorite
+     * For favorite notifications
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function favorite()
+    {
+        return $this->belongsTo('Magnus\Favorite');
+    }
+
+    /**
+     * Notify a user with this notification
+     * @param User $user
+     */
     public function notify(User $user)
     {
         $user->notifications()->attach($this->id);
     }
-    
+
+    /**
+     * Remove this notification from a user's message center
+     * @param User $user
+     */
     public function deleteNotification(User $user)
     {
         if ($this->hasOwner($user)) {
             $user->notifications()->detach($this->id);
+        }
+        if ($this->users->count() == 1) {
+            $this->delete();
         }
     }
 
@@ -69,8 +90,16 @@ class Notification extends Model
     }
 
     /**
+     * Parse the notification with the necessary information to be displayed
+     * in a user's message center
+     */
+    public function parseNotification()
+    {
+
+    }
+
+    /**
      *  Create a new Notification and let all users who watch the User know about it
-     *
      * @param Opus $opus
      */
     public static function notifyWatchersNewOpus(Opus $opus, User $user)
@@ -89,12 +118,14 @@ class Notification extends Model
 
     /**
      * Notify user one of their opus has been favorited
+     * @param Favorite $favorite
      */
     public static function notifyCreatorNewFavorite(Favorite $favorite)
     {
         $notification = Notification::create([
             'handle' => 'favorite',
-            'opus_id' => $favorite->opus_id
+            'opus_id' => $favorite->opus_id,
+            'favorite_id' => $favorite->id
         ]);
         $creator = $favorite->opus->user;
         $notification->notify($creator);
@@ -102,7 +133,6 @@ class Notification extends Model
 
     /**
      * A static method to create a reply notification and deliver it to $op
-     *
      * @param User $op original poster
      * @param User $replier
      * @param Comment $newComment
@@ -117,7 +147,6 @@ class Notification extends Model
 
     /**
      * A static method to create a top-level comment notification and deliver it to $op
-     *
      * @param User $op original poster
      * @param User $replier
      * @param Comment $newComment
@@ -128,9 +157,15 @@ class Notification extends Model
         $notify->notify($op);
     }
 
-    public static function notifyUserNewWatch()
+    /**
+     * Notifies a user that they have a new user watching them
+     * @param User $watched
+     * @param User $watching
+     */
+    public static function notifyUserNewWatch(User $watched, User $watching)
     {
-
+        $notify = Notification::create(['handle' => 'watch', 'watcher_user_id' => $watching->id]);
+        $notify->notify($watched);
     }
 
     public static function notifyUserNewActivity()

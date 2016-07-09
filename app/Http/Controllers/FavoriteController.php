@@ -41,7 +41,7 @@ class FavoriteController extends Controller
     public function store(Request $request, Opus $opus)
     {
         $favorite = Favorite::firstOrCreate(['opus_id' => $opus->id]);
-        if($favorite->add($request->user)) {
+        if ($favorite->add($request->user)) {
             Notification::notifyCreatorNewFavorite($favorite);
             return redirect()->back()->with('success', 'The opus was added to your favorites!');
         } else {

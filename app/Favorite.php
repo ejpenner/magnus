@@ -15,7 +15,11 @@ class Favorite extends Model
     {
         return $this->belongsToMany('Magnus\User', 'favorite_user')->withTimestamps();
     }
-    
+
+    /**
+     * A favorite can only belong to one opus
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function opus()
     {
         return $this->belongsTo('Magnus\Opus');
@@ -23,7 +27,7 @@ class Favorite extends Model
     
     public function add(User $user)
     {
-        if($this->opus->user_id !== $user->id) {
+        if ($this->opus->user_id !== $user->id) {
             $user->favorites()->attach($this->id);
             return true;
         }
@@ -35,7 +39,7 @@ class Favorite extends Model
         $user->favorites()->detach($this->id);
     }
 
-    public function hasFavorite(User $user, Opus $opus)
+    public static function has(User $user, Opus $opus)
     {
         $favorites = $user->favorites->where(['opus_id'=>$opus->id]);
         dd($favorites);

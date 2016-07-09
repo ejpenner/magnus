@@ -7,7 +7,6 @@ class CreatePermissionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
      * @return void
      */
     public function up()
@@ -69,8 +68,16 @@ class CreatePermissionsTable extends Migration
             $table->boolean('admin_make_mods');
             $table->boolean('admin_make_devs');
             $table->boolean('admin_mass_delete');
-            $table->boolean('admin_user_lookup');
-            $table->boolean('admin_user_action');
+            $table->boolean('admin_user_lookup');;
+            $table->boolean('admin_mass_notify');
+            $table->boolean('admin_user_create');
+            $table->boolean('admin_user_edit');
+            $table->boolean('admin_user_destroy');
+            $table->boolean('admin_role_create');
+            $table->boolean('admin_role_edit');
+            $table->boolean('admin_role_destroy');
+            $table->boolean('admin_role_give');
+            $table->boolean('admin_role_revoke');
             $table->timestamps();
         });
 
@@ -81,7 +88,6 @@ class CreatePermissionsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
      * @return void
      */
     public function down()

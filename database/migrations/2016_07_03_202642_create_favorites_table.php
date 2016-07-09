@@ -27,6 +27,10 @@ class CreateFavoritesTable extends Migration
             $table->foreign('favorite_id')->references('id')->on('favorites')->onDelete('cascade');
             $table->timestamps();
         });
+
+        Schema::table('notifications', function (Blueprint $table){
+            $table->foreign('favorite_id')->references('id')->on('favorites')->onDelete('cascade');
+        });
     }
 
     /**
@@ -36,7 +40,10 @@ class CreateFavoritesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('favorite_users');
+        Schema::table('notifications', function (Blueprint $table){
+            $table->dropForeign('notifications_favorite_id_foreign');
+        });
+        Schema::drop('favorite_user');
         Schema::drop('favorites');
     }
 }

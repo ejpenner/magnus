@@ -42,7 +42,6 @@ class User extends Authenticatable
 
     /**
      * User has 0:M relationship with Gallery model
-     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function galleries()
@@ -52,7 +51,6 @@ class User extends Authenticatable
 
     /**
      * User model has 0:M relationship with Opus model
-     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function opera()
@@ -71,7 +69,6 @@ class User extends Authenticatable
 
     /**
      * User model has 0:M relationship with Comment model
-     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments()
@@ -81,7 +78,6 @@ class User extends Authenticatable
 
     /**
      *  User model's 1:1 relationship with Profile model
-     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function profile()
@@ -91,7 +87,6 @@ class User extends Authenticatable
 
     /**
      *  User has M:N relationship with Roles model
-     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function roles()
@@ -101,7 +96,6 @@ class User extends Authenticatable
 
     /**
      * User has M:N relationship with Notification model
-     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function notifications()
@@ -111,7 +105,6 @@ class User extends Authenticatable
 
     /**
      *  List of users as Watch models that this user watches
-     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function watchedUsers()
@@ -121,7 +114,6 @@ class User extends Authenticatable
 
     /**
      *  Returns a list of users that follow this user
-     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function watchers()
@@ -131,7 +123,6 @@ class User extends Authenticatable
 
     /**
      * User has one site preferences model
-     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function preferences()
@@ -141,7 +132,6 @@ class User extends Authenticatable
 
     /**
      *  Return some span formatting around names for fancy CSS output
-     *
      * @return string
      */
     public function decorateName()
@@ -161,7 +151,6 @@ class User extends Authenticatable
 
     /**
      *  Return some span formatting around usernames for fancy CSS output
-     *
      * @return string
      */
     public function decorateUsername()
@@ -183,7 +172,6 @@ class User extends Authenticatable
 
     /**
      *  Check if the user has the specified permission
-     *
      * @param $action: string
      * @return bool|void
      */
@@ -194,7 +182,6 @@ class User extends Authenticatable
 
     /**
      *  Check if the logged in user has the specified role
-     *
      * @param $role
      * @return bool
      */
@@ -208,7 +195,6 @@ class User extends Authenticatable
 
     /**
      * Check if the user has at least the specified role
-     *
      * @param $role
      * @return bool
      */
@@ -222,7 +208,6 @@ class User extends Authenticatable
 
     /**
      * Does the authorized user have the permission schema
-     *
      * @param $permission
      * @return bool
      */
@@ -237,7 +222,6 @@ class User extends Authenticatable
 
     /**
      *  Is this user the owner of an object
-     *
      * @return boolean
      */
     public function isOwner($object)
@@ -252,30 +236,25 @@ class User extends Authenticatable
     /**
      *  Store the image stored within the Request
      *  Return the relative path of the file
-     *
      * @param $request
      * @return string
      */
     public function storeAvatar($request)
     {
-
-        //$destinationPath = $this->avatarDirectory; // upload path, goes to the public folder
         $destinationPath = $this->artDirectory.'/'.$this->username.'/'.$this->avatarDirectory;
         $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         if ($extension == null or $extension == '') {
             $extension = 'png';
         }
         $fileName = substr(microtime(), 2, 8).'_uploaded.'.$extension; // renaming image
-
         $request->file('image')->move($destinationPath, $fileName); // uploading file to given path
-
         $fullPath = $destinationPath."/".$fileName; // set the image field to the full path
+        
         return $fullPath;
     }
 
     /**
-     *  Set the user's avatar
-     *
+     * Set the user's avatar
      * @param $request
      */
     public function setAvatar($request)
@@ -284,14 +263,12 @@ class User extends Authenticatable
             $this->deleteAvatarFile();
         }
         $this->avatar = $this->storeAvatar($request);
-
         $avatarResized = $this->resize($this->avatar);
         $avatarResized->save($this->avatar);
     }
 
     /**
-     *  Resize the user's uploaded avatar
-     *
+     * Resize the user's uploaded avatar
      * @param $image
      * @return Image
      */
@@ -307,7 +284,6 @@ class User extends Authenticatable
 
     /**
      *  Return the relative URL of this user's avatar
-     *
      * @return string
      */
     public function getAvatar()
@@ -320,7 +296,6 @@ class User extends Authenticatable
 
     /**
      * Delete the user's avatar file
-     *
      * @return bool
      */
     public function deleteAvatarFile()
@@ -334,7 +309,6 @@ class User extends Authenticatable
 
     /**
      * Returns an string of all of the user's roles
-     *
      * @return array|string
      */
     public function listRoles()
@@ -349,7 +323,6 @@ class User extends Authenticatable
 
     /**
      *  Get the number of unread messages the user has
-     *
      * @return mixed
      */
     public function messageCount()
@@ -365,7 +338,6 @@ class User extends Authenticatable
 
     /**
      *  Notify this user of a new Opus/Comment/Activity of a user they watch
-     *
      * @param \Magnus\Notification $notification
      * @return void
      */
@@ -375,8 +347,7 @@ class User extends Authenticatable
     }
 
     /**
-     *  Delete notification ID from the user's message center
-     *
+     * Delete notification ID from the user's message center
      * @param Notification $notification
      */
     public function deleteNotification(Notification $notification)
@@ -385,28 +356,16 @@ class User extends Authenticatable
     }
 
     /**
-     *  Determine if this user is being watched by you.
-     *
+     * Determine if this user is being watched by you.
      * @param User $user
      * @return bool
      */
     public function isWatched(User $user)
     {
         $watch = Watch::where('user_id', $user->id)->where('watcher_user_id', $this->id)->count();
-//        $watches = Watch::where('user_id',$user->id)->get();
         if ($watch > 0) {
             return true;
         }
-//        $watch = Watch::where('user_id',$user->id)->first();
-//
-//        foreach ($watches as $watch)
-//        {
-//            dd($watch->users);
-//            if($watch->pivot->watcher_user_id == $this->id)
-//            {
-//                return true;
-//            }
-//        }
         return false;
     }
 }
