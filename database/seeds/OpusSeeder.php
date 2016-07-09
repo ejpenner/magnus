@@ -19,7 +19,7 @@ class OpusSeeder extends Seeder
         $users = User::all();
         $galleryMax = 2;
         $opusMax = 10;
-        $opusGalleryMax = 2;
+        $opusGalleryMax = 5;
         $tagMax = 4;
 
         foreach($users as $user)  {
