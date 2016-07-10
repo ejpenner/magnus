@@ -54,9 +54,12 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         $thumbnail->save($tdest);
     }
 
-    $image_path = substr($dest, 38);
-    $thumbnail_path = substr($tdest, 38);
-    $preview_path = substr($pdest, 38);
+    $c9PathLength = 30;
+    $myPathLength = 38;
+    
+    $image_path = substr($dest, $myPathLength);
+    $thumbnail_path = substr($tdest, $myPathLength);
+    $preview_path = substr($pdest, $myPathLength);
 
     $created = Carbon::instance($faker->dateTimeBetween('-2 months', 'now'));
         $title = $faker->words(3, true);

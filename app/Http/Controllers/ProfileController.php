@@ -2,16 +2,16 @@
 
 namespace Magnus\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use Magnus\Http\Requests;
-use Illuminate\Support\Facades\Auth;
-
+use Magnus\Opus;
 use Magnus\User;
 use Magnus\Profile;
 use Magnus\Gallery;
+use Magnus\Favorite;
+use Magnus\Http\Requests;
 use Magnus\Helpers\Helpers;
-use Magnus\Opus;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class ProfileController extends Controller
 {
@@ -28,7 +28,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display the auth'd user's profile
      *
      * @return \Illuminate\Http\Response
      */
@@ -86,7 +86,7 @@ class ProfileController extends Controller
     public function galleries(User $user)
     {
         $galleries = Gallery::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(Helpers::perPage());
-        return view('profile.gallery', compact('galleries'));
+        return view('profile.gallery', compact('galleries', 'user'));
     }
 
     /**
@@ -101,15 +101,11 @@ class ProfileController extends Controller
         return view('profile.opera', compact('user', 'profile', 'opera'));
     }
 
-
-    /**
-     * Return all the piece submissions for a user
-     *
-     * @param User $user
-     */
-    public function submissions(User $user)
+    public function favorites(User $user)
     {
-
+        $profile = Profile::where('user_id', $user->id)->first();
+        $favorites = $user->favorites;
+        dd($favorites);
     }
 
     /**
@@ -133,8 +129,9 @@ class ProfileController extends Controller
         $profile = Profile::where('user_id', $user->id)->first();
         $galleries = Gallery::where('user_id', $user->id)->limit(4)->orderBy('updated_at', 'desc')->get();
         $opera = Opus::where('user_id', $user->id)->limit(6)->orderBy('created_at', 'desc')->get();
+        $favorites = $user->favorites;
         if ($user->name != null) {
-            return view('profile.show', compact('profile', 'user', 'galleries', 'opera'));
+            return view('profile.show', compact('profile', 'user', 'galleries', 'opera', 'favorites'));
         } else {
             return abort(404);
         }

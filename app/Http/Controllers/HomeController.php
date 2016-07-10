@@ -70,6 +70,9 @@ class HomeController extends Controller
                 case '24h':
                     $opera = $opera->hoursAgo(24);
                     break;
+                case '8h':
+                    $opera = $opera->hoursAgo(8);
+                    break;
                 case 'week':
                     $opera = $opera->daysAgo(7);
                     break;

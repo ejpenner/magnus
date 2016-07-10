@@ -43,7 +43,6 @@ Route::get('errors/401', ['as' => '401', function () {
  */
 Route::get('/gallery/{gallery}/{opus}', 'OpusController@galleryShow');
 
-
 /**
  * Gallery, opus, and comment CRUD resources
  */
@@ -53,11 +52,14 @@ Route::resource('opus', 'OpusController');
 Route::get('comments/{comment}', 'CommentController@show');
 Route::get('opus/{opus}/download', 'OpusController@download');
 
-
 /**
  * Profile routes
  */
-Route::resource('profile', 'ProfileController');
+//Route::resource('profile', 'ProfileController');
+Route::get('profile', 'ProfileController@index')->name('profile.auth');
+Route::patch('profile', 'ProfileController@update')->name('profile.update');
+Route::get('profile/{profile}', 'ProfileController@show')->name('profile.show');
+Route::get('profile/{profile}/favorites', 'ProfileController@favorites')->name('profile.favorites');
 Route::get('profile/{profile}/galleries', 'ProfileController@galleries')->name('profile.galleries');
 Route::get('profile/{profile}/opera', 'ProfileController@opera')->name('profile.opera');
 Route::get('profile/{profile}/watchers', 'ProfileController@watchers')->name('profile.watchers');

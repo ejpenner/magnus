@@ -37,7 +37,16 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-12">
-
+            <div class="panel panel-default profile-favorites-panel"> {{-- favorites panel --}}
+                <div class="panel-heading">
+                    Favorites
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12">
+                        @include('profile._favorites', ['columns' => 2, 'opera' => $favorites])
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="container-fluid">

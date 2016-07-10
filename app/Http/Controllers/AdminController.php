@@ -33,5 +33,8 @@ class AdminController extends Controller
         //dd(Permission::hasPermission(Auth::user(), 'user_banned'));
         dd(Auth::user()->favorites);
         dd(Opus::find(32)->favorites);
+        $favorite = $favorites = Auth::user()->favorites->where(['opus_id'=>32])->get();
+
+        dd($favorite);
     }
 }

@@ -41,17 +41,13 @@ class Favorite extends Model
 
     public static function has(User $user, Opus $opus)
     {
-        $favorites = $user->favorites->where(['opus_id'=>$opus->id]);
-        dd($favorites);
-//        $q = User::query();
-//        $q->join('favorite_user', 'users.id', '=', 'favorite_user.user_id');
-//        $q->join('favorites', 'favorites.id', '=', 'favorite_user.favorite_id');
-//        $q->where('users.id', '=', $user->id)->where('favorites.opus_id', '=', $opus->id);
-//        $results = $q->get();
-//        if($results->count() > 0) {
-//            return true;
-//        } else {
-//            return false;
-//        }
+        $favorites = $user->favorites;
+
+        foreach($favorites as $favorite) {
+            if($favorite->opus_id === $opus->id) {
+                return true;
+            }
+        }
+        return false;
     }
 }

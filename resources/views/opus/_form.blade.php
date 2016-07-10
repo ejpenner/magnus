@@ -27,8 +27,12 @@
         <div class="panel-body">
             <div class="form-group gallery-select">
                 @foreach($galleries as $i => $gallery)
-                    <input type="checkbox" name="gallery_ids[]" id="gallery_id{{$i}}" value="{{$gallery->id}}" class="checkbox-vis-hidden">
-                    <label for="gallery_id{{$i}}">{{ $gallery->name }}</label>
+                    <input type="checkbox" name="gallery_ids[]" id="{{$gallery->id}}"
+                           @if(isset($opus) and $gallery->hasOpus($opus))
+                                   checked
+                           @endif
+                           value="{{$gallery->id}}" class="checkbox-vis-hidden">
+                    <label for="{{$gallery->id}}">{{ $gallery->name }}</label>
                 @endforeach
             </div>
         </div>
