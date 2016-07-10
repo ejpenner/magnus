@@ -9,7 +9,8 @@
         "laravel/framework": "5.2.*",
         "intervention/image": "^2.3",
         "laravelcollective/html": "5.2.*",
-        "camroncade/timezone": "0.1"
+        "camroncade/timezone": "0.1",
+        "squizlabs/php_codesniffer": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

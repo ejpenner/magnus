@@ -1,21 +1,22 @@
 <?php
-
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
 use Magnus\Helpers\Helpers;
 use Carbon\Carbon;
+use Magnus\Opus;
+use Magnus\User;
 
 $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
     $timezones = ['America/Denver', 'America/New_York', 'America/Chicago', 'America/Los_Angeles'];
     $user = [
-        'name'      => $faker->name,
-        'email'     => $faker->safeEmail,
-        'username'  => $faker->userName,
-        'password'  => bcrypt('password'),
-        'slug'      => str_slug($faker->userName),
-        //'avatar'    => substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
-        'timezone'  => $timezones[rand(0,3)],
-        'remember_token' => str_random(10),
+        'name'              => $faker->name,
+        'email'             => $faker->safeEmail,
+        'username'          => $faker->userName,
+        'password'          => bcrypt('password'),
+        'slug'              => str_slug($faker->userName),
+        'avatar'            => substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
+        'timezone'          => $timezones[rand(0,3)],
+        'remember_token'    => str_random(10),
     ];
     Helpers::makeDirectories($user['username']);
     return $user;
@@ -24,6 +25,7 @@ $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
 $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
 
     $files = File::glob(base_path('resources/seed-pics/*.*'));
+    //$files = File::glob(base_path('resources/heroku-deploy-seed-pics/*.*'));
     $rand = rand(0, count($files)-1);
     $numbers = substr(microtime(), 2, 8);
 
@@ -31,7 +33,11 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         $src = $files[$rand];
         $dest = public_path().'/images/'.basename($files[$rand]);
         $tdest = public_path().'/thumbnails/'.$numbers.basename($files[$rand]);
+        $pdest = public_path().'/previews/'.$numbers.basename($files[$rand]);
+
         copy($src, $dest);
+        $preview = resize($dest, 680);
+        $preview->save($pdest);
         $thumbnail = resize($dest);
         $thumbnail->save($tdest);
     } catch (\Exception $e) {
@@ -39,35 +45,40 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         $src = $files[$rand];
         $dest = public_path().'/images/'.basename($files[$rand]);
         $tdest = public_path().'/thumbnails/'.$numbers.basename($files[$rand]);
+        $pdest = public_path().'/previews/'.$numbers.basename($files[$rand]);
+
         copy($src, $dest);
+        $preview = resize($src, 680);
+        $preview->save($pdest);
         $thumbnail = resize($dest);
         $thumbnail->save($tdest);
     }
 
-
-    $sizes = [0 => [250,160], 1 => [160,250]];
-    $res = $sizes[rand(0,1)];
-    $theme = '';
-    $faker->seed(rand(11111,99999));
     $image_path = substr($dest, 38);
     $thumbnail_path = substr($tdest, 38);
+    $preview_path = substr($pdest, 38);
 
+    $created = Carbon::instance($faker->dateTimeBetween('-2 months', 'now'));
+        $title = $faker->words(3, true);
     return [
-        'title' => ucwords($faker->words(3, true)),
-        'comment' => $faker->paragraphs(2,true),
-        'image_path' => $image_path,
-        'thumbnail_path' => $thumbnail_path,
-        'published_at' => \Carbon\Carbon::now(),
-        'views'        => rand(1000,3000),
-        'daily_views'  => rand(100,1000),
+        'title'             => ucwords($title),
+        'comment'           => $faker->paragraphs(2,true),
+        'slug'              => substr(microtime(), 2,8).'-'.str_slug($title),
+        'image_path'        => $image_path,
+        'thumbnail_path'    => $thumbnail_path,
+        'preview_path'      => $preview_path,
+        'published_at'      => $created,
+        'created_at'        => $created,
+        'views'             => rand(1000,3000),
+        'daily_views'       => rand(100,1000),
     ];
 });
 
 $factory->define(Magnus\Gallery::class, function (Faker\Generator $faker){
     return [
-        'name' => ucwords($faker->words(3, true)),
-        'description' => $faker->sentence,
-        'main_gallery' => 0,
+        'name'          => ucwords($faker->words(3, true)),
+        'description'   => $faker->sentence,
+        'main_gallery'  => 0,
     ] ;
 });
 
@@ -80,20 +91,23 @@ $factory->define(Magnus\Comment::class, function (Faker\Generator $faker){
 $factory->define(Magnus\Profile::class, function (Faker\Generator $faker){
     return [
         'biography' => $faker->paragraphs(2, true),
-    ] ;
+    ];
 });
 
 $factory->defineAs(Magnus\Notification::class, 'opus', function (Faker\Generator $faker){
     $opusCount = \Magnus\Opus::count();
     $randomOpus = rand(1,$opusCount);
-    $noteStore = ['handle'=>'opus', 'opus_id'=>rand(1,$randomOpus), 'read'=>0];
+    $noteStore = [
+        'handle'    => 'opus',
+        'opus_id'   => rand(1,$randomOpus)
+    ];
     return $noteStore;
 });
 
 $factory->defineAs(Magnus\Notification::class, 'comment', function (Faker\Generator $faker){
     $commentCount = \Magnus\Comment::count();
     $randomComment = rand(1, $commentCount);
-    $noteStore = ['handle'=>'comment', 'comment_id'=>rand(1,$randomComment), 'read'=>0];
+    $noteStore = ['handle'=>'comment', 'comment_id'=>rand(1,$randomComment)];
     return $noteStore;
 });
 
@@ -122,6 +136,12 @@ $factory->define(\Magnus\Preference::class, function(Faker\Generator $faker) {
         'per_page' => 24
     ];
 });
+
+//$factory->define(\Magnus\Favorite::class, function (){
+//   $opus_total = Opus::count();
+//    $user_count = User::count();
+//
+//});
 
 /**
  * Resize the opus' image for it's thumbnail

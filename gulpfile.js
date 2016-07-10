@@ -1,14 +1,15 @@
-var gulp = require('gulp');
-var prettify = require('gulp-jsbeautifier');
-var phpcbf = require('gulp-phpcbf');
-var concat = require('gulp-concat');
-var less = require('gulp-less');
 var browserify = require('browserify');
-var strictify = require('strictify');
 var babelify = require('babelify');
+var gulp = require('gulp');
+var cache = require('gulp-cached');
+var phpcbf = require('gulp-phpcbf');
+var prettify = require('gulp-jsbeautifier');
+var less = require('gulp-less');
+var concat = require('gulp-concat');
+var strictify = require('strictify');
 var source = require('vinyl-source-stream');
 var watchify = require('gulp-watchify');
-var cache = require('gulp-cached');
+var runSequence = require('run-sequence');
 var through2 = require('through2');
 
 var assets_dir = './resources/assets/';
@@ -16,8 +17,9 @@ var assets_dir = './resources/assets/';
 var vendor_js_files = [
     assets_dir + "js/vendor/jquery.min.js",
     assets_dir + "js/vendor/angular.min.js",
-    assets_dir + "js/vendor/cropper.js",
+    // assets_dir + "js/vendor/cropper.js",
     assets_dir + "js/vendor/bootstrap.min.js",
+    assets_dir + "js/vendor/unveil.js",
     assets_dir + "js/vendor/ng-resource.min.js",
     assets_dir + "js/vendor/ng-table.js",
     assets_dir + "js/vendor/ng-infinite-scroll.js"
@@ -46,7 +48,7 @@ var php_files = [
 
 //PHPcbf options
 var phpcbf_options = {
-    bin: 'phpcbf',
+    bin: 'vendor/bin/phpcbf',
     standard: 'PSR2',
     warningSeverity: 0
 };
@@ -127,10 +129,10 @@ gulp.task('js', [
 gulp.task('default', [
     'less',
     'vendor-scripts',
-    'angular',
+    //'angular',
     'scripts',
-    // 'phpcbf-app',
-    // 'phpcbf-config'
+    'phpcbf-app',
+    'phpcbf-config'
 ]);
 
 gulp.task('watch', function() {

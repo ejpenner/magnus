@@ -97,7 +97,7 @@ class PermissionController extends Controller
     {
         $permission = Permission::findOrFail($id);
 
-        if(User::where('permission_id', $id)->count() == 0) {
+        if (User::where('permission_id', $id)->count() == 0) {
             $permission->delete();
             return redirect()->route('permissions.index')->with('success', 'Permission schema has been deleted!');
         } else {

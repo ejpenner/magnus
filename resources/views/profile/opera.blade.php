@@ -1,16 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('profile._header', ['user'=>$user, 'details'=>false])
-    <div class="col-md-10 col-md-offset-1">
-        <div class="container-fluid">
-            @foreach($opera->chunk(4) as $operaChunk)
-                <div class="row">
-                    @foreach($operaChunk as $opus)
-                        @include('partials._opus', ['opus' => $opus])
-                    @endforeach
+    @include('profile._header', ['user' => $user, 'details' => false])
+    <div class="container-fluid">
+        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="text-center">
+                        Galleries
+                    </div>
                 </div>
-            @endforeach
+                <div class="panel-body gallery-sidebar">
+                    @include('partials._galleries', ['galleries' => $user->galleries, 'columns' => 1])
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+            @include('partials._opusColumns', ['columns'=>4, 'opera' => $opera])
         </div>
     </div>
     <div class="container">

@@ -1,5 +1,5 @@
 .comment {
-  border: @gray-lighter solid 2px;
+  //border: @gray-lighter solid 2px;
   background-color: @gray-lighter;
   .border-radius();
   padding:5px;
@@ -71,4 +71,8 @@
     width: 70%;
     margin-bottom: 2px;
   }
+}
+
+.comment:target {
+  background-color: @comment-highlight;
 }

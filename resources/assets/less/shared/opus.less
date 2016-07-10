@@ -1,0 +1,117 @@
+#fullview {
+  display:none;
+}
+
+div .thumbnail-wrap {
+  position: relative;
+}
+
+.opus-image, .opus-overlay {
+  display: block;
+}
+
+.opus-overlay {
+  .opacity(.3);
+  position: absolute; right: auto; bottom: 0;
+
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+
+}
+
+.opus-overlay:hover {
+  .opacity(1);
+}
+
+.opus-overlay:focus {
+  .opacity(1);
+}
+
+.menu-overlay {
+
+}
+
+div.gallery-item {
+  position:relative;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  text-align: center;
+  height: @min-gallery-item-height;
+
+  img {
+    .box-shadow(5px 5px 5px #888888);
+  }
+
+  /* horizontal and vertical for opera and galleries */
+  .vcenter {
+    position: absolute;
+    vertical-align: middle;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    .translate(-50%, -50%);
+  }
+}
+
+.gallery-operations {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  .translate(-50%, 145px);
+  z-index: 5;
+  //text-align: center;
+}
+
+.opus-operations {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  .translate(-50%, 145px);
+  z-index: 5;
+  //text-align: center;
+}
+
+.opus-display {
+  display: block;
+  .opus-show {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+    //max-width: 1500px;
+    .box-shadow(5px 5px 5px #888888);
+  }
+}
+
+.piece-info {
+  display:block;
+  margin-bottom: 15px;
+}
+
+.piece-nav {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.preview-container {
+  display: none;
+}
+
+div.uploader {
+  text-align: center;
+
+  #preview {
+    position: relative;
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+    //max-height: 500px;
+    .box-shadow(5px 5px 5px #888888);
+    display: none;
+  }
+
+  #preview-edit {
+    position: relative;
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+    //max-height: 500px;
+    .box-shadow(5px 5px 5px #888888);
+  }
+}

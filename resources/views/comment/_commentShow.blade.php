@@ -3,7 +3,7 @@
         @if($child->parent_id != null)
             <div class="comment-area">
                 <div class="container-fluid comment" id="cid:{{ $comment->id }}">
-                    <div class="row">
+                    <div class="">
                         <div class="col-md-2 comment-avatar">
                             <div class="text-center">
                                 <a href="{{ action('ProfileController@show', $child->user->slug) }}">

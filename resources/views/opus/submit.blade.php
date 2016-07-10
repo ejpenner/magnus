@@ -7,7 +7,7 @@
                 New Opus
             </div>
             <div class="panel-body">
-                {!! Form::open(['action'=>['OpusController@submit'], 'files'=>true, 'id'=>'upload-file']) !!}
+                {!! Form::open(['action'=>['OpusController@store'], 'files'=>true, 'id'=>'upload-file']) !!}
                 <div class="panel panel-default preview-container">
                     <div class="panel-heading">
                         Preview

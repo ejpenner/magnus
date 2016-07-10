@@ -1,9 +1,7 @@
 $(document).ready(function() {
 
-    $(".alert-success").slideDown(400);
-
     window.setTimeout(function() {
-        $(".alert-success").fadeTo(500, 0).slideUp(500, function() {
+        $('.alert-success').fadeTo(500, 0).slideUp(500, function() {
             $(this).remove();
         });
     }, 3000);
@@ -11,6 +9,17 @@ $(document).ready(function() {
     $('.delete-confirm').on('submit', function() {
         return confirm('Are you sure you want to delete this?');
     });
+
+    $('#preview').click(function() {
+        $('#fullview').show().unveil();
+        $(this).toggle();
+    });
+
+    $('#fullview').click(function() {
+        $(this).toggle();
+        $('#preview').toggle();
+    });
+
 
     $(window).scroll(function() {
         var x = $(this).scrollTop();
@@ -47,7 +56,7 @@ $(document).ready(function() {
         }
     }
 
-    $(".reply-toggle").click(function() {
+    $('.reply-toggle').click(function() {
         $(this).children().show();
         $(this).children('.reply-btn').hide();
     });
@@ -56,6 +65,13 @@ $(document).ready(function() {
         readURL(this);
     });
 
+    // $('.opus-overlay').on('hover', function() {
+    //     console.log('overlay trigger');
+    //     $(this).fadeIn(300);
+    // }, function() {
+    //     $(this).fadeOut(300);
+    // });
+
     $('#image').change(function() {
         readFile(this, '#preview');
         readFile(this, '#preview-edit');
@@ -63,15 +79,17 @@ $(document).ready(function() {
         $('div.preview-container').show();
     });
 
-    var avatarCropper = new Cropper(image, {
-        aspectRatio: 1,
-        crop: function(e) {
-            console.log(e.detail.x);
-            console.log(e.detail.y);
-            console.log(e.detail.width);
-            console.log(e.detail.height);
-        }
-    });
+    try {
+        var avatarCropper = new Cropper(image, {
+            aspectRatio: 1,
+            crop: function(e) {
+                // console.log(e.detail.x);
+                // console.log(e.detail.y);
+                // console.log(e.detail.width);
+                // console.log(e.detail.height);
+            }
+        });
+    } catch (e) {}
 
     $('.crop-submit').on('click', function(e) {
         console.log('Cropping avatar');
@@ -111,7 +129,4 @@ $(document).ready(function() {
             location.reload();
         }, 2000)
     });
-
-
-
 });

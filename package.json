@@ -5,22 +5,25 @@
     "dev": "gulp watch"
   },
   "devDependencies": {
-    "gulp": "^3.8.8",
+    "babelify": "*",
+    "browserify": "~13.0.0",
+    "gulp": "*",
     "gulp-concat": "*",
     "gulp-less": "*",
-    "babelify": "*",
-    "browserify": "^13.0.0",
-    "watchify": "^3.1.0",
+    "watchify": "*",
     "gulp-jsbeautifier": "*",
     "gulp-phpcbf": "*",
     "gulp-watchify": "*",
-    "strictify": "^0.2.0"
+    "strictify": "^0.2.0",
+    "gulp-cached": "*",
+    "vinyl-source-stream": "*",
+    "through2": "*",
+    "http-stream": "*",
+    "run-sequence": "*",
+    "laravel-elixir": "*",
+    "laravel-elixir-phpcs": "*"
   },
   "dependencies": {
-    "gulp-cached": "^1.1.0",
-    "vinyl-source-stream": "*",
-    "stream-http": "^2.2.0",
-    "through2": "^2.0.1"
+
   }
 }
-

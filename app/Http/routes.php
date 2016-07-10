@@ -6,19 +6,24 @@ use Illuminate\Support\Facades\Config;
  */
 Route::model('users', 'User');
 Route::model('profile', 'Profile');
+Route::model('opus', 'Opus');
+
+Route::bind('opus', function ($value, $route) {
+    return \Magnus\Opus::whereSlug(strtolower($value))->firstOrFail();
+});
 
 /**
  * Binds the {users} parameter to the slug
  */
 Route::bind('users', function ($value, $route) {
-    return \Magnus\User::whereSlug(strtolower($value))->first();
+    return \Magnus\User::whereSlug(strtolower($value))->firstOrFail();
 });
 
 /**
  *  binds User model via slug to {profile} wildcard
  */
 Route::bind('profile', function ($value, $route) {
-    return \Magnus\User::whereSlug(strtolower($value))->first();
+    return \Magnus\User::whereSlug(strtolower($value))->firstOrFail();
 });
 
 /**
@@ -29,7 +34,7 @@ Route::auth();
 /**
  * Error 401 Unauthorized Route
  */
-Route::get('errors/401', ['as' => '401', function() {
+Route::get('errors/401', ['as' => '401', function () {
     return view('errors.401');
 }]);
 
@@ -44,18 +49,19 @@ Route::get('/gallery/{gallery}/{opus}', 'OpusController@galleryShow');
  */
 Route::resource('gallery', 'GalleryController');
 Route::resource('opus', 'OpusController');
-Route::resource('opus.comment', 'CommentController');
-Route::get('opus/{id}/download', 'OpusController@download');
+//Route::resource('opus.comment', 'CommentController');
+Route::get('comments/{comment}', 'CommentController@show');
+Route::get('opus/{opus}/download', 'OpusController@download');
 
 
 /**
  * Profile routes
  */
 Route::resource('profile', 'ProfileController');
-Route::get('profile/{profile}/galleries', 'ProfileController@galleries');
-Route::get('profile/{profile}/opera', 'ProfileController@opera');
-Route::get('profile/{profile}/watchers', 'ProfileController@watchers');
-Route::get('profile/{profile}/watching', 'ProfileController@watching');
+Route::get('profile/{profile}/galleries', 'ProfileController@galleries')->name('profile.galleries');
+Route::get('profile/{profile}/opera', 'ProfileController@opera')->name('profile.opera');
+Route::get('profile/{profile}/watchers', 'ProfileController@watchers')->name('profile.watchers');
+Route::get('profile/{profile}/watching', 'ProfileController@watching')->name('profile.watching');
 
 /**
  * Search route
@@ -69,22 +75,23 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Alternate create and store routes for creating Opus
      */
-    Route::get('/submit', 'OpusController@newSubmission')->name('');
-    Route::post('/submit', 'OpusController@submit');
+    Route::get('/submit', 'OpusController@newSubmission')->name('submit');
+    Route::post('/submit/new', 'OpusController@store');
 
     /**
      * CRUD routes for opera in galleries
      */
-    Route::post('gallery/{gallery}/',           'OpusController@galleryStore');
-    Route::patch('gallery/{gallery}/{opus}',    'OpusController@galleryUpdate');
-    Route::delete('gallery/{gallery}/{opus}',   'OpusController@galleryDestroy');
+    //Route::post('gallery/{gallery}/', 'OpusController@galleryStore');
+    //Route::patch('gallery/{gallery}/{opus}', 'OpusController@galleryUpdate');
+    //Route::delete('gallery/{gallery}/{opus}', 'OpusController@galleryDestroy');
 
     /**
      * Pretty url CRUD for comments
      */
-    Route::get('comments/{comment}', 'CommentController@show');
     Route::post('opus/{opus}/{comment}', 'CommentController@storeChild');
+    Route::post('opus/{opus}/comment', 'CommentController@store');
     Route::patch('opus/{opus}/{comment}', 'CommentController@updateChild');
+    Route::delete('opus/{opus}/comment/{comment}', 'CommentController@destroy');
     Route::delete('opus/{opus}/{comment}', 'CommentController@destroyChild');
 
     /**
@@ -95,17 +102,22 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('messages/selected', 'NotificationController@destroySelected');
     Route::post('opus/{opus}/{comment}/{notification}', 'CommentController@storeChildRemoveNotification');
 
+    /**
+     * Favorite routes
+     */
+    Route::post('fav/{opus}/add', 'FavoriteController@store')->name('favorite.add');
+    Route::delete('fav/{opus}/remove', 'FavoriteController@destroy')->name('favorite.remove');
+    Route::get('fav/{opus}/', 'FavoriteController@show')->name('favorite.show');
 
     /**
      * CRUD routes for user account operations
      * TODO: refactor id middleware
      */
     Route::group(['middleware' => ['account']], function () {
-        //Route::get('account/{users}/edit', 'AccountController@editAccount')->name('account.edit');
         Route::patch('account/{users}/update', 'AccountController@updateAccount')->name('account.update');
         Route::get('account/{users}', 'AccountController@manageAccount')->name('account.manage');
+        Route::post('account/{users}/avatar', 'AccountController@uploadAvatar')->name('account.avatar');
         Route::patch('account/{users}/updatePassword', 'AccountController@updatePassword')->name('password.update');
-        //Route::get('account/{users}/preferences', 'AccountController@preferences')->name('account.preference');
         Route::patch('account/{users}/preferences', 'AccountController@updatePreferences')->name('account.preferences.update');
     });
 
@@ -137,15 +149,14 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('permissions', 'PermissionController');
         Route::resource('users', 'UserController');
         Route::resource('roles', 'RoleController');
-
     });
 
     /**
      * Global moderator middleware group
      */
     Route::group(['middleware'=>'permission:atLeast,'.Config::get('roles.gmod-code')], function () {
-        Route::get('user/{users}/avatar', 'UserController@avatarAdmin');
-        Route::post('user/{users}/avatar', 'UserController@uploadAvatarAdmin');
+        Route::get('account/{users}/avatar', 'AccountController@avatarAdmin');
+        Route::post('account/{users}/avatar', 'AccountController@uploadAvatarAdmin');
     });
 });
 

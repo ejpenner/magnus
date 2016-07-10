@@ -38,7 +38,7 @@ div.gallery-select {
 
 div.flash-messages {
   position: absolute;
-  top: 10%;
+  top: 15%;
   z-index: 10;
   width: 60%;
   min-width: 300px;
@@ -50,10 +50,9 @@ div.flash-messages {
   }
 }
 
-
-
   .search-box {
     margin-left: 10px;
+    width: 150%;
     //width: 900px;
     //display: inline-flex;
     //flex-direction: row;
@@ -64,7 +63,80 @@ div.flash-messages {
     }
 
     input[type="text"] {
-      width: 400px;
+
     }
 
   }
+
+span.role-developer::before {
+  content: "Dev";
+  margin-right: 3px;
+  padding: 2px;
+  font-size: 90%;
+  position: relative;
+  color: @white;
+  .border-radius(5px);
+  .gradient(#a45dba, #552f51);
+}
+
+span.role-administrator::before {
+  content: "Admin";
+  margin-right: 3px;
+  padding: 2px;
+  font-size: 90%;
+  position: relative;
+  color: @white;
+  .border-radius(5px);
+  .gradient(#c03622, #552522);
+}
+
+span.role-globalModerator::before {
+  content: "Conflict Resolution Officer";
+  margin-right: 3px;
+  padding: 2px;
+  font-size: 90%;
+  position: relative;
+  color: @white;
+  .border-radius(5px);
+  .gradient(#48ad42, #1a551a);
+}
+
+span.role-moderator::before {
+  content: "Mod";
+  margin-right: 3px;
+  padding: 2px;
+  font-size: 90%;
+  position: relative;
+  color: @white;
+  .border-radius(5px);
+  .gradient(#292ec6, #1a2363);
+}
+
+span.role-banned {
+  text-decoration: line-through;
+  color: @gray-light;
+}
+
+/* Dropdown hover */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Remove the navbar's default rounded borders and increase the bottom margin */
+.navbar {
+  border-top: solid @newPrimary 3px !important;
+  margin-bottom: 15px !important;
+  border-radius: 0 !important;
+}
+
+/* Remove the jumbotron's default bottom margin */
+.jumbotron {
+  color: #c2bfc9 !important;
+  margin-bottom: 0 !important;
+  height: 100px !important;
+  background-image: @header-bg;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+

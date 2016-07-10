@@ -19,12 +19,8 @@ class GalleryController extends Controller
 
     public function __construct()
     {
-        $this->middleware(
-            'auth',
-            [
-            'only' => ['create','store','edit','update','destroy']
-            ]
-        );
+        $this->middleware('auth', ['except' => ['index','show']]);
+        $this->middleware('gallery', ['except' => ['index','show']]);
         
     }
 
@@ -63,7 +59,7 @@ class GalleryController extends Controller
         $gallery = new Gallery(['name'=>$request->name,'description'=>$request->description, 'main_gallery'=>0]);
         Auth::user()->galleries()->save($gallery);
 
-        return redirect()->route('profile.show', [Auth::user()->slug])->with('success', $gallery->name.' has been created!');
+        return redirect()->route('profile.show', Auth::user()->slug)->with('success', $gallery->name.' has been created!');
     }
 
     /**
@@ -122,7 +118,7 @@ class GalleryController extends Controller
     public function destroy($id)
     {
         $gallery = Gallery::findOrFail($id);
-        if(Auth::user()->isOwner($gallery) or Auth::user()->atLeastHasRole(config('role.mod-code'))) {
+        if (Auth::user()->isOwner($gallery) or Auth::user()->atLeastHasRole(config('role.mod-code'))) {
             $gallery->delete();
             return redirect()->to(app('url')->previous())->with('success', 'Gallery successfully deleted!');
         } else {

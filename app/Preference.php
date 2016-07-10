@@ -19,7 +19,8 @@ class Preference extends Model
         'show_sex' => 'boolean'
     ];
     
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo('Magnus\User');
     }
 

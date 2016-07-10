@@ -12,13 +12,13 @@
                         <div class="col-md-3 col-sm-6">
                             <div class="gallery-item message-item">
                                 <div class="vcenter">
-                                    <a href="{{ action('OpusController@show', [$opus->id]) }}">
-                                        <img src="/{{ $opus->getThumbnail() }}" alt="">
+                                    <a href="{{ action('OpusController@show', [$opus->slug]) }}">
+                                        <img src="/{{ $opus->getThumbnail() }}" alt="{{ $opus->title }}">
                                     </a>
                                     <h5>
-                                        <strong><a href="{{ action('OpusController@show', [$opus->id]) }}">{{ $opus->title }}</a></strong>
+                                        <strong><a href="{{ action('OpusController@show', [$opus->slug]) }}">{{ $opus->title }}</a></strong>
                                         <br>
-                                        <a href="{{ action('ProfileController@show', $opus->user->slug) }}">{!! $user->decorateUsername() !!}</a>
+                                        <a href="{{ action('ProfileController@show', $opus->user->slug) }}">{!! $opus->user->decorateUsername() !!}</a>
                                     </h5>
                                     <div>
                                         <a href="{{ action('NotificationController@destroy', $opus->notification_id) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</a>

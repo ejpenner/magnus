@@ -16,7 +16,6 @@ class CommentController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth',    ['except'=>['show','index']]);
         $this->middleware('comment', ['except'=>['show','index']]);
     }
 
@@ -60,7 +59,7 @@ class CommentController extends Controller
 
     /**
      * Controller method to store top level comments on profiles
-     * 
+     *
      * @param Requests\CommentRequest $request
      * @param $profile_id
      */
@@ -107,7 +106,7 @@ class CommentController extends Controller
 
         Notification::notifyUserNewReply($comment->user, $newComment->user, $newComment);
 
-        if($request->input('remove_notify')) {
+        if ($request->input('remove_notify')) {
             $notification = Notification::where('id', $notification_id)->first();
             Auth::user()->deleteNotification($notification);
         }

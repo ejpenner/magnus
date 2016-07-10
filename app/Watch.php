@@ -23,11 +23,13 @@ class Watch extends Model
         'add_friend' => 'boolean'
     ];
     
-    public function users() {
+    public function users()
+    {
         return $this->belongsToMany('Magnus\User', 'user_watch', 'watch_id', 'watcher_user_id')->withPivot('watched_user_id')->withTimestamps();
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo('Magnus\User');
     }
 
@@ -50,7 +52,7 @@ class Watch extends Model
                                 'watch_activity'=>$activity,
                                 'add_friend' => $friend
         ]);
-        $watcher->watchers()->attach($watch->id,['watched_user_id'=>$watched->id]);
+        $watcher->watchers()->attach($watch->id, ['watched_user_id'=>$watched->id]);
     }
 
     public static function modifyWatchUser()
@@ -69,7 +71,4 @@ class Watch extends Model
         $watcher->watchers()->detach($watch->id);
         $watch->delete();
     }
-
-
-
 }

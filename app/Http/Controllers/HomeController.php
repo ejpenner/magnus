@@ -5,9 +5,7 @@ namespace Magnus\Http\Controllers;
 use Magnus\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Magnus\Gallery;
 use Magnus\Opus;
-use Magnus\User;
 
 class HomeController extends Controller
 {
@@ -18,12 +16,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(
-            'auth',
-            [
-                'only' => ['create','edit','destroy']
-            ]
-        );
+        $this->middleware('auth', ['only' => ['create','edit','destroy']]);
     }
 
     /**
@@ -36,10 +29,13 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function recent(Request $request, $filter = null, $period = null) {
-        if($request->has('limit')) {
+    public function recent(Request $request, $filter = null, $period = null)
+    {
+        $filterSegment = !is_null($request->segment(1)) ? $request->segment(1) : 'newest';
+
+        if ($request->has('limit')) {
             $limit = $request->input('limit');
-        } elseif (Auth::check()) {
+        } elseif (Auth::check() and !$request->has('limit')) {
             $limit = Auth::user()->preferences->per_page;
         } else {
             $limit = config('images.defaultLimit');
@@ -47,17 +43,20 @@ class HomeController extends Controller
 
         switch ($filter) {
             case 'hot':
-                $opera = Opus::orderBy('daily_views', 'desc');
+                $opera = Opus::hot();
                 break;
             case 'popular':
-                $opera = Opus::views();
+                $opera = Opus::popular();
+                break;
+            case 'newest':
+                $opera = Opus::newest();
                 break;
             default:
                 $opera = Opus::newest();
                 break;
         }
 
-        if($period != null) {
+        if ($period != null) {
             switch ($period) {
                 case 'today':
                     $opera = $opera->today();
@@ -74,11 +73,14 @@ class HomeController extends Controller
                 case 'week':
                     $opera = $opera->daysAgo(7);
                     break;
+                case 'month':
+                    $opera = $opera->daysAgo(30);
+                    break;
             }
         }
 
         $opera = $opera->paginate($limit);
-
-        return view('home.recent', compact('opera','request'));
+        
+        return view('home.recent', compact('opera', 'request', 'filterSegment'));
     }
 }

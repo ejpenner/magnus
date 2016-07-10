@@ -4,102 +4,15 @@
     <div class="col-md-12">
         <div class="text-center">
             <div class="container-fluid">
-                <div class="opus-display">
-                    <img class="opus-show" src="/{{ $opus->getImage() }}" alt="">
-                </div>
+                @include('opus.partials._image', ['opus' => $opus])
             </div>
-            @if(isset($galleryNav))
-            <div class="text-center">
-                <div class="piece-nav">
-                    <div class="btn-group">
-                        <a class="btn btn-default" href="{{ action('OpusController@show', $galleryNav['previous']) }}">Previous</a>
-                        <a class="btn btn-default" href="{{ action('GalleryController@show', [$gallery->id]) }}">Gallery</a>
-                        <a class="btn btn-default" href="{{ action('OpusController@show', $galleryNav['next']) }}">Next</a>
-                    </div>
-                </div>
-            </div>
-            @endif
         </div>
+        @include('opus.partials._navigator', ['navigator' => $navigator])
         {{--panel start--}}
-        <div class="container">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="piece-info">
-                        <div class="container-fluid">
-                            <div class="col-md-9">
-                                <a href="{{ action('ProfileController@show', $opus->user->slug) }}">
-                                    <img src="{{ $opus->user->getAvatar() }}" class="pull-left avatar" alt="avatar">
-                                </a>
-                                <h3>{{ $opus->title }}</h3>
-                                <p>By <a href="{{ action('ProfileController@show', $opus->user->slug) }}">{{ $opus->user->name }}</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        @unless($opus->tags->isEmpty())
-                            <div class="container-fluid">
-                                <ul class="list-inline">
-                                    <strong>Tags</strong>
-                                    @foreach($opus->tags as $tag)
-                                        <li><a href="{{ action('SearchController@searchAll', '@'.$tag->name) }}">{{ $tag->name }}</a></li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endunless
-                    </div>
-                    <!-- Artist comments -->
-                    <div class="col-md-8">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <p>{{ $opus->comment }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="panel panel-default details-panel">
-                            <div class="panel-heading">
-                                Details
-                                @if(Auth::check() and (Auth::user()->isOwner($opus) or Auth::user()->atLeastHasRole(config('roles.mod-code'))))
-                                    <div class="pull-right operations">
-                                        {!! Form::model($opus, ['method'=>'delete', 'class'=>'delete-confirm operations',
-                                                               'action'=>['OpusController@destroy', $opus->id]]) !!}
-                                        <a href="{{ action('OpusController@edit', [$opus->id]) }}">
-                                            <button type="button" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</button>
-                                        </a>
-                                        <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
-                                        <a class="btn btn-primary btn-xs" href="{{ action('OpusController@download', [$opus->id]) }}">Download</a>
-                                        {!! Form::close() !!}
-                                    </div>
-                                @endif
-                            </div>
-                            <table class="table">
-                                <tbody>
-                                <tr>
-                                    <td>Views</td>
-                                    <td>{{ $opus->views }} <small>({{ $opus->daily_views  }} Today)</small></td>
-                                </tr>
-                                <tr>
-                                    <td>Submitted On</td>
-                                    <td>{{ $opus->published_at }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Image Size</td>
-                                    <td>{{ $metadata['filesize'] }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Resolution</td>
-                                    <td>{{ $metadata['resolution'] }}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('opus.partials._opusDetails', ['opus' => $opus, 'metadata' => $metadata])
         <div class="container-fluid">
             <div class="col-md-offset-2 col-md-8">
-                @include('comment._commentOpus', ['comments'=>$opus->comments, 'gallery'=>$gallery, 'opus'=>$opus])
+                @include('comment._commentOpus', ['comments'=>$opus->comments, 'opus'=>$opus])
             </div>
         </div>
     </div>

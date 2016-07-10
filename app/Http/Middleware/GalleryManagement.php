@@ -5,7 +5,7 @@ namespace Magnus\Http\Middleware;
 use Closure;
 use Magnus\Gallery;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
+use Magnus\Helpers\Helpers;
 
 class GalleryManagement
 {
@@ -21,7 +21,7 @@ class GalleryManagement
         $gallery_id = $request->route('gallery');
         $gallery = Gallery::where('id', $gallery_id)->first();
 
-        if (!Auth::check() or Auth::user()->atLeastHasRole(Config::get('roles.gmod-code')) or Auth::user()->isOwner($gallery)) {
+        if (Auth::check() and Helpers::isOwnerOrHasRole($gallery, config('roles.moderator'))) {
             return $next($request);
         } else {
             return redirect()->back()->withErrors('You are not permitted to complete that action or view that page.');

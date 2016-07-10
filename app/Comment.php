@@ -2,10 +2,9 @@
 
 namespace Magnus;
 
-use Illuminate\Database\Eloquent\Model;
-
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
@@ -27,38 +26,42 @@ class Comment extends Model
         'updated_at'
     ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo('Magnus\User');
     }
 
     public function opus()
     {
-     return $this->belongsTo('Magnus\Opus');
+        return $this->belongsTo('Magnus\Opus');
     }
     
-    public function profile() {
+    public function profile()
+    {
         return $this->belongsTo('Magnus\Profile');
     }
 
-    public function childComments() {
-        return $this->hasMany('Magnus\Comment','parent_id','id');
+    public function childComments()
+    {
+        return $this->hasMany('Magnus\Comment', 'parent_id', 'id');
     }
     
-    public function parentComment() {
+    public function parentComment()
+    {
         return $this->belongsTo('Magnus\Comment', 'parent_id');
     }
 
-    public function allChildComments() {
+    public function allChildComments()
+    {
         return $this->childComments()->with('allChildComments');
     }
 
-    public function getCreatedAtAttribute($value) {
-        if(isset(Auth::user()->timezone)) {
+    public function getCreatedAtAttribute($value)
+    {
+        if (isset(Auth::user()->timezone)) {
             return Carbon::parse($value)->timezone(Auth::user()->timezone)->format('M d, Y g:iA');
         } else {
             return Carbon::parse($value)->format('M d, Y g:iA');
         }
     }
-
-
 }

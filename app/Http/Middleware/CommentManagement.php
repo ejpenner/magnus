@@ -4,8 +4,7 @@ namespace Magnus\Http\Middleware;
 
 use Closure;
 use Magnus\Comment;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
+use Magnus\Helpers\Helpers;
 
 class CommentManagement
 {
@@ -21,7 +20,7 @@ class CommentManagement
         $comment_id = $request->route('c');
         $comment= Comment::where('id', $comment_id)->first();
 
-        if (Auth::user()->atLeastHasRole(Config::get('roles.gmod-code')) or Auth::user()or Auth::user()->isOwner($comment)) {
+        if (Helpers::isOwnerOrHasRole($comment, config('roles.moderator'))) {
             return $next($request);
         } else {
             return redirect()->back()->withErrors('You are not permitted to complete that action or view that page.');
