@@ -2,7 +2,6 @@
 
 namespace Magnus\Http\Controllers;
 
-
 use Magnus\Opus;
 use Magnus\Permission;
 use Magnus\Http\Requests;
