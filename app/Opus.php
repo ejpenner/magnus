@@ -1,12 +1,13 @@
 <?php
+
 namespace Magnus;
 
-use Magnus\Http\Requests\Request;
-use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Magnus\Http\Requests\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class Opus extends Model
 {
@@ -176,7 +177,6 @@ class Opus extends Model
     public function setPublishedAtAttribute($date)
     {
         $this->attributes['published_at'] = Carbon::parse($date);
-        //$this->attributes['published_at'] = Carbon::createFromFormat('Y-m-d', $date);
     }
 
     /**
@@ -210,7 +210,7 @@ class Opus extends Model
     /**
      * Set the slug of the opus
      */
-    public function setSlug()
+    protected function setSlug()
     {
         $this->slug = substr(microtime(), 15).'-'.str_slug($this->title);
     }
@@ -299,7 +299,7 @@ class Opus extends Model
      * @param  \Illuminate\Http\Request  $request
      * @return string
      */
-    public function storeImage(User $user, $request)
+    protected function storeImage(User $user, $request)
     {
         $originalFileName = $request->file('image')->getClientOriginalName();
         $fileName = $user->username.'-'.date('Ymd') . substr(microtime(), 2, 8).'-'.$originalFileName; // renaming image
@@ -313,11 +313,11 @@ class Opus extends Model
      * @param  \Illuminate\Http\Request  $request
      * @return string
      */
-    public function storePreview(User $user, $request)
+    protected function storePreview(User $user, $request)
     {
 
         $previewSize = $request->has('preview_size') ? $request->input('preview_size') : 680;
-        $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
+        //$extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         $fileName = $user->username.'-'.date('Ymd') .'-'. substr(microtime(), 2, 8).'-p.'. $this->resizeExtension; // renaming image
         $thumbnail = $this->resize($this->getImage(), $previewSize);
         $fullPath = $this->directory."/".$fileName;
@@ -331,9 +331,9 @@ class Opus extends Model
      * @param $request
      * @return string
      */
-    public function storeThumbnail(User $user, $request)
+    protected function storeThumbnail(User $user, $request)
     {
-        $extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
+        //$extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         $fileName = $user->username.'-'.date('Ymd') .'-'. substr(microtime(), 12, 8).'-t.'. $this->resizeExtension; // renaming image
         $thumbnail = $this->resize($this->getImage());
         $fullPath = $this->directory."/".$fileName;
@@ -345,7 +345,7 @@ class Opus extends Model
      * Saves the fullpath of the directory created for the opus
      * @param $directory
      */
-    public function setDirectory($directory)
+    protected function setDirectory($directory)
     {
         $this->directory = $directory;
     }
@@ -355,7 +355,7 @@ class Opus extends Model
      * @param  \Illuminate\Http\Request  $request
      * @return void
      */
-    public function setImage(User $user, $request)
+    protected function setImage(User $user, $request)
     {
         $this->image_path = $this->storeImage($user, $request);
     }
@@ -365,7 +365,7 @@ class Opus extends Model
      * @param User $user
      * @param $request
      */
-    public function setThumbnail(User $user, $request)
+    protected function setThumbnail(User $user, $request)
     {
         $this->thumbnail_path = $this->storeThumbnail($user, $request);
     }
@@ -375,7 +375,7 @@ class Opus extends Model
      * @param User $user
      * @param $request
      */
-    public function setPreview(User $user, $request)
+    protected function setPreview(User $user, $request)
     {
         $this->preview_path = $this->storePreview($user, $request);
     }
@@ -409,7 +409,7 @@ class Opus extends Model
      * @param $request
      * @return string
      */
-    public function updateImage(User $user, $request)
+    protected function updateImage(User $user, $request)
     {
         if ($request->file('image') !== null) {  /// check if an image is attached
             if ($this->deleteImages()) {
@@ -458,7 +458,7 @@ class Opus extends Model
      * @param User $user
      * @return string
      */
-    private function makeDirectory(User $user)
+    protected function makeDirectory(User $user)
     {
         $dirName = 'art/'.$user->username.'/'.substr(microtime(), 11);
         File::makeDirectory(public_path($dirName), 4664, true);

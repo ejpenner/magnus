@@ -1,4 +1,5 @@
 <?php
+
 namespace Magnus\Helpers;
 
 use Illuminate\Support\Facades\Config;
@@ -65,7 +66,7 @@ class Helpers
     {
         return Request::is('search/*') ? urldecode(Request::segment(2)) : '';
     }
-    
+
     public static function perPage()
     {
         if (Request::has('limit')) {
@@ -76,7 +77,7 @@ class Helpers
             return config('images.defaultLimit');
         }
     }
-    
+
     /**
      * Returns a collection of users that watch this user
      * @param User $user
@@ -190,13 +191,9 @@ class Helpers
         foreach ($pieceNav as $i => $id) {
             if ($opus->id == max($pieceNav) and $foundMax == false) {
                 $foundMax = true;
-//                if ($galleryNav['next'] == null) {
-                    $galleryNav['next'] = min($pieceNav);
-//                }
+                $galleryNav['next'] = min($pieceNav);
             } elseif ($id > $opus->id) {
-//                if ($galleryNav['next'] == null) {
-                    $galleryNav['next'] = $pieceNav[$i];
-//                }
+                $galleryNav['next'] = $pieceNav[$i];
             } elseif ($opus->id == min($pieceNav) and $foundMin == false) {
                 $foundMin = true;
                 $galleryNav['previous'] = max($pieceNav);
@@ -281,5 +278,19 @@ class Helpers
         $galleryNav['previous'] = Opus::where('id', $prev_id)->value('slug');
         $galleryNav['next'] = Opus::where('id', $next_id)->value('slug');
         return $galleryNav;
+    }
+
+    /**
+     * Handle the uploaded file, rename the file, move the file, return the filepath as a string
+     * @param  \Illuminate\Http\Request  $request
+     * @return string
+     */
+    protected static function storeImage(User $user, Opus $opus, $request)
+    {
+        $originalFileName = $request->file('image')->getClientOriginalName();
+        $fileName = $user->username.'-'.date('Ymd') . substr(microtime(), 2, 8).'-'.$originalFileName; // renaming image
+        $request->file('image')->move($opus->directory, $fileName); // uploading file to given path
+        $fullPath = $opus->directory."/".$fileName; // set the image field to the full path
+        return $fullPath;
     }
 }
