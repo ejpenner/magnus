@@ -16,10 +16,10 @@ class CreateWatchesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('watcher_user_id')->unsigned();
-            $table->boolean('watch_opus');
-            $table->boolean('watch_comments');
-            $table->boolean('watch_activity');
-            $table->boolean('add_friend');
+            $table->boolean('watch_opus')->nullable();
+            $table->boolean('watch_comments')->nullable();
+            $table->boolean('watch_activity')->nullable();
+            $table->boolean('add_friend')->nullable();
             $table->timestamps();
         });
 
