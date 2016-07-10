@@ -121,10 +121,10 @@ class Helpers
     public static function makeDirectories($username)
     {
         $username = strtolower($username);
-        File::makeDirectory(public_path('art/'.$username.'/images'), 4664, true);
-        File::makeDirectory(public_path('art/'.$username.'/thumbnails'), 4664, true);
-        File::makeDirectory(public_path('art/'.$username.'/avatars'), 4664, true);
-        File::makeDirectory(public_path('art/'.$username.'/previews'), 4664, true);
+        File::makeDirectory(public_path('art/'.$username), 4664, true);
+        //File::makeDirectory(public_path('art/'.$username.'/thumbnails'), 4664, true);
+       // File::makeDirectory(public_path('art/'.$username.'/avatars'), 4664, true);
+        //File::makeDirectory(public_path('art/'.$username.'/previews'), 4664, true);
     }
 
     /**
