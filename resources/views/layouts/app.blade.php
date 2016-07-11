@@ -47,7 +47,7 @@
                 <li @if(Request::is('submit')) class="active" @endif >
                     <a href="{{ action('OpusController@newSubmission') }}">Submit</a>
                 </li>
-                <li @if(Request::is('search')) class="active" @endif>
+                <li>
                     {!! Form::open(['url'=>'/search/', 'method'=>'get', 'class'=>'navbar-left navbar-form', 'role'=>'search', 'onsubmit'=>'return false;']) !!}
                         <div class="search-area">
                             <div class="search-box input-group">
@@ -74,7 +74,7 @@
                 @if(Auth::check())
                     <li>
                         <a href="{{ action('NotificationController@index') }}">
-                            Messages <span class="badge">{{ Auth::user()->messageCount() }}</span>
+                            Messages <span class="badge">{{ Notification::messageCount(Auth::user()) }}</span>
                         </a>
                     </li>
                     <li class="dropdown">

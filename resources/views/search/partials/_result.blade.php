@@ -10,10 +10,5 @@
                 </h5>
             </div>
         </div>
-        {{--@if(Auth::check() and Magnus::isOwnerOrHasRole($opus, config('roles.gmod-code')))--}}
-            {{--<div class="gallery-operations">--}}
-                {{--@include('partials._operationsDropdownSlug', ['model' => $opus, 'controller' => 'OpusController'])--}}
-            {{--</div>--}}
-        {{--@endif--}}
     </div>
 </div>

@@ -228,7 +228,7 @@ class Opus extends Model
     public function getImage()
     {
         if (!empty($this->image_path) and File::exists($this->image_path)) {
-            return  $this->image_path;
+            return  '/'.$this->image_path;
         }
         return $this->imageDirectory.'/images/missing/missing.png';
     }
@@ -240,7 +240,7 @@ class Opus extends Model
     public function getPreview()
     {
         if (!empty($this->preview_path) and File::exists($this->preview_path)) {
-            return  $this->preview_path;
+            return  '/'.$this->preview_path;
         }
         return $this->imageDirectory.'/images/missing/missing.png';
     }
@@ -252,7 +252,7 @@ class Opus extends Model
     public function getThumbnail()
     {
         if (!empty($this->thumbnail_path) and File::exists($this->thumbnail_path)) {
-            return $this->thumbnail_path;
+            return '/'.$this->thumbnail_path;
         }
         return $this->imageDirectory.'/missing/missing-thumb.png';
     }
@@ -269,10 +269,6 @@ class Opus extends Model
         $opus = $user->opera()->save($opus);
         $opus->published_at = Carbon::now();
         $opus->makeDirectory($user);
-//
-//        $opus->setImage($user, $request);
-//        $opus->setPreview($user, $request);
-//        $opus->setThumbnail($user, $request);
         $opus->setSlug();
         $opus->setImage($user, $request)->setPreview($user, $request)->setThumbnail($user, $request)->save();
         return $opus;
@@ -406,7 +402,11 @@ class Opus extends Model
         }
         return false;
     }
-    
+
+    /**
+     * Delete's this Opus' images and directory
+     * @return void
+     */
     public function deleteDirectory()
     {
         $this->deleteImages();
@@ -498,6 +498,9 @@ class Opus extends Model
     /**
      * Increment the pageview of this Opus if conditions are met
      * Opus IDs are stored in sessions
+     *
+     * The page view is only incremented if the person viewing it is not the owner
+     * and the Opus ID is not in the array held in the Session
      * @param $request
      */
     public function pageview($request)

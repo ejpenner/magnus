@@ -48,14 +48,13 @@ Route::get('/gallery/{gallery}/{opus}', 'OpusController@galleryShow');
  */
 Route::resource('gallery', 'GalleryController');
 Route::resource('opus', 'OpusController');
-//Route::resource('opus.comment', 'CommentController');
+Route::get('opus/{opus}/favorites', 'FavoriteController@show')->name('favorites.show');
 Route::get('comments/{comment}', 'CommentController@show');
 Route::get('opus/{opus}/download', 'OpusController@download');
 
 /**
  * Profile routes
  */
-//Route::resource('profile', 'ProfileController');
 Route::get('profile', 'ProfileController@index')->name('profile.auth');
 Route::patch('profile', 'ProfileController@update')->name('profile.update');
 Route::get('profile/{profile}', 'ProfileController@show')->name('profile.show');
@@ -79,14 +78,7 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::get('/submit', 'OpusController@newSubmission')->name('submit');
     Route::post('/submit/new', 'OpusController@store');
-
-    /**
-     * CRUD routes for opera in galleries
-     */
-    //Route::post('gallery/{gallery}/', 'OpusController@galleryStore');
-    //Route::patch('gallery/{gallery}/{opus}', 'OpusController@galleryUpdate');
-    //Route::delete('gallery/{gallery}/{opus}', 'OpusController@galleryDestroy');
-
+    
     /**
      * Pretty url CRUD for comments
      */
@@ -99,21 +91,19 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Notification controller and related routes
      */
-    Route::get('messages', 'NotificationController@index');
+    Route::get('messages', 'NotificationController@index')->name('message.center');
     Route::get('messages/{id}', 'NotificationController@destroy');
+    Route::post('messages/{opus_id}/{comment}/{notification}', 'CommentController@storeChildRemoveNotification');
     Route::delete('messages/selected', 'NotificationController@destroySelected');
-    Route::post('opus/{opus}/{comment}/{notification}', 'CommentController@storeChildRemoveNotification');
-
+    
     /**
      * Favorite routes
      */
-    Route::post('fav/{opus}/add', 'FavoriteController@store')->name('favorite.add');
-    Route::delete('fav/{opus}/remove', 'FavoriteController@destroy')->name('favorite.remove');
-    Route::get('fav/{opus}/', 'FavoriteController@show')->name('favorite.show');
+    Route::post('opus/{opus}/add', 'FavoriteController@store')->name('favorites.add');
+    Route::delete('opus/{opus}/remove', 'FavoriteController@destroy')->name('favorites.remove');
 
     /**
      * CRUD routes for user account operations
-     * TODO: refactor id middleware
      */
     Route::group(['middleware' => ['account']], function () {
         Route::patch('account/{users}/update', 'AccountController@updateAccount')->name('account.update');

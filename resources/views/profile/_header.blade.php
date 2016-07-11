@@ -9,7 +9,7 @@
             @if(Request::is('profile/'.$user->slug.'/opera*'))
                 class="active"
             @endif
-        ><a href="{{ action('ProfileController@opera', $user->slug) }}">Opera</a></li>
+        ><a href="{{ action('ProfileController@opera', $user->slug) }}">Art</a></li>
         <li role="presentation"
             @if(Request::is('profile/'.$user->slug.'/galleries*'))
                 class="active"
@@ -34,6 +34,9 @@
                 </a>
                 {!! Magnus::username($user->id) !!}
             </h3>
+            @if(Auth::check and Magnus::isOwnerOrHasRole($profile, config('roles.gmod-code')))
+                <a class="btn btn-primary" href="">Edit Profile</a>
+            @endif
             @if(Auth::check())
                 <div class="pull-right">
                     @include('profile._watchModal', ['user'=>$user])

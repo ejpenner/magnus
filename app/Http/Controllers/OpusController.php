@@ -21,7 +21,11 @@ class OpusController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('opus', ['except'  => ['show','index','galleryShow','create','newSubmission','submit']]);
+        $this->middleware('opus', ['except'  => [
+            'show', 'index', 'galleryShow',
+            'create', 'newSubmission', 'submit',
+            'download', 'store'
+        ]]);
     }
 
     /**

@@ -108,9 +108,10 @@ class CommentController extends Controller
 
         if ($request->input('remove_notify')) {
             $notification = Notification::where('id', $notification_id)->first();
-            Auth::user()->deleteNotification($notification);
+            $notification->deleteNotification(Auth::user());
         }
-        return redirect()->to(app('url')->previous(). '#cid:'.$newComment->id)->with('success', 'Message posted!');
+        //return redirect()->to(app('url')->previous(). '#cid:'.$newComment->id)->with('success', 'Message posted!');
+        return redirect()->route('message.center')->with('success', 'Message posted!');
     }
 
     /**

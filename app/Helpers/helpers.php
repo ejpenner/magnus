@@ -282,7 +282,7 @@ class Helpers
      * @param  \Illuminate\Http\Request  $request
      * @return string
      */
-    protected static function storeImage(User $user, Opus $opus, $request)
+    public static function storeImage(User $user, Opus $opus, $request)
     {
         $originalFileName = $request->file('image')->getClientOriginalName();
         $fileName = $user->username.'-'.date('Ymd') . substr(microtime(), 2, 8).'-'.$originalFileName; // renaming image

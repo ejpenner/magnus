@@ -179,4 +179,19 @@ class Notification extends Model
     {
 
     }
+
+    /**
+     *  Get the number of unread messages the user has
+     * @return mixed
+     */
+    public static function messageCount(User $user)
+    {
+        $q = Notification::query();
+        $q->join('notification_user', 'notifications.id', '=', 'notification_user.notification_id');
+        $q->join('users', 'users.id', '=', 'notification_user.user_id');
+        $q->where('notification_user.user_id', $user->id);
+        //$q->where('notifications.read', '0');
+        $r = $q->count();
+        return $r;
+    }
 }
