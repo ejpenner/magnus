@@ -1,7 +1,7 @@
 @foreach($comment->allChildComments as $childComment)
     <div class="child-comment container">
         <div class="container-fluid comment" id="cid:{{ $childComment->id }}">
-            <div class="row">
+            @if(!isset($childComment->deleted) or !$childComment->deleted)
                 <div class="col-md-2 comment-avatar">
                     <div class="text-center">
                         <a href="{{ action('ProfileController@show', $childComment->user->slug) }}">
@@ -17,10 +17,12 @@
                         <p class="comment-text">{{ $childComment->body }}</p>
                     </div>
                 </div>
-            </div>
-            <div class="container">
-                @include('comment._replyChild', ['comment'=>$childComment])
-            </div>
+                <div class="container">
+                    @include('comment._replyChild', ['comment'=>$childComment])
+                </div>
+            @else
+                <b>Deleted</b>
+            @endif
         </div>
         @if($childComment->allChildComments->count() > 0)
             @include('comment._childCommentShow', ['comment' => $childComment])

@@ -4,11 +4,12 @@ namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Magnus\Http\Requests;
-
-use Magnus\Comment;
+use Magnus\User;
 use Magnus\Opus;
+use Magnus\Helpers\Direct;
+use Magnus\Comment;
 use Magnus\Notification;
+use Magnus\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
@@ -20,41 +21,20 @@ class CommentController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage and notify the
      * owner of the Opus
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Requests\CommentRequest $request, $opus_id)
+    public function store(Requests\CommentRequest $request, Opus $opus)
     {
-        $opus = Opus::findOrFail($opus_id);
         $comment = new Comment(['user_id'=>Auth::user()->id,'body'=>$request->input('body')]);
         $newComment = $opus->comments()->save($comment);
 
         Notification::notifyUserNewComment($opus->user, $newComment);
-
-        return redirect()->to(app('url')->previous(). '#cid:'.$newComment->id)->with('success', 'Message posted!');
+        
+        Direct::newComment($opus, $newComment);
     }
 
     /**
@@ -63,29 +43,43 @@ class CommentController extends Controller
      * @param Requests\CommentRequest $request
      * @param $profile_id
      */
-    public function storeProfile(Requests\CommentRequest $request, $profile_id)
+    public function storeProfile(Requests\CommentRequest $request, User $profile)
     {
         
     }
 
     /**
-     * store a reply to a comment and notify the OP
-     *
+     * Controller method to store replies to top-level commetns on profiles
      * @param Requests\CommentRequest $request
-     * @param $opus_id
+     * @param User $profile
+     * @param $comment_id
+     */
+    public function storeProfileChild(Requests\CommentRequest $request, User $profile, $comment_id) {
+
+    }
+    
+    /**
+     * store a reply to a comment and notify the OP
+     * @param Requests\CommentRequest $request
+     * @param Opus $opus
      * @param $comment_id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeChild(Requests\CommentRequest $request, $opus_id, $comment_id)
+    public function storeChild(Requests\CommentRequest $request, Opus $opus, $comment_id)
     {
-        $opus = Opus::findOrFail($opus_id);
+        //$opus = Opus::findOrFail($opus_id);
         $comment = Comment::findOrFail($comment_id);
         $comment->childComments()->save(new Comment(['user_id'=>Auth::user()->id, 'opus_id'=>$opus->id, 'parent_id'=>$comment->id, 'body'=>$request->input('body')]));
         $newComment = Comment::where('parent_id', $comment->id)->orderBy('created_at', 'desc')->first();
 
         Notification::notifyUserNewReply($comment->user, $newComment->user, $newComment);
 
-        return redirect()->to(app('url')->previous(). '#cid:'.$newComment->id)->with('success', 'Message posted!');
+        $back = app('url')->previous();
+        if(strpos($back, 'opus') !== false) {
+            return redirect()->to(app('url')->previous() . '#cid:' . $newComment->id)->with('success', 'Message posted!');
+        } else {
+            return redirect()->route('opus.show', $opus->slug)->with('success', 'Message posted!');
+        }
     }
 
     /**
@@ -149,9 +143,9 @@ class CommentController extends Controller
         //
     }
 
-    public function updatedNested(Requests\CommentRequest $request, $piece, $comment)
+    public function updatedNested(Requests\CommentRequest $request, $comment)
     {
-        dd(' '. $piece . ' ' . $comment);
+        
     }
     
     /**
@@ -162,6 +156,8 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        $comment->deleted = 1;
+        $comment->save();
     }
 }
