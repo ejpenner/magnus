@@ -94,7 +94,7 @@ class OpusController extends Controller
     public function show(Request $request, Opus $opus)
     {
         $opus->pageview($request);
-        $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
+        $comments = $opus->comments()->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
         $navigator = Helpers::navigator($opus->user->opera, $opus);
 
@@ -111,7 +111,7 @@ class OpusController extends Controller
     {
         $gallery = Gallery::findOrFail($gallery_id);
         $opus->pageview($request);
-        $comments = Comment::where('opus_id', $opus->id)->orderBy('created_at', 'asc')->get();
+        $comments = $opus->comments()->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
         $navigator = Helpers::galleryNavigator($gallery, $opus);
 
@@ -125,8 +125,7 @@ class OpusController extends Controller
      */
     public function edit(Opus $opus)
     {
-        //$opus = Opus::findOrFail($id);
-        $galleries = Gallery::where('user_id', $opus->user_id)->get();
+        $galleries = $opus->user->galleries;
         $tagString = $opus->stringifyTags();
         return view('opus.edit', compact('opus', 'galleries', 'tagString'));
     }
@@ -143,8 +142,7 @@ class OpusController extends Controller
         $newSlug = "";
         
         $opus->updateImage($opus->user, $request);
-        if($request->input('title') != $opus->title)
-        {
+        if ($request->input('title') != $opus->title) {
             $newSlug = $opus->setSlug($opus->title);
             $updatedSlug = true;
         }
@@ -152,7 +150,7 @@ class OpusController extends Controller
         Tag::make($opus, $request->input('tags'));
         Gallery::place($request, $opus);
 
-        if($updatedSlug){
+        if ($updatedSlug) {
             return redirect()->route('opus.show', [$newSlug])->with('success', 'Updated opus successfully!');
         } else {
             return redirect()->route('opus.show', [$opus->slug])->with('success', 'Updated opus successfully!');
@@ -180,5 +178,4 @@ class OpusController extends Controller
         }
         return redirect()->to($redirect)->with('success', 'The opus has been deleted!');
     }
-
 }

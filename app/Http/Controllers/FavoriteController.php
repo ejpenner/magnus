@@ -41,11 +41,11 @@ class FavoriteController extends Controller
     public function store(Request $request, Opus $opus)
     {
         $favorite = Favorite::firstOrCreate(['opus_id' => $opus->id]);
-        if ($favorite->add($request->user)) {
+        if ($favorite->add($request->user())) {
             Notification::notifyCreatorNewFavorite($favorite);
-            return redirect()->back()->with('success', 'The opus was added to your favorites!');
+            return redirect()->back()->with('success', 'Added!');
         } else {
-            return redirect()->back()->with('message', 'You cannot favorite your own work!');
+            return redirect()->back()->with('message', 'You can\'t favorite your own work!');
         }
     }
 
@@ -92,6 +92,10 @@ class FavoriteController extends Controller
     public function destroy(Request $request, Opus $opus)
     {
         $favorite = Favorite::findOrFail(['opus_id' => $opus->id])->first();
-        $favorite->remove($request->user);
+        if ($favorite->remove($request->user())) {
+            return redirect()->back()->with('success', 'Removed');
+        } else {
+            return redirect()->back()->with('message', 'You can\'t unfavorite your own work!');
+        }
     }
 }

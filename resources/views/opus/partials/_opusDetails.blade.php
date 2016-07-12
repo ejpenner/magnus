@@ -3,13 +3,16 @@
         <div class="panel-body">
             <div class="piece-info">
                 <div class="container-fluid">
-                    <div class="col-md-9">
+                    <div class="col-lg-9">
                         <a href="{{ action('ProfileController@show', $opus->user->slug) }}">
                             <img src="{{ $opus->user->getAvatar() }}" class="pull-left avatar" alt="avatar">
                         </a>
                         <h3>{{ $opus->title }}</h3>
                         <p>By <a href="{{ action('ProfileController@show', $opus->user->slug) }}">{{ $opus->user->name }}</a></p>
                     </div>
+                </div>
+                <div class="pull-right">
+                    @include('opus.partials._favoriteButton', ['opus' => $opus])
                 </div>
             </div>
             <div class="row">

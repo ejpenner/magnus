@@ -12,7 +12,7 @@
                 <div class="panel-body">
                     <div class="container-fluid">
                         <div class="text-center">
-                            <img id="preview-edit" src="/{{ $opus->getImage() }}">
+                            <img id="preview-edit" src="{{ $opus->getImage() }}">
                         </div>
                     </div>
                 </div>

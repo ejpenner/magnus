@@ -34,7 +34,7 @@
                 </a>
                 {!! Magnus::username($user->id) !!}
             </h3>
-            @if(Auth::check and Magnus::isOwnerOrHasRole($profile, config('roles.gmod-code')))
+            @if(Auth::check() and Magnus::isOwnerOrHasRole($user->profile, config('roles.gmod-code')))
                 <a class="btn btn-primary" href="">Edit Profile</a>
             @endif
             @if(Auth::check())
@@ -44,7 +44,7 @@
             @endif
             @if(isset($details) and $details)
                 <p><small>Member since {{ $user->created_at->format('F j, Y') }}</small></p>
-                <p>{{ $profile->biography }}</p>
+                <p>{{ $user->profile->biography }}</p>
             @endif
         </div>
     </div>

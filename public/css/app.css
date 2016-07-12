@@ -9442,6 +9442,9 @@ div .thumbnail-wrap {
 .opus-overlay .dropdown:hover .dropdown-menu {
   display: block;
 }
+.favorite-button {
+  display: inline;
+}
 .opus-overlay:hover {
   filter: alpha(opacity=100);
   -webkit-opacity: 1;
@@ -9616,12 +9619,15 @@ div.uploader #preview-edit {
 .comment:target {
   background-color: #afcbd1;
 }
+div.gallery-sidebar {
+  padding-bottom: 20px;
+}
 div.gallery-sidebar .gallery-operations {
-  transform: translate(-50%, 90px);
-  -webkit-transform: translate(-50%, 90px);
-  -moz-transform: translate(-50%, 90px);
-  -ms-transform: translate(-50%, 90px);
-  -o-transform: translate(-50%, 90px);
+  transform: translate(-50%, 110px);
+  -webkit-transform: translate(-50%, 110px);
+  -moz-transform: translate(-50%, 110px);
+  -ms-transform: translate(-50%, 110px);
+  -o-transform: translate(-50%, 110px);
 }
 div.gallery-sidebar .gallery-item {
   height: 250px !important;

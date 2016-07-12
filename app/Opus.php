@@ -212,7 +212,7 @@ class Opus extends Model
      */
     public function setSlug($setTo = null)
     {
-        if(!isset($setTo)) {
+        if (!isset($setTo)) {
             $slug = substr(microtime(), 15).'-'.str_slug($this->title);
         } else {
             $slug = substr(microtime(), 15).'-'.str_slug($setTo);
@@ -231,6 +231,11 @@ class Opus extends Model
             return  '/'.$this->image_path;
         }
         return $this->imageDirectory.'/images/missing/missing.png';
+    }
+
+    public function getFilePath()
+    {
+        return $this->image_path;
     }
 
     /**
@@ -321,7 +326,7 @@ class Opus extends Model
 
         $previewSize = $request->has('preview_size') ? $request->input('preview_size') : 680;
         $fileName = $user->username.'-'.date('Ymd') .'-'. substr(microtime(), 2, 8).'-p.'. $this->resizeExtension; // renaming image
-        $thumbnail = $this->resize($this->getImage(), $previewSize);
+        $thumbnail = $this->resize($this->getFilePath(), $previewSize);
         $fullPath = $this->directory."/".$fileName;
         $thumbnail->save($fullPath);
         return $fullPath;
@@ -336,7 +341,7 @@ class Opus extends Model
     protected function storeThumbnail(User $user, $request)
     {
         $fileName = $user->username.'-'.date('Ymd') .'-'. substr(microtime(), 12, 8).'-t.'. $this->resizeExtension; // renaming image
-        $thumbnail = $this->resize($this->getImage());
+        $thumbnail = $this->resize($this->getFilePath());
         $fullPath = $this->directory."/".$fileName;
         $thumbnail->save($fullPath);
         return $fullPath;
@@ -423,7 +428,7 @@ class Opus extends Model
         if ($request->file('image') !== null) {  /// check if an image is attached
             $deleted = $this->deleteImages();
             if ($deleted) {
-                if($this->directory == null) {
+                if ($this->directory == null) {
                     $this->makeDirectory($user);
                     $this->save();
                 }
@@ -455,8 +460,9 @@ class Opus extends Model
      */
     public function metadata()
     {
+
         try {
-            $img = Image::make($this->getImage());
+            $img = Image::make(public_path().$this->getImage());
             $size = ceil($img->fileSize() / 1000);
         } catch (\Exception $e) {
             return ['filesize' => '?' . ' KB', 'resolution' => '?' . 'x' . '?'];

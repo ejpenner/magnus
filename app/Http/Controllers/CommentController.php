@@ -54,7 +54,8 @@ class CommentController extends Controller
      * @param User $profile
      * @param $comment_id
      */
-    public function storeProfileChild(Requests\CommentRequest $request, User $profile, $comment_id) {
+    public function storeProfileChild(Requests\CommentRequest $request, User $profile, $comment_id)
+    {
 
     }
     
@@ -75,7 +76,7 @@ class CommentController extends Controller
         Notification::notifyUserNewReply($comment->user, $newComment->user, $newComment);
 
         $back = app('url')->previous();
-        if(strpos($back, 'opus') !== false) {
+        if (strpos($back, 'opus') !== false) {
             return redirect()->to(app('url')->previous() . '#cid:' . $newComment->id)->with('success', 'Message posted!');
         } else {
             return redirect()->route('opus.show', $opus->slug)->with('success', 'Message posted!');

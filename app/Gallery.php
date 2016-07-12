@@ -95,11 +95,15 @@ class Gallery extends Model
     {
 
         if ($request->has('gallery_ids')) {
-            foreach($opus->galleries as $gallery) {
+            foreach ($opus->galleries as $gallery) {
                 $gallery->removeOpus($opus);
             }
             foreach ($request->input('gallery_ids') as $id) {
                 Gallery::where('id', $id)->first()->addOpus($opus);
+            }
+        } else {
+            foreach ($opus->galleries as $gallery) {
+                $gallery->removeOpus($opus);
             }
         }
     }
@@ -113,8 +117,8 @@ class Gallery extends Model
     
     public function hasOpus(Opus $opus)
     {
-        foreach($this->opera as $galleryOpus) {
-            if($galleryOpus->id === $opus->id) {
+        foreach ($this->opera as $galleryOpus) {
+            if ($galleryOpus->id === $opus->id) {
                 return true;
             }
         }

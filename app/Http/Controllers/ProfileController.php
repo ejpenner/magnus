@@ -12,7 +12,6 @@ use Magnus\Helpers\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 class ProfileController extends Controller
 {
 
@@ -35,9 +34,9 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $profile = Profile::where('user_id', $user->id)->first();
-        $galleries = Gallery::where('user_id', $user->id)->limit(4)->get();
-        $opera = Opus::where('user_id', $user->id)->orderBy('created_at', 'desc')->limit(6)->get();
+        $profile = $user->profile;
+        $galleries = $user->galleries()->limit(4)->get();
+        $opera = $user->opera()->orderBy('created_at', 'desc')->limit(6)->get();
 
         return view('profile.show', compact('profile', 'user', 'galleries', 'opera'));
     }
@@ -96,8 +95,8 @@ class ProfileController extends Controller
      */
     public function opera(User $user)
     {
-        $profile = Profile::where('user_id', $user->id)->first();
-        $opera = Opus::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(Helpers::perPage());
+        $profile = $user->profile;
+        $opera = $user->opera()->orderBy('created_at', 'desc')->paginate(Helpers::perPage());
         return view('profile.opera', compact('user', 'profile', 'opera'));
     }
 
@@ -126,10 +125,10 @@ class ProfileController extends Controller
      */
     public function show(User $user)
     {
-        $profile = Profile::where('user_id', $user->id)->first();
-        $galleries = Gallery::where('user_id', $user->id)->limit(4)->orderBy('updated_at', 'desc')->get();
-        $opera = Opus::where('user_id', $user->id)->limit(6)->orderBy('created_at', 'desc')->get();
-        $favorites = $user->favorites;
+        $profile = $user->profile;
+        $galleries = $user->galleries()->limit(4)->orderBy('updated_at', 'desc')->get();
+        $opera = $user->opera()->limit(6)->orderBy('created_at', 'desc')->get();
+        $favorites = $user->favorites()->orderBy('favorite_user.created_at', 'desc')->get();
         if ($user->name != null) {
             return view('profile.show', compact('profile', 'user', 'galleries', 'opera', 'favorites'));
         } else {
