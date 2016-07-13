@@ -4,6 +4,12 @@ namespace Magnus\Helpers\Direct;
 
 class Direct
 {
+    /**
+     * A helper method for redirecting users when they post a comment to an opus
+     * @param $opus
+     * @param $newComment
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public static function newComment($opus, $newComment)
     {
         $back = app('url')->previous();
@@ -12,5 +18,10 @@ class Direct
         } else {
             return redirect()->route('opus.show', $opus->slug)->with('success', 'Message posted!');
         }
+    }
+
+    public static function to($redirect, $from)
+    {
+
     }
 }

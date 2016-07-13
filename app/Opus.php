@@ -165,7 +165,7 @@ class Opus extends Model
      * A scope for sorting by daily views descending
      * @param $query
      */
-    public function scopeHot($query)
+    public function scopeTrending($query)
     {
         $query->orderBy('daily_views', 'desc');
     }

@@ -42,8 +42,8 @@ class HomeController extends Controller
         }
 
         switch ($filter) {
-            case 'hot':
-                $opera = Opus::hot();
+            case 'trending':
+                $opera = Opus::trending();
                 break;
             case 'popular':
                 $opera = Opus::popular();

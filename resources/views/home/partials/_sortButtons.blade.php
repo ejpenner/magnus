@@ -1,7 +1,7 @@
 <div class="search-sort-buttons">
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            @if(Request::is('hot*')
+            @if(Request::is('trending*')
                 or Request::is('popular*')
                 or Request::is('newest*'))
                 Sorted by {{ Request::segment(1) }} <i class="caret"></i>
@@ -10,7 +10,7 @@
             @endif
         </button>
         <ul class="dropdown-menu">
-            <li><a href="{{ action('HomeController@recent', ['hot', Request::segment(2)]) }}">Hot</a></li>
+            <li><a href="{{ action('HomeController@recent', ['trending', Request::segment(2)]) }}">Trending</a></li>
             <li><a href="{{ action('HomeController@recent', ['popular', Request::segment(2)])}}">Popular</a></li>
             <li><a href="{{ action('HomeController@recent', ['newest', Request::segment(2)]) }}">Newest</a></li>
         </ul>

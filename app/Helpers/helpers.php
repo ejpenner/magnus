@@ -160,7 +160,7 @@ class Helpers
         foreach ($gallery->opera as $currentOpus) {
             array_push($pieceNav, $currentOpus->id);
         }
-
+        
         // if there are only two opera in a gallery, the next and previous
         // links should be the opus it is not
         if (count($pieceNav) < 2) {
@@ -187,13 +187,17 @@ class Helpers
         // logic for a gallery with more than three opera in it
         foreach ($pieceNav as $i => $id) {
             if ($opus->id == max($pieceNav) and $foundMax == false) {
-                $foundMax = true;
-                $galleryNav['next'] = min($pieceNav);
+                if ($galleryNav['next'] == null) {
+                    $galleryNav['next'] = min($pieceNav);
+                    $foundMax = true;
+                }
             } elseif ($id > $opus->id) {
-                $galleryNav['next'] = $pieceNav[$i];
+                if ($galleryNav['next'] == null) {
+                    $galleryNav['next'] = $pieceNav[$i];
+                }
             } elseif ($opus->id == min($pieceNav) and $foundMin == false) {
-                $foundMin = true;
                 $galleryNav['previous'] = max($pieceNav);
+                $foundMin = true;
             } elseif ($id < $opus->id) {
                 $galleryNav['previous'] = $pieceNav[$i];
             }
