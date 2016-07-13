@@ -11,18 +11,18 @@
     @endif
 </div>
 <div class="form-group">
-    {!! Form::label('comment', 'Artist\'s Comments') !!}
+    {!! Form::label('comment', 'Artist\'s Comments') !!} <span class="optional-field">optional</span>
     {!! Form::textarea('comment', null, ['class'=>'form-control', 'rows' => 6]) !!}
 </div>
 <div class="form-group">
-    {!! Form::label('tags', 'Tags') !!}
+    {!! Form::label('tags', 'Tags') !!} <span class="optional-field">optional, but recommended</span>
     {!! Form::text('tags', isset($tagString) ? $tagString : null, ['class'=>'form-control']) !!}
-    <div class="alert alert-info">Be sure to separate tags with spaces</div>
+    <div class="optional-field">Be sure to separate tags with spaces!</div>
 </div>
 @if($galleries->count() > 0)
     <div class="panel panel-default">
         <div class="panel-heading">
-            Select Galleries
+            Add to galleries <span class="optional-field">(optional)</span>
         </div>
         <div class="panel-body">
             <div class="form-group gallery-select">

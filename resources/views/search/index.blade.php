@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="container">
-            {{ $paginatedResults->appends(['sort'=>$sortUrl])->appends(['order'=>$orderUrl])->appends(['time'=>$periodUrl])->render() }}
+            {{ $paginatedResults->render() }}
         </div>
     @else
         <div class="container">

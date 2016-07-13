@@ -1,13 +1,13 @@
 <?php
 namespace Magnus\Http\Controllers;
 
-use Illuminate\Pagination\LengthAwarePaginator as Paginator;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Magnus\Http\Requests;
 use Magnus\Tag;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 
 class SearchController extends Controller
 {
@@ -65,7 +65,7 @@ class SearchController extends Controller
                 } catch (\Exception $e) { //if $tag->id throws an error, the tag doesn't exist, add it to the term list
                     array_push($termList, filter_var($term, FILTER_SANITIZE_STRING));
                 }
-            } else {
+            } elseif ($term != ' ') {
                 array_push($termList, filter_var($term, FILTER_SANITIZE_STRING));
             }
         }
@@ -224,7 +224,7 @@ class SearchController extends Controller
             \Illuminate\Pagination\Paginator::resolveCurrentPage(), //resolve the path
             ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
         );
-
+        $paginatedResults = $paginatedResults->appends(Input::except('page'));
         return view('search.index', compact('paginatedResults', 'sortUrl', 'orderUrl', 'periodUrl'));
     }
 

@@ -43,7 +43,7 @@ class FavoriteController extends Controller
         $favorite = Favorite::firstOrCreate(['opus_id' => $opus->id]);
         if ($favorite->add($request->user())) {
             Notification::notifyCreatorNewFavorite($favorite);
-            return redirect()->back()->with('success', 'Added!');
+            return redirect()->back()->with('success', 'Added to favorites!');
         } else {
             return redirect()->back()->with('message', 'You can\'t favorite your own work!');
         }
@@ -93,7 +93,7 @@ class FavoriteController extends Controller
     {
         $favorite = Favorite::findOrFail(['opus_id' => $opus->id])->first();
         if ($favorite->remove($request->user())) {
-            return redirect()->back()->with('success', 'Removed');
+            return redirect()->back()->with('success', 'Removed from favorites');
         } else {
             return redirect()->back()->with('message', 'You can\'t unfavorite your own work!');
         }

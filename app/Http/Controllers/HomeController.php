@@ -2,10 +2,11 @@
 
 namespace Magnus\Http\Controllers;
 
-use Magnus\Http\Requests;
+use Magnus\Opus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Magnus\Opus;
+use Illuminate\Support\Facades\Input;
+
 
 class HomeController extends Controller
 {
@@ -83,7 +84,7 @@ class HomeController extends Controller
         }
 
         $opera = $opera->paginate($limit);
-        
+        $opera = $opera->appends(Input::except('page'));
         return view('home.recent', compact('opera', 'request', 'filterSegment'));
     }
 }

@@ -28,7 +28,7 @@ class NotificationController extends Controller
         $query->where('notification_user.user_id', $user->id);
         $query->select('opuses.id', 'opuses.user_id', 'opuses.image_path', 'opuses.thumbnail_path', 'opuses.title', 'notification_user.notification_id', 'opuses.slug');
         $query->orderBy('opuses.created_at', 'desc');
-        $opusResults = $query->get();
+        $opusResults = $query->paginate(8, '[*]', 'opera');
 
         // query to grab all Comment notifications
         $commentQuery = Comment::query();
@@ -37,7 +37,7 @@ class NotificationController extends Controller
         $commentQuery->where('notification_user.user_id', $user->id);
         $commentQuery->select('comments.id', 'comments.created_at', 'comments.user_id', 'comments.parent_id', 'comments.profile_id', 'comments.body', 'notification_user.notification_id', 'comments.opus_id');
         $commentQuery->orderBy('comments.created_at', 'desc');
-        $commentResults = $commentQuery->get();
+        $commentResults = $commentQuery->paginate(8, '[*]', 'comments');
 
         return view('notification.index', compact('user', 'opusResults', 'commentResults'));
     }

@@ -9264,7 +9264,10 @@ button.close {
 .cropper-disabled .cropper-point {
   cursor: not-allowed;
 }
-div.gallery-select .checkbox-vis-hidden {
+span.gallery-select {
+  position: relative;
+}
+span.gallery-select .checkbox-vis-hidden {
   border: 0;
   clip: rect(0 0 0 0);
   height: 1px;
@@ -9274,7 +9277,7 @@ div.gallery-select .checkbox-vis-hidden {
   position: absolute;
   width: 1px;
 }
-div.gallery-select label {
+span.gallery-select label {
   margin: 5px;
   padding: 8px;
   border: 1px solid gray;
@@ -9289,14 +9292,14 @@ div.gallery-select label {
   -moz-box-shadow: 1px 1px 1px #CCCCCC;
   box-shadow: 1px 1px 1px #CCCCCC;
 }
-div.gallery-select input:checked + label {
+span.gallery-select input:checked + label {
   border-color: green;
   color: green;
   -webkit-box-shadow: 2px 2px 2px #888888;
   -moz-box-shadow: 2px 2px 2px #888888;
   box-shadow: 2px 2px 2px #888888;
 }
-div.gallery-select input:focus:checked + label {
+span.gallery-select input:focus:checked + label {
   border-color: green;
   color: green;
   -webkit-box-shadow: 2px 2px 2px #888888;
@@ -9617,7 +9620,7 @@ div.uploader #preview-edit {
   margin-bottom: 2px;
 }
 .comment:target {
-  background-color: #afcbd1;
+  background-color: #c9dfe3;
 }
 div.gallery-sidebar {
   padding-bottom: 20px;
@@ -9670,5 +9673,10 @@ a.avatar-link {
 }
 .watch-date {
   color: #8c8c8c;
+  font-style: italic;
+}
+.optional-field {
+  color: #8c8c8c;
+  font-size: 90%;
   font-style: italic;
 }

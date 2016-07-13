@@ -20,6 +20,11 @@ $(document).ready(function() {
         $('#preview').toggle();
     });
 
+    $('#selectAllOpus').click(function() {
+        var checkbox = $('.opus-message-select');
+        checkbox.prop('checked', !checkbox.is(":checked"));
+    });
+
 
     $(window).scroll(function() {
         var x = $(this).scrollTop();

@@ -4,7 +4,7 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
-                New Opus
+                Submit new art
             </div>
             <div class="panel-body">
                 {!! Form::open(['action'=>['OpusController@store'], 'files'=>true, 'id'=>'upload-file']) !!}

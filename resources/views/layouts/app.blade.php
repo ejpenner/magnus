@@ -33,7 +33,7 @@
                         Home <i class="caret"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ action('HomeController@recent', 'hot') }}">Hot</a></li>
+                        <li><a href="{{ action('HomeController@recent', 'trending') }}">Trending</a></li>
                         <li><a href="{{ action('HomeController@recent', 'popular') }}">Popular</a></li>
                         <li><a href="{{ action('HomeController@recent') }}">New</a></li>
                     </ul>
@@ -54,7 +54,7 @@
                                 <input type="text" class="form-control" placeholder="Search tags using @tag" name="q" value="{{ Magnus::getSearchQuery() }}" id="search-terms">
                                 <span class="input-group-btn">
                                     {!! Form::submit('Search', ['class' => 'btn btn-primary',
-                                                     'onclick'=>'window.location.href=this.form.action +\'/\' + this.form.q.value + \'?sort=relevance&order=desc\';']) !!}
+                                                     'onclick'=>'window.location.href=this.form.action +\'/\' + this.form.q.value.replace(/\s/, \'+\') + \'?sort=relevance&order=desc\';']) !!}
                                 </span>
                             </div>
                         </div>
@@ -111,7 +111,8 @@
     @endunless
 </div>
 <footer class="container-fluid text-center">
-    <p>&copy; 2016 <strong>VILEST</strong>udios</p>
+    <p>&copy; 2016 <strong>Vile</strong>Studio</p>
+    <p><small>v. 0.0.9 - Perturbed Gryphon</small></p>
 </footer>
 
 </body>
