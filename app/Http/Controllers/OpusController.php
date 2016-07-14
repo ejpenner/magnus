@@ -96,9 +96,10 @@ class OpusController extends Controller
         $opus->pageview($request);
         $comments = $opus->comments()->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
+        $favoriteCount = $opus->favorite->users->count();
         $navigator = Helpers::navigator($opus->user->opera, $opus);
 
-        return view('opus.show', compact('opus', 'comments', 'metadata', 'navigator'));
+        return view('opus.show', compact('opus', 'comments', 'metadata', 'navigator', 'favoriteCount'));
     }
 
     /**
@@ -113,9 +114,10 @@ class OpusController extends Controller
         $opus->pageview($request);
         $comments = $opus->comments()->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
+        $favoriteCount = $opus->favorite->users->count();
         $navigator = Helpers::galleryNavigator($gallery, $opus);
 
-        return view('opus.show', compact('opus', 'gallery', 'comments', 'metadata', 'navigator'));
+        return view('opus.show', compact('opus', 'gallery', 'comments', 'metadata', 'navigator', 'favoriteCount'));
     }
     
     /**

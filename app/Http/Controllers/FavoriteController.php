@@ -55,9 +55,11 @@ class FavoriteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Opus $opus)
     {
-        //
+        $users = $opus->favorite->users;
+        //dd($users);
+        return view('opus.favorites', compact('opus', 'users'));
     }
 
     /**

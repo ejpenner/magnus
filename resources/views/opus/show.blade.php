@@ -9,7 +9,7 @@
         </div>
         @include('opus.partials._navigator', ['navigator' => $navigator])
         {{--panel start--}}
-        @include('opus.partials._opusDetails', ['opus' => $opus, 'metadata' => $metadata])
+        @include('opus.partials._opusDetails', ['opus' => $opus, 'metadata' => $metadata, 'favoriteCount' => $favoriteCount])
         <div class="container-fluid">
             <div class="col-md-offset-2 col-md-8">
                 @include('comment._commentOpus', ['comments'=>$opus->comments, 'opus'=>$opus])

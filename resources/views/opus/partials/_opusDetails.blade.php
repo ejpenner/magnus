@@ -15,19 +15,31 @@
                     @include('opus.partials._favoriteButton', ['opus' => $opus])
                 </div>
             </div>
-            <div class="row">
+            <div class="container">
                 @unless($opus->tags->isEmpty())
-                    <div class="container-fluid">
+                    <ul class="list-inline">
+                        <strong>Tags</strong>
+                        @foreach($opus->tags as $tag)
+                            <li><a href="{{ action('SearchController@searchAll', '@'.$tag->name) }}">{{ $tag->name }}</a></li>
+                        @endforeach
+                    </ul>
+                @endunless
+            </div>
+            @if($opus->galleries->count() > 0)
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Featured in
+                    </div>
+                    <div class="panel-body">
                         <ul class="list-inline">
-                            <strong>Tags</strong>
-                            @foreach($opus->tags as $tag)
-                                <li><a href="{{ action('SearchController@searchAll', '@'.$tag->name) }}">{{ $tag->name }}</a></li>
+                            @foreach($opus->galleries as $gallery)
+                                <li><a href="{{ action('GalleryController@show', $gallery->id) }}">{{ $gallery->name }}</a></li>
                             @endforeach
                         </ul>
                     </div>
-                @endunless
-            </div>
-            <!-- Artist comments -->
+                </div>
+            @endif
+        <!-- Artist comments -->
             <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-body">
@@ -57,6 +69,14 @@
                         <tr>
                             <td>Views</td>
                             <td>{{ $opus->views }} <small>({{ $opus->daily_views  }} Today)</small></td>
+                        </tr>
+                        <tr>
+                            <td>Favorites</td>
+                            <td>{{ $favoriteCount }}
+                                @if($favoriteCount > 0)
+                                    <span class="optional-field"><a href="{{ action('FavoriteController@show', $opus->slug) }}">(See favorites)</a></span>
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <td>Submitted On</td>

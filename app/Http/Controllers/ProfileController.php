@@ -84,7 +84,7 @@ class ProfileController extends Controller
      */
     public function galleries(User $user)
     {
-        $galleries = Gallery::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(Helpers::perPage());
+        $galleries = $user->galleries()->orderBy('created_at', 'desc')->paginate(Helpers::perPage());
         return view('profile.gallery', compact('galleries', 'user'));
     }
 
@@ -102,9 +102,12 @@ class ProfileController extends Controller
 
     public function favorites(User $user)
     {
-        $profile = Profile::where('user_id', $user->id)->first();
+        $profile = $user->profile;
         $favorites = $user->favorites;
-        dd($favorites);
+
+        return view('profile.favorites', compact('profile','favorites','user'));
+        //dd($favorites);
+
     }
 
     /**

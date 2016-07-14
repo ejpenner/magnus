@@ -72,7 +72,7 @@ class Opus extends Model
      */
     public function favorite()
     {
-        return $this->hasMany('App\Favorite');
+        return $this->hasOne('Magnus\Favorite');
     }
 
     /**
