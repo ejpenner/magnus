@@ -1,6 +1,6 @@
 <?php
 
-namespace Magnus\Helpers\Direct;
+namespace Magnus\Helpers;
 
 class Direct
 {

@@ -97,6 +97,7 @@ class OpusController extends Controller
         $comments = $opus->comments()->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
         $favoriteCount = $opus->favorite->users->count();
+
         $navigator = Helpers::navigator($opus->user->opera, $opus);
 
         return view('opus.show', compact('opus', 'comments', 'metadata', 'navigator', 'favoriteCount'));

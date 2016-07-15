@@ -4,6 +4,7 @@ namespace Magnus\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Magnus\Favorite;
 use Magnus\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Magnus\Opus;
@@ -35,11 +36,27 @@ class NotificationController extends Controller
         $commentQuery->join('notifications', 'comments.id', '=', 'notifications.comment_id');
         $commentQuery->join('notification_user', 'notification_user.notification_id', '=', 'notifications.id');
         $commentQuery->where('notification_user.user_id', $user->id);
-        $commentQuery->select('comments.id', 'comments.created_at', 'comments.user_id', 'comments.parent_id', 'comments.profile_id', 'comments.body', 'notification_user.notification_id', 'comments.opus_id');
+
+        $commentQuery->select('comments.id', 'comments.created_at', 'comments.user_id',
+                              'comments.parent_id', 'comments.profile_id', 'comments.body',
+                              'notification_user.notification_id', 'comments.opus_id');
+
         $commentQuery->orderBy('comments.created_at', 'desc');
         $commentResults = $commentQuery->paginate(8, '[*]', 'comments');
 
-        return view('notification.index', compact('user', 'opusResults', 'commentResults'));
+        $favorites = Favorite::query();
+        $favorites->join('notifications', 'favorites.id', '=', 'notifications.favorite_id');
+        $favorites->join('notification_user', 'notification_user.notification_id', '=', 'notifications.id');
+        $favorites->join('favorite_user', 'favorites.id', '=', 'favorite_user.favorite_id');
+        $favorites->join('opuses', 'opuses.id', '=', 'notifications.opus_id');
+        $favorites->where('notification_user.user_id', $user->id);
+        $favorites->select('favorites.*', 'favorite_user.user_id','notification_user.notification_id', 'opuses.title');
+        $favorites->orderBy('notification_user.created_at', 'desc');
+        $favoritesResults = $favorites->paginate(24, '[*]','activity');
+
+        dd($favoritesResults);
+
+        return view('notification.index', compact('user', 'opusResults', 'commentResults', 'favoritesResults'));
     }
 
     public function destroySelected(Request $request)

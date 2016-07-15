@@ -47,15 +47,13 @@ class Helpers
      */
     public static function isOwner(User $user, $object)
     {
-        try {
-            if ($user->id == $object->user_id) {
+
+            if ($user->isOwner($object)) {
                 return true;
             } else {
                 return false;
             }
-        } catch (\Exception $e) {
-            return false;
-        }
+
     }
 
     /**
@@ -132,7 +130,7 @@ class Helpers
      */
     public static function isOwnerOrHasRole($object, $role)
     {
-        if (self::isOwner(Auth::user(), $object) or Auth::user()->atLeastHasRole($role)) {
+        if (Auth::user()->isOwner($object) or Auth::user()->atLeastHasRole($role)) {
             return true;
         }
         return false;

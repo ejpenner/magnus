@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 
 use Magnus\User;
 use Magnus\Opus;
-use Magnus\Helpers\Direct;
 use Magnus\Comment;
 use Magnus\Notification;
 use Magnus\Http\Requests;
+use Magnus\Helpers\Direct;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
@@ -17,7 +17,7 @@ class CommentController extends Controller
 
     public function __construct()
     {
-        $this->middleware('comment', ['except'=>['show','index']]);
+        $this->middleware('comment', ['except'=>['show','index','store', 'storeChild']]);
     }
 
     /**
@@ -33,8 +33,13 @@ class CommentController extends Controller
         $newComment = $opus->comments()->save($comment);
 
         Notification::notifyUserNewComment($opus->user, $newComment);
-        
-        Direct::newComment($opus, $newComment);
+
+        $back = app('url')->previous();
+        if (strpos($back, 'opus') !== false) {
+            return redirect()->to(app('url')->previous() . '#cid:' . $newComment->id)->with('success', 'Message posted!');
+        } else {
+            return redirect()->route('opus.show', $opus->slug)->with('success', 'Message posted!');
+        }
     }
 
     /**

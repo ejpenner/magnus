@@ -105,7 +105,7 @@ class ProfileController extends Controller
         $profile = $user->profile;
         $favorites = $user->favorites;
 
-        return view('profile.favorites', compact('profile','favorites','user'));
+        return view('profile.favorites', compact('profile', 'favorites', 'user'));
         //dd($favorites);
 
     }

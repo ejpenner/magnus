@@ -51,7 +51,7 @@
                 <div class="panel panel-default details-panel">
                     <div class="panel-heading">
                         Details
-                        @if(Auth::check() and Magnus::isOwnerOrHasRole($opus, config('roles.moderator')))
+                        @if(Magnus::isOwnerOrHasRole($opus, config('roles.mod-code')))
                             <div class="pull-right operations">
                                 {!! Form::model($opus, ['method'=>'delete', 'class'=>'delete-confirm operations',
                                                        'action'=>['OpusController@destroy', $opus->slug]]) !!}
@@ -59,10 +59,10 @@
                                     <button type="button" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</button>
                                 </a>
                                 <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
-                                <a class="btn btn-primary btn-xs" href="{{ action('OpusController@download', [$opus->slug]) }}">Download</a>
                                 {!! Form::close() !!}
                             </div>
                         @endif
+                        <a class="btn btn-primary btn-xs pull-right" href="{{ action('OpusController@download', [$opus->slug]) }}">Download</a>
                     </div>
                     <table class="table">
                         <tbody>

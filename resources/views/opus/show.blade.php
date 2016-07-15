@@ -4,7 +4,7 @@
     <div class="col-md-12">
         <div class="text-center">
             <div class="container-fluid">
-                @include('opus.partials._image', ['opus' => $opus])
+                @include('opus.partials._image', ['opus' => $opus, 'metadata'=>$metadata])
             </div>
         </div>
         @include('opus.partials._navigator', ['navigator' => $navigator])

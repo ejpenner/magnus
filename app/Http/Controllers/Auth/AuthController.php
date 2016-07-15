@@ -2,15 +2,16 @@
 
 namespace Magnus\Http\Controllers\Auth;
 
+
 use Magnus\User;
+use Magnus\Role;
 use Magnus\Profile;
 use Magnus\Gallery;
-use Illuminate\Support\Facades\Session;
+use Magnus\Preference;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Validator;
-use Magnus\Permission;
 use Magnus\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
@@ -76,10 +77,13 @@ class AuthController extends Controller
             'slug' => str_slug($data['username']),
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'timezone' => 'US\Central'
+            'timezone' => 'America/Chicago'
         ]);
 
+        $userRole = Role::where(['role_code' => config('roles.user-code')])->value('id');
+        $user->roles()->attach($userRole);
         $user->profile()->save(new Profile(['biography'=>'Not filled out yet']));
+        $user->preferences()->save(new Preference(['sex' => '', 'show_sex' => 0, 'date_of_birth' => '0000-00-00', 'show_dob' => 'none', 'per_page' => 24]));
         Gallery::makeDirectories($user);
 
         return $user;

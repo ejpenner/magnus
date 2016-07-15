@@ -31,6 +31,51 @@
 
 @badge-bg: @newPrimary;
 
+
+.top-header {
+  position: absolute;
+  top: 180px;
+  left: 0;
+  width: 100%;
+  z-index: 10002;
+
+}
+
+.search-sort-buttons {
+}
+
+
+
+div.main-container {
+  border-top: 30px;
+  padding-top: 30px;
+}
+
+.fixed {
+  position:fixed;
+  top:0;
+}
+
+.magnus-navbar { /* Container just in case we want more than just the search input to come along */
+  position: absolute;
+  top: 155px;
+  left: 20px;
+  right: 20px;
+  input {
+    width: 265px;
+    transition: width 0.2s;
+    -webkit-appearance: none; /* Autoprefixer doesn't catch this */
+  }
+}
+
+.top {
+  height: 250px; /* Space in here for search */
+  padding-top: 40px;
+  position: relative;
+}
+
+
+
 .login-panel {
   margin-top: 30px;
   margin-bottom: 300px;

@@ -3,6 +3,7 @@
 namespace Magnus;
 
 use Carbon\Carbon;
+use Magnus\Favorite;
 use Magnus\Http\Requests\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -276,6 +277,7 @@ class Opus extends Model
         $opus->makeDirectory($user);
         $opus->setSlug();
         $opus->setImage($user, $request)->setPreview($user, $request)->setThumbnail($user, $request)->save();
+        $opus->favorite()->save(new Favorite(['opus_id' => $opus->id]));
         return $opus;
     }
 
@@ -467,7 +469,7 @@ class Opus extends Model
         } catch (\Exception $e) {
             return ['filesize' => '?' . ' KB', 'resolution' => '?' . 'x' . '?'];
         }
-        return ['filesize' => $size . ' KB', 'resolution' => $img->width() . 'x' . $img->height()];
+        return ['filesize' => $size . ' KB', 'resolution' => $img->width() . 'x' . $img->height(), 'width' => $img->width(), 'height' => $img->height()];
     }
 
     /**

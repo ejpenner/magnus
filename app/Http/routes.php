@@ -84,10 +84,10 @@ Route::group(['middleware' => ['auth']], function () {
      */
 
     Route::post('opus/{opus}/comment', 'CommentController@store');
-    Route::post('opus/{opus}/child/{comment}', 'CommentController@storeChild');
-    Route::patch('opus/{opus}/child/{comment}', 'CommentController@updateChild');
-    Route::delete('opus/{opus}/comment/{comment}', 'CommentController@destroy');
-    Route::delete('opus/{opus}/comment/{comment}', 'CommentController@destroyChild');
+    Route::post('opus/{opus}/c/{comment}', 'CommentController@storeChild');
+    Route::patch('opus/{opus}/c/{comment}', 'CommentController@updateChild');
+    Route::delete('opus/{opus}/c/{comment}', 'CommentController@destroy');
+    Route::delete('opus/{opus}/c/{comment}', 'CommentController@destroyChild');
 
     /**
      * Notification controller and related routes
@@ -110,10 +110,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['account']], function () {
         Route::patch('account/{users}/update', 'AccountController@updateAccount')->name('account.update');
         Route::get('account/{users}', 'AccountController@manageAccount')->name('account.manage');
-        Route::post('account/{users}/avatar', 'AccountController@uploadAvatar')->name('account.avatar');
+
         Route::patch('account/{users}/updatePassword', 'AccountController@updatePassword')->name('password.update');
         Route::patch('account/{users}/preferences', 'AccountController@updatePreferences')->name('account.preferences.update');
     });
+
+    Route::post('account/{users}/avatar', 'AccountController@uploadAvatar')->name('account.avatar');
+
 
     /**
      *  User avatar routes
@@ -148,10 +151,10 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Global moderator middleware group
      */
-    Route::group(['middleware'=>'permission:atLeast,'.config('roles.gmod-code')], function () {
-        Route::get('account/{users}/avatar', 'AccountController@avatarAdmin');
-        Route::post('account/{users}/avatar', 'AccountController@uploadAvatarAdmin');
-    });
+//    Route::group(['middleware'=>'permission:atLeast,'.config('roles.gmod-code')], function () {
+//        Route::get('account/{users}/avatarAdmin', 'AccountController@avatarAdmin');
+        Route::post('account/{users}/avatarAdmin', 'AccountController@uploadAvatarAdmin');
+//    });
 });
 
 /**

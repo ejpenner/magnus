@@ -226,7 +226,7 @@ class User extends Authenticatable
      */
     public function isOwner($object)
     {
-        if ($this->attributes['id'] == $object->user_id) {
+        if ($this->id == $object->user_id) {
             return true;
         } else {
             return false;
