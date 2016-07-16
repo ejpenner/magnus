@@ -1,5 +1,5 @@
 <div class="form-group">
-    <input type="file" name="image" id="image" class="form-control">
+    <input type="file" name="image" id="image" accept=".jpg,.png,.jpeg" class="form-control">
 </div>
 <div class="form-group">
     {!! Form::label('title', 'Submission Title') !!}
@@ -25,7 +25,7 @@
             Add to galleries <span class="optional-field">(optional)</span>
         </div>
         <div class="panel-body">
-            <div class="form-group gallery-select">
+            <span class="form-group gallery-select">
                 @foreach($galleries as $i => $gallery)
                     <input type="checkbox" name="gallery_ids[]" id="{{$gallery->id}}"
                            @if(isset($opus) and $gallery->hasOpus($opus))
@@ -34,7 +34,7 @@
                            value="{{$gallery->id}}" class="checkbox-vis-hidden">
                     <label for="{{$gallery->id}}">{{ $gallery->name }}</label>
                 @endforeach
-            </div>
+            </span>
         </div>
     </div>
 @endif

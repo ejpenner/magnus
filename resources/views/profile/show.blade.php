@@ -16,37 +16,42 @@
                         </div>
                     </div>
                     <div class="gallery-container">
-                        <a class="btn btn-primary" href="{{ action('ProfileController@opera', $user->slug) }}">See All Submissions</a>
+                        <a class="btn btn-primary" href="{{ action('ProfileController@opera', $user->slug) }}">See more</a>
                     </div>
                 </div>
             </div>
-            <div class="panel panel-default profile-gallery-panel"> {{-- gallery panel --}}
-                <div class="panel-heading">
-                    Galleries
-                </div>
-                <div class="panel-body">
-                    <div class="gallery-container">
-                        <div class="col-md-12">
-                            @include('partials._galleries', ['galleries' => $galleries, 'columns' => 2])
-                        </div>
-                    </div>
-                    <div class="gallery-container">
-                        <a class="btn btn-primary" href="{{ action('ProfileController@galleries', $user->slug) }}">See All Galleries</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 col-md-12">
+
             <div class="panel panel-default profile-favorites-panel"> {{-- favorites panel --}}
                 <div class="panel-heading">
                     Favorites
                 </div>
                 <div class="panel-body">
-                    <div class="col-md-12">
+                    <div class="col-md-12 gallery-container">
                         @include('profile._favorites', ['columns' => 2, 'opera' => $favorites])
+                    </div>
+                    <div class="gallery-container">
+                        <a class="btn btn-primary" href="{{ action('ProfileController@favorites', $user->slug) }}">See more</a>
                     </div>
                 </div>
             </div>
+            {{--<div class="panel panel-default profile-gallery-panel"> --}}{{-- gallery panel --}}
+            {{--<div class="panel-heading">--}}
+            {{--Galleries--}}
+            {{--</div>--}}
+            {{--<div class="panel-body">--}}
+            {{--<div class="gallery-container">--}}
+            {{--<div class="col-md-12">--}}
+            {{--@include('partials._galleries', ['galleries' => $galleries, 'columns' => 2])--}}
+            {{--</div>--}}
+            {{--</div>--}}
+            {{--<div class="gallery-container">--}}
+            {{--<a class="btn btn-primary" href="{{ action('ProfileController@galleries', $user->slug) }}">See more</a>--}}
+            {{--</div>--}}
+            {{--</div>--}}
+            {{--</div>--}}
+        </div>
+        <div class="col-lg-6 col-md-12">
+
         </div>
     </div>
     <div class="container-fluid">

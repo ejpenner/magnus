@@ -73,10 +73,7 @@ class GalleryController extends Controller
     public function show($id)
     {
         $gallery = Gallery::findOrFail($id);
-        $query = Opus::query()->join('gallery_opus', 'opuses.id', '=', 'gallery_opus.opus_id');
-        $query->where('gallery_opus.gallery_id', '=', $gallery->id);
-        $opera = $query->paginate(12);
-        //$opera = Gallery::findOrFail($id)->opera()->paginate(12);
+        $opera = $gallery->opera()->paginate(12); //$query->paginate(12);
         $user = $gallery->user;
 
         return view('gallery.show', compact('gallery', 'opera', 'user'));

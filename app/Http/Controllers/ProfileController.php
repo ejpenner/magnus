@@ -103,7 +103,7 @@ class ProfileController extends Controller
     public function favorites(User $user)
     {
         $profile = $user->profile;
-        $favorites = $user->favorites;
+        $favorites = $user->favorites()->orderBy('favorite_user.created_at', 'desc')->paginate(Helpers::perPage());
 
         return view('profile.favorites', compact('profile', 'favorites', 'user'));
         //dd($favorites);

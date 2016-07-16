@@ -70,7 +70,11 @@ class Helpers
         if (Request::has('limit')) {
             return Request::input('limit');
         } elseif (Auth::check() and !Request::has('limit')) {
-            return Auth::user()->preferences->per_page;
+            try {
+                return Auth::user()->preferences->per_page;
+            } catch (\Exception $e) {
+                return config('images.defaultLimit');
+            }
         } else {
             return config('images.defaultLimit');
         }
@@ -120,6 +124,12 @@ class Helpers
     {
         $username = strtolower($username);
         File::makeDirectory(public_path('art/'.$username), 0664);
+    }
+
+    public static function deleteDirectories($username)
+    {
+        $username = strtolower($username);
+        File::deleteDirectory(public_path('art/'.$username));
     }
 
     /**

@@ -82,8 +82,69 @@ class HomeController extends Controller
             }
         }
 
-        $opera = $opera->paginate($limit);
+        $opera = $opera->simplePaginate($limit);
         $opera = $opera->appends(Input::except('page'));
-        return view('home.recent', compact('opera', 'request', 'filterSegment'));
+        $next = 2;
+        return view('home.recent', compact('opera', 'request', 'filterSegment', 'next'));
+    }
+
+    public function nextPage(Request $request, $filter = null, $period = null)
+    {
+        $filterSegment = !is_null($request->segment(1)) ? $request->segment(1) : 'newest';
+
+        if ($request->has('limit')) {
+            $limit = $request->input('limit');
+        } elseif (Auth::check() and !$request->has('limit')) {
+            $limit = Auth::user()->preferences->per_page;
+        } else {
+            $limit = config('images.defaultLimit');
+        }
+
+        switch ($filter) {
+            case 'trending':
+                $opera = Opus::trending();
+                break;
+            case 'popular':
+                $opera = Opus::popular();
+                break;
+            case 'newest':
+                $opera = Opus::newest();
+                break;
+            default:
+                $opera = Opus::newest();
+                break;
+        }
+
+        if ($period != null) {
+            switch ($period) {
+                case 'today':
+                    $opera = $opera->today();
+                    break;
+                case '72h':
+                    $opera = $opera->hoursAgo(72);
+                    break;
+                case '48h':
+                    $opera = $opera->hoursAgo(48);
+                    break;
+                case '24h':
+                    $opera = $opera->hoursAgo(24);
+                    break;
+                case '8h':
+                    $opera = $opera->hoursAgo(8);
+                    break;
+                case 'week':
+                    $opera = $opera->daysAgo(7);
+                    break;
+                case 'month':
+                    $opera = $opera->daysAgo(30);
+                    break;
+            }
+        }
+        $opera = $opera->offset($limit);
+        $opera = $opera->simplePaginate($limit);
+
+        $opera = $opera->appends(Input::all());
+        //$next = $request->has('page') ? $request->input('page') : 2;
+        return view('home._nextPage', compact('opera','page'));
     }
 }

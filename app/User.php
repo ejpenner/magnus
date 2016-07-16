@@ -263,8 +263,8 @@ class User extends Authenticatable
             $this->deleteAvatarFile();
         }
         $this->avatar = $this->storeAvatar($request);
-        $avatarResized = $this->resize($this->avatar);
-        $avatarResized->save($this->avatar);
+        $a = $this->resize($this->avatar);
+        $a->save($this->avatar);
     }
 
     /**
@@ -301,7 +301,8 @@ class User extends Authenticatable
     public function deleteAvatarFile()
     {
         $path = public_path();
-        if (File::delete($path.'/'.$this->avatar)) {
+        File::delete($path.'/'.$this->avatar);
+        if (!File::exists($path.'/'.$this->avatar)) {
             return true;
         }
         return false;

@@ -22,6 +22,12 @@ $(document).ready(function() {
         $('#preview').toggle();
     });
 
+    //infinite scroll
+    $('#infinite').jscroll({
+        nextSelector: 'a.load-next:last',
+        padding: -1000
+    });
+
     $('#selectAllOpus').click(function() {
         var checkbox = $('.opus-message-select');
         checkbox.prop('checked', !checkbox.is(":checked"));

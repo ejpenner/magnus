@@ -40,8 +40,9 @@ class CreateUsersTable extends Migration
 
         foreach($users as $user) {
             $user->deleteAvatarFile();
+            \Magnus\Helpers\Helpers::deleteDirectories($user->username);
         }
-        File::cleanDirectory(public_path('art'));
+        //File::cleanDirectory(public_path('art'));
         Schema::drop('users');
     }
 }
