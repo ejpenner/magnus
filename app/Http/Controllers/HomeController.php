@@ -29,85 +29,52 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function recent(Request $request, $filter = null, $period = null)
+
+    /**
+     * The home page method
+     *
+     * @param Request $request
+     * @param null $filter
+     * @param null $period
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function home(Request $request, $filter = null, $period = null)
     {
-        $filterSegment = !is_null($request->segment(1)) ? $request->segment(1) : 'newest';
+        $filterSegment = $this->filterSegment($request);
 
-        if ($request->has('limit')) {
-            $limit = $request->input('limit');
-        } elseif (Auth::check() and !$request->has('limit')) {
-            $limit = Auth::user()->preferences->per_page;
-        } else {
-            $limit = config('images.defaultLimit');
-        }
+        $opera = $this->timeFilter($this->makeSearchFilter($filter), $period)->simplePaginate($this->limit($request));
 
-        switch ($filter) {
-            case 'trending':
-                $opera = Opus::trending();
-                break;
-            case 'popular':
-                $opera = Opus::popular();
-                break;
-            case 'newest':
-                $opera = Opus::newest();
-                break;
-            default:
-                $opera = Opus::newest();
-                break;
-        }
-
-        if ($period != null) {
-            switch ($period) {
-                case 'today':
-                    $opera = $opera->today();
-                    break;
-                case '72h':
-                    $opera = $opera->hoursAgo(72);
-                    break;
-                case '48h':
-                    $opera = $opera->hoursAgo(48);
-                    break;
-                case '24h':
-                    $opera = $opera->hoursAgo(24);
-                    break;
-                case '8h':
-                    $opera = $opera->hoursAgo(8);
-                    break;
-                case 'week':
-                    $opera = $opera->daysAgo(7);
-                    break;
-                case 'month':
-                    $opera = $opera->daysAgo(30);
-                    break;
-            }
-        }
-        $opera = $opera->skip($limit);
-        $opera = $opera->simplePaginate($limit);
         $opera = $opera->appends(Input::except('page'));
-        $next = 2;
 
-        return view('home.recent', compact('opera', 'request', 'filterSegment', 'next'));
+        return view('home.home', compact('opera', 'request', 'filterSegment'));
     }
 
+    /**
+     * Returns pages as html templates
+     * @param Request $request
+     * @param null $filter
+     * @param null $period
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function nextPage(Request $request, $filter = null, $period = null)
     {
         $input = Input::all();
-
-        $filterSegment = !is_null($request->segment(1)) ? $request->segment(1) : 'newest';
-
 
         if (!$request->has('page')) {
             $input['page'] = 1;
         }
 
-        if ($request->has('limit')) {
-            $limit = $request->input('limit');
-        } elseif (Auth::check() and !$request->has('limit')) {
-            $limit = Auth::user()->preferences->per_page;
-        } else {
-            $limit = config('images.defaultLimit');
-        }
+        $filterSegment = $this->filterSegment($request);
 
+        $opera = $this->timeFilter($this->makeSearchFilter($filter), $period);
+
+        $opera = $opera->skip($this->limit($request) * ($input['page']-1))->take($this->limit($request))->get();
+
+        return view('home.partials._nextPage', compact('opera', 'page', 'filterSegment'));
+    }
+
+    protected function makeSearchFilter($filter)
+    {
         switch ($filter) {
             case 'trending':
                 $opera = Opus::trending();
@@ -123,6 +90,11 @@ class HomeController extends Controller
                 break;
         }
 
+        return $opera;
+    }
+
+    protected function timeFilter($opera, $period)
+    {
         if ($period != null) {
             switch ($period) {
                 case 'today':
@@ -148,14 +120,23 @@ class HomeController extends Controller
                     break;
             }
         }
-        $opera = $opera->skip($limit*($input['page']-1))->take($limit)->get();
+        return $opera;
+    }
 
-        //$opera = $opera->appends(Input::all());
+    protected function filterSegment($request)
+    {
+        return $filterSegment = !is_null($request->segment(1)) ? $request->segment(1) : 'newest';
+    }
 
-//        if (!\Request::wantsJson()) {
-//            return view('home', compact('opera','page','filterSegment'));
-//        }
-        //$next = $request->has('page') ? $request->input('page') : 2;
-        return view('home._nextPage', compact('opera', 'page', 'filterSegment'));
+    protected function limit($request)
+    {
+        if ($request->has('limit')) {
+            $limit = $request->input('limit');
+        } elseif (Auth::check() and !$request->has('limit')) {
+            $limit = Auth::user()->preferences->per_page;
+        } else {
+            $limit = config('images.defaultLimit');
+        }
+        return $limit;
     }
 }

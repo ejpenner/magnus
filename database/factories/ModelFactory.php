@@ -14,7 +14,7 @@ $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
         'username'          => $faker->userName,
         'password'          => bcrypt('password'),
         'slug'              => str_slug($faker->userName),
-        'avatar'            => substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
+        'avatar'            => '', //substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
         'timezone'          => $timezones[rand(0,3)],
         'remember_token'    => str_random(10),
     ];
@@ -24,8 +24,8 @@ $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
 
 $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
 
-    //$files = File::glob(base_path('resources/seed-pics/*.*'));
-    $files = File::glob(base_path('resources/heroku-deploy-seed-pics/*.*'));
+    $files = File::glob(base_path('resources/seed-pics/*.*'));
+    //$files = File::glob(base_path('resources/heroku-deploy-seed-pics/*.*'));
     $rand = rand(0, count($files)-1);
     $numbers = substr(microtime(), 2, 8);
 

@@ -10,6 +10,8 @@ $(document).ready(function() {
         return confirm('Are you sure you want to delete this?');
     });
 
+    $(".opus-src").unveil();
+
     $('#preview').click(function() {
         $('#fullview').show().unveil();
         $('.fullview-box').show();

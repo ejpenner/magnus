@@ -35,7 +35,7 @@ class TagSeeder extends Seeder
         Tag::create(['name' => 'nude']);
         Tag::create(['name' => 'self-portrait']);
 
-        factory(Tag::class, 40)->create();
+        factory(Tag::class, 20)->create();
 
         $opera = Opus::all();
         $tagCount = Tag::count();

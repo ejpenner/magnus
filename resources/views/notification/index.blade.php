@@ -28,7 +28,7 @@
                                     </h5>
                                     <div>
                                         <div class="">
-                                            <a href="{{ action('NotificationController@destroy', $opus->notification_id) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</a>
+                                            {{--<a href="{{ action('NotificationController@destroy', $opus->notification_id) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</a>--}}
                                             <span class="gallery-select">
                                             <input type="checkbox" name="notification_ids[]" id="notification_id_{{$i}}" value="{{ $opus->notification_id }}" class="checkbox-vis-hidden opus-message-select">
                                             <label for="notification_id_{{$i}}"></label>

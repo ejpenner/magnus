@@ -29,7 +29,7 @@ var vendor_js_files = [
 
 // js files
 var angular_js_files = [
-    assets_dir + 'js/angular.js'
+    assets_dir + 'js/angular.js',
     // assets_dir + 'js/factories/*.js',
     // assets_dir + 'js/controllers/*.js'
 ];
@@ -124,7 +124,7 @@ gulp.task('phpcbf-config', function() {
 });
 
 gulp.task('js', [
-    'scripts', 'angular', 'vendor-scripts'
+    'scripts', 'angular'
 ]);
 
 gulp.task('default', [

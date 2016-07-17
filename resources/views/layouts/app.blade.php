@@ -7,8 +7,8 @@
 
     <script src="{{ asset('/js/vendor.js') }}"></script>
     <script src="{{ asset('/js/app.js') }}"></script>
-    <script src="{{ asset('/js/angular.js') }}"></script>
     <link href="{{ asset('css/app.css') }}" media="screen" rel="stylesheet" type="text/css"/>
+    <script src="{{ asset('/js/angular.js') }}"></script>
     @yield('header')
     <script type="text/javascript">
 
@@ -29,18 +29,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ action('HomeController@recent') }}">Magnus</a>
+                <a class="navbar-brand" href="{{ action('HomeController@home') }}">Magnus</a>
             </div>
             <div class="collapse navbar-collapse" id="magnus-navbar">
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ action('HomeController@recent') }}">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="{{ action('HomeController@home') }}">
                             Home <i class="caret"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ action('HomeController@recent', 'trending') }}">Trending</a></li>
-                            <li><a href="{{ action('HomeController@recent', 'popular') }}">Popular</a></li>
-                            <li><a href="{{ action('HomeController@recent') }}">New</a></li>
+                            <li><a href="{{ action('HomeController@home', 'trending') }}">Trending</a></li>
+                            <li><a href="{{ action('HomeController@home', 'popular') }}">Popular</a></li>
+                            <li><a href="{{ action('HomeController@home') }}">New</a></li>
                         </ul>
                     </li>
                     <li @if(Request::is('featured')) class="active" @endif >
