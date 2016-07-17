@@ -2,7 +2,9 @@
 
 namespace Magnus\Http\Requests;
 
+use Magnus\Permission;
 use Magnus\Http\Requests\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FavoriteRequest extends Request
 {
@@ -13,7 +15,7 @@ class FavoriteRequest extends Request
      */
     public function authorize()
     {
-        return false;
+        return Auth::check();
     }
 
     /**

@@ -9538,10 +9538,11 @@ div.gallery-item .vcenter {
 div.uploader {
   text-align: center;
 }
-div.uploader #preview {
+div.uploader #preview-upload {
   position: relative;
   max-width: 100%;
   /* This rule is very important, please do not ignore this! */
+  max-height: 400px;
   -webkit-box-shadow: 5px 5px 5px #888888;
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 5px 5px 5px #888888;
@@ -9551,6 +9552,7 @@ div.uploader #preview-edit {
   position: relative;
   max-width: 100%;
   /* This rule is very important, please do not ignore this! */
+  max-height: 400px;
   -webkit-box-shadow: 5px 5px 5px #888888;
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 5px 5px 5px #888888;

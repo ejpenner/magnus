@@ -7,7 +7,11 @@ use Illuminate\Support\Facades\Config;
 Route::model('users', 'User');
 Route::model('profile', 'Profile');
 Route::model('opus', 'Opus');
+Route::model('category', 'Category');
 
+/**
+ * Binds {opus} to the opus model slug
+ */
 Route::bind('opus', function ($value, $route) {
     return \Magnus\Opus::whereSlug(strtolower($value))->firstOrFail();
 });
@@ -20,11 +24,31 @@ Route::bind('users', function ($value, $route) {
 });
 
 /**
- *  binds User model via slug to {profile} wildcard
+ *  binds User model via slug to {profile} variable
  */
 Route::bind('profile', function ($value, $route) {
     return \Magnus\User::whereSlug(strtolower($value))->firstOrFail();
 });
+
+/**
+ * Binds the Category model to the {category} variable
+ */
+Route::bind('category', function ($value, $route) {
+    return \Magnus\Category::whereSlug(strtolower($value))->firstOrFail();
+});
+
+Route::bind('category2', function ($value, $route) {
+    return \Magnus\Category::whereSlug(strtolower($value))->firstOrFail();
+});
+
+Route::bind('category3', function ($value, $route) {
+    return \Magnus\Category::whereSlug(strtolower($value))->firstOrFail();
+});
+
+Route::bind('category4', function ($value, $route) {
+    return \Magnus\Category::whereSlug(strtolower($value))->firstOrFail();
+});
+
 
 /**
  * generated auth routes
@@ -37,6 +61,11 @@ Route::auth();
 Route::get('errors/401', ['as' => '401', function () {
     return view('errors.401');
 }]);
+
+/**
+ * Route for browsing via categories
+ */
+Route::get('browse/{category}/{category2?}/{category3?}/{category4?}');
 
 /**
  * A pretty url to show opera that are in a gallery
@@ -67,7 +96,7 @@ Route::get('profile/{profile}/watching', 'ProfileController@watching')->name('pr
 /**
  * Search route
  */
-Route::get('get/search/{terms}', 'SearchController@infiniteSearch')->name('search.nextpage');
+Route::get('api/get/search/{terms}', 'SearchController@infiniteSearch')->name('search.nextpage');
 Route::get('/search/{terms}', ['uses'=> 'SearchController@searchAll', 'as'=>'searchAll'])->name('search');
 
 
@@ -148,19 +177,20 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('permissions', 'PermissionController');
         Route::resource('users', 'UserController');
         Route::resource('roles', 'RoleController');
+        Route::resource('categories', 'CategoryController');
     });
 
     /**
      * Global moderator middleware group
      */
-//    Route::group(['middleware'=>'permission:atLeast,'.config('roles.gmod-code')], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.config('roles.gmod-code')], function () {
 //        Route::get('account/{users}/avatarAdmin', 'AccountController@avatarAdmin');
         Route::post('account/{users}/avatarAdmin', 'AccountController@uploadAvatarAdmin');
-//    });
+    });
 });
 
 /**
  * Home route
  */
-Route::get('get/{filter?}/{period?}', 'HomeController@nextPage')->name('home');
+Route::get('api/get/{filter?}/{period?}', 'HomeController@nextPage')->name('home');
 Route::get('/{filter?}/{period?}', 'HomeController@home')->name('home');

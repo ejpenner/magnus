@@ -68,12 +68,22 @@ class Opus extends Model
     }
 
     /**
-     * An opus can be favorite'd by many users
+     * An belongs to one favorite model that is shared by all users who
+     * have added the opus to their favorites
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function favorite()
     {
         return $this->hasOne('Magnus\Favorite');
+    }
+
+    /**
+     * An opus can have many categories
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function categories()
+    {
+        return $this->belongsToMany('Magnus\Category', 'category_opus')->withTimestamps();
     }
 
     /**
@@ -325,8 +335,7 @@ class Opus extends Model
      */
     protected function storePreview(User $user, $request)
     {
-
-        $previewSize = $request->has('preview_size') ? $request->input('preview_size') : 680;
+        $previewSize = $request->has('resizeTo') ? $request->input('resizeTo') : 680;
         $fileName = $user->username.'-'.date('Ymd') .'-'. substr(microtime(), 2, 8).'-p.'. $this->resizeExtension; // renaming image
         $thumbnail = $this->resize($this->getFilePath(), $previewSize);
         $fullPath = $this->directory."/".$fileName;

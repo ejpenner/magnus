@@ -19,6 +19,7 @@
                      infinite-scroll-distance="1">
                     <div ng-repeat="opus in scroller.items track by $index">
                         <div ng-bind-html="opus | sanitize"></div>
+                        <div class="spacer" style="clear: both;"></div>
                     </div>
                 </div>
             </div>

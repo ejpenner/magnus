@@ -75,10 +75,20 @@ $(document).ready(function() {
         }
     }
 
-    $('.reply-toggle').click(function() {
+    var $replyToggle = $('.reply-toggle');
+
+    $replyToggle.click(function() {
         $(this).children().show();
         $(this).children('.reply-btn').hide();
     });
+
+
+    var anchor = window.location.hash;
+    if (anchor == '#replyTop') {
+        $(anchor).children('.reply-form').show();
+        $(anchor).children('.reply-btn').hide();
+    }
+
 
     $('#avatar-file').change(function() {
         readURL(this);
@@ -92,9 +102,9 @@ $(document).ready(function() {
     // });
 
     $('#image').change(function() {
-        readFile(this, '#preview');
+        readFile(this, '#preview-upload');
         readFile(this, '#preview-edit');
-        $('#preview').show();
+        $('#preview-upload').show();
         $('div.preview-container').show();
     });
 

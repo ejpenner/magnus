@@ -5,7 +5,7 @@ namespace Magnus\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Magnus\Http\Requests;
-
+use Illuminate\Support\Facades\Schema;
 use Magnus\Permission;
 use Magnus\User;
 
@@ -56,7 +56,10 @@ class PermissionController extends Controller
      */
     public function show($id)
     {
-        //
+        $permissionFields = Schema::getColumnListing('permissions');
+        $permissionFields = array_except($permissionFields, [0,1,2,3]);
+        $permissionFields = array_values($permissionFields);
+        dd($permissionFields);
     }
 
     /**

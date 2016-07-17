@@ -17,6 +17,7 @@
                     </div>
                 </div>
             </div>
+            @include('opus.partials._resizeImage')
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">

@@ -61,19 +61,24 @@ class Permission extends Model
     /**
      * Determines if a user has the specified permission if the specified
      * permission is not in the database return false anyway
+     *
      * @param User $user
-     * @param $permission
+     * @param array $permissions
      * @return bool
+     * @throws \Exception
      */
-    public static function hasPermission(User $user, $permission)
+    public static function hasPermission(User $user, array $permissions)
     {
-        foreach ($user->roles as $userRoles) {
-            try {
-                $hasPermissions = Permission::where('role_code', $userRoles->role_code)->value($permission); // fetch the permission column name
-                return $hasPermissions;
-            } catch (\Exception $e) {
-                return false;
+        foreach ($permissions as $permission) {
+            foreach ($user->roles as $userRoles) {
+                try {
+                    $hasPermissions = Permission::where('role_code', $userRoles->role_code)->value($permission); // fetch the permission column name
+                    return $hasPermissions;
+                } catch (\Exception $e) {
+                    throw new \Exception($permission . ' is not a valid permission name!');
+                }
             }
+            return false;
         }
         return false;
     }

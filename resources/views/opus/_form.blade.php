@@ -1,14 +1,12 @@
 <div class="form-group">
     <input type="file" name="image" id="image" accept=".jpg,.png,.jpeg" class="form-control">
+    @include('partials._formError', ['name' => 'image'])
 </div>
 <div class="form-group">
     {!! Form::label('title', 'Submission Title') !!}
     {!! Form::text('title', null, ['class'=>'form-control']) !!}
-    @if ($errors->has('title'))
-        <span class="help-block">
-            <strong>{{ $errors->first('title') }}</strong>
-        </span>
-    @endif
+    @include('partials._formError', ['name' => 'title'])
+
 </div>
 <div class="form-group">
     {!! Form::label('comment', 'Artist\'s Comments') !!} <span class="optional-field">optional</span>

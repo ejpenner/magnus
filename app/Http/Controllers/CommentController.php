@@ -149,7 +149,7 @@ class CommentController extends Controller
         //
     }
 
-    public function updatedNested(Requests\CommentRequest $request, $comment)
+    public function updatedNested(Requests\CommentRequest $request, $comment_id)
     {
         
     }

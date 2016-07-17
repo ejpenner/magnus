@@ -8,9 +8,11 @@
     <div ng-controller="ScrollController">
         <div class="container-fluid" infinite-scroll="scroller.nextPage()"
                                      infinite-scroll-disabled="scroller.busy"
-                                     infinite-scroll-distance="1">
+                                     infinite-scroll-distance="0">
             <div ng-repeat="opus in scroller.items track by $index">
+                <div style='clear: both;'></div>
                 <div ng-bind-html="opus | sanitize"></div>
+                <div style='clear: both;'></div>
             </div>
         </div>
     </div>

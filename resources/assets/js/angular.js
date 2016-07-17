@@ -56,15 +56,11 @@ app.factory('Scroller', ['$http', '$location', function($http, $location, $scope
         //console.log(params);
         //$location.search('page', params.page - 1);
 
-        var url = 'http://' + window.location.hostname + '/get' + window.location.pathname + '?page=' + this.after + window.location.search.replace(/\?/, '&');
+        var url = window.location.protocol + '//' + window.location.hostname + '/api/get' + window.location.pathname + '?page=' + this.after + window.location.search.replace(/\?/, '&');
         console.log('Fetching content from', url);
         //console.log('params', params);
         $http.get(url)
             .success(function(data) {
-                // var items = data.data.children;
-                // console.log(angular.element('[ng-controller=ScrollController]'));
-                //angular.element('[ng-controller=ScrollService]').scope().data.push(data);
-                //this.items.push(data);
                 this.items.push(data);
                 this.after++;
                 this.busy = false;
