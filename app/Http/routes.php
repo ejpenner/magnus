@@ -67,7 +67,9 @@ Route::get('profile/{profile}/watching', 'ProfileController@watching')->name('pr
 /**
  * Search route
  */
+Route::get('get/search/{terms}', 'SearchController@infiniteSearch')->name('search.nextpage');
 Route::get('/search/{terms}', ['uses'=> 'SearchController@searchAll', 'as'=>'searchAll'])->name('search');
+
 
 /**
  * Authenticated middleware group
@@ -160,5 +162,5 @@ Route::group(['middleware' => ['auth']], function () {
 /**
  * Home route
  */
-Route::get('/get/{filter?}/{period?}', 'HomeController@nextPage')->name('home');
+Route::get('get/{filter?}/{period?}', 'HomeController@nextPage')->name('home');
 Route::get('/{filter?}/{period?}', 'HomeController@home')->name('home');

@@ -9674,6 +9674,7 @@ div.main-container {
   top: 155px;
   left: 20px;
   right: 20px;
+  z-index: 20;
 }
 .magnus-navbar input {
   width: 265px;

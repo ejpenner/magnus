@@ -53,11 +53,12 @@ app.factory('Scroller', ['$http', '$location', function($http, $location, $scope
 
         params = $location.search();
         params.page = this.after;
+        //console.log(params);
         //$location.search('page', params.page - 1);
 
-        var url = 'http://' + window.location.hostname + '/get' + window.location.pathname + '?page=' + this.after;
-        console.log(url);
-        console.log('params', params);
+        var url = 'http://' + window.location.hostname + '/get' + window.location.pathname + '?page=' + this.after + window.location.search.replace(/\?/, '&');
+        console.log('Fetching content from', url);
+        //console.log('params', params);
         $http.get(url)
             .success(function(data) {
                 // var items = data.data.children;

@@ -20,7 +20,7 @@
             </div>
             <div class="panel-body">
                 {!! Form::model($role->permission, ['method'=>'patch', 'action'=>['PermissionController@update', $role->permission->id]]) !!}
-                @include('role._permissionForm')
+                {{--@include('role._permissionForm')--}}
                 {!! Form::close() !!}
             </div>
         </div>

@@ -18,7 +18,7 @@
                         <td>{{ $permission->schema_name }}</td>
                         <td>
                             {{--@include('partials._operations', ['model'=>$permission, 'controller' => 'PermissionController'])--}}
-                            @include('permission._editModal', ['id'=>$i, 'model'=>$permission])
+                            {{--@include('permission._editModal', ['id'=>$i, 'model'=>$permission])--}}
                             {!! Form::model($permission, ['method'=>'delete', 'class'=>'delete-confirm operations', 'action'=>['PermissionController@destroy', $permission->id]]) !!}
                                 <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
                             {!! Form::close() !!}

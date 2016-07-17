@@ -70,7 +70,7 @@ class HomeController extends Controller
 
         $opera = $opera->skip($this->limit($request) * ($input['page']-1))->take($this->limit($request))->get();
 
-        return view('home.partials._nextPage', compact('opera', 'page', 'filterSegment'));
+        return view('home.partials._nextPage', compact('opera'));
     }
 
     protected function makeSearchFilter($filter)
