@@ -162,5 +162,3 @@ Route::group(['middleware' => ['auth']], function () {
  */
 Route::get('/get/{filter?}/{period?}', 'HomeController@nextPage')->name('home');
 Route::get('/{filter?}/{period?}', 'HomeController@recent')->name('home');
-
-

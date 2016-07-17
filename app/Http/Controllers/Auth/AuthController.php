@@ -2,7 +2,6 @@
 
 namespace Magnus\Http\Controllers\Auth;
 
-
 use Magnus\User;
 use Magnus\Role;
 use Magnus\Profile;

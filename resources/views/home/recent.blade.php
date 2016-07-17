@@ -1,16 +1,18 @@
+
+
 @extends('layouts.app')
 
 @section('content')
     <div class="col-md-12">
         @include('home.partials._sortButtons', [$filterSegment])
-        <div class="container-fluid" id="infinite">
-
-            @include('partials._opusColumns', ['opera'=>$opera, 'columns'=>6])
-                {{--<span class="pull-left">{{ $opera->appends(['limit'=>($request->has('limit') ? $request->input('limit') : null )])->render() }}</span>--}}
-
-            <a class="load-next" href="{{ action('HomeController@nextPage') }}">test</a>
-        </div>
-
     </div>
-
+    <div ng-controller="ScrollController">
+        <div class="container-fluid" infinite-scroll='scroller.nextPage()' infinite-scroll-disabled='scroller.busy' infinite-scroll-distance='0'>
+            @include('partials._opusColumns', ['opera'=>$opera, 'columns'=>6])
+            <div ng-repeat="opus in scroller.items track by $index">
+                {{--@{{ opus }}--}}
+                <div ng-bind-html="opus | sanitize"></div>
+            </div>
+        </div>
+    </div>
 @endsection

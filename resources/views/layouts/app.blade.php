@@ -7,6 +7,7 @@
 
     <script src="{{ asset('/js/vendor.js') }}"></script>
     <script src="{{ asset('/js/app.js') }}"></script>
+    <script src="{{ asset('/js/angular.js') }}"></script>
     <link href="{{ asset('css/app.css') }}" media="screen" rel="stylesheet" type="text/css"/>
     @yield('header')
     <script type="text/javascript">
@@ -104,7 +105,7 @@
         </div>
     </nav>
 </div>
-<div class="main-container container-fluid">
+<div class="main-container container-fluid" ng-app="Magnus">
     <div class="container">
         @include('partials._flash')
         @include('partials._errors')

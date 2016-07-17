@@ -16,11 +16,11 @@ var assets_dir = './resources/assets/';
 
 var vendor_js_files = [
     assets_dir + "js/vendor/jquery.min.js",
-    //assets_dir + "js/vendor/angular.min.js",
+    assets_dir + "js/vendor/angular.min.js",
     // assets_dir + "js/vendor/cropper.js",
     assets_dir + "js/vendor/bootstrap.min.js",
     assets_dir + "js/vendor/unveil.js",
-    assets_dir + "js/vendor/jscroll.js",
+    //assets_dir + "js/vendor/jscroll.js",
     //assets_dir + "js/vendor/ng-resource.min.js",
     //assets_dir + "js/vendor/ng-table.js",
     assets_dir + "js/vendor/ng-infinite-scroll.js"
@@ -29,9 +29,9 @@ var vendor_js_files = [
 
 // js files
 var angular_js_files = [
-    //assets_dir + 'js/angular.min.js',
-    //assets_dir + 'js/factories/*.js',
-    //assets_dir + 'js/controllers/*.js'
+    assets_dir + 'js/angular.js'
+    // assets_dir + 'js/factories/*.js',
+    // assets_dir + 'js/controllers/*.js'
 ];
 
 var jsbeautifier_options = {
@@ -124,7 +124,7 @@ gulp.task('phpcbf-config', function() {
 });
 
 gulp.task('js', [
-    'scripts', 'angular'
+    'scripts', 'angular', 'vendor-scripts'
 ]);
 
 gulp.task('default', [

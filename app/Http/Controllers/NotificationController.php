@@ -27,8 +27,15 @@ class NotificationController extends Controller
                     ->join('notifications', 'opuses.id', '=', 'notifications.opus_id')
                     ->join('notification_user', 'notification_user.notification_id', '=', 'notifications.id')
                     ->where('notification_user.user_id', $user->id)
-                    ->select('opuses.id', 'opuses.user_id', 'opuses.image_path', 'opuses.thumbnail_path',
-                       'opuses.title', 'notification_user.notification_id', 'opuses.slug')
+                    ->select(
+                        'opuses.id',
+                        'opuses.user_id',
+                        'opuses.image_path',
+                        'opuses.thumbnail_path',
+                        'opuses.title',
+                        'notification_user.notification_id',
+                        'opuses.slug'
+                    )
                     ->orderBy('opuses.created_at', 'desc');
         $opusResults = $query->paginate(8, '[*]', 'opera');
 
@@ -48,9 +55,9 @@ class NotificationController extends Controller
                     ->join('favorite_user', 'favorites.id', '=', 'favorite_user.favorite_id')
                     ->join('opuses', 'opuses.id', '=', 'notifications.opus_id')
                     ->where('notification_user.user_id', $user->id)
-                    ->select('favorites.*', 'favorite_user.user_id','notification_user.notification_id', 'opuses.title')
+                    ->select('favorites.*', 'favorite_user.user_id', 'notification_user.notification_id', 'opuses.title')
                     ->orderBy('notification_user.created_at', 'desc');
-        $favoritesResults = $favorites->paginate(24, '[*]','activity');
+        $favoritesResults = $favorites->paginate(24, '[*]', 'activity');
 
         return view('notification.index', compact('user', 'opusResults', 'commentResults', 'favoritesResults'));
     }

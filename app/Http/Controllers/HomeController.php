@@ -81,16 +81,24 @@ class HomeController extends Controller
                     break;
             }
         }
-
+        $opera = $opera->skip($limit);
         $opera = $opera->simplePaginate($limit);
         $opera = $opera->appends(Input::except('page'));
         $next = 2;
+
         return view('home.recent', compact('opera', 'request', 'filterSegment', 'next'));
     }
 
     public function nextPage(Request $request, $filter = null, $period = null)
     {
+        $input = Input::all();
+
         $filterSegment = !is_null($request->segment(1)) ? $request->segment(1) : 'newest';
+
+
+        if (!$request->has('page')) {
+            $input['page'] = 1;
+        }
 
         if ($request->has('limit')) {
             $limit = $request->input('limit');
@@ -140,11 +148,14 @@ class HomeController extends Controller
                     break;
             }
         }
-        $opera = $opera->offset($limit);
-        $opera = $opera->simplePaginate($limit);
+        $opera = $opera->skip($limit*($input['page']-1))->take($limit)->get();
 
-        $opera = $opera->appends(Input::all());
+        //$opera = $opera->appends(Input::all());
+
+//        if (!\Request::wantsJson()) {
+//            return view('home', compact('opera','page','filterSegment'));
+//        }
         //$next = $request->has('page') ? $request->input('page') : 2;
-        return view('home._nextPage', compact('opera','page'));
+        return view('home._nextPage', compact('opera', 'page', 'filterSegment'));
     }
 }

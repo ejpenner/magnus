@@ -48,11 +48,11 @@ class Helpers
     public static function isOwner(User $user, $object)
     {
 
-            if ($user->isOwner($object)) {
-                return true;
-            } else {
-                return false;
-            }
+        if ($user->isOwner($object)) {
+            return true;
+        } else {
+            return false;
+        }
 
     }
 
