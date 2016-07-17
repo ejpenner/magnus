@@ -3,7 +3,7 @@
         <div class="panel-body">
             <div class="piece-info">
                 <div class="container-fluid">
-                    <div class="col-md-9">
+                    <div class="col-lg-9">
                         <a href="{{ action('ProfileController@show', $opus->user->slug) }}">
                             <img src="{{ $opus->user->getAvatar() }}" class="pull-left avatar" alt="avatar">
                         </a>
@@ -11,20 +11,35 @@
                         <p>By <a href="{{ action('ProfileController@show', $opus->user->slug) }}">{{ $opus->user->name }}</a></p>
                     </div>
                 </div>
+                <div class="pull-right">
+                    @include('opus.partials._favoriteButton', ['opus' => $opus])
+                </div>
             </div>
-            <div class="row">
+            <div class="container">
                 @unless($opus->tags->isEmpty())
-                    <div class="container-fluid">
+                    <ul class="list-inline">
+                        <strong>Tags</strong>
+                        @foreach($opus->tags as $tag)
+                            <li><a href="{{ action('SearchController@searchAll', '@'.$tag->name) }}">{{ $tag->name }}</a></li>
+                        @endforeach
+                    </ul>
+                @endunless
+            </div>
+            @if($opus->galleries->count() > 0)
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Featured in
+                    </div>
+                    <div class="panel-body">
                         <ul class="list-inline">
-                            <strong>Tags</strong>
-                            @foreach($opus->tags as $tag)
-                                <li><a href="{{ action('SearchController@searchAll', '@'.$tag->name) }}">{{ $tag->name }}</a></li>
+                            @foreach($opus->galleries as $gallery)
+                                <li><a href="{{ action('GalleryController@show', $gallery->id) }}">{{ $gallery->name }}</a></li>
                             @endforeach
                         </ul>
                     </div>
-                @endunless
-            </div>
-            <!-- Artist comments -->
+                </div>
+            @endif
+        <!-- Artist comments -->
             <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-body">
@@ -36,7 +51,7 @@
                 <div class="panel panel-default details-panel">
                     <div class="panel-heading">
                         Details
-                        @if(Auth::check() and Magnus::isOwnerOrHasRole($opus, config('roles.moderator')))
+                        @if(Auth::check() and Magnus::isOwnerOrHasRole($opus, config('roles.mod-code')))
                             <div class="pull-right operations">
                                 {!! Form::model($opus, ['method'=>'delete', 'class'=>'delete-confirm operations',
                                                        'action'=>['OpusController@destroy', $opus->slug]]) !!}
@@ -44,16 +59,24 @@
                                     <button type="button" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</button>
                                 </a>
                                 <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
-                                <a class="btn btn-primary btn-xs" href="{{ action('OpusController@download', [$opus->slug]) }}">Download</a>
                                 {!! Form::close() !!}
                             </div>
                         @endif
+                        <a class="btn btn-primary btn-xs pull-right" href="{{ action('OpusController@download', [$opus->slug]) }}">Download</a>
                     </div>
                     <table class="table">
                         <tbody>
                         <tr>
                             <td>Views</td>
                             <td>{{ $opus->views }} <small>({{ $opus->daily_views  }} Today)</small></td>
+                        </tr>
+                        <tr>
+                            <td>Favorites</td>
+                            <td>{{ $favoriteCount }}
+                                @if($favoriteCount > 0)
+                                    <span class="optional-field"><a href="{{ action('FavoriteController@show', $opus->slug) }}">(See favorites)</a></span>
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <td>Submitted On</td>

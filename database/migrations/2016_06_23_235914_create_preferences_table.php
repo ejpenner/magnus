@@ -15,14 +15,14 @@ class CreatePreferencesTable extends Migration
         Schema::create('preferences', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->string('sex');
-            $table->boolean('show_sex');
-            $table->date('date_of_birth');
-            $table->integer('dob_day');
-            $table->string('dob_month');
-            $table->integer('dob_year');
-            $table->string('show_dob');
-            $table->integer('per_page');
+            $table->string('sex')->nullable();
+            $table->boolean('show_sex')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->integer('dob_day')->nullable();
+            $table->string('dob_month')->nullable();
+            $table->integer('dob_year')->nullable();
+            $table->string('show_dob')->nullable();
+            $table->integer('per_page')->nullable();
             $table->timestamps();
         });
 

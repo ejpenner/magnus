@@ -17,10 +17,9 @@ class OpusSeeder extends Seeder
     public function run()
     {
         $users = User::all();
-        $galleryMax = 2;
-        $opusMax = 10;
-        $opusGalleryMax = 5;
-        $tagMax = 4;
+        $galleryMax = 3;
+        $opusMax = 15;
+        $opusGalleryMax = 10;
 
         foreach($users as $user)  {
             foreach(range(1,$opusMax) as $index) {

@@ -12,7 +12,7 @@ class Permission extends Model
 
     protected $casts = [
         // New user permissions
-        'user_opus_permission'      => 'boolean', // Allows users to submit art
+        'user_opus_permission'      => 'boolean',
         'user_comment_permission'   => 'boolean',
         'user_gallery_permission'   => 'boolean',
         'user_profile_permission'   => 'boolean',

@@ -2,7 +2,6 @@
 
 namespace Magnus\Http\Controllers;
 
-
 use Magnus\Opus;
 use Magnus\Permission;
 use Magnus\Http\Requests;
@@ -12,6 +11,7 @@ use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
 {
+
     public function session(Request $request)
     {
         $session = $request->session()->all();
@@ -31,7 +31,11 @@ class AdminController extends Controller
         //dd(strrpos(app('url')->previous(), 'opus'));
         //dd(app('url')->previous());
         //dd(Permission::hasPermission(Auth::user(), 'user_banned'));
-        dd(Auth::user()->favorites);
-        dd(Opus::find(32)->favorites);
+//        dd(Auth::user()->favorites);
+//        dd(Opus::find(32)->favorites);
+//        $favorite = $favorites = Auth::user()->favorites->where(['opus_id'=>32])->get();
+//        dd($favorite);
+
+        return view('tester');
     }
 }

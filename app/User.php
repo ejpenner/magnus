@@ -226,7 +226,7 @@ class User extends Authenticatable
      */
     public function isOwner($object)
     {
-        if ($this->attributes['id'] == $object->user_id) {
+        if ($this->id == $object->user_id) {
             return true;
         } else {
             return false;
@@ -263,8 +263,8 @@ class User extends Authenticatable
             $this->deleteAvatarFile();
         }
         $this->avatar = $this->storeAvatar($request);
-        $avatarResized = $this->resize($this->avatar);
-        $avatarResized->save($this->avatar);
+        $a = $this->resize($this->avatar);
+        $a->save($this->avatar);
     }
 
     /**
@@ -301,7 +301,8 @@ class User extends Authenticatable
     public function deleteAvatarFile()
     {
         $path = public_path();
-        if (File::delete($path.'/'.$this->avatar)) {
+        File::delete($path.'/'.$this->avatar);
+        if (!File::exists($path.'/'.$this->avatar)) {
             return true;
         }
         return false;
@@ -319,21 +320,6 @@ class User extends Authenticatable
         }
         $roles = implode(', ', $roles);
         return $roles;
-    }
-
-    /**
-     *  Get the number of unread messages the user has
-     * @return mixed
-     */
-    public function messageCount()
-    {
-        $q = Notification::query();
-        $q->join('notification_user', 'notifications.id', '=', 'notification_user.notification_id');
-        $q->join('users', 'users.id', '=', 'notification_user.user_id');
-        $q->where('notification_user.user_id', $this->id);
-        $q->where('notifications.read', '0');
-        $r = $q->count();
-        return $r;
     }
 
     /**

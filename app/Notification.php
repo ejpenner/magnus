@@ -106,8 +106,7 @@ class Notification extends Model
     {
         $notification = Notification::create([
             'handle'=>'opus',
-            'opus_id' => $opus->id,
-            'content' => $opus->title
+            'opus_id' => $opus->id
         ]);
 
         foreach ($user->watchers as $watcher) {
@@ -140,7 +139,7 @@ class Notification extends Model
     public static function notifyUserNewReply(User $op, User $replier, Comment $newComment)
     {
         if ($op->id != $replier->id) { // if op is not replying to their own comment
-            $notify = Notification::create(['handle' => 'comment', 'comment_id' => $newComment->id, 'content' => $newComment->body]);
+            $notify = Notification::create(['handle' => 'comment', 'comment_id' => $newComment->id]);
             $notify->notify($op);
         }
     }
@@ -153,7 +152,7 @@ class Notification extends Model
      */
     public static function notifyUserNewComment(User $op, Comment $comment)
     {
-        $notify = Notification::create(['handle' => 'comment', 'comment_id' => $comment->id, 'content' => $comment->body]);
+        $notify = Notification::create(['handle' => 'comment', 'comment_id' => $comment->id]);
         $notify->notify($op);
     }
 
@@ -179,5 +178,20 @@ class Notification extends Model
     public static function notifyAll()
     {
 
+    }
+
+    /**
+     *  Get the number of unread messages the user has
+     * @return mixed
+     */
+    public static function messageCount(User $user)
+    {
+        $q = Notification::query();
+        $q->join('notification_user', 'notifications.id', '=', 'notification_user.notification_id');
+        $q->join('users', 'users.id', '=', 'notification_user.user_id');
+        $q->where('notification_user.user_id', $user->id);
+        //$q->where('notifications.read', '0');
+        $r = $q->count();
+        return $r;
     }
 }

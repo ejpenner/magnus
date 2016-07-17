@@ -2,15 +2,17 @@
 /node_modules
 
 /public/storage
-/public/js
-/public/css
-/public/art
+!/public/css/app.css
+!/public/js/vendor.js
+!/public/js/app.js
+/resources/less/**/*.less
 Homestead.yaml
 Homestead.json
 .env
 /.idea
 Thumbs.db
 
+!/public/art
 /public/images/*
 /public/thumbnails/*
 /public/avatars/*

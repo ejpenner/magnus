@@ -24,7 +24,7 @@
 * `"gulp-watchify": "*",`
 * `"strictify": "^0.2.0"`
 
-Bootstrap 3, CropperJS and JQuery are included in the vendor files.
+Bootstrap 3, AngularJS and its modules, CropperJS and JQuery are included in the vendor files. Run gulp to generate them.
 
 ## Screens
 ![home-page](http://i.imgur.com/MAsE6sA.png)

@@ -17,7 +17,7 @@
 
 @white: #FFFFFF;
 
-@comment-highlight: #afcbd1;
+@comment-highlight: #c9dfe3;
 
 @brand-primary: @newPrimary;
 @btn-default-bg: @newDefault;
@@ -30,6 +30,55 @@
 @max-message-item-height: 330px;
 
 @badge-bg: @newPrimary;
+
+.navbar-inverse {
+  .gradient(#191819, #000418) !important;
+}
+.top-header {
+  position: absolute;
+  top: 180px;
+  left: 0;
+  width: 100%;
+  z-index: 10002;
+
+}
+
+.search-sort-buttons {
+}
+
+
+
+div.main-container {
+  border-top: 30px;
+  padding-top: 30px;
+}
+
+.fixed {
+  position:fixed;
+  top:0;
+}
+
+.magnus-navbar { /* Container just in case we want more than just the search input to come along */
+  position: absolute;
+  top: 155px;
+  left: 20px;
+  right: 20px;
+  z-index: 20;
+  input {
+    width: 265px;
+    transition: width 0.2s;
+    -webkit-appearance: none; /* Autoprefixer doesn't catch this */
+  }
+}
+
+
+.top {
+  height: 250px; /* Space in here for search */
+  padding-top: 40px;
+  position: relative;
+}
+
+
 
 .login-panel {
   margin-top: 30px;
@@ -75,6 +124,12 @@ a.avatar-link {
 }
 
 .watch-date {
+   color: #8c8c8c;
+   font-style: italic;
+ }
+
+.optional-field {
   color: #8c8c8c;
+  font-size: 90%;
   font-style: italic;
 }

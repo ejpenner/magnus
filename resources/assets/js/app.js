@@ -10,20 +10,39 @@ $(document).ready(function() {
         return confirm('Are you sure you want to delete this?');
     });
 
+    $(".opus-src").unveil();
+
     $('#preview').click(function() {
         $('#fullview').show().unveil();
+        $('.fullview-box').show();
         $(this).toggle();
     });
 
     $('#fullview').click(function() {
         $(this).toggle();
+        $('.fullview-box').toggle();
         $('#preview').toggle();
     });
 
+    $('#selectAllOpus').click(function() {
+        var checkbox = $('.opus-message-select');
+        checkbox.prop('checked', !checkbox.is(":checked"));
+    });
 
-    $(window).scroll(function() {
+
+    //var num = 150; //number of pixels before modifying styles
+    var navpos = $('.top-header').offset();
+
+    $(window).bind('scroll', function() {
+
         var x = $(this).scrollTop();
         $('#header-background').css('background-position', '100% ' + parseInt(-x) + 'px' + ', 0% ' + parseInt(-x) + 'px, center top');
+
+        if ($(window).scrollTop() > navpos.top) {
+            $('.top-header').addClass('fixed');
+        } else {
+            $('.top-header').removeClass('fixed');
+        }
     });
 
     var image = document.getElementById('avatar-cropper');

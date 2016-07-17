@@ -47,8 +47,8 @@
         <ul class="dropdown-menu">
             <li><a href="{{ Request::fullUrlWithQuery(['time'=>'month']) }}">In the last month</a></li>
             <li><a href="{{ Request::fullUrlWithQuery(['time'=>'week']) }}">In the last week</a></li>
-            <li><a href="{{ Request::fullUrlWithQuery(['time'=>'72h']) }}">In the last three days</a></li>
-            <li><a href="{{ Request::fullUrlWithQuery(['time'=>'48h']) }}">In the last two days</a></li>
+            <li><a href="{{ Request::fullUrlWithQuery(['time'=>'72h']) }}">In the last 72 hours</a></li>
+            <li><a href="{{ Request::fullUrlWithQuery(['time'=>'48h']) }}">In the last 48 hours</a></li>
             <li><a href="{{ Request::fullUrlWithQuery(['time'=>'24h']) }}">In the last 24 hours</a></li>
             <li><a href="{{ Request::fullUrlWithQuery(['time'=>'8h']) }}">In the last 8 hours</a></li>
         </ul>

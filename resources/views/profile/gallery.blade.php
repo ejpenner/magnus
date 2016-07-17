@@ -1,16 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="col-md-2">
-        @include('gallery._createModal')
-    </div>
-    <div class="container-fluid gallery-container col-md-10">
+    <div class="container-fluid gallery-container">
+        @include('profile._header', ['user' => $user, 'details' => false])
         @foreach($galleries->chunk(4) as $i => $gallery)
             <div class="row">
                 @foreach($gallery as $j => $item)
                     <div class="col-md-3 vcenter gallery-item">
                         @if($item->opera->count() > 0)
-                            <a href="{{ action('GalleryController@show', $item->id) }}"><img src="{{ $item->opera->last()->thumbnail_path }}" alt=""></a>
+                            <a href="{{ action('GalleryController@show', $item->id) }}"><img src="/{{ $item->opera->first()->thumbnail_path }}" alt=""></a>
                         @endif
 
                         <h5><a href="{{ action('GalleryController@show', $item->id) }}">{{ $item->name }}</a></h5>
@@ -31,7 +29,6 @@
                 @endforeach
             </div>
         @endforeach
-
     </div>
     <div class="container">
         <div class="pull-right">{!! $galleries->render() !!}</div>

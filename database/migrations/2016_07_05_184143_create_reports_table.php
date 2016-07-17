@@ -16,6 +16,7 @@ class CreateReportsTable extends Migration
             $table->increments('id');
             $table->integer('reporter_user_id')->unsigned();
             $table->integer('reported_user_id')->unsigned();
+            $table->integer('admin_user_id')->unsigned()->nullable();
             $table->integer('opus_id')->unsigned()->nullable();
             $table->integer('comment_id')->unsigned()->nullable();
             $table->string('report_code');

@@ -16,14 +16,14 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('username');
-            $table->string('name');
-            $table->string('slug');
-            $table->string('directory');
-            $table->string('avatar');
+            $table->string('name')->nullable();
+            $table->string('slug')->nullable();
+            $table->string('directory')->nullable();
+            $table->string('avatar')->nullable();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('timezone');
-            $table->rememberToken();
+            $table->string('timezone')->nullable();
+            $table->rememberToken()->nullable();
             $table->timestamps();
         });
 
@@ -40,8 +40,9 @@ class CreateUsersTable extends Migration
 
         foreach($users as $user) {
             $user->deleteAvatarFile();
+            \Magnus\Helpers\Helpers::deleteDirectories($user->username);
         }
-        File::cleanDirectory(public_path('art'));
+        //File::cleanDirectory(public_path('art'));
         Schema::drop('users');
     }
 }

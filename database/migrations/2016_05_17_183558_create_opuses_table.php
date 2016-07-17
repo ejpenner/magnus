@@ -17,13 +17,13 @@ class CreateOpusesTable extends Migration
             $table->string('image_path', 512);
             $table->string('thumbnail_path', 512);
             $table->string('preview_path', 512);
-            $table->string('directory');
+            $table->string('directory')->nullable();
             $table->string('title', 255);
             $table->text('comment')->nullable();
             $table->string('slug', 255);
-            $table->integer('views');
-            $table->integer('daily_views');
-            $table->timestamp('published_at');
+            $table->integer('views')->nullable();
+            $table->integer('daily_views')->nullable();
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });
 

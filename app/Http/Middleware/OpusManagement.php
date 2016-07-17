@@ -18,9 +18,7 @@ class OpusManagement
      */
     public function handle($request, Closure $next)
     {
-        $id = $request->route('opus');
-        $opus = Opus::where('id', $id)->first();
-
+        $opus = $request->route('opus');
         if (Auth::check() and Helpers::isOwnerOrHasRole($opus, config('roles.mod-code'))) {
             return $next($request);
         } else {

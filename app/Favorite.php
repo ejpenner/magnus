@@ -27,7 +27,7 @@ class Favorite extends Model
     
     public function add(User $user)
     {
-        if ($this->opus->user_id !== $user->id) {
+        if (!$user->isOwner($this->opus)) {
             $user->favorites()->attach($this->id);
             return true;
         }
@@ -36,22 +36,22 @@ class Favorite extends Model
 
     public function remove(User $user)
     {
-        $user->favorites()->detach($this->id);
+        if (!$user->isOwner($this->opus)) {
+            $user->favorites()->detach($this->id);
+            return true;
+        }
+        return false;
     }
 
     public static function has(User $user, Opus $opus)
     {
-        $favorites = $user->favorites->where(['opus_id'=>$opus->id]);
-        dd($favorites);
-//        $q = User::query();
-//        $q->join('favorite_user', 'users.id', '=', 'favorite_user.user_id');
-//        $q->join('favorites', 'favorites.id', '=', 'favorite_user.favorite_id');
-//        $q->where('users.id', '=', $user->id)->where('favorites.opus_id', '=', $opus->id);
-//        $results = $q->get();
-//        if($results->count() > 0) {
-//            return true;
-//        } else {
-//            return false;
-//        }
+        $favorites = $user->favorites;
+
+        foreach ($favorites as $favorite) {
+            if ($favorite->opus_id === $opus->id) {
+                return true;
+            }
+        }
+        return false;
     }
 }

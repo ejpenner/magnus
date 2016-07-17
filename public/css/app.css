@@ -9264,7 +9264,10 @@ button.close {
 .cropper-disabled .cropper-point {
   cursor: not-allowed;
 }
-div.gallery-select .checkbox-vis-hidden {
+span.gallery-select {
+  position: relative;
+}
+span.gallery-select .checkbox-vis-hidden {
   border: 0;
   clip: rect(0 0 0 0);
   height: 1px;
@@ -9274,7 +9277,7 @@ div.gallery-select .checkbox-vis-hidden {
   position: absolute;
   width: 1px;
 }
-div.gallery-select label {
+span.gallery-select label {
   margin: 5px;
   padding: 8px;
   border: 1px solid gray;
@@ -9289,14 +9292,14 @@ div.gallery-select label {
   -moz-box-shadow: 1px 1px 1px #CCCCCC;
   box-shadow: 1px 1px 1px #CCCCCC;
 }
-div.gallery-select input:checked + label {
+span.gallery-select input:checked + label {
   border-color: green;
   color: green;
   -webkit-box-shadow: 2px 2px 2px #888888;
   -moz-box-shadow: 2px 2px 2px #888888;
   box-shadow: 2px 2px 2px #888888;
 }
-div.gallery-select input:focus:checked + label {
+span.gallery-select input:focus:checked + label {
   border-color: green;
   color: green;
   -webkit-box-shadow: 2px 2px 2px #888888;
@@ -9305,7 +9308,7 @@ div.gallery-select input:focus:checked + label {
 }
 div.flash-messages {
   position: absolute;
-  top: 15%;
+  top: 5%;
   z-index: 10;
   width: 60%;
   min-width: 300px;
@@ -9415,10 +9418,16 @@ span.role-banned {
 .jumbotron {
   color: #c2bfc9 !important;
   margin-bottom: 0 !important;
-  height: 100px !important;
+  height: 220px !important;
   background-image: url("/images/404/header-bg.jpg");
   background-position: center top;
   background-repeat: no-repeat;
+}
+.fullview-box {
+  display: none;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
 }
 #fullview {
   display: none;
@@ -9441,6 +9450,9 @@ div .thumbnail-wrap {
 }
 .opus-overlay .dropdown:hover .dropdown-menu {
   display: block;
+}
+.favorite-button {
+  display: inline;
 }
 .opus-overlay:hover {
   filter: alpha(opacity=100);
@@ -9614,14 +9626,17 @@ div.uploader #preview-edit {
   margin-bottom: 2px;
 }
 .comment:target {
-  background-color: #afcbd1;
+  background-color: #c9dfe3;
+}
+div.gallery-sidebar {
+  padding-bottom: 20px;
 }
 div.gallery-sidebar .gallery-operations {
-  transform: translate(-50%, 90px);
-  -webkit-transform: translate(-50%, 90px);
-  -moz-transform: translate(-50%, 90px);
-  -ms-transform: translate(-50%, 90px);
-  -o-transform: translate(-50%, 90px);
+  transform: translate(-50%, 110px);
+  -webkit-transform: translate(-50%, 110px);
+  -moz-transform: translate(-50%, 110px);
+  -ms-transform: translate(-50%, 110px);
+  -o-transform: translate(-50%, 110px);
 }
 div.gallery-sidebar .gallery-item {
   height: 250px !important;
@@ -9629,6 +9644,49 @@ div.gallery-sidebar .gallery-item {
 div.gallery-sidebar img {
   max-width: 200px;
   max-height: 200px;
+}
+.navbar-inverse {
+  background-color: #191819 !important;
+  background: -webkit-gradient(linear, left top, left bottom, from(#191819), to(#000418)) !important;
+  background: -webkit-linear-gradient(top, #191819, #000418) !important;
+  background: -moz-linear-gradient(top, #191819, #000418) !important;
+  background: -ms-linear-gradient(top, #191819, #000418) !important;
+  background: -o-linear-gradient(top, #191819, #000418) !important;
+}
+.top-header {
+  position: absolute;
+  top: 180px;
+  left: 0;
+  width: 100%;
+  z-index: 10002;
+}
+div.main-container {
+  border-top: 30px;
+  padding-top: 30px;
+}
+.fixed {
+  position: fixed;
+  top: 0;
+}
+.magnus-navbar {
+  /* Container just in case we want more than just the search input to come along */
+  position: absolute;
+  top: 155px;
+  left: 20px;
+  right: 20px;
+  z-index: 20;
+}
+.magnus-navbar input {
+  width: 265px;
+  transition: width 0.2s;
+  -webkit-appearance: none;
+  /* Autoprefixer doesn't catch this */
+}
+.top {
+  height: 250px;
+  /* Space in here for search */
+  padding-top: 40px;
+  position: relative;
 }
 .login-panel {
   margin-top: 30px;
@@ -9664,5 +9722,10 @@ a.avatar-link {
 }
 .watch-date {
   color: #8c8c8c;
+  font-style: italic;
+}
+.optional-field {
+  color: #8c8c8c;
+  font-size: 90%;
   font-style: italic;
 }

@@ -4,8 +4,8 @@ namespace Magnus;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class Gallery extends Model
 {
@@ -64,8 +64,8 @@ class Gallery extends Model
     public function removeOpus(Opus $opus)
     {
         $this->updated_at = Carbon::now();
-        $this->save();
         $this->opera()->detach($opus->id);
+        $this->save();
     }
 
     /**
@@ -93,9 +93,17 @@ class Gallery extends Model
     
     public static function place(Request $request, Opus $opus)
     {
-        if (count($request->input('gallery_ids')) > 0) {
+
+        if ($request->has('gallery_ids')) {
+            foreach ($opus->galleries as $gallery) {
+                $gallery->removeOpus($opus);
+            }
             foreach ($request->input('gallery_ids') as $id) {
                 Gallery::where('id', $id)->first()->addOpus($opus);
+            }
+        } else {
+            foreach ($opus->galleries as $gallery) {
+                $gallery->removeOpus($opus);
             }
         }
     }
@@ -103,9 +111,17 @@ class Gallery extends Model
     public static function makeDirectories(User $user)
     {
         $username = strtolower($user->username);
-        File::makeDirectory(public_path('art/'.$username.'/images'), 4664, true);
-        File::makeDirectory(public_path('art/'.$username.'/thumbnails'), 4664, true);
-        File::makeDirectory(public_path('art/'.$username.'/avatars'), 4664, true);
-        File::makeDirectory(public_path('art/'.$username.'/previews'), 4664, true);
+        File::makeDirectory(public_path('art/'.$username), 0664);
+        File::makeDirectory(public_path('art/'.$username.'/avatars'), 0664);
+    }
+    
+    public function hasOpus(Opus $opus)
+    {
+        foreach ($this->opera as $galleryOpus) {
+            if ($galleryOpus->id === $opus->id) {
+                return true;
+            }
+        }
+        return false;
     }
 }
