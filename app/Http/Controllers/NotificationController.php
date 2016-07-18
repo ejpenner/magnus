@@ -57,9 +57,9 @@ class NotificationController extends Controller
                     ->where('notification_user.user_id', $user->id)
                     ->select('favorites.*', 'favorite_user.user_id', 'notification_user.notification_id', 'opuses.title')
                     ->orderBy('notification_user.created_at', 'desc');
-        $favoritesResults = $favorites->paginate(24, '[*]', 'activity');
+        $favoriteResults = $favorites->paginate(24, '[*]', 'activity');
 
-        return view('notification.index', compact('user', 'opusResults', 'commentResults', 'favoritesResults'));
+        return view('notification.index', compact('user', 'opusResults', 'commentResults', 'favoriteResults'));
     }
 
     public function destroySelected(Request $request)

@@ -110,7 +110,7 @@ class Opus extends Model
      */
     public function scopePublished($query)
     {
-        $query->where('published_at', '<=', Carbon::now());
+        $query->where('opuses.published_at', '<=', Carbon::now());
     }
 
     /**
@@ -119,7 +119,7 @@ class Opus extends Model
      */
     public function scopeUnpublished($query)
     {
-        $query->where('published_at', '=>', Carbon::now());
+        $query->where('opuses.published_at', '=>', Carbon::now());
     }
 
     /**
@@ -130,7 +130,7 @@ class Opus extends Model
     public function scopeHoursAgo($query, $time = 24)
     {
         $hoursAgo = new Carbon("-$time hours");
-        $query->whereDate('created_at', '>', $hoursAgo->toDateString());
+        $query->whereDate('opuses.created_at', '>', $hoursAgo->toDateString());
     }
 
     /**
@@ -139,7 +139,7 @@ class Opus extends Model
      */
     public function scopeToday($query)
     {
-        $query->whereDate('created_at', '>', Carbon::yesterday()->toDateString());
+        $query->whereDate('opuses.created_at', '>', Carbon::yesterday()->toDateString());
     }
 
     /**
@@ -151,7 +151,7 @@ class Opus extends Model
     public function scopeDaysAgo($query, $days = 3)
     {
         $daysAgo = new Carbon("-$days days");
-        return $query->whereDate('created_at', '>', $daysAgo->toDateString());
+        return $query->whereDate('opuses.created_at', '>', $daysAgo->toDateString());
     }
 
     /**
@@ -160,7 +160,7 @@ class Opus extends Model
      */
     public function scopePopular($query)
     {
-        $query->orderBy('views', 'desc');
+        $query->orderBy('opuses.views', 'desc');
     }
 
     /**
@@ -169,7 +169,7 @@ class Opus extends Model
      */
     public function scopeNewest($query)
     {
-        $query->orderBy('created_at', 'desc');
+        $query->orderBy('opuses.created_at', 'desc');
     }
 
     /**
@@ -178,7 +178,7 @@ class Opus extends Model
      */
     public function scopeTrending($query)
     {
-        $query->orderBy('daily_views', 'desc');
+        $query->orderBy('opuses.daily_views', 'desc');
     }
 
     /**

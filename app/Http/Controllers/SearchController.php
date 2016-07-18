@@ -181,7 +181,7 @@ class SearchController extends Controller
             $periodUrl = 'null';
         }
 
-        $query = 'SELECT o.*, u.name, u.slug uslug, matching_tags.matched
+        $query = 'SELECT o.*, u.name, u.slug userslug, matching_tags.matched
                   FROM opuses o
                   INNER JOIN opus_tag ot ON o.id = ot.opus_id
                   INNER JOIN tags t ON t.id = ot.tag_id
@@ -377,11 +377,13 @@ class SearchController extends Controller
             $periodUrl = 'null';
         }
 
-        $query = 'SELECT o.*, u.name, u.slug uslug, matching_tags.matched
+        $query = 'SELECT o.*, u.username, u.slug userslug, r.role_code as role_code, matching_tags.matched
                   FROM opuses o
                   INNER JOIN opus_tag ot ON o.id = ot.opus_id
                   INNER JOIN tags t ON t.id = ot.tag_id
                   INNER JOIN users u ON u.id = o.user_id
+                  INNER JOIN user_roles ur ON ur.user_id = o.user_id
+                  INNER JOIN roles r ON ur.role_id = r.id
                   RIGHT OUTER JOIN 
 				      (SELECT DISTINCT o.id AS id, count(*) as matched
 					   FROM opuses o JOIN opus_tag ot ON o.id = ot.opus_id
@@ -395,33 +397,39 @@ class SearchController extends Controller
 
         $query .= ' LIMIT '.$input['count'].' OFFSET '.(($input['page'] - 1) * $input['count']).';';
 
-        $totalQuery = 'SELECT COUNT(*) as total
-                       FROM opuses o
-                       INNER JOIN opus_tag ot ON o.id = ot.opus_id
-                       INNER JOIN tags t ON t.id = ot.tag_id
-                       INNER JOIN users u on u.id = o.user_id
-                       RIGHT OUTER JOIN
-				           (SELECT DISTINCT o.id AS id, count(*) as matched
-					        FROM opuses o JOIN opus_tag ot ON o.id = ot.opus_id
-					        JOIN tags t ON ot.tag_id = t.id
-					        ' . $tagClause . '
-                            GROUP BY o.id) AS matching_tags ON o.id = matching_tags.id 
-                            '.$whereClause.' 
-                            ' . $period . '
-                       GROUP BY o.id, matching_tags.matched';
-
-        $total = count(DB::select($totalQuery));
+//        $totalQuery = 'SELECT COUNT(*) as total
+//                       FROM opuses o
+//                       INNER JOIN opus_tag ot ON o.id = ot.opus_id
+//                       INNER JOIN tags t ON t.id = ot.tag_id
+//                       INNER JOIN users u on u.id = o.user_id
+//                       RIGHT OUTER JOIN
+//				           (SELECT DISTINCT o.id AS id, count(*) as matched
+//					        FROM opuses o JOIN opus_tag ot ON o.id = ot.opus_id
+//					        JOIN tags t ON ot.tag_id = t.id
+//					        ' . $tagClause . '
+//                            GROUP BY o.id) AS matching_tags ON o.id = matching_tags.id
+//                            '.$whereClause.'
+//                            ' . $period . '
+//                       GROUP BY o.id, matching_tags.matched';
+//
+//        $total = count(DB::select($totalQuery));
         $results = DB::select($query);
 
-        $paginatedResults = new Paginator(
-            $results,
-            $total,
-            $limit,
-            \Illuminate\Pagination\Paginator::resolveCurrentPage(), //resolve the path
-            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
-        );
-        $paginatedResults = $paginatedResults->appends(Input::except('page'));
-        return view('search.partials._page', compact('paginatedResults', 'sortUrl', 'orderUrl', 'periodUrl'));
+//        $paginatedResults = new Paginator(
+//            $results,
+//            $total,
+//            $limit,
+//            \Illuminate\Pagination\Paginator::resolveCurrentPage(), //resolve the path
+//            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
+//        );
+//
+//        $paginatedResults = $paginatedResults->appends(Input::except('page'));
+
+        $results = ['data' => $results];
+
+        return response()->json($results);
+
+       // return view('search.partials._page', compact('paginatedResults', 'sortUrl', 'orderUrl', 'periodUrl'));
 
         //return view('search.partials._page', compact('results'));
     }

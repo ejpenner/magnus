@@ -66,11 +66,20 @@ class HomeController extends Controller
 
         $filterSegment = $this->filterSegment($request);
 
-        $opera = $this->timeFilter($this->makeSearchFilter($filter), $period);
+        $opera = $this->timeFilter($this->makeSearchFilter($filter), $period)
+            ->join('users', 'users.id', '=', 'opuses.user_id')
+            ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
+            ->join('roles', 'roles.id', '=', 'user_roles.role_id')
+            ->select('opuses.title', 'opuses.thumbnail_path', 'opuses.created_at', 'opuses.updated_at', 'opuses.slug', 'roles.role_code as role_code', 'users.username', 'users.slug as userslug');
 
         $opera = $opera->skip($this->limit($request) * ($input['page']-1))->take($this->limit($request))->get();
 
-        return view('home.partials._nextPage', compact('opera'));
+        $opera = ['data' => $opera];
+
+        return response()->json($opera);
+
+
+        //return view('home.partials._nextPage', compact('opera'));
     }
 
     protected function makeSearchFilter($filter)

@@ -16,14 +16,47 @@ use Magnus\Watch;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(10);
-        
-        foreach ($users as &$user) {
-            $user->permission_id = Permission::where('id', $user->permission_id)->value('schema_name');
+        //$users = User::paginate(10);
+
+        $input = $request->all();
+
+        if(!\Request::wantsJson())
+        {
+            return view('user.index');
         }
-        return view('user.index', compact('users'));
+
+        if (isset($input['sorting'])) {
+            $orderParam = $input['sorting'];
+            $orderBy = key($orderParam);
+            $direction = $input['sorting'][key($orderParam)];
+        } else {
+            $orderBy = 'id';
+            $direction = 'asc';
+        }
+
+        $query = User::query()->orderBy($orderBy, $direction);
+
+        if (isset($input['filter'])) {
+            $filterParam = $input['filter'];
+
+            foreach ($filterParam as $key => $value) {
+                $filterValue = '%' . $value . '%';
+                $column = $key;
+                $query = $query->where($column, 'like', $filterValue);
+            }
+        }
+
+
+        $users = $query->paginate();
+
+        return response()->json($users);
+
+//        foreach ($users as &$user) {
+//            $user->permission_id = Permission::where('id', $user->permission_id)->value('schema_name');
+//        }
+
     }
 
     public function show(User $user)

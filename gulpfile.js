@@ -21,8 +21,8 @@ var vendor_js_files = [
     assets_dir + "js/vendor/bootstrap.min.js",
     assets_dir + "js/vendor/unveil.js",
     //assets_dir + "js/vendor/jscroll.js",
-    //assets_dir + "js/vendor/ng-resource.min.js",
-    //assets_dir + "js/vendor/ng-table.js",
+    assets_dir + "js/vendor/ng-resource.min.js",
+    assets_dir + "js/vendor/ng-table.js",
     assets_dir + "js/vendor/ng-infinite-scroll.js"
 ];
 
