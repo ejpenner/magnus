@@ -9492,7 +9492,7 @@ div.gallery-item {
   padding-bottom: 5px;
   padding-top: 5px;
   text-align: center;
-  height: 330px;
+  height: 310px;
   /* horizontal and vertical for opera and galleries */
 }
 div.gallery-item img {
@@ -9558,6 +9558,7 @@ div.gallery-item .vcenter {
 }
 div.uploader {
   text-align: center;
+  margin-bottom: 10px;
 }
 div.uploader #preview-upload {
   position: relative;
@@ -9681,7 +9682,14 @@ div.gallery-sidebar img {
   top: 180px;
   left: 0;
   width: 100%;
-  z-index: 10002;
+  z-index: 9000;
+}
+.button-container {
+  position: relative;
+  z-index: 100;
+}
+.search-sort-buttons {
+  position: relative;
 }
 div.main-container {
   border-top: 30px;
@@ -9690,6 +9698,18 @@ div.main-container {
 .fixed {
   position: fixed;
   top: 0;
+}
+.fixed-buttons {
+  position: fixed;
+  top: 60px;
+  background-color: white;
+  padding: 5px 5px 5px 0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
 }
 .magnus-navbar {
   /* Container just in case we want more than just the search input to come along */

@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="panel panel-default">
             <div class="panel-heading">
-                User Lookup Table
+                User Lookup
             </div>
             <div class="panel-body">
                 <div ng-controller="TableController" infinite-scroll="tableService.nextPage()">
@@ -81,6 +81,9 @@
                                        ng-show="showCreatedAt"
                                        ng-blur="showCreatedAt = hideField($event)">
                             </th>
+                            <th>
+                                Operations
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -92,13 +95,16 @@
                                 @{{ user.name }}
                             </td>
                             <td data-title="'Username'" sortable="'username'">
-                                <a href="profile/@{{ user.slug }}">@{{ user.username }}</a>
+                                @{{ user.username }} <a href="profile/@{{ user.slug }}">(Profile)</a>
                             </td>
                             <td data-title="'Email'" sortable="'email'">
                                 @{{ user.email }}
                             </td>
                             <td data-title="'Created At'" sortable="'created_at'">
                                 @{{ user.created_at }}
+                            </td>
+                            <td>
+                                <a class="btn btn-info" href="@{{ pathname + '/' + user.slug }}/edit">Edit</a>
                             </td>
                         </tr>
                         </tbody>

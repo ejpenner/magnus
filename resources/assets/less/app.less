@@ -26,7 +26,7 @@
 @brand-success: @newSuccess;
 
 @min-galley-item-width: 330px;
-@min-gallery-item-height: 330px;
+@min-gallery-item-height: 310px;
 @max-message-item-height: 330px;
 
 @badge-bg: @newPrimary;
@@ -39,14 +39,17 @@
   top: 180px;
   left: 0;
   width: 100%;
-  z-index: 10002;
+  z-index: 9000;
 
 }
 
+.button-container {
+  position: relative;
+  z-index: 100;
+}
 .search-sort-buttons {
+  position: relative;
 }
-
-
 
 div.main-container {
   border-top: 30px;
@@ -56,6 +59,14 @@ div.main-container {
 .fixed {
   position:fixed;
   top:0;
+}
+
+.fixed-buttons {
+  position:fixed;
+  top: 60px;
+  background-color: white;
+  padding: 5px 5px 5px 0;
+  .border-radius(5px);
 }
 
 .magnus-navbar { /* Container just in case we want more than just the search input to come along */

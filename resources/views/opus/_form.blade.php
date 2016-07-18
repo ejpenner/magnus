@@ -36,4 +36,4 @@
         </div>
     </div>
 @endif
-{!! Form::submit('Submit', ['class' => 'form-control']) !!}
+{!! Form::submit('Submit', ['class' => 'form-control btn btn-primary']) !!}

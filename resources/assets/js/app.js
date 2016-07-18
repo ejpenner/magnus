@@ -32,6 +32,8 @@ $(document).ready(function() {
 
     //var num = 150; //number of pixels before modifying styles
     var navpos = $('.top-header').offset();
+    var sortButton = $('.button-container');
+    var sortButtonPos = sortButton.offset();
 
     $(window).bind('scroll', function() {
 
@@ -42,6 +44,12 @@ $(document).ready(function() {
             $('.top-header').addClass('fixed');
         } else {
             $('.top-header').removeClass('fixed');
+        }
+
+        if ($(window).scrollTop() > sortButtonPos.top - parseInt(2 * sortButton.height())) {
+            $('.button-container').addClass('fixed-buttons');
+        } else {
+            $('.button-container').removeClass('fixed-buttons');
         }
     });
 

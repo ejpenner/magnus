@@ -65,7 +65,7 @@ app.factory('ScrollService', ['$http', '$location', function($http, $location, $
     var Scroller = function() {
         this.items = [];
         this.busy = false;
-        this.after = 2;
+        this.after = 1;
     };
 
     Scroller.prototype.nextPage = function() {
@@ -74,24 +74,14 @@ app.factory('ScrollService', ['$http', '$location', function($http, $location, $
 
         params = $location.search();
         params.page = this.after;
-        //console.log(params);
-        //$location.search('page', params.page - 1);
-        //
-        // var createGroupedArray = function(arr, chunkSize) {
-        //     var groups = [],
-        //         i;
-        //     for (i = 0; i < arr.length; i += chunkSize) {
-        //         groups.push({
-        //             row: arr.slice(i, i + chunkSize)
-        //         });
-        //     }
-        //     return groups;
-        // };
 
-        var url = window.location.protocol + '//' + window.location.hostname + '/api/get' + window.location.pathname + '?page=' + this.after + window.location.search.replace(/\?/, '&');
+        var url = window.location.pathname + window.location.search; //.replace(/\?/, '&');
+
         console.log('Fetching content from', url);
-        //console.log('params', params);
-        $http.get(url)
+        console.log('params', params);
+        $http.get(url, {
+                params: params
+            })
             .success(function(data) {
                 var items = data.data;
                 if (items.length > 0) {
@@ -107,7 +97,7 @@ app.factory('ScrollService', ['$http', '$location', function($http, $location, $
                     this.busy = false;
                 } else {
                     this.busy = false;
-                    console.log('Scroller: aborted, end of list');
+                    console.log('ScrollService: aborted, end of list');
                 }
             }.bind(this));
     };
@@ -155,10 +145,12 @@ app.factory('TableService', ['$http', '$location',
 /**
  * Controller for ngTable pages
  */
-app.controller('TableController', ['$scope', '$location', '$filter', '$resource', 'ngTableParams', 'TableService',
-    function($scope, $location, $filter, $resource, ngTableParams, TableService) {
+app.controller('TableController', ['$scope', '$location', '$filter', '$resource', 'ngTableParams', 'TableService', '$rootScope',
+    function($scope, $location, $filter, $resource, ngTableParams, TableService, $rootScope) {
 
         var Api = $resource(window.location.pathname);
+
+        $rootScope.pathname = window.location.pathname;
 
         $scope.TableService = new TableService();
 

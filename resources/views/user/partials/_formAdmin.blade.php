@@ -14,6 +14,12 @@
 </div>
 
 <div class="form-group">
+    @foreach($user->roles as $role)
+            
+    @endforeach
+</div>
+
+<div class="form-group">
     {!! Form::label('role_id', 'Account Role') !!}
     {!! Form::select('role_id', $roles, isset($user->roles) ? $user->roles->first()->id : null, ['class' => 'form-control']) !!}
 </div>

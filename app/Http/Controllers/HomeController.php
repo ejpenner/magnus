@@ -40,24 +40,19 @@ class HomeController extends Controller
      */
     public function home(Request $request, $filter = null, $period = null)
     {
-        $filterSegment = $this->filterSegment($request);
 
-        $opera = $this->timeFilter($this->makeSearchFilter($filter), $period)->simplePaginate($this->limit($request));
 
-        $opera = $opera->appends(Input::except('page'));
+        if(!\Request::wantsJson())
+        {
+            $filterSegment = $this->filterSegment($request);
 
-        return view('home.home', compact('opera', 'request', 'filterSegment'));
-    }
+            $opera = $this->timeFilter($this->makeSearchFilter($filter), $period)->simplePaginate($this->limit($request));
 
-    /**
-     * Returns pages as html templates
-     * @param Request $request
-     * @param null $filter
-     * @param null $period
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function nextPage(Request $request, $filter = null, $period = null)
-    {
+            $opera = $opera->appends(Input::except('page'));
+
+            return view('home.home', compact('opera', 'request', 'filterSegment'));
+        }
+
         $input = Input::all();
 
         if (!$request->has('page')) {
@@ -78,8 +73,6 @@ class HomeController extends Controller
 
         return response()->json($opera);
 
-
-        //return view('home.partials._nextPage', compact('opera'));
     }
 
     protected function makeSearchFilter($filter)
