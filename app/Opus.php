@@ -284,9 +284,13 @@ class Opus extends Model
         $opus = new Opus($request->all());
         $opus = $user->opera()->save($opus);
         $opus->published_at = Carbon::now();
-        $opus->makeDirectory($user);
+//        $opus->makeDirectory($user);
         $opus->setSlug();
-        $opus->setImage($user, $request)->setPreview($user, $request)->setThumbnail($user, $request)->save();
+        $opus->makeDirectory($user)
+            ->initViews()
+            ->setImage($user, $request)
+            ->setPreview($user, $request)
+            ->setThumbnail($user, $request)->save();
         $opus->favorite()->save(new Favorite(['opus_id' => $opus->id]));
         return $opus;
     }
@@ -312,6 +316,14 @@ class Opus extends Model
             });
         }
         return $resize;
+    }
+
+    private function initViews()
+    {
+        $this->views = 0;
+        $this->daily_views = 0;
+
+        return $this;
     }
     
     /**
@@ -440,8 +452,7 @@ class Opus extends Model
             $deleted = $this->deleteImages();
             if ($deleted) {
                 if ($this->directory == null) {
-                    $this->makeDirectory($user);
-                    $this->save();
+                    $this->makeDirectory($user)->save();
                 }
                 $this->setImage($user, $request)->setPreview($user, $request)->setThumbnail($user, $request)->update();
                 return true;
@@ -486,12 +497,12 @@ class Opus extends Model
      * @param User $user
      * @return string
      */
-    public function makeDirectory(User $user)
+    protected function makeDirectory(User $user)
     {
         $dirName = 'art/'.$user->username.'/'.substr(microtime(), 11);
         File::makeDirectory(public_path($dirName), 0664);
         $this->directory = $dirName;
-        return $dirName;
+        return $this;
     }
 
 

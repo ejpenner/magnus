@@ -9264,10 +9264,12 @@ button.close {
 .cropper-disabled .cropper-point {
   cursor: not-allowed;
 }
-span.gallery-select {
+.gallery-select,
+.permission-select {
   position: relative;
 }
-span.gallery-select .checkbox-vis-hidden {
+.gallery-select .checkbox-vis-hidden,
+.permission-select .checkbox-vis-hidden {
   border: 0;
   clip: rect(0 0 0 0);
   height: 1px;
@@ -9277,7 +9279,8 @@ span.gallery-select .checkbox-vis-hidden {
   position: absolute;
   width: 1px;
 }
-span.gallery-select label {
+.gallery-select label,
+.permission-select label {
   margin: 5px;
   padding: 8px;
   border: 1px solid gray;
@@ -9292,19 +9295,37 @@ span.gallery-select label {
   -moz-box-shadow: 1px 1px 1px #CCCCCC;
   box-shadow: 1px 1px 1px #CCCCCC;
 }
-span.gallery-select input:checked + label {
+.gallery-select input:checked + label,
+.permission-select input:checked + label {
   border-color: green;
   color: green;
   -webkit-box-shadow: 2px 2px 2px #888888;
   -moz-box-shadow: 2px 2px 2px #888888;
   box-shadow: 2px 2px 2px #888888;
 }
-span.gallery-select input:focus:checked + label {
+.gallery-select input:focus:checked + label,
+.permission-select input:focus:checked + label {
   border-color: green;
   color: green;
   -webkit-box-shadow: 2px 2px 2px #888888;
   -moz-box-shadow: 2px 2px 2px #888888;
   box-shadow: 2px 2px 2px #888888;
+}
+.permission-select label {
+  margin: 5px;
+  padding: 10px;
+  width: 100%;
+  border: 2px solid gray;
+  color: black;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  -webkit-box-shadow: 1px 1px 1px #CCCCCC;
+  -moz-box-shadow: 1px 1px 1px #CCCCCC;
+  box-shadow: 1px 1px 1px #CCCCCC;
 }
 div.flash-messages {
   position: absolute;

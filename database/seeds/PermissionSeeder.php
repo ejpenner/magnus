@@ -33,14 +33,9 @@ class PermissionSeeder extends Seeder
             'admin_handle_reports'      => 1,
             'admin_suspend_users'       => 1,
             'admin_ban_users'           => 1,
-            'admin_make_admins'         => 1,
-            'admin_make_mods'           => 1,
-            'admin_make_devs'           => 1,
             'admin_mass_delete'         => 1,
             'admin_user_lookup'         => 1,
             'admin_mass_notify'         => 1,
-            'admin_user_permission'     => 1,
-            'admin_role_permission'     => 1,
             'admin_role_assign'         => 1,
             'admin_dev_tools'           => 1
         ]);
@@ -64,14 +59,9 @@ class PermissionSeeder extends Seeder
             'admin_handle_reports'      => 1,
             'admin_suspend_users'       => 1,
             'admin_ban_users'           => 1,
-            'admin_make_admins'         => 1,
-            'admin_make_mods'           => 1,
-            'admin_make_devs'           => 1,
             'admin_mass_delete'         => 1,
             'admin_user_lookup'         => 1,
             'admin_mass_notify'         => 1,
-            'admin_user_permission'     => 1,
-            'admin_role_permission'     => 1,
             'admin_role_assign'         => 1,
             'admin_dev_tools'           => 0
         ]);
@@ -95,14 +85,9 @@ class PermissionSeeder extends Seeder
             'admin_handle_reports'      => 1,
             'admin_suspend_users'       => 1,
             'admin_ban_users'           => 0,
-            'admin_make_admins'         => 0,
-            'admin_make_mods'           => 0,
-            'admin_make_devs'           => 0,
             'admin_mass_delete'         => 1,
             'admin_user_lookup'         => 1,
             'admin_mass_notify'         => 0,
-            'admin_user_permission'     => 0,
-            'admin_role_permission'     => 0,
             'admin_role_assign'         => 0,
             'admin_dev_tools'           => 0
         ]);
@@ -126,14 +111,9 @@ class PermissionSeeder extends Seeder
             'admin_handle_reports'      => 1,
             'admin_suspend_users'       => 0,
             'admin_ban_users'           => 0,
-            'admin_make_admins'         => 0,
-            'admin_make_mods'           => 0,
-            'admin_make_devs'           => 0,
             'admin_mass_delete'         => 0,
             'admin_user_lookup'         => 1,
             'admin_mass_notify'         => 0,
-            'admin_user_permission'     => 0,
-            'admin_role_permission'     => 0,
             'admin_role_assign'         => 0,
             'admin_dev_tools'           => 0
         ]);
@@ -157,14 +137,9 @@ class PermissionSeeder extends Seeder
             'admin_handle_reports'      => 0,
             'admin_suspend_users'       => 0,
             'admin_ban_users'           => 0,
-            'admin_make_admins'         => 0,
-            'admin_make_mods'           => 0,
-            'admin_make_devs'           => 0,
             'admin_mass_delete'         => 0,
             'admin_user_lookup'         => 0,
             'admin_mass_notify'         => 0,
-            'admin_user_permission'     => 0,
-            'admin_role_permission'     => 0,
             'admin_role_assign'         => 0,
             'admin_dev_tools'           => 0
         ]);
@@ -188,14 +163,9 @@ class PermissionSeeder extends Seeder
             'admin_handle_reports'      => 0,
             'admin_suspend_users'       => 0,
             'admin_ban_users'           => 0,
-            'admin_make_admins'         => 0,
-            'admin_make_mods'           => 0,
-            'admin_make_devs'           => 0,
             'admin_mass_delete'         => 0,
             'admin_user_lookup'         => 0,
             'admin_mass_notify'         => 0,
-            'admin_user_permission'     => 0,
-            'admin_role_permission'     => 0,
             'admin_role_assign'         => 0,
             'admin_dev_tools'           => 0
         ]);
@@ -219,14 +189,9 @@ class PermissionSeeder extends Seeder
             'admin_handle_reports'      => 0,
             'admin_suspend_users'       => 0,
             'admin_ban_users'           => 0,
-            'admin_make_admins'         => 0,
-            'admin_make_mods'           => 0,
-            'admin_make_devs'           => 0,
             'admin_mass_delete'         => 0,
             'admin_user_lookup'         => 0,
             'admin_mass_notify'         => 0,
-            'admin_user_permission'     => 0,
-            'admin_role_permission'     => 0,
             'admin_role_assign'         => 0,
             'admin_dev_tools'           => 0
         ]);

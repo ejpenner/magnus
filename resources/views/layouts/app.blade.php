@@ -1,3 +1,4 @@
+<?php $time_start = microtime(true) ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -113,12 +114,14 @@
     @unless(Auth::check() and Auth::user()->hasRole(Config::get('roles.banned-code')))
         @yield('content')
         @else
-            <h2>You are banned :(</h2>
-            @endunless
+            <h2 class="text-center">You are banned :(</h2>
+        @endunless
 </div>
+<?php $end_time = microtime(true); $execution_time = ($end_time - $time_start)/60; ?>
 <footer class="container-fluid text-center">
     <p>&copy; 2016 <strong>Vile</strong>Studio</p>
     <p><small>v. 0.0.9 - Perturbed Gryphon</small></p>
+    <p>Executed in <?=$execution_time ?></p>
 </footer>
 
 </body>

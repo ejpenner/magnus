@@ -25,7 +25,7 @@ class CreatePermissionsTable extends Migration
             $table->boolean('user_gallery_permission');
             $table->boolean('user_profile_permission');
             $table->boolean('user_pm_permission');
-            $table->boolean('user_is_banned');
+            $table->boolean('user_banned');
             $table->boolean('user_block_permission');
             // power user permissions, can make, edit, delete things
             $table->boolean('user_is_admin');
