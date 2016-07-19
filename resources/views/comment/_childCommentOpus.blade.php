@@ -1,6 +1,6 @@
 @foreach($comment->allChildComments as $childComment)
     <div class="child-comment container">
-        <div class="container-fluid comment" id="cid:{{ $childComment->id }}">
+        <div class="container-fluid comment anchor" id="cid:{{ $childComment->id }}">
             @if(!isset($childComment->deleted) or !$childComment->deleted)
                 <div class="col-md-2 comment-avatar">
                     <div class="text-center">

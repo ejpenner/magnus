@@ -117,11 +117,11 @@
             <h2 class="text-center">You are banned :(</h2>
         @endunless
 </div>
-<?php $end_time = microtime(true); $execution_time = ($end_time - $time_start)/60; ?>
+<?php $end_time = microtime(true); $execution_time = round(($end_time - $time_start)/60, 10); ?>
 <footer class="container-fluid text-center">
     <p>&copy; 2016 <strong>Vile</strong>Studio</p>
-    <p><small>v. 0.0.9 - Perturbed Gryphon</small></p>
-    <p>Executed in <?=$execution_time ?></p>
+    <p><small>v. {{ config('app.version') }} - {{ config('app.codename') }} <small>powered by Laravel <?php $app = app(); echo $app::VERSION; ?></small></small></p>
+    <p>Rendered in <?=$execution_time ?></p>
 </footer>
 
 </body>

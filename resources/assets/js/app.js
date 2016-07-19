@@ -10,12 +10,12 @@ $(document).ready(function() {
         return confirm('Are you sure you want to delete this?');
     });
 
-    $(".opus-src").unveil();
+    // $(".opus-src").unveil();
 
     $('#preview').click(function() {
-        $('#fullview').show().unveil();
         $('.fullview-box').show();
         $(this).toggle();
+        $('#fullview').show().unveil();
     });
 
     $('#fullview').click(function() {
@@ -45,12 +45,13 @@ $(document).ready(function() {
         } else {
             $('.top-header').removeClass('fixed');
         }
-
-        if ($(window).scrollTop() > sortButtonPos.top - parseInt(2 * sortButton.height())) {
-            $('.button-container').addClass('fixed-buttons');
-        } else {
-            $('.button-container').removeClass('fixed-buttons');
-        }
+        try {
+            if ($(window).scrollTop() > sortButtonPos.top - parseInt(2 * sortButton.height())) {
+                $('.button-container').addClass('fixed-buttons');
+            } else {
+                $('.button-container').removeClass('fixed-buttons');
+            }
+        } catch (e) {}
     });
 
     var image = document.getElementById('avatar-cropper');

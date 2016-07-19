@@ -1,6 +1,7 @@
 @import "font-awesome/font-awesome";
 @import "bootstrap/bootstrap";
 @import "cropper/cropper";
+@import "shared/ng-table";
 @import "shared/mixins";
 @import "shared/widgets";
 @import "shared/opus";
@@ -26,7 +27,7 @@
 @brand-success: @newSuccess;
 
 @min-galley-item-width: 330px;
-@min-gallery-item-height: 310px;
+@min-gallery-item-height: 330px;
 @max-message-item-height: 330px;
 
 @badge-bg: @newPrimary;
@@ -34,13 +35,18 @@
 .navbar-inverse {
   .gradient(#191819, #000418) !important;
 }
+
 .top-header {
   position: absolute;
   top: 180px;
   left: 0;
   width: 100%;
-  z-index: 9000;
+  z-index: 101;
+}
 
+.opus-sidebar {
+  background-color: @newPrimary;
+  height: auto;
 }
 
 .button-container {
@@ -114,7 +120,7 @@ div.message-item {
 
 /* Add a gray background color and some padding to the footer */
 footer {
-  background-color: @gray-darker !important;
+  .gradient(#191819, #000418) !important;
   padding: 25px;
   padding-bottom: 75px !important;
   margin-top: 25px !important;

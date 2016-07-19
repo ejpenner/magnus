@@ -51,9 +51,6 @@ app.filter("sanitize", ['$sce', function($sce) {
     }
 }]);
 
-/**
- * Scroll controller
- */
 app.controller('ScrollController', function($scope, ScrollService) {
     $scope.scroller = new ScrollService();
 });
@@ -84,6 +81,7 @@ app.factory('ScrollService', ['$http', '$location', function($http, $location, $
             })
             .success(function(data) {
                 var items = data.data;
+
                 if (items.length > 0) {
                     for (var i = 0; i < items.length; i++) {
                         if (i % 6 == 0) {
@@ -96,7 +94,6 @@ app.factory('ScrollService', ['$http', '$location', function($http, $location, $
                     this.after++;
                     this.busy = false;
                 } else {
-                    this.busy = false;
                     console.log('ScrollService: aborted, end of list');
                 }
             }.bind(this));
@@ -104,6 +101,7 @@ app.factory('ScrollService', ['$http', '$location', function($http, $location, $
 
     return Scroller;
 }]);
+
 
 /**
  * Fetches data for ngTables

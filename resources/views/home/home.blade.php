@@ -36,6 +36,7 @@
                         </div>
                     </div>
                     <div style='clear: both;'></div>
+                    <hr>
                 </div>
             </div>
         </div>

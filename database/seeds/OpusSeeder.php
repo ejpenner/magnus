@@ -19,7 +19,7 @@ class OpusSeeder extends Seeder
         $users = User::all();
         $galleryMax = 3;
         $opusMax = 15;
-        $opusGalleryMax = 10;
+        $opusGalleryMax = 5;
 
         foreach($users as $user)  {
             foreach(range(1,$opusMax) as $index) {
@@ -36,7 +36,7 @@ class OpusSeeder extends Seeder
                 {
                     $opusG = factory(Opus::class)->create(['user_id'=>$user->id]);
 
-                    echo $opusG."\n\n";;
+                    echo "\033[01;31m".$opusG."\033[0m\n\n";;
 
                     $opusG->save();
                     $gallery->opera()->attach($opusG->id);

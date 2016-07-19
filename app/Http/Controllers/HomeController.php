@@ -42,8 +42,7 @@ class HomeController extends Controller
     {
 
 
-        if(!\Request::wantsJson())
-        {
+        if (!\Request::wantsJson()) {
             $filterSegment = $this->filterSegment($request);
 
             $opera = $this->timeFilter($this->makeSearchFilter($filter), $period)->simplePaginate($this->limit($request));

@@ -203,8 +203,7 @@ class SearchController extends Controller
 
         $results = DB::select($query);
 
-        if(!\Request::wantsJson())
-        {
+        if (!\Request::wantsJson()) {
             return view('search.index', compact('results', 'sortUrl', 'orderUrl', 'periodUrl'));
         }
 

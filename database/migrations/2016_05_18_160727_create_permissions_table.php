@@ -24,6 +24,7 @@ class CreatePermissionsTable extends Migration
             $table->boolean('user_comment_permission');
             $table->boolean('user_gallery_permission');
             $table->boolean('user_profile_permission');
+            $table->boolean('user_report_permission');
             $table->boolean('user_pm_permission');
             $table->boolean('user_banned');
             $table->boolean('user_block_permission');
@@ -43,6 +44,7 @@ class CreatePermissionsTable extends Migration
             $table->boolean('admin_ban_users');
             $table->boolean('admin_mass_delete');
             $table->boolean('admin_user_lookup');
+            $table->boolean('admin_opus_lookup');
             $table->boolean('admin_user_mgmt'); // create, edit, delete users
             $table->boolean('admin_mass_notify');
             $table->boolean('admin_edit_roles');  // Admin can edit role permissions

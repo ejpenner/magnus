@@ -2,6 +2,9 @@
 
 return [
 
+    'version' => '0.1.0',
+
+    'codename' => 'Tribune',
     /*
     |--------------------------------------------------------------------------
     | Application Environment

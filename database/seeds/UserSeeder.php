@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
         $vilest->roles()->attach(Role::where('role_code', config('roles.dev-code'))->value('id'));
         Magnus::makeDirectories('vilest');
 
-        factory(User::class,10)->create()
+        factory(User::class,20)->create()
             ->each(function($user){
                 $user->roles()->attach(Role::where('role_name', Config::get('roles.user'))->value('id'));
             });

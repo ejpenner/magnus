@@ -22,8 +22,7 @@ class UserController extends Controller
 
         $input = $request->all();
 
-        if(!\Request::wantsJson())
-        {
+        if (!\Request::wantsJson()) {
             return view('user.index');
         }
 

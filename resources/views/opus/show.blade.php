@@ -1,19 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="col-md-12">
-        <div class="text-center">
-            <div class="container-fluid">
-                @include('opus.partials._image', ['opus' => $opus, 'metadata'=>$metadata])
+    <div class="col-lg-10">
+            <div class="container">
+                <div class="text-center">
+                    @include('opus.partials._image', ['opus' => $opus, 'metadata'=>$metadata])
+                </div>
+
             </div>
-        </div>
-        @include('opus.partials._navigator', ['navigator' => $navigator])
         {{--panel start--}}
-        @include('opus.partials._opusDetails', ['opus' => $opus, 'metadata' => $metadata, 'favoriteCount' => $favoriteCount])
+        @include('opus.partials._opusDetails', ['opus' => $opus, 'metadata' => $metadata, 'favoriteCount' => $favoriteCount, 'navigator' => $navigator])
         <div class="container-fluid">
-            <div class="col-md-offset-2 col-md-8">
+            <div class="col-md-8">
                 @include('comment._commentOpus', ['comments'=>$opus->comments, 'opus'=>$opus])
             </div>
+        </div>
+    </div>
+    <div class="opus-sidebar">
+        <div class="col-lg-2 opus-sidebar">
+            Sidebar
         </div>
     </div>
 @endsection
