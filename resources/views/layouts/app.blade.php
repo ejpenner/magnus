@@ -106,23 +106,25 @@
         </div>
     </nav>
 </div>
-<div class="main-container container-fluid" ng-app="Magnus">
-    <div class="container">
-        @include('partials._flash')
-        @include('partials._errors')
+<div class="main">
+    <div class="main-container container-fluid" ng-app="Magnus">
+        <div class="container">
+            @include('partials._flash')
+            @include('partials._errors')
+        </div>
+        <div class="bg-gradient"></div>
+        @unless(Auth::check() and Auth::user()->hasRole(Config::get('roles.banned-code')))
+            @yield('content')
+            @else
+                <h2 class="text-center">You are banned :(</h2>
+                @endunless
     </div>
-    @unless(Auth::check() and Auth::user()->hasRole(Config::get('roles.banned-code')))
-        @yield('content')
-        @else
-            <h2 class="text-center">You are banned :(</h2>
-        @endunless
+    <?php $end_time = microtime(true); $execution_time = round(($end_time - $time_start)/60, 10); ?>
+    <footer class="container-fluid text-center">
+        <p>&copy; 2016 <strong>Vile</strong>Studio</p>
+        <p><small>v. {{ config('app.version') }} - {{ config('app.codename') }} <small>powered by Laravel <?php $app = app(); echo $app::VERSION; ?></small></small></p>
+        <p>Rendered in <?=$execution_time ?> seconds</p>
+    </footer>
 </div>
-<?php $end_time = microtime(true); $execution_time = round(($end_time - $time_start)/60, 10); ?>
-<footer class="container-fluid text-center">
-    <p>&copy; 2016 <strong>Vile</strong>Studio</p>
-    <p><small>v. {{ config('app.version') }} - {{ config('app.codename') }} <small>powered by Laravel <?php $app = app(); echo $app::VERSION; ?></small></small></p>
-    <p>Rendered in <?=$execution_time ?></p>
-</footer>
-
 </body>
 </html>

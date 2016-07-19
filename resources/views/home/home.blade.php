@@ -10,9 +10,8 @@
         <div ng-controller="ScrollController">
             <div class="container-fluid" infinite-scroll="scroller.nextPage()"
                  infinite-scroll-disabled="scroller.busy"
-                 infinite-scroll-distance="0">
+                 infinite-scroll-distance="1">
                 <div ng-repeat="opusRows in scroller.items track by $index">
-                    {{--<div ng-bind-html="opus | sanitize"></div>--}}
                     <div ng-repeat="opus in opusRows.row">
                         <div class="col-lg-2 col-md-4 col-sm-6 col-xs-1">
                             <div class="gallery-item">
@@ -36,8 +35,8 @@
                         </div>
                     </div>
                     <div style='clear: both;'></div>
-                    <hr>
                 </div>
+                <hr>
             </div>
         </div>
     </div>

@@ -9632,11 +9632,15 @@ div.gallery-item .vcenter {
   top: 50%;
   left: 50%;
   margin-right: -50%;
+  z-index: 4;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
+}
+div.gallery-item .vcenter a {
+  color: #314652;
 }
 .gallery-operations {
   position: absolute;
@@ -9707,7 +9711,7 @@ div.uploader #preview-edit {
   box-shadow: 5px 5px 5px #888888;
 }
 .comment {
-  background-color: #eeeeee;
+  background-color: #879396;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
@@ -9715,7 +9719,10 @@ div.uploader #preview-edit {
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
   padding: 5px;
-  margin: 1px;
+  margin: 4px;
+}
+.comment a {
+  color: #314652;
 }
 .comment .comment-name {
   font-weight: bold;
@@ -9777,7 +9784,7 @@ div.uploader #preview-edit {
   margin-bottom: 2px;
 }
 .comment:target {
-  background-color: #c9dfe3;
+  background-color: #abbfc3;
 }
 div.gallery-sidebar {
   padding-bottom: 20px;
@@ -9842,6 +9849,25 @@ div.main-container {
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
 }
+.main {
+  position: relative;
+  width: inherit;
+  height: inherit;
+}
+.main .bg-gradient {
+  position: fixed;
+  height: 500px;
+  width: 100%;
+  bottom: 0;
+  z-index: -100;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.3);
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.3)), to(#b8c3d5));
+  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.3), #b8c3d5);
+  background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.3), #b8c3d5);
+  background: -ms-linear-gradient(top, rgba(255, 255, 255, 0.3), #b8c3d5);
+  background: -o-linear-gradient(top, rgba(255, 255, 255, 0.3), #b8c3d5);
+}
 .magnus-navbar {
   /* Container just in case we want more than just the search input to come along */
   position: absolute;
@@ -9874,6 +9900,7 @@ div.message-item {
 }
 /* Add a gray background color and some padding to the footer */
 footer {
+  position: relative;
   background-color: #191819 !important;
   background: -webkit-gradient(linear, left top, left bottom, from(#191819), to(#000418)) !important;
   background: -webkit-linear-gradient(top, #191819, #000418) !important;
@@ -9883,6 +9910,7 @@ footer {
   padding: 25px;
   padding-bottom: 75px !important;
   margin-top: 25px !important;
+  z-index: 20;
 }
 .operations {
   display: inline;

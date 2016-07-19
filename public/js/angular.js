@@ -40,7 +40,7 @@ app.filter('username', function() {
 /**
  * Throttle the API calls
  */
-app.value('THROTTLE_MILLISECONDS', 100);
+app.value('THROTTLE_MILLISECONDS', 0);
 
 /**
  * Parse the HTML coming into the page

@@ -15,10 +15,12 @@
 @newDanger: #73504a;
 @newSuccess: #6d9771;
 @newDefault: #EEE;
+@commentBg: rgb(135, 147, 150);
+@linkColor: #314652;
 
 @white: #FFFFFF;
 
-@comment-highlight: #c9dfe3;
+@comment-highlight: #abbfc3;
 
 @brand-primary: @newPrimary;
 @btn-default-bg: @newDefault;
@@ -75,6 +77,23 @@ div.main-container {
   .border-radius(5px);
 }
 
+.main {
+  position: relative;
+  width: inherit;
+  height: inherit;
+
+  .bg-gradient {
+    position: fixed;
+    height: 500px;
+    width: 100%;
+    bottom: 0;
+    z-index: -100;
+    left: 0;
+    .gradient(rgba(255, 255, 255, 0.3), #b8c3d5);
+  }
+}
+
+
 .magnus-navbar { /* Container just in case we want more than just the search input to come along */
   position: absolute;
   top: 155px;
@@ -117,13 +136,14 @@ div.message-item {
   //margin-top: 15px;
 }
 
-
 /* Add a gray background color and some padding to the footer */
 footer {
+  position: relative;
   .gradient(#191819, #000418) !important;
   padding: 25px;
   padding-bottom: 75px !important;
   margin-top: 25px !important;
+  z-index: 20;
 }
 
 // Operations partial styling
