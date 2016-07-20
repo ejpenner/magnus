@@ -21,6 +21,7 @@ class CreateCommentsTable extends Migration
             $table->boolean('deleted')->nullable();
             $table->text('body');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('comments', function (Blueprint $table) {

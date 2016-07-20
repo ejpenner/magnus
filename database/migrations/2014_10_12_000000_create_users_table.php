@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('timezone')->nullable();
             $table->rememberToken()->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
     }

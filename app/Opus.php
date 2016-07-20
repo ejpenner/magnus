@@ -9,16 +9,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Opus extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'image_path', 'thumbnail_path', 'preview_path',
         'title', 'comment', 'user_id', 'daily_views',
         'published_at', 'views', 'slug', 'directory'
     ];
 
-    protected $dates = ['published_at','created_at'];
+    protected $dates = ['published_at','created_at','deleted_at'];
     private $resizeTo = 250;
     private $resizeExtension = 'jpg';
 
@@ -485,11 +487,15 @@ class Opus extends Model
 
         try {
             $img = Image::make(public_path().$this->getImage());
+            $preview = Image::make(public_path().$this->getPreview());
             $size = ceil($img->fileSize() / 1000);
         } catch (\Exception $e) {
             return ['filesize' => '?' . ' KB', 'resolution' => '?' . 'x' . '?'];
         }
-        return ['filesize' => $size . ' KB', 'resolution' => $img->width() . 'x' . $img->height(), 'width' => $img->width(), 'height' => $img->height()];
+        return ['filesize' => $size . ' KB', 'resolution' => $img->width() . 'x' . $img->height(),
+            'width' => $img->width(),
+            'height' => $img->height(),
+            'previewHeight' => $preview->height()];
     }
 
     /**

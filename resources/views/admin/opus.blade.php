@@ -5,6 +5,9 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 Opus Lookup
+                <span class="pull-right" ng-if="window.location.hash.indexOf('filter') != -1">
+                    <a href="{{ action('AdminController@opus') }}">Reset Filters</a>
+                </span>
             </div>
             <div class="panel-body">
                 <div ng-controller="TableController" infinite-scroll="TableService.nextPage()">
@@ -64,6 +67,16 @@
                                    ng-click="tableParams.sorting({views: tableParams.isSortBy('views', 'asc') ? 'desc' : 'asc' })"></i>
                             </th>
                             <th>
+                                Favorites
+                                <i class="fa fa-search"
+                                   ng-click="showFavorites = !showFavorites"></i>
+                                <i class="fa fa-sort"
+                                   ng-class="{
+                                'fa-sort-asc': tableParams.isSortBy('favorite_count', 'asc'),
+                                'fa-sort-desc': tableParams.isSortBy('favorite_count', 'desc')}"
+                                   ng-click="tableParams.sorting({favorite_count: tableParams.isSortBy('favorite_count', 'asc') ? 'desc' : 'asc' })"></i>
+                            </th>
+                            <th>
                                 Created at
                                 <i class="fa fa-search"
                                    ng-click="showCreatedAt = !showCreatedAt"></i>
@@ -93,8 +106,11 @@
                             <td data-title="'Username'" sortable="'username'">
                                 @{{ opus.username }} <a href="/profile/@{{ opus.user_slug }}">(Profile)</a>
                             </td>
-                            <td data-title="'Email'" sortable="'email'">
+                            <td data-title="'views'" sortable="'views'">
                                 @{{ opus.views }}
+                            </td>
+                            <td data-title="'favorite_count'" sortable="'favorite_count'">
+                                @{{ opus.favorite_count }}
                             </td>
                             <td data-title="'Created At'" sortable="'created_at'">
                                 @{{ opus.created_at }}

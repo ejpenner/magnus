@@ -24,6 +24,7 @@ class CreateReportsTable extends Migration
             $table->string('action_code');
             $table->string('report_body', 1000);
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('reports', function (Blueprint $table) {

@@ -2,8 +2,8 @@
     <div class="text-center">
         <div class="piece-nav">
             <div class="btn-group">
-                <a class="btn btn-default" href="{{ action('OpusController@galleryShow', [$gallery->id, $navigator['previous']]) }}">Previous</a>
-                <a class="btn btn-default" href="{{ action('OpusController@galleryShow', [$gallery->id, $navigator['next']]) }}">Next</a>
+                <a class="btn btn-default btn-lg" href="{{ action('OpusController@galleryShow', [$gallery->id, $navigator['previous']]) }}">Previous</a>
+                <a class="btn btn-default btn-lg" href="{{ action('OpusController@galleryShow', [$gallery->id, $navigator['next']]) }}">Next</a>
             </div>
         </div>
     </div>
@@ -12,8 +12,8 @@
         <div class="piece-nav">
             <div class="row">
             <div class="btn-group">
-                <a class="btn btn-default" href="{{ action('OpusController@show', [$navigator['previous']]) }}">Previous</a>
-                <a class="btn btn-default" href="{{ action('OpusController@show', [$navigator['next']]) }}">Next</a>
+                <a class="btn btn-default btn-lg" href="{{ action('OpusController@show', [$navigator['previous']]) }}">Previous</a>
+                <a class="btn btn-default btn-lg" href="{{ action('OpusController@show', [$navigator['next']]) }}">Next</a>
             </div>
             </div>
         </div>

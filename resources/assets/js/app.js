@@ -14,12 +14,14 @@ $(document).ready(function() {
 
     $('#preview').click(function() {
         $('.fullview-box').show();
+        $('#opus-image').css('width', '100%');
         $(this).toggle();
         $('#fullview').show().unveil();
     });
 
     $('#fullview').click(function() {
         $(this).toggle();
+        $('#opus-image').css('width', '80%');
         $('.fullview-box').toggle();
         $('#preview').toggle();
     });

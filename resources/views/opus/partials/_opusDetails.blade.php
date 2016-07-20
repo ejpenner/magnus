@@ -10,10 +10,6 @@
                     <p>By <a href="{{ action('ProfileController@show', $opus->user->slug) }}">{{ $opus->user->name }}</a></p>
                 </div>
             </div>
-            <div class="pull-right">
-                @include('opus.partials._navigator', ['navigator' => $navigator])
-                @include('opus.partials._favoriteButton', ['opus' => $opus])
-            </div>
         </div>
         @unless($opus->tags->isEmpty())
             <ul class="list-inline">

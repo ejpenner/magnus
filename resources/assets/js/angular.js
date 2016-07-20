@@ -4,7 +4,7 @@
 var app = angular.module('Magnus', ['infinite-scroll', 'ngTable', 'ngResource']);
 
 /**
- * Helpful for listing out all the god-forsaken permission columns
+ * for listing out all the permission columns
  */
 app.filter('boolean', function() {
     return function(input) {
