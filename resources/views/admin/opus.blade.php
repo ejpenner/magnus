@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="panel panel-default">
             <div class="panel-heading">
-                User Lookup
+                Opus Lookup
             </div>
             <div class="panel-body">
                 <div ng-controller="TableController" infinite-scroll="TableService.nextPage()">
@@ -28,19 +28,19 @@
                             <th>
                                 Name
                                 <i class="fa fa-search"
-                                   ng-click="showName = !showName"></i>
+                                   ng-click="showTitle = !showTitle"></i>
                                 <i class="fa fa-sort"
                                    ng-class="{
-                                'fa-sort-asc': tableParams.isSortBy('name', 'asc'),
-                                'fa-sort-desc': tableParams.isSortBy('name', 'desc')}"
-                                   ng-click="tableParams.sorting({name: tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc' })"></i>
+                                'fa-sort-asc': tableParams.isSortBy('title', 'asc'),
+                                'fa-sort-desc': tableParams.isSortBy('title', 'desc')}"
+                                   ng-click="tableParams.sorting({title: tableParams.isSortBy('title', 'asc') ? 'desc' : 'asc' })"></i>
                                 <input type="text"
-                                       ng-model="params.filter()['name']"
-                                       ng-show="showName"
-                                       ng-blur="showName = hideField($event)">
+                                       ng-model="params.filter()['title']"
+                                       ng-show="showTitle"
+                                       ng-blur="showTitle = hideField($event)">
                             </th>
                             <th>
-                                Username
+                                User
                                 <i class="fa fa-search"
                                    ng-click="showUsername = !showUsername"></i>
                                 <i class="fa fa-sort"
@@ -54,18 +54,14 @@
                                        ng-blur="showUsername = hideField($event)">
                             </th>
                             <th>
-                                Email
+                                Views
                                 <i class="fa fa-search"
-                                   ng-click="showEmail = !showEmail"></i>
+                                   ng-click="showViews = !showViews"></i>
                                 <i class="fa fa-sort"
                                    ng-class="{
-                                'fa-sort-asc': tableParams.isSortBy('email', 'asc'),
-                                'fa-sort-desc': tableParams.isSortBy('email', 'desc')}"
-                                   ng-click="tableParams.sorting({email: tableParams.isSortBy('email', 'asc') ? 'desc' : 'asc' })"></i>
-                                <input type="text"
-                                       ng-model="params.filter()['email']"
-                                       ng-show="showEmail"
-                                       ng-blur="showEmail = hideField($event)">
+                                'fa-sort-asc': tableParams.isSortBy('views', 'asc'),
+                                'fa-sort-desc': tableParams.isSortBy('views', 'desc')}"
+                                   ng-click="tableParams.sorting({views: tableParams.isSortBy('views', 'asc') ? 'desc' : 'asc' })"></i>
                             </th>
                             <th>
                                 Created at
@@ -87,24 +83,24 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="user in $data">
+                        <tr ng-repeat="opus in $data">
                             <td data-title="'Id'" sortable="'id'">
-                                @{{ user.id }}
+                                @{{ opus.id }}
                             </td>
-                            <td data-title="'Name'" sortable="'name'">
-                                @{{ user.name }}
+                            <td data-title="'Title'" sortable="'title'">
+                                <a href="/opus/@{{ opus.slug }}">@{{ opus.title }}</a>
                             </td>
                             <td data-title="'Username'" sortable="'username'">
-                                @{{ user.username }} <a href="profile/@{{ user.slug }}">(Profile)</a>
+                                @{{ opus.username }} <a href="/profile/@{{ opus.user_slug }}">(Profile)</a>
                             </td>
                             <td data-title="'Email'" sortable="'email'">
-                                @{{ user.email }}
+                                @{{ opus.views }}
                             </td>
                             <td data-title="'Created At'" sortable="'created_at'">
-                                @{{ user.created_at }}
+                                @{{ opus.created_at }}
                             </td>
                             <td>
-                                <a class="btn btn-info" href="@{{ pathname + '/' + user.slug }}/edit">Edit</a>
+                                <a class="btn btn-info" href="/opus/@{{ opus.slug }}/edit">Edit</a>
                             </td>
                         </tr>
                         </tbody>

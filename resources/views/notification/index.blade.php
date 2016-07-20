@@ -95,7 +95,8 @@
             <div class="panel-body">
                 @foreach($favoriteResults as $favorite)
                     <div class="favorite-notification col-lg-12">
-                        {!! Magnus::username($favorite->user_id) !!} has added {{ $favorite->title }} to their favorites
+                        <i class="fa fa-heart"></i> <a href="{{ action('ProfileController@show', $favorite->user_slug) }}">{!! Magnus::username($favorite->user_id) !!}</a> has added
+                        <a href="{{ action('OpusController@show', $favorite->opus_slug) }}">{{ $favorite->title }}</a> to their favorites
                     </div>
                 @endforeach
             </div>

@@ -164,8 +164,9 @@ Route::group(['middleware' => ['auth']], function () {
      * Developer middleware group
      */
     Route::group(['middleware'=>'permission:atLeast,'.config('roles.dev-code'), 'prefix'=>'admin'], function () {
-        Route::get('session', 'AdminController@session');
-        Route::get('test', 'AdminController@test');
+        Route::get('session', 'AdminController@session')->name('admin.session');;
+        Route::get('test', 'AdminController@test')->name('admin.test');;
+        Route::get('opus', 'AdminController@opus')->name('admin.opus');
         Route::get('/', 'AdminController@index');
     });
 

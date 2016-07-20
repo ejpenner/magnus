@@ -9390,6 +9390,17 @@ button.close {
     display: block;
   }
 }
+.favorite-notification {
+  border: solid #eeeeee 1px;
+  padding: 2px;
+  margin: 1px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
 .gallery-select,
 .permission-select {
   position: relative;
@@ -9711,7 +9722,7 @@ div.uploader #preview-edit {
   box-shadow: 5px 5px 5px #888888;
 }
 .comment {
-  background-color: #879396;
+  background-color: #acb8bb;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;

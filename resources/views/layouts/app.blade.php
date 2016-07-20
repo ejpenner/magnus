@@ -122,7 +122,7 @@
     <?php $end_time = microtime(true); $execution_time = round(($end_time - $time_start)/60, 10); ?>
     <footer class="container-fluid text-center">
         <p>&copy; 2016 <strong>Vile</strong>Studio</p>
-        <p><small>v. {{ config('app.version') }} - {{ config('app.codename') }} <small>powered by Laravel <?php $app = app(); echo $app::VERSION; ?></small></small></p>
+        <p><small>{{ config('app.codename') }} v. {{ config('app.version') }} <small>powered by Laravel</small></small></p>
         <p>Rendered in <?=$execution_time ?> seconds</p>
     </footer>
 </div>
