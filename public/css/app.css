@@ -9589,12 +9589,12 @@ span.role-banned {
   margin-bottom: 15px;
 }
 .opus-main #opus-image {
-  width: 80%;
+  width: 100%;
   float: left;
 }
 .opus-main .opus-panel {
   float: left;
-  width: 80%;
+  width: 100%;
 }
 .opus-main .opus-sidebar {
   float: right;
@@ -9603,7 +9603,7 @@ span.role-banned {
   border-left: solid #829aa0 1px;
   position: relative;
   margin-left: 5px;
-  background: #acb8bb;
+  background: #c5d1d4;
   padding-top: 100px;
   padding-bottom: 100px;
   -webkit-border-radius: 20px;
@@ -9747,7 +9747,7 @@ div.uploader #preview-edit {
   box-shadow: 5px 5px 5px #888888;
 }
 .comment {
-  background-color: #acb8bb;
+  background-color: #c5d1d4;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
@@ -9820,7 +9820,7 @@ div.uploader #preview-edit {
   margin-bottom: 2px;
 }
 .comment:target {
-  background-color: #abbfc3;
+  background-color: #a7d1d6;
 }
 div.gallery-sidebar {
   padding-bottom: 20px;

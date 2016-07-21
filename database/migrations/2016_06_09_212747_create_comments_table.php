@@ -18,6 +18,7 @@ class CreateCommentsTable extends Migration
             $table->integer('opus_id')->unsigned()->nullable();;
             $table->integer('parent_id')->unsigned()->nullable();
             $table->integer('profile_id')->unsigned()->nullable();
+            $table->integer('journal_id')->unsigned()->nullable();
             $table->boolean('deleted')->nullable();
             $table->text('body');
             $table->timestamps();

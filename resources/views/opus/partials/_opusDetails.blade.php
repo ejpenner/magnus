@@ -3,11 +3,17 @@
         <div class="piece-info">
             <div class="container-fluid">
                 <div class="col-lg-9">
-                    <a href="{{ action('ProfileController@show', $opus->user->slug) }}">
-                        <img src="{{ $opus->user->getAvatar() }}" class="pull-left avatar" alt="avatar">
-                    </a>
-                    <h3>{{ $opus->title }}</h3>
-                    <p>By <a href="{{ action('ProfileController@show', $opus->user->slug) }}">{{ $opus->user->name }}</a></p>
+                        <a href="{{ action('ProfileController@show', $opus->user->slug) }}">
+                            <img src="{{ $opus->user->getAvatar() }}" class="pull-left avatar" alt="avatar">
+                        </a>
+                        <h3>{{ $opus->title }}</h3>
+                        <p>By <a href="{{ action('ProfileController@show', $opus->user->slug) }}">{{ $opus->user->name }}</a></p>
+                </div>
+                <div class="col-lg-3">
+                    <div class="pull-right">
+                        @include('opus.partials._navigator', ['navigator' => $navigator])
+                        @include('opus.partials._favoriteButton', ['opus' => $opus])
+                    </div>
                 </div>
             </div>
         </div>

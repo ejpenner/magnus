@@ -17,10 +17,11 @@ class User extends Authenticatable
     use SoftDeletes;
 
     protected $artDirectory = 'art';
+    protected $avatarDirectory = 'avatars';
+    protected $avatarResize = '150';
 
     /**
      * The attributes that are mass assignable.
-     *
      * @var array
      */
     protected $fillable = [
@@ -31,7 +32,6 @@ class User extends Authenticatable
 
     /**
      * The attributes that should be hidden for arrays.
-     *
      * @var array
      */
     protected $hidden = [
@@ -40,8 +40,6 @@ class User extends Authenticatable
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
-    protected $avatarDirectory = 'avatars';
-    protected $avatarResize = '150';
 
     /**
      * User has 0:M relationship with Gallery model
@@ -161,6 +159,15 @@ class User extends Authenticatable
     }
 
     /**
+     * One user can have many journal entries
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function journals()
+    {
+        return $this->hasMany('Magnus\Journal');
+    }
+
+    /**
      *  Return some span formatting around usernames for fancy CSS output
      * @return string
      */
@@ -186,9 +193,12 @@ class User extends Authenticatable
      * @param $action: string
      * @return bool|void
      */
-    public function hasPermission($permission)
+    public function hasPermission(array $permissions)
     {
-
+        if(Permission::hasPermission($this, $permissions)) {
+            return true;
+        }
+        return false;
     }
 
     /**

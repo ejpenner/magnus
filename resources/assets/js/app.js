@@ -1,5 +1,14 @@
 $(document).ready(function() {
 
+    var fullview = $('#fullview');
+    var preview = $('#preview');
+    var hashVal = window.location.hash;
+    var topHeader = $('.top-header');
+    var navpos = topHeader.offset();
+    var sortButton = $('.button-container');
+    var sortButtonPos = sortButton.offset();
+    var image = document.getElementById('avatar-cropper');
+
     window.setTimeout(function() {
         $('.alert-success').fadeTo(500, 0).slideUp(500, function() {
             $(this).remove();
@@ -10,21 +19,25 @@ $(document).ready(function() {
         return confirm('Are you sure you want to delete this?');
     });
 
-    // $(".opus-src").unveil();
-
-    $('#preview').click(function() {
+    preview.click(function() {
         $('.fullview-box').show();
-        $('#opus-image').css('width', '100%');
+        //$('#opus-image').css('width', '100%');
         $(this).toggle();
-        $('#fullview').show().unveil();
+        fullview.show().unveil();
     });
 
-    $('#fullview').click(function() {
+    fullview.click(function() {
         $(this).toggle();
-        $('#opus-image').css('width', '80%');
+        //$('#opus-image').css('width', '80%');
         $('.fullview-box').toggle();
-        $('#preview').toggle();
+        preview.toggle();
     });
+
+    if (hashVal.indexOf('full') != -1) {
+        preview.toggle();
+        $('.fullview-box').show();
+        fullview.show().unveil();
+    }
 
     $('#selectAllOpus').click(function() {
         var checkbox = $('.opus-message-select');
@@ -33,9 +46,6 @@ $(document).ready(function() {
 
 
     //var num = 150; //number of pixels before modifying styles
-    var navpos = $('.top-header').offset();
-    var sortButton = $('.button-container');
-    var sortButtonPos = sortButton.offset();
 
     $(window).bind('scroll', function() {
 
@@ -43,9 +53,9 @@ $(document).ready(function() {
         $('#header-background').css('background-position', '100% ' + parseInt(-x) + 'px' + ', 0% ' + parseInt(-x) + 'px, center top');
 
         if ($(window).scrollTop() > navpos.top) {
-            $('.top-header').addClass('fixed');
+            topHeader.addClass('fixed');
         } else {
-            $('.top-header').removeClass('fixed');
+            topHeader.removeClass('fixed');
         }
         try {
             if ($(window).scrollTop() > sortButtonPos.top - parseInt(2 * sortButton.height())) {
@@ -55,8 +65,6 @@ $(document).ready(function() {
             }
         } catch (e) {}
     });
-
-    var image = document.getElementById('avatar-cropper');
 
     function readURL(input) {
 

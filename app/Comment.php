@@ -15,6 +15,8 @@ class Comment extends Model
         'user_id',
         'parent_id',
         'opus_id',
+        'journal_id',
+        'profile_id',
         'body',
         'deleted'
     ];
@@ -42,6 +44,11 @@ class Comment extends Model
     public function profile()
     {
         return $this->belongsTo('Magnus\Profile');
+    }
+
+    public function journal()
+    {
+        $this->belongsTo('Magnus\Journal');
     }
 
     public function childComments()
