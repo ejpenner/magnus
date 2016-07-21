@@ -6,24 +6,22 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class HomepageTest extends TestCase
 {
-    public function testAlive()
-    {
-        $this->visit('/')->assertResponseOk();
-    }
 
     public function testVisitAsGuest()
     {
         $this->visit('/')->see('Register');
     }
 
-    public function testVisitAsAuth()
+    public function testRegister()
     {
-        $user = factory(\Magnus\User::class)->create();
-        $this->actingAs($user)->visit('/hot')->see('Log Out');
+        $this->visit('/register')
+            ->type('Test User', 'name')
+            ->type('test@test.com', 'email')
+            ->type('password', 'password')
+            ->type('password', 'password_confirmation')
+            ->press('Register')
+            ->see('Test User');
+
     }
 
-    public function test404()
-    {
-        $this->visit('/sds/s/afsf/ga\\')->see('404');
-    }
 }

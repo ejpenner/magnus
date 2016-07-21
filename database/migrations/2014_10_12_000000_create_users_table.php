@@ -43,6 +43,7 @@ class CreateUsersTable extends Migration
             $user->deleteAvatarFile();
             \Magnus\Helpers\Helpers::deleteDirectories($user->username);
         }
+
         //File::cleanDirectory(public_path('art'));
         Schema::drop('users');
     }
