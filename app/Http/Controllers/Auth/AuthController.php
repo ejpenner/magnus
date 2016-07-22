@@ -9,6 +9,7 @@ use Magnus\Gallery;
 use Magnus\Preference;
 use Magnus\Helpers\Helpers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Magnus\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -84,7 +85,8 @@ class AuthController extends Controller
         $user->roles()->attach($userRole);
         $user->profile()->save(new Profile(['biography'=>'Not filled out yet']));
         $user->preferences()->save(new Preference(['sex' => '', 'show_sex' => 0, 'date_of_birth' => '0000-00-00', 'show_dob' => 'none', 'per_page' => 24]));
-        Gallery::makeDirectories($user);
+        
+        Helpers::makeDirectories($user->username);
 
         return $user;
     }

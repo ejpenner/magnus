@@ -123,7 +123,8 @@ class Helpers
     public static function makeDirectories($username)
     {
         $username = strtolower($username);
-        File::makeDirectory(public_path('art/'.$username), 0664);
+        File::makeDirectory(public_path('art/'.$username));
+        File::makeDirectory(public_path().'/art/'.$username.'/avatars');
     }
 
     public static function deleteDirectories($username)
