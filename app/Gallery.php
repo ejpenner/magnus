@@ -112,7 +112,7 @@ class Gallery extends Model
     {
         $username = strtolower($user->username);
         File::makeDirectory(public_path('art/'.$username), 0664);
-        File::makeDirectory(public_path('art/'.$username.'/avatars'), 0664);
+        File::makeDirectory(public_path().'art/'.$username.'/avatars', 0664);
     }
     
     public function hasOpus(Opus $opus)

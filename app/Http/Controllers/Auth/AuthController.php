@@ -7,6 +7,7 @@ use Magnus\Role;
 use Magnus\Profile;
 use Magnus\Gallery;
 use Magnus\Preference;
+use Magnus\Helpers\Helpers;
 use Illuminate\Support\Facades\Auth;
 use Magnus\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
