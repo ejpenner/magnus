@@ -32,12 +32,14 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
 
     $rand = rand(0, count($files)-1);
     $numbers = substr(microtime(), 2, 8);
+    
+    $src = $files[$rand];
+    
+        $dest = public_path().'/images/'.basename($files[$rand]);
+        $tdest = public_path().'/thumbnails/'.$numbers.basename($files[$rand]);
+        $pdest = public_path().'/previews/'.$numbers.basename($files[$rand]);
 
     try {
-        $src = $files[$rand];
-        $dest = public_path().'/images/'.preg_replace('/\s/', '_', basename($files[$rand]));
-        $tdest = public_path().'/thumbnails/'.$numbers.preg_replace('/\s/', '_', basename($files[$rand]));
-        $pdest = public_path().'/previews/'.$numbers.preg_replace('/\s/', '_', basename($files[$rand]));
 
         copy($src, $dest);
         $preview = resize($dest, 680);
@@ -58,12 +60,14 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         $thumbnail->save($tdest);
     }
 
+
     $c9PathLength = 30;
     $myPathLength = 38;
     
-    $image_path = substr($dest, $myPathLength);
-    $thumbnail_path = substr($tdest, $myPathLength);
-    $preview_path = substr($pdest, $myPathLength);
+    $image_path = substr($dest, $c9PathLength);
+    $thumbnail_path = substr($tdest, $c9PathLength);
+    $preview_path = substr($pdest, $c9PathLength);
+
 
     $created = Carbon::instance($faker->dateTimeBetween('-2 months', 'now'));
         $title = $faker->words(3, true);
