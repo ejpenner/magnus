@@ -28,12 +28,14 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
     $files = File::glob(base_path('resources/heroku-deploy-seed-pics/*.*'));
     $rand = rand(0, count($files)-1);
     $numbers = substr(microtime(), 2, 8);
-
-    try {
-        $src = $files[$rand];
+    
+    $src = $files[$rand];
+    
         $dest = public_path().'/images/'.basename($files[$rand]);
         $tdest = public_path().'/thumbnails/'.$numbers.basename($files[$rand]);
         $pdest = public_path().'/previews/'.$numbers.basename($files[$rand]);
+
+    try {
 
         copy($src, $dest);
         $preview = resize($dest, 680);
@@ -54,9 +56,9 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         $thumbnail->save($tdest);
     }
 
-    $image_path = substr($dest, 38);
-    $thumbnail_path = substr($tdest, 38);
-    $preview_path = substr($pdest, 38);
+    $image_path = substr($dest, 30);
+    $thumbnail_path = substr($tdest, 30);
+    $preview_path = substr($pdest, 30);
 
     $created = Carbon::instance($faker->dateTimeBetween('-2 months', 'now'));
         $title = $faker->words(3, true);

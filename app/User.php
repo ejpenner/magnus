@@ -331,7 +331,7 @@ class User extends Authenticatable
         $q->join('notification_user', 'notifications.id', '=', 'notification_user.notification_id');
         $q->join('users', 'users.id', '=', 'notification_user.user_id');
         $q->where('notification_user.user_id', $this->id);
-        $q->where('notifications.read', '0');
+        // $q->where('notifications.read', '0');
         $r = $q->count();
         return $r;
     }
