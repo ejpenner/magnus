@@ -1,18 +1,23 @@
 <?php
 namespace Magnus\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Magnus\Helpers\Helpers;
-use Magnus\Http\Requests;
-use Carbon\Carbon;
 
-use Magnus\Opus;
-use Magnus\Gallery;
+
+
+
+
 use Magnus\Tag;
-use Magnus\Comment;
+use Magnus\Opus;
 use Magnus\User;
+use Carbon\Carbon;
+use Magnus\Gallery;
+use Magnus\Comment;
 use Magnus\Notification;
+use Magnus\Http\Requests;
+use Magnus\Helpers\Helpers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class OpusController extends Controller
 {
@@ -82,6 +87,9 @@ class OpusController extends Controller
         Tag::make($opus, $request->input('tags'));
         Gallery::place($request, $opus);
 
+
+        Cache::put($opus->slug, $opus, 15);
+
         return redirect()->route('opus.show', $opus->slug)->with('success', 'Your work been added!');
     }
 
@@ -93,6 +101,13 @@ class OpusController extends Controller
      */
     public function show(Request $request, Opus $opus)
     {
+
+        if (Cache::has($opus->slug)){
+            Cache::get($opus->slug);
+        } else {
+            Cache::put($opus->slug, $opus, 15);
+        }
+
         $opus->pageview($request);
         $comments = $opus->comments()->orderBy('created_at', 'asc')->get();
         $metadata = $opus->metadata();
@@ -111,6 +126,11 @@ class OpusController extends Controller
      */
     public function galleryShow(Request $request, $gallery_id, Opus $opus)
     {
+        if (Cache::has($opus->slug)){
+            Cache::get($opus->slug);
+        } else {
+            Cache::put($opus->slug, $opus, 15);
+        }
         $gallery = Gallery::findOrFail($gallery_id);
         $opus->pageview($request);
         $comments = $opus->comments()->orderBy('created_at', 'asc')->get();
@@ -120,7 +140,7 @@ class OpusController extends Controller
 
         return view('opus.show', compact('opus', 'gallery', 'comments', 'metadata', 'navigator', 'favoriteCount'));
     }
-    
+
     /**
      * Show the form for editing the specified resource.
      * @param Opus $opus
@@ -143,7 +163,7 @@ class OpusController extends Controller
     {
         $updatedSlug = false;
         $newSlug = "";
-        
+
         $opus->updateImage($opus->user, $request);
         if ($request->input('title') != $opus->title) {
             $newSlug = $opus->setSlug($opus->title);

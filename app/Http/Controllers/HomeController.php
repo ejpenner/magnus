@@ -58,7 +58,7 @@ class HomeController extends Controller
             $input['page'] = 1;
         }
 
-        $filterSegment = $this->filterSegment($request);
+        //$filterSegment = $this->filterSegment($request);
 
         $opera = $this->timeFilter($this->makeSearchFilter($filter), $period)
             ->join('users', 'users.id', '=', 'opuses.user_id')
