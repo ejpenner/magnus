@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('timezone')->nullable();
             $table->rememberToken()->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
     }
@@ -40,8 +41,10 @@ class CreateUsersTable extends Migration
 
         foreach($users as $user) {
             $user->deleteAvatarFile();
+            \Magnus\Helpers\Helpers::deleteDirectories($user->username);
         }
-        File::cleanDirectory(public_path('art'));
+
+        //File::cleanDirectory(public_path('art'));
         Schema::drop('users');
     }
 }

@@ -22,13 +22,15 @@ class CreateReportsTable extends Migration
             $table->string('report_code');
             $table->string('report_status');
             $table->string('action_code');
-            $table->string('report_body', 800);
+            $table->string('report_body', 1000);
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('reports', function (Blueprint $table) {
             $table->foreign('reporter_user_id')->references('id')->on('users');
             $table->foreign('reported_user_id')->references('id')->on('users');
+            $table->foreign('admin_user_id')->references('id')->on('users');
             $table->foreign('opus_id')->references('id')->on('opuses');
             $table->foreign('comment_id')->references('id')->on('comments');
         });

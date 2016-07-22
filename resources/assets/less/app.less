@@ -1,6 +1,7 @@
 @import "font-awesome/font-awesome";
 @import "bootstrap/bootstrap";
 @import "cropper/cropper";
+@import "shared/ng-table";
 @import "shared/mixins";
 @import "shared/widgets";
 @import "shared/opus";
@@ -14,10 +15,12 @@
 @newDanger: #73504a;
 @newSuccess: #6d9771;
 @newDefault: #EEE;
+@commentBg: rgb(197, 209, 212);
+@linkColor: #314652;
 
 @white: #FFFFFF;
 
-@comment-highlight: #afcbd1;
+@comment-highlight: #a7d1d6;
 
 @brand-primary: @newPrimary;
 @btn-default-bg: @newDefault;
@@ -30,6 +33,87 @@
 @max-message-item-height: 330px;
 
 @badge-bg: @newPrimary;
+
+html, body {
+  height: 100%;
+}
+
+.navbar-inverse {
+  .gradient(#191819, #000418) !important;
+}
+
+.top-header {
+  position: absolute;
+  top: 180px;
+  left: 0;
+  width: 100%;
+  z-index: 101;
+}
+
+.button-container {
+  position: relative;
+  z-index: 100;
+}
+.search-sort-buttons {
+  position: relative;
+}
+
+div.main-container {
+  border-top: 30px;
+  padding-top: 30px;
+}
+
+.fixed {
+  position:fixed;
+  top:0;
+}
+
+.fixed-buttons {
+  position:fixed;
+  top: 60px;
+  background-color: white;
+  padding: 5px 5px 5px 0;
+  .border-radius(5px);
+}
+
+.main {
+  position: relative;
+  width: inherit;
+  height: inherit;
+
+  .bg-gradient {
+    position: fixed;
+    height: 500px;
+    width: 100%;
+    bottom: 0;
+    z-index: -100;
+    left: 0;
+    .gradient(rgba(255, 255, 255, 0.3), #b8c3d5);
+  }
+}
+
+
+.magnus-navbar { /* Container just in case we want more than just the search input to come along */
+  position: absolute;
+  top: 155px;
+  left: 20px;
+  right: 20px;
+  z-index: 20;
+  input {
+    width: 265px;
+    transition: width 0.2s;
+    -webkit-appearance: none; /* Autoprefixer doesn't catch this */
+  }
+}
+
+
+.top {
+  height: 250px; /* Space in here for search */
+  padding-top: 40px;
+  position: relative;
+}
+
+
 
 .login-panel {
   margin-top: 30px;
@@ -51,13 +135,14 @@ div.message-item {
   //margin-top: 15px;
 }
 
-
 /* Add a gray background color and some padding to the footer */
 footer {
-  background-color: @gray-darker !important;
+  position: relative;
+  .gradient(#191819, #000418) !important;
   padding: 25px;
   padding-bottom: 75px !important;
   margin-top: 25px !important;
+  z-index: 20;
 }
 
 // Operations partial styling
@@ -75,6 +160,12 @@ a.avatar-link {
 }
 
 .watch-date {
+   color: #8c8c8c;
+   font-style: italic;
+ }
+
+.optional-field {
   color: #8c8c8c;
+  font-size: 90%;
   font-style: italic;
 }

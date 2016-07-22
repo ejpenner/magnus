@@ -47,15 +47,13 @@ class Helpers
      */
     public static function isOwner(User $user, $object)
     {
-        try {
-            if ($user->id == $object->user_id) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (\Exception $e) {
+
+        if ($user->isOwner($object)) {
+            return true;
+        } else {
             return false;
         }
+
     }
 
     /**
@@ -72,7 +70,11 @@ class Helpers
         if (Request::has('limit')) {
             return Request::input('limit');
         } elseif (Auth::check() and !Request::has('limit')) {
-            return Auth::user()->preferences->per_page;
+            try {
+                return Auth::user()->preferences->per_page;
+            } catch (\Exception $e) {
+                return config('images.defaultLimit');
+            }
         } else {
             return config('images.defaultLimit');
         }
@@ -122,6 +124,15 @@ class Helpers
     {
         $username = strtolower($username);
         File::makeDirectory(public_path('art/'.$username), 0664);
+<<<<<<< HEAD
+=======
+    }
+
+    public static function deleteDirectories($username)
+    {
+        $username = strtolower($username);
+        File::deleteDirectory(public_path('art/'.$username));
+>>>>>>> d65993aed340a4ffc4eb75670e1535d35f15a816
     }
 
     /**
@@ -132,7 +143,7 @@ class Helpers
      */
     public static function isOwnerOrHasRole($object, $role)
     {
-        if (self::isOwner(Auth::user(), $object) or Auth::user()->atLeastHasRole($role)) {
+        if (Auth::user()->isOwner($object) or Auth::user()->atLeastHasRole($role)) {
             return true;
         }
         return false;
@@ -160,7 +171,7 @@ class Helpers
         foreach ($gallery->opera as $currentOpus) {
             array_push($pieceNav, $currentOpus->id);
         }
-
+        
         // if there are only two opera in a gallery, the next and previous
         // links should be the opus it is not
         if (count($pieceNav) < 2) {
@@ -187,13 +198,17 @@ class Helpers
         // logic for a gallery with more than three opera in it
         foreach ($pieceNav as $i => $id) {
             if ($opus->id == max($pieceNav) and $foundMax == false) {
-                $foundMax = true;
-                $galleryNav['next'] = min($pieceNav);
+                if ($galleryNav['next'] == null) {
+                    $galleryNav['next'] = min($pieceNav);
+                    $foundMax = true;
+                }
             } elseif ($id > $opus->id) {
-                $galleryNav['next'] = $pieceNav[$i];
+                if ($galleryNav['next'] == null) {
+                    $galleryNav['next'] = $pieceNav[$i];
+                }
             } elseif ($opus->id == min($pieceNav) and $foundMin == false) {
-                $foundMin = true;
                 $galleryNav['previous'] = max($pieceNav);
+                $foundMin = true;
             } elseif ($id < $opus->id) {
                 $galleryNav['previous'] = $pieceNav[$i];
             }
@@ -282,7 +297,7 @@ class Helpers
      * @param  \Illuminate\Http\Request  $request
      * @return string
      */
-    protected static function storeImage(User $user, Opus $opus, $request)
+    public static function storeImage(User $user, Opus $opus, $request)
     {
         $originalFileName = $request->file('image')->getClientOriginalName();
         $fileName = $user->username.'-'.date('Ymd') . substr(microtime(), 2, 8).'-'.$originalFileName; // renaming image

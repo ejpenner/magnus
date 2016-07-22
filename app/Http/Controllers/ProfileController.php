@@ -2,16 +2,15 @@
 
 namespace Magnus\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use Magnus\Http\Requests;
-use Illuminate\Support\Facades\Auth;
-
+use Magnus\Opus;
 use Magnus\User;
 use Magnus\Profile;
 use Magnus\Gallery;
+use Magnus\Favorite;
+use Magnus\Http\Requests;
 use Magnus\Helpers\Helpers;
-use Magnus\Opus;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -28,16 +27,16 @@ class ProfileController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display the auth'd user's profile
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $user = Auth::user();
-        $profile = Profile::where('user_id', $user->id)->first();
-        $galleries = Gallery::where('user_id', $user->id)->limit(4)->get();
-        $opera = Opus::where('user_id', $user->id)->orderBy('created_at', 'desc')->limit(6)->get();
+        $profile = $user->profile;
+        $galleries = $user->galleries()->limit(4)->get();
+        $opera = $user->opera()->orderBy('created_at', 'desc')->limit(6)->get();
 
         return view('profile.show', compact('profile', 'user', 'galleries', 'opera'));
     }
@@ -85,8 +84,8 @@ class ProfileController extends Controller
      */
     public function galleries(User $user)
     {
-        $galleries = Gallery::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(Helpers::perPage());
-        return view('profile.gallery', compact('galleries'));
+        $galleries = $user->galleries()->orderBy('created_at', 'desc')->paginate(Helpers::perPage());
+        return view('profile.gallery', compact('galleries', 'user'));
     }
 
     /**
@@ -96,19 +95,18 @@ class ProfileController extends Controller
      */
     public function opera(User $user)
     {
-        $profile = Profile::where('user_id', $user->id)->first();
-        $opera = Opus::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(Helpers::perPage());
+        $profile = $user->profile;
+        $opera = $user->opera()->orderBy('created_at', 'desc')->paginate(Helpers::perPage());
         return view('profile.opera', compact('user', 'profile', 'opera'));
     }
 
-
-    /**
-     * Return all the piece submissions for a user
-     *
-     * @param User $user
-     */
-    public function submissions(User $user)
+    public function favorites(User $user)
     {
+        $profile = $user->profile;
+        $favorites = $user->favorites()->orderBy('favorite_user.created_at', 'desc')->paginate(Helpers::perPage());
+
+        return view('profile.favorites', compact('profile', 'favorites', 'user'));
+        //dd($favorites);
 
     }
 
@@ -130,11 +128,12 @@ class ProfileController extends Controller
      */
     public function show(User $user)
     {
-        $profile = Profile::where('user_id', $user->id)->first();
-        $galleries = Gallery::where('user_id', $user->id)->limit(4)->orderBy('updated_at', 'desc')->get();
-        $opera = Opus::where('user_id', $user->id)->limit(6)->orderBy('created_at', 'desc')->get();
+        $profile = $user->profile;
+        $galleries = $user->galleries()->limit(4)->orderBy('updated_at', 'desc')->get();
+        $opera = $user->opera()->limit(6)->orderBy('created_at', 'desc')->get();
+        $favorites = $user->favorites()->orderBy('favorite_user.created_at', 'desc')->get();
         if ($user->name != null) {
-            return view('profile.show', compact('profile', 'user', 'galleries', 'opera'));
+            return view('profile.show', compact('profile', 'user', 'galleries', 'opera', 'favorites'));
         } else {
             return abort(404);
         }

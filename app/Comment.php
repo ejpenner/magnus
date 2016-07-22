@@ -5,14 +5,18 @@ namespace Magnus;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
 {
+    use SoftDeletes;
 
     protected $fillable = [
         'user_id',
         'parent_id',
         'opus_id',
+        'journal_id',
+        'profile_id',
         'body',
         'deleted'
     ];
@@ -23,7 +27,8 @@ class Comment extends Model
 
     protected $dates = [
         'created_at',
-        'updated_at'
+        'updated_at',
+        'deleted_at'
     ];
 
     public function user()
@@ -39,6 +44,11 @@ class Comment extends Model
     public function profile()
     {
         return $this->belongsTo('Magnus\Profile');
+    }
+
+    public function journal()
+    {
+        $this->belongsTo('Magnus\Journal');
     }
 
     public function childComments()

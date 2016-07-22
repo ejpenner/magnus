@@ -14,7 +14,7 @@ $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
         'username'          => $faker->userName,
         'password'          => bcrypt('password'),
         'slug'              => str_slug($faker->userName),
-        'avatar'            => substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
+        'avatar'            => '', //substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
         'timezone'          => $timezones[rand(0,3)],
         'remember_token'    => str_random(10),
     ];
@@ -24,16 +24,29 @@ $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
 
 $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
 
-    //$files = File::glob(base_path('resources/seed-pics/*.*'));
-    $files = File::glob(base_path('resources/heroku-deploy-seed-pics/*.*'));
+    if(env('SEED_IMAGE_SOURCE', 'base') != 'heroku') {
+        $files = File::glob(base_path('resources/seed-pics/*.*'));
+    } else {
+        $files = File::glob(base_path('resources/heroku-deploy-seed-pics/*.*'));
+    }
+
     $rand = rand(0, count($files)-1);
     $numbers = substr(microtime(), 2, 8);
+<<<<<<< HEAD
     
     $src = $files[$rand];
     
         $dest = public_path().'/images/'.basename($files[$rand]);
         $tdest = public_path().'/thumbnails/'.$numbers.basename($files[$rand]);
         $pdest = public_path().'/previews/'.$numbers.basename($files[$rand]);
+=======
+
+    try {
+        $src = $files[$rand];
+        $dest = public_path().'/images/'.preg_replace('/\s/', '_', basename($files[$rand]));
+        $tdest = public_path().'/thumbnails/'.$numbers.preg_replace('/\s/', '_', basename($files[$rand]));
+        $pdest = public_path().'/previews/'.$numbers.preg_replace('/\s/', '_', basename($files[$rand]));
+>>>>>>> d65993aed340a4ffc4eb75670e1535d35f15a816
 
     try {
 
@@ -45,9 +58,9 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
     } catch (\Exception $e) {
         $rand = rand(0, count($files)-1);
         $src = $files[$rand];
-        $dest = public_path().'/images/'.basename($files[$rand]);
-        $tdest = public_path().'/thumbnails/'.$numbers.basename($files[$rand]);
-        $pdest = public_path().'/previews/'.$numbers.basename($files[$rand]);
+        $dest = public_path().'/images/'.preg_replace('/\s/', '_', basename($files[$rand]));
+        $tdest = public_path().'/thumbnails/'.$numbers.preg_replace('/\s/', '_', basename($files[$rand]));
+        $pdest = public_path().'/previews/'.$numbers.preg_replace('/\s/', '_', basename($files[$rand]));
 
         copy($src, $dest);
         $preview = resize($src, 680);
@@ -56,9 +69,18 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         $thumbnail->save($tdest);
     }
 
+<<<<<<< HEAD
     $image_path = substr($dest, 30);
     $thumbnail_path = substr($tdest, 30);
     $preview_path = substr($pdest, 30);
+=======
+    $c9PathLength = 30;
+    $myPathLength = 38;
+    
+    $image_path = substr($dest, $myPathLength);
+    $thumbnail_path = substr($tdest, $myPathLength);
+    $preview_path = substr($pdest, $myPathLength);
+>>>>>>> d65993aed340a4ffc4eb75670e1535d35f15a816
 
     $created = Carbon::instance($faker->dateTimeBetween('-2 months', 'now'));
         $title = $faker->words(3, true);

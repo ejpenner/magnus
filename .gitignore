@@ -12,6 +12,7 @@ Homestead.json
 /.idea
 Thumbs.db
 
+!/public/art
 /public/images/*
 /public/thumbnails/*
 /public/avatars/*

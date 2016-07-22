@@ -41,11 +41,11 @@ class FavoriteController extends Controller
     public function store(Request $request, Opus $opus)
     {
         $favorite = Favorite::firstOrCreate(['opus_id' => $opus->id]);
-        if ($favorite->add($request->user)) {
+        if ($favorite->add($request->user())) {
             Notification::notifyCreatorNewFavorite($favorite);
-            return redirect()->back()->with('success', 'The opus was added to your favorites!');
+            return redirect()->back()->with('success', 'Added to favorites!');
         } else {
-            return redirect()->back()->with('message', 'You cannot favorite your own work!');
+            return redirect()->back()->with('message', 'You can\'t favorite your own work!');
         }
     }
 
@@ -55,9 +55,11 @@ class FavoriteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Opus $opus)
     {
-        //
+        $users = $opus->favorite->users;
+        //dd($users);
+        return view('opus.favorites', compact('opus', 'users'));
     }
 
     /**
@@ -92,6 +94,10 @@ class FavoriteController extends Controller
     public function destroy(Request $request, Opus $opus)
     {
         $favorite = Favorite::findOrFail(['opus_id' => $opus->id])->first();
-        $favorite->remove($request->user);
+        if ($favorite->remove($request->user())) {
+            return redirect()->back()->with('success', 'Removed from favorites');
+        } else {
+            return redirect()->back()->with('message', 'You can\'t unfavorite your own work!');
+        }
     }
 }

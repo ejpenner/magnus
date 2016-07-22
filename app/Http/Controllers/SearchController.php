@@ -1,13 +1,13 @@
 <?php
 namespace Magnus\Http\Controllers;
 
-use Illuminate\Pagination\LengthAwarePaginator as Paginator;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Magnus\Http\Requests;
 use Magnus\Tag;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 
 class SearchController extends Controller
 {
@@ -65,7 +65,7 @@ class SearchController extends Controller
                 } catch (\Exception $e) { //if $tag->id throws an error, the tag doesn't exist, add it to the term list
                     array_push($termList, filter_var($term, FILTER_SANITIZE_STRING));
                 }
-            } else {
+            } elseif ($term != ' ') {
                 array_push($termList, filter_var($term, FILTER_SANITIZE_STRING));
             }
         }
@@ -181,11 +181,13 @@ class SearchController extends Controller
             $periodUrl = 'null';
         }
 
-        $query = 'SELECT o.*, u.name, u.slug uslug, matching_tags.matched
+        $query = 'SELECT o.*, u.username, r.role_code, u.slug userslug, matching_tags.matched
                   FROM opuses o
                   INNER JOIN opus_tag ot ON o.id = ot.opus_id
                   INNER JOIN tags t ON t.id = ot.tag_id
                   INNER JOIN users u ON u.id = o.user_id
+                  INNER JOIN user_roles ur ON ur.user_id = o.user_id
+                  INNER JOIN roles r ON r.id = ur.role_id
                   RIGHT OUTER JOIN 
 				      (SELECT DISTINCT o.id AS id, count(*) as matched
 					   FROM opuses o JOIN opus_tag ot ON o.id = ot.opus_id
@@ -199,33 +201,13 @@ class SearchController extends Controller
 
         $query .= ' LIMIT '.$input['count'].' OFFSET '.(($input['page'] - 1) * $input['count']).';';
 
-        $totalQuery = 'SELECT COUNT(*) as total
-                       FROM opuses o
-                       INNER JOIN opus_tag ot ON o.id = ot.opus_id
-                       INNER JOIN tags t ON t.id = ot.tag_id
-                       INNER JOIN users u on u.id = o.user_id
-                       RIGHT OUTER JOIN
-				           (SELECT DISTINCT o.id AS id, count(*) as matched
-					        FROM opuses o JOIN opus_tag ot ON o.id = ot.opus_id
-					        JOIN tags t ON ot.tag_id = t.id
-					        ' . $tagClause . '
-                            GROUP BY o.id) AS matching_tags ON o.id = matching_tags.id 
-                            '.$whereClause.' 
-                            ' . $period . '
-                       GROUP BY o.id, matching_tags.matched';
-
-        $total = count(DB::select($totalQuery));
         $results = DB::select($query);
 
-        $paginatedResults = new Paginator(
-            $results,
-            $total,
-            $limit,
-            \Illuminate\Pagination\Paginator::resolveCurrentPage(), //resolve the path
-            ['path' => \Illuminate\Pagination\Paginator::resolveCurrentPath()]
-        );
+        if (!\Request::wantsJson()) {
+            return view('search.index', compact('results', 'sortUrl', 'orderUrl', 'periodUrl'));
+        }
 
-        return view('search.index', compact('paginatedResults', 'sortUrl', 'orderUrl', 'periodUrl'));
+        return response()->json(['data' => $results]);
     }
 
     /**

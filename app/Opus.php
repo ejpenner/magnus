@@ -3,21 +3,24 @@
 namespace Magnus;
 
 use Carbon\Carbon;
+use Magnus\Favorite;
 use Magnus\Http\Requests\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Opus extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'image_path', 'thumbnail_path', 'preview_path',
         'title', 'comment', 'user_id', 'daily_views',
         'published_at', 'views', 'slug', 'directory'
     ];
 
-    protected $dates = ['published_at','created_at'];
+    protected $dates = ['published_at','created_at','deleted_at'];
     private $resizeTo = 250;
     private $resizeExtension = 'jpg';
 
@@ -67,12 +70,22 @@ class Opus extends Model
     }
 
     /**
-     * An opus can be favorite'd by many users
+     * An belongs to one favorite model that is shared by all users who
+     * have added the opus to their favorites
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function favorite()
     {
-        return $this->hasMany('App\Favorite');
+        return $this->hasOne('Magnus\Favorite');
+    }
+
+    /**
+     * An opus can have many categories
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function categories()
+    {
+        return $this->belongsToMany('Magnus\Category', 'category_opus')->withTimestamps();
     }
 
     /**
@@ -99,7 +112,7 @@ class Opus extends Model
      */
     public function scopePublished($query)
     {
-        $query->where('published_at', '<=', Carbon::now());
+        $query->where('opuses.published_at', '<=', Carbon::now());
     }
 
     /**
@@ -108,7 +121,7 @@ class Opus extends Model
      */
     public function scopeUnpublished($query)
     {
-        $query->where('published_at', '=>', Carbon::now());
+        $query->where('opuses.published_at', '=>', Carbon::now());
     }
 
     /**
@@ -119,7 +132,7 @@ class Opus extends Model
     public function scopeHoursAgo($query, $time = 24)
     {
         $hoursAgo = new Carbon("-$time hours");
-        $query->whereDate('created_at', '>', $hoursAgo->toDateString());
+        $query->whereDate('opuses.created_at', '>', $hoursAgo->toDateString());
     }
 
     /**
@@ -128,7 +141,7 @@ class Opus extends Model
      */
     public function scopeToday($query)
     {
-        $query->whereDate('created_at', '>', Carbon::yesterday()->toDateString());
+        $query->whereDate('opuses.created_at', '>', Carbon::yesterday()->toDateString());
     }
 
     /**
@@ -140,7 +153,7 @@ class Opus extends Model
     public function scopeDaysAgo($query, $days = 3)
     {
         $daysAgo = new Carbon("-$days days");
-        return $query->whereDate('created_at', '>', $daysAgo->toDateString());
+        return $query->whereDate('opuses.created_at', '>', $daysAgo->toDateString());
     }
 
     /**
@@ -149,7 +162,7 @@ class Opus extends Model
      */
     public function scopePopular($query)
     {
-        $query->orderBy('views', 'desc');
+        $query->orderBy('opuses.views', 'desc');
     }
 
     /**
@@ -158,16 +171,16 @@ class Opus extends Model
      */
     public function scopeNewest($query)
     {
-        $query->orderBy('created_at', 'desc');
+        $query->orderBy('opuses.created_at', 'desc');
     }
 
     /**
      * A scope for sorting by daily views descending
      * @param $query
      */
-    public function scopeHot($query)
+    public function scopeTrending($query)
     {
-        $query->orderBy('daily_views', 'desc');
+        $query->orderBy('opuses.daily_views', 'desc');
     }
 
     /**
@@ -210,9 +223,15 @@ class Opus extends Model
     /**
      * Set the slug of the opus
      */
-    protected function setSlug()
+    public function setSlug($setTo = null)
     {
-        $this->slug = substr(microtime(), 15).'-'.str_slug($this->title);
+        if (!isset($setTo)) {
+            $slug = substr(microtime(), 15).'-'.str_slug($this->title);
+        } else {
+            $slug = substr(microtime(), 15).'-'.str_slug($setTo);
+        }
+        $this->slug = $slug;
+        return $slug;
     }
 
     /**
@@ -222,9 +241,14 @@ class Opus extends Model
     public function getImage()
     {
         if (!empty($this->image_path) and File::exists($this->image_path)) {
-            return  $this->image_path;
+            return  '/'.$this->image_path;
         }
         return $this->imageDirectory.'/images/missing/missing.png';
+    }
+
+    public function getFilePath()
+    {
+        return $this->image_path;
     }
 
     /**
@@ -234,7 +258,7 @@ class Opus extends Model
     public function getPreview()
     {
         if (!empty($this->preview_path) and File::exists($this->preview_path)) {
-            return  $this->preview_path;
+            return  '/'.$this->preview_path;
         }
         return $this->imageDirectory.'/images/missing/missing.png';
     }
@@ -246,7 +270,7 @@ class Opus extends Model
     public function getThumbnail()
     {
         if (!empty($this->thumbnail_path) and File::exists($this->thumbnail_path)) {
-            return $this->thumbnail_path;
+            return '/'.$this->thumbnail_path;
         }
         return $this->imageDirectory.'/missing/missing-thumb.png';
     }
@@ -262,12 +286,14 @@ class Opus extends Model
         $opus = new Opus($request->all());
         $opus = $user->opera()->save($opus);
         $opus->published_at = Carbon::now();
-        $opus->makeDirectory($user);
-        $opus->setImage($user, $request);
-        $opus->setPreview($user, $request);
-        $opus->setThumbnail($user, $request);
+//        $opus->makeDirectory($user);
         $opus->setSlug();
-        $opus->save();
+        $opus->makeDirectory($user)
+            ->initViews()
+            ->setImage($user, $request)
+            ->setPreview($user, $request)
+            ->setThumbnail($user, $request)->save();
+        $opus->favorite()->save(new Favorite(['opus_id' => $opus->id]));
         return $opus;
     }
 
@@ -293,6 +319,14 @@ class Opus extends Model
         }
         return $resize;
     }
+
+    private function initViews()
+    {
+        $this->views = 0;
+        $this->daily_views = 0;
+
+        return $this;
+    }
     
     /**
      * Handle the uploaded file, rename the file, move the file, return the filepath as a string
@@ -315,11 +349,9 @@ class Opus extends Model
      */
     protected function storePreview(User $user, $request)
     {
-
-        $previewSize = $request->has('preview_size') ? $request->input('preview_size') : 680;
-        //$extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
+        $previewSize = $request->has('resizeTo') ? $request->input('resizeTo') : 680;
         $fileName = $user->username.'-'.date('Ymd') .'-'. substr(microtime(), 2, 8).'-p.'. $this->resizeExtension; // renaming image
-        $thumbnail = $this->resize($this->getImage(), $previewSize);
+        $thumbnail = $this->resize($this->getFilePath(), $previewSize);
         $fullPath = $this->directory."/".$fileName;
         $thumbnail->save($fullPath);
         return $fullPath;
@@ -333,9 +365,8 @@ class Opus extends Model
      */
     protected function storeThumbnail(User $user, $request)
     {
-        //$extension = $request->file('image')->getClientOriginalExtension(); // getting image extension
         $fileName = $user->username.'-'.date('Ymd') .'-'. substr(microtime(), 12, 8).'-t.'. $this->resizeExtension; // renaming image
-        $thumbnail = $this->resize($this->getImage());
+        $thumbnail = $this->resize($this->getFilePath());
         $fullPath = $this->directory."/".$fileName;
         $thumbnail->save($fullPath);
         return $fullPath;
@@ -352,12 +383,14 @@ class Opus extends Model
 
     /**
      * Using storeImage(), assign this articles' image attr to the path returned
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
+     * @param User $user
+     * @param $request
+     * @return $this
      */
     protected function setImage(User $user, $request)
     {
         $this->image_path = $this->storeImage($user, $request);
+        return $this;
     }
 
     /**
@@ -368,6 +401,7 @@ class Opus extends Model
     protected function setThumbnail(User $user, $request)
     {
         $this->thumbnail_path = $this->storeThumbnail($user, $request);
+        return $this;
     }
 
     /**
@@ -378,6 +412,7 @@ class Opus extends Model
     protected function setPreview(User $user, $request)
     {
         $this->preview_path = $this->storePreview($user, $request);
+        return $this;
     }
 
     /**
@@ -397,7 +432,11 @@ class Opus extends Model
         }
         return false;
     }
-    
+
+    /**
+     * Delete's this Opus' images and directory
+     * @return void
+     */
     public function deleteDirectory()
     {
         $this->deleteImages();
@@ -409,20 +448,21 @@ class Opus extends Model
      * @param $request
      * @return string
      */
-    protected function updateImage(User $user, $request)
+    public function updateImage(User $user, $request)
     {
         if ($request->file('image') !== null) {  /// check if an image is attached
-            if ($this->deleteImages()) {
-                $this->setImage($user, $request); // update the image
-                $this->setThumbnail($user, $request); // update the thumbnail
-                $this->setPreview($user, $request);
-                $this->update(); // set the image update
-                return 'Image files updated successfully.';
+            $deleted = $this->deleteImages();
+            if ($deleted) {
+                if ($this->directory == null) {
+                    $this->makeDirectory($user)->save();
+                }
+                $this->setImage($user, $request)->setPreview($user, $request)->setThumbnail($user, $request)->update();
+                return true;
             } else {
-                return 'Image files deletion failed.';
+                return false;
             }
         }
-        return ' Something went wrong...';
+        return false;
     }
 
     /**
@@ -444,13 +484,18 @@ class Opus extends Model
      */
     public function metadata()
     {
+
         try {
-            $img = Image::make($this->getImage());
+            $img = Image::make(public_path().$this->getImage());
+            $preview = Image::make(public_path().$this->getPreview());
             $size = ceil($img->fileSize() / 1000);
         } catch (\Exception $e) {
             return ['filesize' => '?' . ' KB', 'resolution' => '?' . 'x' . '?'];
         }
-        return ['filesize' => $size . ' KB', 'resolution' => $img->width() . 'x' . $img->height()];
+        return ['filesize' => $size . ' KB', 'resolution' => $img->width() . 'x' . $img->height(),
+            'width' => $img->width(),
+            'height' => $img->height(),
+            'previewHeight' => $preview->height()];
     }
 
     /**
@@ -461,9 +506,9 @@ class Opus extends Model
     protected function makeDirectory(User $user)
     {
         $dirName = 'art/'.$user->username.'/'.substr(microtime(), 11);
-        File::makeDirectory(public_path($dirName), 4664, true);
+        File::makeDirectory(public_path($dirName), 0664);
         $this->directory = $dirName;
-        //return $dirName;
+        return $this;
     }
 
 
@@ -487,6 +532,9 @@ class Opus extends Model
     /**
      * Increment the pageview of this Opus if conditions are met
      * Opus IDs are stored in sessions
+     *
+     * The page view is only incremented if the person viewing it is not the owner
+     * and the Opus ID is not in the array held in the Session
      * @param $request
      */
     public function pageview($request)

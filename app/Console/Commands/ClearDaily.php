@@ -1,5 +1,4 @@
 <?php
-
 namespace Magnus\Console\Commands;
 
 use Magnus\Opus;

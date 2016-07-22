@@ -2,6 +2,8 @@
 
 namespace Magnus\Http\Requests;
 
+use Magnus\Permission;
+use Illuminate\Support\Facades\Auth;
 use Magnus\Http\Requests\Request;
 
 class OpusCreateRequest extends Request
@@ -13,7 +15,7 @@ class OpusCreateRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        return Permission::hasPermission(Auth::user(), ['user_opus_permission', 'admin_opus_permission']);
     }
 
     /**
@@ -25,7 +27,8 @@ class OpusCreateRequest extends Request
     {
         return [
             'image' => 'required|mimes:jpeg,bmp,png',
-            'title' => 'required|min:3|max:60'
+            'title' => 'required|min:3|max:60',
+            'comment' => 'max:2000'
         ];
     }
 }

@@ -5,15 +5,10 @@
             <div class="item-details">
                 <h5><strong><a href="{{ action('OpusController@show', [$opus->slug]) }}">{{ $opus->title }}</a></strong>
                     @if(!isset($showName) or $showName)
-                        <br><a href="{{ action('ProfileController@show', $opus->uslug) }}">{!! Magnus::username($opus->user_id) !!}</a>
+                        <br><a href="{{ action('ProfileController@show', $opus->userslug) }}">{!! Magnus::username($opus->user_id) !!}</a>
                     @endif
                 </h5>
             </div>
         </div>
-        {{--@if(Auth::check() and Magnus::isOwnerOrHasRole($opus, config('roles.gmod-code')))--}}
-            {{--<div class="gallery-operations">--}}
-                {{--@include('partials._operationsDropdownSlug', ['model' => $opus, 'controller' => 'OpusController'])--}}
-            {{--</div>--}}
-        {{--@endif--}}
     </div>
 </div>

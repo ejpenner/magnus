@@ -4,7 +4,7 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-heading">
-                New Opus
+                Submit new art
             </div>
             <div class="panel-body">
                 {!! Form::open(['action'=>['OpusController@store'], 'files'=>true, 'id'=>'upload-file']) !!}
@@ -16,10 +16,11 @@
                         <div class="uploader">
                             <div class="form-group">
                                 <div class="container-fluid">
-                                    <img id="preview" src="#">
+                                    <img id="preview-upload" src="#">
                                 </div>
                             </div>
                         </div>
+                        @include('opus.partials._resizeImage')
                     </div>
                 </div>
                 @include('opus._form')

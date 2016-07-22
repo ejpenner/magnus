@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('profile._header', ['user' => $user, 'details' => false])
     <div class="container-fluid">
+        @include('profile._header', ['user' => $user, 'details' => false])
         <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
 
             <div class="panel panel-default">

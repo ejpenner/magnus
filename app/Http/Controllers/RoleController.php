@@ -2,12 +2,10 @@
 
 namespace Magnus\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
-use Magnus\Http\Requests;
-
 use Magnus\Role;
 use Magnus\Permission;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class RoleController extends Controller
 {
@@ -52,8 +50,12 @@ class RoleController extends Controller
     public function show($id)
     {
         $role = Role::findOrFail($id);
+        $permissions = $role->permissions;
+        $permissionFields = Schema::getColumnListing('permissions');
+        $permissionFields = array_except($permissionFields, [0,1,2,3,sizeof($permissionFields)-1,sizeof($permissionFields)-2]);
+        $permissionFields = array_values($permissionFields);
 
-        return view('role.show', compact('role'));
+        return view('role.show', compact('role', 'permissionFields', 'permissions'));
     }
 
     /**

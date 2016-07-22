@@ -25,6 +25,7 @@ class CreateOpusesTable extends Migration
             $table->integer('daily_views')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('opuses', function (Blueprint $table) {

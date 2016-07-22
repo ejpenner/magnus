@@ -6,7 +6,9 @@
             Admin Center
         </div>
         <div class="panel-body">
-
+            <a href="{{ action('UserController@index') }}">User Lookup</a>
+            <a href="{{ action('AdminController@opus') }}">Opus Lookup</a>
+            <a href="{{ action('AdminController@session') }}">Session Dump</a>
         </div>
     </div>
 @endsection

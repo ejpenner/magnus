@@ -18,10 +18,10 @@ class UserSeeder extends Seeder
     {
         $vilest = User::create(['name'=>'Eric', 'username'=>'Vilest', 'slug' => 'vilest', 'email'=>'ayy@lm.ao',
             'password'=>'$2y$10$2vC4FBlXEw9jAp2mHX/I1ereZawBmX.tipKbEIfMlQo1g6VytHkQa', 'timezone'=>'America/Chicago']);
-        $vilest->roles()->attach(Role::where('role_name', 'Developer')->value('id'));
+        $vilest->roles()->attach(Role::where('role_code', config('roles.dev-code'))->value('id'));
         Magnus::makeDirectories('vilest');
 
-        factory(User::class,10)->create()
+        factory(User::class,20)->create()
             ->each(function($user){
                 $user->roles()->attach(Role::where('role_name', Config::get('roles.user'))->value('id'));
             });

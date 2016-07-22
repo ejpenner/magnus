@@ -1,3 +1,3 @@
 @section('header')
-    <script src="{{ asset('/js/vendor/cropper.js') }}"></script>
+    <script src="{{ asset('/js/cropper.js') }}"></script>
 @endsection
