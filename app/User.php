@@ -344,24 +344,6 @@ class User extends Authenticatable
     }
 
     /**
-<<<<<<< HEAD
-     *  Get the number of unread messages the user has
-     * @return mixed
-     */
-    public function messageCount()
-    {
-        $q = Notification::query();
-        $q->join('notification_user', 'notifications.id', '=', 'notification_user.notification_id');
-        $q->join('users', 'users.id', '=', 'notification_user.user_id');
-        $q->where('notification_user.user_id', $this->id);
-        // $q->where('notifications.read', '0');
-        $r = $q->count();
-        return $r;
-    }
-
-    /**
-=======
->>>>>>> d65993aed340a4ffc4eb75670e1535d35f15a816
      *  Notify this user of a new Opus/Comment/Activity of a user they watch
      * @param \Magnus\Notification $notification
      * @return void
