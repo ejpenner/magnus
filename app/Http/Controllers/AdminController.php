@@ -42,12 +42,6 @@ class AdminController extends Controller
             $direction = 'asc';
         }
 
-//        $query = Opus::query()
-//            ->join('users', 'users.id', '=', 'opuses.user_id')
-//            ->join('(SELECT favorites.opus_id, count(*) FROM favorites join favorite_user on favorites.id = favorite_user.favorite_id group by opus_id) as favorite_count', 'favorite_count.opus_id', '=', 'opuses.id')
-//            ->select('users.id as user_id', 'opuses.id as id', 'opuses.title', 'users.username',
-//                'opuses.views', 'opuses.created_at', 'opuses.slug as slug', 'users.slug as user_slug')
-//            ->orderBy($orderBy, $direction);
         $whereClause = '';
         if (isset($input['filter'])) {
             $filterCount = 0;

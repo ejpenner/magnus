@@ -7665,7 +7665,7 @@ button.list-group-item-danger.active:focus {
 }
 .panel {
   margin-bottom: 20px;
-  background-color: #fff;
+  background-color: #EEE;
   border: 1px solid transparent;
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -9391,7 +9391,7 @@ button.close {
   }
 }
 .favorite-notification {
-  border: solid #eeeeee 1px;
+  border: solid #777777 1px;
   padding: 2px;
   margin: 1px;
   -webkit-border-radius: 4px;
@@ -9838,6 +9838,15 @@ div.gallery-sidebar .gallery-item {
 div.gallery-sidebar img {
   max-width: 200px;
   max-height: 200px;
+}
+@navbar-color :  .gradient(#191819, #000418);
+.panel-heading {
+  background-color: #191819 !important;
+  background: -webkit-gradient(linear, left top, left bottom, from(#191819), to(#000418)) !important;
+  background: -webkit-linear-gradient(top, #191819, #000418) !important;
+  background: -moz-linear-gradient(top, #191819, #000418) !important;
+  background: -ms-linear-gradient(top, #191819, #000418) !important;
+  background: -o-linear-gradient(top, #191819, #000418) !important;
 }
 html,
 body {

@@ -8,6 +8,7 @@ Route::model('users', 'User');
 Route::model('profile', 'Profile');
 Route::model('opus', 'Opus');
 Route::model('category', 'Category');
+Route::model('journal', 'Journal');
 
 /**
  * Binds {opus} to the opus model slug
@@ -47,6 +48,10 @@ Route::bind('category3', function ($value, $route) {
 
 Route::bind('category4', function ($value, $route) {
     return \Magnus\Category::whereSlug(strtolower($value))->firstOrFail();
+});
+
+Route::bind('journal', function ($value, $route) {
+    return \Magnus\Journal::whereSlug(strtolower($value))->firstOrFail();
 });
 
 

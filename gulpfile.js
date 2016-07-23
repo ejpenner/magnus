@@ -9,7 +9,6 @@ var concat = require('gulp-concat');
 var strictify = require('strictify');
 var source = require('vinyl-source-stream');
 var watchify = require('gulp-watchify');
-var runSequence = require('run-sequence');
 var through2 = require('through2');
 
 var assets_dir = './resources/assets/';
@@ -17,10 +16,8 @@ var assets_dir = './resources/assets/';
 var vendor_js_files = [
     assets_dir + "js/vendor/jquery.min.js",
     assets_dir + "js/vendor/angular.min.js",
-    // assets_dir + "js/vendor/cropper.js",
     assets_dir + "js/vendor/bootstrap.min.js",
     assets_dir + "js/vendor/unveil.js",
-    //assets_dir + "js/vendor/jscroll.js",
     assets_dir + "js/vendor/ng-resource.min.js",
     assets_dir + "js/vendor/ng-table.js",
     assets_dir + "js/vendor/ng-infinite-scroll.js"
@@ -124,10 +121,17 @@ gulp.task('phpcbf-config', function() {
 });
 
 gulp.task('js', [
-    'scripts', 'angular'
+    'scripts', 'angular', 'vendor-scripts'
 ]);
 
 gulp.task('default', [
+    'less',
+    'vendor-scripts',
+    'angular',
+    'scripts'
+]);
+
+gulp.task('all',[
     'less',
     'vendor-scripts',
     'angular',

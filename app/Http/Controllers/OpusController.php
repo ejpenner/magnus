@@ -1,10 +1,6 @@
 <?php
+
 namespace Magnus\Http\Controllers;
-
-
-
-
-
 
 use Magnus\Tag;
 use Magnus\Opus;
@@ -88,7 +84,7 @@ class OpusController extends Controller
         Gallery::place($request, $opus);
 
 
-        Cache::put($opus->slug, $opus, 15);
+        Cache::put($opus->slug, $opus, 60*10);
 
         return redirect()->route('opus.show', $opus->slug)->with('success', 'Your work been added!');
     }

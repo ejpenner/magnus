@@ -17,6 +17,15 @@ app.filter('boolean', function() {
 });
 
 /**
+ * Parse the HTML coming into the page
+ */
+app.filter("sanitize", ['$sce', function($sce) {
+    return function(htmlCode) {
+        return $sce.trustAsHtml(htmlCode);
+    }
+}]);
+
+/**
  * Username decorator filter
  */
 app.filter('username', function() {
@@ -43,13 +52,8 @@ app.filter('username', function() {
 app.value('THROTTLE_MILLISECONDS', 0);
 
 /**
- * Parse the HTML coming into the page
+ * Infinite Scroll Controller
  */
-app.filter("sanitize", ['$sce', function($sce) {
-    return function(htmlCode) {
-        return $sce.trustAsHtml(htmlCode);
-    }
-}]);
 
 app.controller('ScrollController', function($scope, ScrollService) {
     $scope.scroller = new ScrollService();

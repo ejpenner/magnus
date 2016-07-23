@@ -18,8 +18,8 @@ class OpusSeeder extends Seeder
     {
         $users = User::all();
         $galleryMax = 2;
-        $opusMax = 10;
-        $opusGalleryMax = 5;
+        $opusMax = 15;
+        $opusGalleryMax = 8;
 
         $opusFinalCount = $users->count() * (($galleryMax *  $opusGalleryMax) + $opusMax);
         $count = 0;
@@ -44,7 +44,7 @@ class OpusSeeder extends Seeder
 
                     $opusG = factory(Opus::class)->create(['user_id'=>$user->id]);
 
-                    echo "\033[0;36m".$opusG."\033[0m\n\n";
+                    //echo "\033[0;36m".$opusG."\033[0m\n\n";
                     $count++;
                     fwrite(STDOUT, "\0338"."\033[0;36mOpusSeeder: ".number_format(100 * ($count / $opusFinalCount), 2)."% Complete \033[0m");
 

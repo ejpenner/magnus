@@ -70,10 +70,9 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if(Auth::check() and Auth::user()->atLeastHasRole(Config::get('roles.admin-code')))
                         <li @if(Request::is('admin')) class="active dropdown" @else class="dropdown" @endif>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Panel <span class="caret"></span></a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ action('UserController@index') }}">Users</a></li>
-                                <li><a href="{{ action('RoleController@index') }}">User Roles</a></li>
+                                <li><a href="{{ action('AdminController@index') }}">Admin Center</a></li>
                             </ul>
                         </li>
                     @endif
