@@ -27,6 +27,18 @@ class Tag extends Model
      * @param Opus $opus
      * @param $tag_string
      */
+//    public static function make(Opus $opus, $tag_string)
+//    {
+//        if ($tag_string != '') {
+//            return;
+//        }
+//        $tags = explode(' ', trim($tag_string));
+//        foreach ($tags as $tag) {
+//            $tagIds[] = Tag::firstOrCreate(['name'=>strtolower($tag)])->getKey();
+//        }
+//        $opus->tags()->sync($tagIds);
+//    }
+
     public static function make(Opus $opus, $tag_string)
     {
         if ($tag_string != '') {

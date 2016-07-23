@@ -3,7 +3,7 @@
 namespace Magnus;
 
 use Carbon\Carbon;
-use Magnus\Favorite;
+use Magnus\Helpers\Helpers;
 use Magnus\Http\Requests\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -21,8 +21,8 @@ class Opus extends Model
     ];
 
     protected $dates = ['published_at','created_at','deleted_at'];
-    private $resizeTo = 250;
-    private $resizeExtension = 'jpg';
+    protected $resizeTo = 250;
+    protected $resizeExtension = 'jpg';
 
     /**
      * Opus has a M:1 relationship with User model
@@ -389,6 +389,7 @@ class Opus extends Model
      */
     protected function setImage(User $user, $request)
     {
+        //$this->image_path = $this->storeImage($user, $request);
         $this->image_path = $this->storeImage($user, $request);
         return $this;
     }

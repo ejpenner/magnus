@@ -4,11 +4,11 @@ use Illuminate\Support\Facades\Config;
 /**
  * Model bindings
  */
-Route::model('users', 'User');
-Route::model('profile', 'Profile');
-Route::model('opus', 'Opus');
-Route::model('category', 'Category');
-Route::model('journal', 'Journal');
+//Route::model('users', 'User');
+//Route::model('profile', 'Profile');
+//Route::model('opus', 'Opus');
+//Route::model('category', 'Category');
+//Route::model('journal', 'Journal');
 
 /**
  * Binds {opus} to the opus model slug
@@ -50,10 +50,13 @@ Route::bind('category4', function ($value, $route) {
     return \Magnus\Category::whereSlug(strtolower($value))->firstOrFail();
 });
 
+/**
+ * Binds journal model to {journal}
+ */
+
 Route::bind('journal', function ($value, $route) {
     return \Magnus\Journal::whereSlug(strtolower($value))->firstOrFail();
 });
-
 
 /**
  * generated auth routes
@@ -90,19 +93,18 @@ Route::get('opus/{opus}/download', 'OpusController@download')->name('opus.downlo
  * Profile routes
  */
 Route::get('profile', 'ProfileController@index')->name('profile.auth');
-Route::patch('profile', 'ProfileController@update')->name('profile.update');
 Route::get('profile/{profile}', 'ProfileController@show')->name('profile.show');
 Route::get('profile/{profile}/favorites', 'ProfileController@favorites')->name('profile.favorites');
 Route::get('profile/{profile}/galleries', 'ProfileController@galleries')->name('profile.galleries');
 Route::get('profile/{profile}/opera', 'ProfileController@opera')->name('profile.opera');
 Route::get('profile/{profile}/watchers', 'ProfileController@watchers')->name('profile.watchers');
 Route::get('profile/{profile}/watching', 'ProfileController@watching')->name('profile.watching');
+Route::get('profile/{profile}/journal', 'JournalController@index')->name('profile.journal');
 
 /**
  * Search route
  */
 Route::get('/search/{terms}', ['uses'=> 'SearchController@searchAll', 'as'=>'searchAll'])->name('search');
-
 
 /**
  * Authenticated middleware group
@@ -145,9 +147,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['account']], function () {
         Route::patch('account/{users}/update', 'AccountController@updateAccount')->name('account.update');
         Route::get('account/{users}', 'AccountController@manageAccount')->name('account.manage');
-
         Route::patch('account/{users}/updatePassword', 'AccountController@updatePassword')->name('password.update');
         Route::patch('account/{users}/preferences', 'AccountController@updatePreferences')->name('account.preferences.update');
+        Route::get('profile/{profile}/edit', 'ProfileController@edit')->name('profile.edit');
+        Route::patch('profile', 'ProfileController@update')->name('profile.update');
     });
 
     Route::post('account/{users}/avatar', 'AccountController@uploadAvatar')->name('account.avatar');
