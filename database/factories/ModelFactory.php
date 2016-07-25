@@ -75,6 +75,7 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
     $thumbnail_path = substr($tdest, $pathLength);
     $preview_path = substr($pdest, $pathLength);
 
+
     $created = Carbon::instance($faker->dateTimeBetween('-2 months', 'now'));
         $title = $faker->words(3, true);
     return [

@@ -6,8 +6,8 @@
                         <a href="{{ action('ProfileController@show', $opus->user->slug) }}">
                             <img src="{{ $opus->user->getAvatar() }}" class="pull-left avatar" alt="avatar">
                         </a>
-                        <h3>{{ $opus->title }}</h3>
-                        <p>By <a href="{{ action('ProfileController@show', $opus->user->slug) }}">{{ $opus->user->name }}</a></p>
+                        <h2>{{ $opus->title }}</h2>
+                        <h4>by <a href="{{ action('ProfileController@show', $opus->user->slug) }}">{!! $opus->user->decorateUsername() !!}</a></h4>
                 </div>
                 <div class="col-lg-3">
                     <div class="pull-right">
@@ -80,7 +80,7 @@
                     </tr>
                     <tr>
                         <td>Submitted On</td>
-                        <td>{{ $opus->published_at }}</td>
+                        <td>{{ $opus->created_at }}</td>
                     </tr>
                     <tr>
                         <td>Image Size</td>

@@ -5,6 +5,9 @@
         <div id="opus-image">
             @include('opus.partials._image', ['opus' => $opus, 'metadata'=>$metadata])
         </div>
+        <div class="text-center watch-date">
+            {{ $opus->published() }}
+        </div>
         {{--<div class="opus-sidebar">--}}
             {{--<div class="sidebar-content">--}}
                 {{--@include('opus.partials._navigator', ['navigator' => $navigator])--}}
