@@ -285,6 +285,7 @@ class Opus extends Model
     {
         $opus = new Opus($request->all());
         $opus->published_at = Carbon::now();
+
         $opus->setSlug()
              ->setDirectory($user)
              ->initViews()
@@ -335,7 +336,7 @@ class Opus extends Model
     protected function storeImage(User $user, $request)
     {
         $originalFileName = $request->file('image')->getClientOriginalName();
-        $fileName = $user->username.'-'.date('Ymd') . substr(microtime(), 2, 8).'-'.$originalFileName; // renaming image
+        $fileName = $user->slug.'-'.date('Ymd') . substr(microtime(), 2, 8).'-'.$originalFileName; // renaming image
         $request->file('image')->move($this->directory, $fileName); // uploading file to given path
         $fullPath = $this->directory."/".$fileName; // set the image field to the full path
         return $fullPath;
@@ -349,7 +350,7 @@ class Opus extends Model
     protected function storePreview(User $user, $request)
     {
         $previewSize = $request->has('resizeTo') ? $request->input('resizeTo') : 680;
-        $fileName = $user->username.'-'.date('Ymd') .'-'. substr(microtime(), 2, 8).'-p.'. $this->resizeExtension; // renaming image
+        $fileName = $user->slug.'-'.date('Ymd') .'-'. substr(microtime(), 2, 8).'-p.'. $this->resizeExtension; // renaming image
         $thumbnail = $this->resize($this->getFilePath(), $previewSize);
         $fullPath = $this->directory."/".$fileName;
         $thumbnail->save($fullPath);
@@ -364,7 +365,7 @@ class Opus extends Model
      */
     protected function storeThumbnail(User $user, $request)
     {
-        $fileName = $user->username.'-'.date('Ymd') .'-'. substr(microtime(), 12, 8).'-t.'. $this->resizeExtension; // renaming image
+        $fileName = $user->slug.'-'.date('Ymd') .'-'. substr(microtime(), 12, 8).'-t.'. $this->resizeExtension; // renaming image
         $thumbnail = $this->resize($this->getFilePath());
         $fullPath = $this->directory."/".$fileName;
         $thumbnail->save($fullPath);
@@ -458,9 +459,10 @@ class Opus extends Model
             $deleted = $this->deleteImages();
             if ($deleted) {
                 if ($this->directory == null) {
-                    $this->makeDirectory($user)->save();
+                    $this->setDirectory($this->user);
+
                 }
-                $this->setImage($user, $request)->setPreview($user, $request)->setThumbnail($user, $request)->update();
+                $this->setImage($this->user, $request)->setPreview($this->user, $request)->setThumbnail($this->user, $request)->update();
                 return true;
             } else {
                 return false;

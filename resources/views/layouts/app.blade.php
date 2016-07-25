@@ -1,15 +1,22 @@
 <?php $time_start = microtime(true) ?>
-<!DOCTYPE html>
+        <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Gallery App</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="{{ asset('/js/vendor.js') }}"></script>
-    <script src="{{ asset('/js/app.js') }}"></script>
-    <link href="{{ asset('css/app.css') }}" media="screen" rel="stylesheet" type="text/css"/>
-    <script src="{{ asset('/js/angular.js') }}"></script>
+    @if(env('APP_ENV', 'local') == 'local')
+        <script src="{{ asset('/js/vendor.js') }}"></script>
+        <script src="{{ asset('/js/app.js') }}"></script>
+        <link href="{{ asset('css/app.css') }}" media="screen" rel="stylesheet" type="text/css"/>
+        <script src="{{ asset('/js/angular.js') }}"></script>
+    @else
+        <script src="{{ secure_asset('/js/vendor.js') }}"></script>
+        <script src="{{ secure_asset('/js/app.js') }}"></script>
+        <link href="{{ secure_asset('css/app.css') }}" media="screen" rel="stylesheet" type="text/css"/>
+        <script src="{{ secure_asset('/js/angular.js') }}"></script>
+    @endif
     @yield('header')
     <script type="text/javascript">
 
