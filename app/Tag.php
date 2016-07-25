@@ -29,22 +29,36 @@ class Tag extends Model
      */
     public static function make(Opus $opus, $tag_string)
     {
-        if ($tag_string != '') {
+        if ($tag_string == '' or $tag_string == null) {
+            return;
+        } else {
             $tags = explode(' ', trim($tag_string));
-            foreach ($tags as $tag) {
-                Tag::firstOrCreate(['name'=>$tag]);
-            }
-
             $tagIds = [];
             foreach ($tags as $tag) {
-                $addTag = Tag::where('name', $tag)->first();
-                if (strtolower($addTag->name) == strtolower($tag)) {
-                        array_push($tagIds, $addTag->id);
-                }
+                $tagIds[] = Tag::firstOrCreate(['name' => strtolower($tag)])->getKey();
             }
             $opus->tags()->sync($tagIds);
-        } else {
-            return;
         }
     }
+
+//    public static function make(Opus $opus, $tag_string)
+//    {
+//        if ($tag_string != '') {
+//            $tags = explode(' ', trim($tag_string));
+//            foreach ($tags as $tag) {
+//                Tag::firstOrCreate(['name'=>$tag]);
+//            }
+//
+//            $tagIds = [];
+//            foreach ($tags as $tag) {
+//                $addTag = Tag::where('name', $tag)->first();
+//                if (strtolower($addTag->name) == strtolower($tag)) {
+//                        array_push($tagIds, $addTag->id);
+//                }
+//            }
+//            $opus->tags()->sync($tagIds);
+//        } else {
+//            return;
+//        }
+//    }
 }

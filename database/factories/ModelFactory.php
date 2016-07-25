@@ -1,10 +1,11 @@
 <?php
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\File;
-use Magnus\Helpers\Helpers;
-use Carbon\Carbon;
+
 use Magnus\Opus;
 use Magnus\User;
+use Carbon\Carbon;
+use Magnus\Helpers\Helpers;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 
 $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
     $timezones = ['America/Denver', 'America/New_York', 'America/Chicago', 'America/Los_Angeles'];
@@ -24,7 +25,7 @@ $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
 
 $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
 
-    if(env('SEED_IMAGE_SOURCE', 'base') != 'heroku') {
+    if(env('SEED_IMAGE_SOURCE', 'base') != 'dist') {
         $files = File::glob(base_path('resources/seed-pics/*.*'));
     } else {
         $files = File::glob(base_path('resources/heroku-deploy-seed-pics/*.*'));
@@ -40,18 +41,19 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         $pdest = public_path().'/previews/'.$numbers.basename($files[$rand]);
 
     try {
-
         copy($src, $dest);
         $preview = resize($dest, 680);
         $preview->save($pdest);
         $thumbnail = resize($dest);
         $thumbnail->save($tdest);
     } catch (\Exception $e) {
+        // it must have been thumbs.db or some stupid hidden file
+        // try another random file
         $rand = rand(0, count($files)-1);
         $src = $files[$rand];
-        $dest = public_path().'/images/'.preg_replace('/\s/', '_', basename($files[$rand]));
-        $tdest = public_path().'/thumbnails/'.$numbers.preg_replace('/\s/', '_', basename($files[$rand]));
-        $pdest = public_path().'/previews/'.$numbers.preg_replace('/\s/', '_', basename($files[$rand]));
+        $dest = public_path().'/images/'.preg_replace('/\s/', '-', basename($files[$rand]));
+        $tdest = public_path().'/thumbnails/'.$numbers.preg_replace('/\s/', '-', basename($files[$rand]));
+        $pdest = public_path().'/previews/'.$numbers.preg_replace('/\s/', '-', basename($files[$rand]));
 
         copy($src, $dest);
         $preview = resize($src, 680);
@@ -60,20 +62,18 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
         $thumbnail->save($tdest);
     }
 
-
     $c9PathLength = 30;
     $myPathLength = 38;
 
-    if(env('PATH_LENGTH', 'base') == 'c9') {
-        $path = $c9PathLength;
+    if (env('SEED_IMAGE_SOURCE', 'base') != 'dist') {
+        $pathLength = $myPathLength;
     } else {
-        $path = $myPathLength;
+        $pathLength = $c9PathLength;
     }
-
-    $image_path = substr($dest, $path);
-    $thumbnail_path = substr($tdest, $path);
-    $preview_path = substr($pdest, $path);
-
+    
+    $image_path = substr($dest, $pathLength);
+    $thumbnail_path = substr($tdest, $pathLength);
+    $preview_path = substr($pdest, $pathLength);
 
     $created = Carbon::instance($faker->dateTimeBetween('-2 months', 'now'));
         $title = $faker->words(3, true);

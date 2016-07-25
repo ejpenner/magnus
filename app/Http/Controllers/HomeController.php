@@ -4,6 +4,7 @@ namespace Magnus\Http\Controllers;
 
 use Magnus\Opus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
@@ -40,8 +41,6 @@ class HomeController extends Controller
      */
     public function home(Request $request, $filter = null, $period = null)
     {
-
-
         if (!\Request::wantsJson()) {
             $filterSegment = $this->filterSegment($request);
 
@@ -58,16 +57,26 @@ class HomeController extends Controller
             $input['page'] = 1;
         }
 
-        $filterSegment = $this->filterSegment($request);
+        //$filterSegment = $this->filterSegment($request);
 
         $opera = $this->timeFilter($this->makeSearchFilter($filter), $period)
             ->join('users', 'users.id', '=', 'opuses.user_id')
             ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
             ->join('roles', 'roles.id', '=', 'user_roles.role_id')
             ->select('opuses.title', 'opuses.thumbnail_path', 'opuses.created_at', 'opuses.updated_at', 'opuses.slug', 'roles.role_code as role_code', 'users.username', 'users.slug as userslug');
+//        $opera = Cache::remember('opera', 60, function() use ($request, $opera, $input) {
+//             return $opera->skip($this->limit($request) * ($input['page']-1))->take($this->limit($request))->get();
+//        });
+
 
         $opera = $opera->skip($this->limit($request) * ($input['page']-1))->take($this->limit($request))->get();
 
+        /*
+         $articles = Cache::remember('articles', 22*60, function() {
+        return Article::all();
+         });
+
+        */
         $opera = ['data' => $opera];
 
         return response()->json($opera);

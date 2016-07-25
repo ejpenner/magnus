@@ -100,7 +100,7 @@ class Helpers
     /**
      * Returns a collection of users that this user watches
      * @param User $user
-     * @return static
+     * @return collection
      */
     public static function listWatchedUsers(User $user)
     {
@@ -146,6 +146,16 @@ class Helpers
         }
         return false;
     }
+
+    public static function isOwnerOrHasPermission($object, array $permissions)
+    {
+        if(!Auth::check()) return false;
+        if(Auth::user()->isOwner($object) or Auth::user()->hasPermission($permissions)) {
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      *  Make a navigator array with the id of the next and previous
@@ -290,17 +300,4 @@ class Helpers
         return $galleryNav;
     }
 
-    /**
-     * Handle the uploaded file, rename the file, move the file, return the filepath as a string
-     * @param  \Illuminate\Http\Request  $request
-     * @return string
-     */
-    public static function storeImage(User $user, Opus $opus, $request)
-    {
-        $originalFileName = $request->file('image')->getClientOriginalName();
-        $fileName = $user->username.'-'.date('Ymd') . substr(microtime(), 2, 8).'-'.$originalFileName; // renaming image
-        $request->file('image')->move($opus->directory, $fileName); // uploading file to given path
-        $fullPath = $opus->directory."/".$fileName; // set the image field to the full path
-        return $fullPath;
-    }
 }
