@@ -17,7 +17,7 @@ class OpusSeeder extends Seeder
     public function run()
     {
         $users = User::all();
-        $galleryMax = 2;
+        $galleryMax = 1;
         $opusMax = 10;
         $opusGalleryMax = 5;
 
