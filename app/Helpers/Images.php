@@ -32,7 +32,7 @@ class Images {
     public static function storePreview(User $user, Opus $opus, &$request)
     {
         $previewSize = $request->has('resizeTo') ? $request->input('resizeTo') : $opus->defaultResize;
-        $fileName = $user->slug.'-'.date('Ymd') .'-'. substr(microtime(), 2, 8).'-p.'. $opus->resizeExtension; // renaming image
+        $fileName = $user->slug.'-'.date('Ymd') .'-'. substr(microtime(), 2, 8).'-p.'. self::resizeExtension; // renaming image
         $thumbnail = self::resize($opus->getFilePath(), $previewSize);
         $fullPath = $opus->directory."/".$fileName;
         $thumbnail->save($fullPath);
@@ -47,7 +47,7 @@ class Images {
      */
     public static function storeThumbnail(User $user, Opus $opus)
     {
-        $fileName = $user->slug.'-'.date('Ymd') .'-'. substr(microtime(), 12, 8).'-t.'. $opus->resizeExtension; // renaming image
+        $fileName = $user->slug.'-'.date('Ymd') .'-'. substr(microtime(), 12, 8).'-t.'. self::resizeExtension; // renaming image
         $thumbnail = self::resize($opus->getFilePath());
         $fullPath = $opus->directory."/".$fileName;
         $thumbnail->save($fullPath);

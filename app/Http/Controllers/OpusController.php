@@ -10,7 +10,6 @@ use Magnus\Http\Requests;
 use Magnus\Helpers\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 
 class OpusController extends Controller
 {

@@ -100,7 +100,7 @@ class Helpers
     /**
      * Returns a collection of users that this user watches
      * @param User $user
-     * @return static
+     * @return collection
      */
     public static function listWatchedUsers(User $user)
     {
