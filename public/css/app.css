@@ -9481,7 +9481,7 @@ div.flash-messages ul {
   width: 150%;
 }
 span.role-developer::before {
-  content: "Dev";
+  content: "God-King";
   margin-right: 3px;
   padding: 2px;
   font-size: 90%;
@@ -9494,11 +9494,11 @@ span.role-developer::before {
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
   background-color: #a45dba;
-  background: -webkit-gradient(linear, left top, left bottom, from(#a45dba), to(#552f51));
-  background: -webkit-linear-gradient(top, #a45dba, #552f51);
-  background: -moz-linear-gradient(top, #a45dba, #552f51);
-  background: -ms-linear-gradient(top, #a45dba, #552f51);
-  background: -o-linear-gradient(top, #a45dba, #552f51);
+  background: -webkit-gradient(linear, left top, left bottom, from(#a45dba), to(#4f1d55));
+  background: -webkit-linear-gradient(top, #a45dba, #4f1d55);
+  background: -moz-linear-gradient(top, #a45dba, #4f1d55);
+  background: -ms-linear-gradient(top, #a45dba, #4f1d55);
+  background: -o-linear-gradient(top, #a45dba, #4f1d55);
 }
 span.role-administrator::before {
   content: "Admin";
@@ -9541,7 +9541,7 @@ span.role-globalModerator::before {
   background: -o-linear-gradient(top, #48ad42, #1a551a);
 }
 span.role-moderator::before {
-  content: "Mod";
+  content: "Moderator";
   margin-right: 3px;
   padding: 2px;
   font-size: 90%;

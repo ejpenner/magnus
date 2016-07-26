@@ -2,9 +2,10 @@
 
 namespace Magnus\Http\Controllers;
 
+use Magnus\User;
 use Magnus\Journal;
-use Magnus\Http\Requests;
 use Illuminate\Http\Request;
+use Magnus\Http\Requests\JournalRequest;
 
 class JournalController extends Controller
 {
@@ -13,9 +14,9 @@ class JournalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user)
     {
-        //
+        $journals = $user->journals;
     }
 
     /**
@@ -23,9 +24,11 @@ class JournalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $journals = $request->user()->journals;
+
+        return view('journal.create', compact('journals'));
     }
 
     /**
@@ -34,9 +37,14 @@ class JournalController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(JournalRequest $request)
     {
-        //
+        $journal = new Journal($request->all());
+        $journal->parsedBody = $request->input('rawBody');
+        $journal->slug = $request->input('title');
+        $journal = $request->user()->journals()->save($journal);
+
+        return redirect()->route('journal.show', [$request->user()->slug, $journal->slug])->with('success', 'Your journal entry has been posted!');
     }
 
     /**
@@ -45,9 +53,10 @@ class JournalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Journal $journal)
+    public function show(User $user, Journal $journal)
     {
-        //
+        $profile = $user->profile;
+        return view('journal.show', compact('user', 'journal', 'profile'));
     }
 
     /**
@@ -68,7 +77,7 @@ class JournalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Journal $journal)
+    public function update(JournalRequest $request, Journal $journal)
     {
         //
     }

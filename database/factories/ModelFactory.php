@@ -106,6 +106,19 @@ $factory->define(Magnus\Comment::class, function (Faker\Generator $faker){
     ];
 });
 
+$factory->define(Magnus\Journal::class, function (Faker\Generator $faker) {
+    $body = $faker->paragraphs(3, true);
+    $title = $faker->words(5, true);
+    $slug = substr(md5($title), 0, 6) .'-'.substr(str_slug($title), 0, 30);
+
+    return [
+        'title' => $title,
+        'slug' => $slug,
+        'rawBody' => $body,
+        'parsedBody' => $body
+    ];
+});
+
 $factory->define(Magnus\Profile::class, function (Faker\Generator $faker){
     return [
         'biography' => $faker->paragraphs(2, true),

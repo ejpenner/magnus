@@ -23,4 +23,8 @@ class Journal extends Model
         return $this->hasMany('Magnus\Comments');
     }
 
+    public function setSlugAttribute($value)
+    {
+        $this->attributes['slug'] = substr(microtime(), 15).'-'.str_slug($value);;
+    }
 }

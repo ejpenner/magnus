@@ -298,29 +298,33 @@ class Opus extends Model
         return $opus;
     }
 
+//    /**
+//     * Resize the opus' image for it's thumbnail or preview
+//     * @param $image
+//     * @return Image
+//     */
+//    private function resize($image, $size = null)
+//    {
+//        $resize = Image::make($image);
+//        $newRes = isset($size) ? $size : $this->resizeTo;
+//        $ratio = $resize->width() / $resize->height();
+//
+//        if ($ratio > 1) { // image is wider than tall
+//            $resize->resize($newRes, null, function ($constraint) {
+//                $constraint->aspectRatio();
+//            });
+//        } else { // image is taller than wide
+//            $resize->resize(null, $newRes, function ($constraint) {
+//                $constraint->aspectRatio();
+//            });
+//        }
+//        return $resize;
+//    }
+
     /**
-     * Resize the opus' image for it's thumbnail or preview
-     * @param $image
-     * @return Image
+     * Returns the username and created_at year and current year
+     * @return string
      */
-    private function resize($image, $size = null)
-    {
-        $resize = Image::make($image);
-        $newRes = isset($size) ? $size : $this->resizeTo;
-        $ratio = $resize->width() / $resize->height();
-
-        if ($ratio > 1) { // image is wider than tall
-            $resize->resize($newRes, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-        } else { // image is taller than wide
-            $resize->resize(null, $newRes, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-        }
-        return $resize;
-    }
-
     public function published()
     {
         $now = date_format(Carbon::now(), 'Y');

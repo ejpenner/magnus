@@ -53,7 +53,6 @@ Route::bind('category4', function ($value, $route) {
 /**
  * Binds journal model to {journal}
  */
-
 Route::bind('journal', function ($value, $route) {
     return \Magnus\Journal::whereSlug(strtolower($value))->firstOrFail();
 });
@@ -99,7 +98,8 @@ Route::get('profile/{profile}/galleries', 'ProfileController@galleries')->name('
 Route::get('profile/{profile}/opera', 'ProfileController@opera')->name('profile.opera');
 Route::get('profile/{profile}/watchers', 'ProfileController@watchers')->name('profile.watchers');
 Route::get('profile/{profile}/watching', 'ProfileController@watching')->name('profile.watching');
-Route::get('profile/{profile}/journal', 'JournalController@index')->name('profile.journal');
+Route::get('profile/{profile}/journal', 'JournalController@index')->name('profile.journal.index');
+Route::get('profile/{profile}/journal/{journal}', 'JournalController@show')->name('journal.show');
 
 /**
  * Search route
@@ -119,12 +119,13 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Pretty url CRUD for comments
      */
-
     Route::post('opus/{opus}/comment', 'CommentController@store');
-    Route::post('opus/{opus}/c/{comment}', 'CommentController@storeChild');
-    Route::patch('opus/{opus}/c/{comment}', 'CommentController@updateChild');
-    Route::delete('opus/{opus}/c/{comment}', 'CommentController@destroy');
-    Route::delete('opus/{opus}/c/{comment}', 'CommentController@destroyChild');
+    Route::post('opus/{opus}/comment/{comment}', 'CommentController@storeChild');
+    Route::patch('comment/{comment}', 'CommentController@update');
+    Route::delete('comment/{comment}', 'CommentController@destroy');
+    Route::delete('opus/{opus}/comment/{comment}', 'CommentController@destroyChild');
+    Route::post('journal/{journal}/comment', 'CommentController@storeJournal');
+    Route::post('journal/{journal}/comment/{comment}', 'CommentController@storeChildJournal');
 
     /**
      * Notification controller and related routes
@@ -151,10 +152,16 @@ Route::group(['middleware' => ['auth']], function () {
         Route::patch('account/{users}/preferences', 'AccountController@updatePreferences')->name('account.preferences.update');
         Route::get('profile/{profile}/edit', 'ProfileController@edit')->name('profile.edit');
         Route::patch('profile', 'ProfileController@update')->name('profile.update');
+        Route::post('account/{users}/avatar', 'AccountController@uploadAvatar')->name('account.avatar');
     });
 
-    Route::post('account/{users}/avatar', 'AccountController@uploadAvatar')->name('account.avatar');
-
+    /**
+     * Journal routes
+     */
+    Route::get('journal/new', 'JournalController@create')->name('journal.create');
+    Route::post('journal/store', 'JournalController@store')->name('journal.store');
+    Route::patch('journal/{journal}', 'JournalController@update')->name('journal.update');
+    Route::delete('journal/{journal}', 'JournalController@delete')->name('journal.delete');
 
     /**
      *  User avatar routes
@@ -171,10 +178,14 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Developer middleware group
      */
-    Route::group(['middleware'=>'permission:atLeast,'.config('roles.dev-code'), 'prefix'=>'admin'], function () {
-        Route::get('session', 'AdminController@session')->name('admin.session');;
-        Route::get('test', 'AdminController@test')->name('admin.test');;
+    Route::group(['middleware'=>'permission:atLeast,'.config('roles.admin-code'), 'prefix'=>'admin'], function () {
+        Route::get('session', 'AdminController@session')->name('admin.session');
+        Route::get('test', 'AdminController@test')->name('admin.test');
         Route::get('opus', 'AdminController@opus')->name('admin.opus');
+        Route::resource('permissions', 'PermissionController');
+        Route::resource('users', 'UserController');
+        Route::resource('roles', 'RoleController');
+        Route::resource('categories', 'CategoryController');
         Route::get('/', 'AdminController@index');
     });
 
@@ -182,17 +193,13 @@ Route::group(['middleware' => ['auth']], function () {
      * Administration middleware group
      */
     Route::group(['middleware'=>'permission:atLeast,'.config('roles.admin-code')], function () {
-        Route::resource('permissions', 'PermissionController');
-        Route::resource('users', 'UserController');
-        Route::resource('roles', 'RoleController');
-        Route::resource('categories', 'CategoryController');
+
     });
 
     /**
      * Global moderator middleware group
      */
     Route::group(['middleware'=>'permission:atLeast,'.config('roles.gmod-code')], function () {
-//        Route::get('account/{users}/avatarAdmin', 'AccountController@avatarAdmin');
         Route::post('account/{users}/avatarAdmin', 'AccountController@uploadAvatarAdmin');
     });
 });

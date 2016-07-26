@@ -17,8 +17,8 @@ class CommentManagement
      */
     public function handle($request, Closure $next)
     {
-        $comment_id = $request->route('c');
-        $comment= Comment::where('id', $comment_id)->first();
+        $comment_id = $request->route('comment');
+        $comment = Comment::where('id', $comment_id)->first();
 
         if (Helpers::isOwnerOrHasRole($comment, config('roles.moderator'))) {
             return $next($request);

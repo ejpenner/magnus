@@ -10,13 +10,23 @@ class Direct
      * @param $newComment
      * @return \Illuminate\Http\RedirectResponse
      */
-    public static function newComment($opus, $newComment)
+    public static function newOpusComment($opus, $newComment)
     {
         $back = app('url')->previous();
         if (strpos($back, 'opus') !== false) {
             return redirect()->to(app('url')->previous() . '#cid:' . $newComment->id)->with('success', 'Message posted!');
         } else {
             return redirect()->route('opus.show', $opus->slug)->with('success', 'Message posted!');
+        }
+    }
+
+    public static function newJournalComment($journal, $newComment)
+    {
+        $back = app('url')->previous();
+        if (strpos($back, 'journal') !== false) {
+            return redirect()->to(app('url')->previous() . '#cid:' . $newComment->id)->with('success', 'Message posted!');
+        } else {
+            return redirect()->route('journal.show', $journal->slug)->with('success', 'Message posted!');
         }
     }
 

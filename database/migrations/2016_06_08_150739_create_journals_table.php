@@ -20,6 +20,7 @@ class CreateJournalsTable extends Migration
             $table->text('rawBody');
             $table->text('parsedBody');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -30,6 +30,7 @@ class CreateCommentsTable extends Migration
             $table->foreign('opus_id')->references('id')->on('opuses')->onDelete('cascade');
             $table->foreign('parent_id')->references('id')->on('comments')->onDelete('cascade');
             $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
+            $table->foreign('journal_id')->references('id')->on('journals')->onDelete('cascade');
         });
     }
 
