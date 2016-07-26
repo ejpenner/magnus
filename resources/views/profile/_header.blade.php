@@ -13,12 +13,6 @@
             <a href="{{ action('ProfileController@opera', $user->slug) }}">Art</a>
         </li>
         <li role="presentation"
-            @if(Request::is('profile/**/galleries*') or Request::is('gallery*'))
-                class="active"
-            @endif >
-            <a href="{{ action('ProfileController@galleries', $user->slug) }}">Galleries</a>
-        </li>
-        <li role="presentation"
             @if(Request::is('profile/**/journal*'))
                 class="active"
             @endif >
