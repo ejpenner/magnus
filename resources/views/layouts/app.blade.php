@@ -1,14 +1,22 @@
-<!DOCTYPE html>
+<?php $time_start = microtime(true) ?>
+        <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Gallery App</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="{{ asset('/js/vendor.js') }}"></script>
-    <script src="{{ asset('/js/app.js') }}"></script>
-    <link href="{{ asset('css/app.css') }}" media="screen" rel="stylesheet" type="text/css"/>
-    <script src="{{ asset('/js/angular.js') }}"></script>
+    @if(env('APP_ENV', 'local') == 'local')
+        <script src="{{ asset('/js/vendor.js') }}"></script>
+        <script src="{{ asset('/js/app.js') }}"></script>
+        <link href="{{ asset('css/app.css') }}" media="screen" rel="stylesheet" type="text/css"/>
+        <script src="{{ asset('/js/angular.js') }}"></script>
+    @else
+        <script src="{{ secure_asset('/js/vendor.js') }}"></script>
+        <script src="{{ secure_asset('/js/app.js') }}"></script>
+        <link href="{{ secure_asset('css/app.css') }}" media="screen" rel="stylesheet" type="text/css"/>
+        <script src="{{ secure_asset('/js/angular.js') }}"></script>
+    @endif
     @yield('header')
     <script type="text/javascript">
 
@@ -69,10 +77,9 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if(Auth::check() and Auth::user()->atLeastHasRole(Config::get('roles.admin-code')))
                         <li @if(Request::is('admin')) class="active dropdown" @else class="dropdown" @endif>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin Panel <span class="caret"></span></a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ action('UserController@index') }}">Users</a></li>
-                                <li><a href="{{ action('RoleController@index') }}">User Roles</a></li>
+                                <li><a href="{{ action('AdminController@index') }}">Admin Center</a></li>
                             </ul>
                         </li>
                     @endif
@@ -105,21 +112,25 @@
         </div>
     </nav>
 </div>
-<div class="main-container container-fluid" ng-app="Magnus">
-    <div class="container">
-        @include('partials._flash')
-        @include('partials._errors')
+<div class="main">
+    <div class="main-container container-fluid" ng-app="Magnus">
+        <div class="container">
+            @include('partials._flash')
+            @include('partials._errors')
+        </div>
+        <div class="bg-gradient"></div>
+        @unless(Auth::check() and Auth::user()->hasRole(Config::get('roles.banned-code')))
+            @yield('content')
+            @else
+                <h2 class="text-center">You are banned :(</h2>
+                @endunless
     </div>
-    @unless(Auth::check() and Auth::user()->hasRole(Config::get('roles.banned-code')))
-        @yield('content')
-        @else
-            <h2>You are banned :(</h2>
-            @endunless
+    <?php $end_time = microtime(true); $execution_time = round(($end_time - $time_start)/60, 10); ?>
+    <footer class="container-fluid text-center">
+        <p>&copy; 2016 <strong>Vile</strong>Studio</p>
+        <p><small>{{ config('app.codename') }} v. {{ config('app.version') }} <small>powered by Laravel</small></small></p>
+        <p>Rendered in <?=$execution_time ?> seconds</p>
+    </footer>
 </div>
-<footer class="container-fluid text-center">
-    <p>&copy; 2016 <strong>Vile</strong>Studio</p>
-    <p><small>v. 0.0.9 - Perturbed Gryphon</small></p>
-</footer>
-
 </body>
 </html>

@@ -5,7 +5,7 @@ namespace Magnus\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Magnus\Http\Requests;
-
+use Illuminate\Support\Facades\Schema;
 use Magnus\Permission;
 use Magnus\User;
 
@@ -39,7 +39,7 @@ class PermissionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Requests\PermissionRequest $request)
     {
         $permission = new Permission($request->all());
         $permission->schema_name = strtolower(preg_replace('/\s/', '_', $request->schema_name));
@@ -56,7 +56,12 @@ class PermissionController extends Controller
      */
     public function show($id)
     {
-        //
+        $permissions = Permission::findOrFail($id);
+        $permissionFields = Schema::getColumnListing('permissions');
+        $permissionFields = array_except($permissionFields, [0,1,2,3,sizeof($permissionFields)-1,sizeof($permissionFields)-2]);
+        $permissionFields = array_values($permissionFields);
+
+        return view('permission.show', compact('permissionFields', 'permissions'));
     }
 
     /**
@@ -77,10 +82,9 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Requests\PermissionRequest $request, $id)
     {
         $permission = Permission::findOrFail($id);
-
         $permission->update($request->all());
         $permission->save();
         

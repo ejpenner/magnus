@@ -25,30 +25,29 @@
                                 'action'=> ['AccountController@updateAccount', $user->slug]]) !!}
                         @include('user.partials._form')
                         {!! Form::close() !!}
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Change Password
+                    </div>
+                    <div class="panel-body">
+                        {!! Form::model($user, ['method'=>'PATCH',
+                                        'action'=> ['AccountController@updatePassword', $user->slug]]) !!}
+                        @include('user.partials._password')
+                        {!! Form::close() !!}
+                    </div>
+                </div>
 
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                Change Password
-                            </div>
-                            <div class="panel-body">
-                                {!! Form::model($user, ['method'=>'PATCH',
-                                                'action'=> ['AccountController@updatePassword', $user->slug]]) !!}
-                                @include('user.partials._password')
-                                {!! Form::close() !!}
-                            </div>
-                        </div>
-
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                Change Preferences
-                            </div>
-                            <div class="panel-body">
-                                {!! Form::model($user->preferences, ['action'=>['AccountController@updatePreferences', $user->slug],
-                                        'method' => 'PATCH']) !!}
-                                @include('user.preferences._form')
-                                {!! Form::close() !!}
-                            </div>
-                        </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Change Preferences
+                    </div>
+                    <div class="panel-body">
+                        {!! Form::model($user->preferences, ['action'=>['AccountController@updatePreferences', $user->slug],
+                                'method' => 'PATCH']) !!}
+                        @include('user.preferences._form')
+                        {!! Form::close() !!}
                     </div>
                 </div>
             </div>

@@ -16,7 +16,7 @@
                         </div>
                     </div>
                     <div class="gallery-container">
-                        <a class="btn btn-primary" href="{{ action('ProfileController@opera', $user->slug) }}">See more</a>
+                        <a class="btn btn-primary btn-lg pull-right" href="{{ action('ProfileController@opera', $user->slug) }}">See more</a>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                         @include('profile._favorites', ['columns' => 2, 'opera' => $favorites])
                     </div>
                     <div class="gallery-container">
-                        <a class="btn btn-primary" href="{{ action('ProfileController@favorites', $user->slug) }}">See more</a>
+                        <a class="btn btn-primary btn-lg pull-right" href="{{ action('ProfileController@favorites', $user->slug) }}">See more</a>
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@
             <div class="panel panel-default"> {{-- Watching panel --}}
                 <div class="panel-heading">
                     Watching
-                    <a class="btn btn-xs btn-primary pull-right" href="{{ action('ProfileController@watching', $user->slug) }}">Full list</a>
+                    <a class="btn btn-xs btn-primary btn-lg pull-right" href="{{ action('ProfileController@watching', $user->slug) }}">Full list</a>
                 </div>
                 <div class="panel-body">
                     <ul>
@@ -74,7 +74,7 @@
             <div class="panel panel-default"> {{-- watchers panel --}}
                 <div class="panel-heading">
                     Watchers
-                    <a class="btn btn-xs btn-primary pull-right" href="{{ action('ProfileController@watchers', $user->slug) }}">Full list</a>
+                    <a class="btn btn-xs btn-primary btn-lg pull-right" href="{{ action('ProfileController@watchers', $user->slug) }}">Full list</a>
                 </div>
                 <div class="panel-body">
                     <ul>

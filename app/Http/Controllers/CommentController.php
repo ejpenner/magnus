@@ -17,7 +17,7 @@ class CommentController extends Controller
 
     public function __construct()
     {
-        $this->middleware('comment', ['except'=>['show','index','store', 'storeChild']]);
+        $this->middleware('comment', ['except'=>['show','index','store','storeChild','storeChildRemoveNotification']]);
     }
 
     /**
@@ -34,12 +34,8 @@ class CommentController extends Controller
 
         Notification::notifyUserNewComment($opus->user, $newComment);
 
-        $back = app('url')->previous();
-        if (strpos($back, 'opus') !== false) {
-            return redirect()->to(app('url')->previous() . '#cid:' . $newComment->id)->with('success', 'Message posted!');
-        } else {
-            return redirect()->route('opus.show', $opus->slug)->with('success', 'Message posted!');
-        }
+
+        return Direct::newComment($opus, $newComment);
     }
 
     /**
@@ -80,12 +76,7 @@ class CommentController extends Controller
 
         Notification::notifyUserNewReply($comment->user, $newComment->user, $newComment);
 
-        $back = app('url')->previous();
-        if (strpos($back, 'opus') !== false) {
-            return redirect()->to(app('url')->previous() . '#cid:' . $newComment->id)->with('success', 'Message posted!');
-        } else {
-            return redirect()->route('opus.show', $opus->slug)->with('success', 'Message posted!');
-        }
+        return Direct::newComment($opus, $newComment);
     }
 
     /**
@@ -110,8 +101,8 @@ class CommentController extends Controller
             $notification = Notification::where('id', $notification_id)->first();
             $notification->deleteNotification(Auth::user());
         }
-        //return redirect()->to(app('url')->previous(). '#cid:'.$newComment->id)->with('success', 'Message posted!');
-        return redirect()->route('message.center')->with('success', 'Message posted!');
+
+        return Direct::route('message.center', ['success', 'Message posted!']);
     }
 
     /**
@@ -149,7 +140,7 @@ class CommentController extends Controller
         //
     }
 
-    public function updatedNested(Requests\CommentRequest $request, $comment)
+    public function updatedNested(Requests\CommentRequest $request, $comment_id)
     {
         
     }

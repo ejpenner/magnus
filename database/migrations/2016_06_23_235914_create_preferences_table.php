@@ -23,6 +23,8 @@ class CreatePreferencesTable extends Migration
             $table->integer('dob_year')->nullable();
             $table->string('show_dob')->nullable();
             $table->integer('per_page')->nullable();
+            $table->integer('profile_opus_per_page')->nullable();
+            $table->integer('profile_favorites_per_page')->nullable();
             $table->timestamps();
         });
 

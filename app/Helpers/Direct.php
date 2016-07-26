@@ -20,8 +20,13 @@ class Direct
         }
     }
 
-    public static function to($redirect, $from)
+    public static function route($route, array $message = [])
     {
-
+        $redirect = redirect()->route($route);
+        if($message != emptyArray()) {
+            return $redirect->with($message[0], $message[1]);
+        } else {
+            return $redirect;
+        }
     }
 }

@@ -4,10 +4,15 @@ use Illuminate\Support\Facades\Config;
 /**
  * Model bindings
  */
-Route::model('users', 'User');
-Route::model('profile', 'Profile');
-Route::model('opus', 'Opus');
+//Route::model('users', 'User');
+//Route::model('profile', 'Profile');
+//Route::model('opus', 'Opus');
+//Route::model('category', 'Category');
+//Route::model('journal', 'Journal');
 
+/**
+ * Binds {opus} to the opus model slug
+ */
 Route::bind('opus', function ($value, $route) {
     return \Magnus\Opus::whereSlug(strtolower($value))->firstOrFail();
 });
@@ -20,10 +25,37 @@ Route::bind('users', function ($value, $route) {
 });
 
 /**
- *  binds User model via slug to {profile} wildcard
+ *  binds User model via slug to {profile} variable
  */
 Route::bind('profile', function ($value, $route) {
     return \Magnus\User::whereSlug(strtolower($value))->firstOrFail();
+});
+
+/**
+ * Binds the Category model to the {category} variable
+ */
+Route::bind('category', function ($value, $route) {
+    return \Magnus\Category::whereSlug(strtolower($value))->firstOrFail();
+});
+
+Route::bind('category2', function ($value, $route) {
+    return \Magnus\Category::whereSlug(strtolower($value))->firstOrFail();
+});
+
+Route::bind('category3', function ($value, $route) {
+    return \Magnus\Category::whereSlug(strtolower($value))->firstOrFail();
+});
+
+Route::bind('category4', function ($value, $route) {
+    return \Magnus\Category::whereSlug(strtolower($value))->firstOrFail();
+});
+
+/**
+ * Binds journal model to {journal}
+ */
+
+Route::bind('journal', function ($value, $route) {
+    return \Magnus\Journal::whereSlug(strtolower($value))->firstOrFail();
 });
 
 /**
@@ -37,6 +69,11 @@ Route::auth();
 Route::get('errors/401', ['as' => '401', function () {
     return view('errors.401');
 }]);
+
+/**
+ * Route for browsing via categories
+ */
+Route::get('browse/{category}/{category2?}/{category3?}/{category4?}');
 
 /**
  * A pretty url to show opera that are in a gallery
@@ -56,20 +93,18 @@ Route::get('opus/{opus}/download', 'OpusController@download')->name('opus.downlo
  * Profile routes
  */
 Route::get('profile', 'ProfileController@index')->name('profile.auth');
-Route::patch('profile', 'ProfileController@update')->name('profile.update');
 Route::get('profile/{profile}', 'ProfileController@show')->name('profile.show');
 Route::get('profile/{profile}/favorites', 'ProfileController@favorites')->name('profile.favorites');
 Route::get('profile/{profile}/galleries', 'ProfileController@galleries')->name('profile.galleries');
 Route::get('profile/{profile}/opera', 'ProfileController@opera')->name('profile.opera');
 Route::get('profile/{profile}/watchers', 'ProfileController@watchers')->name('profile.watchers');
 Route::get('profile/{profile}/watching', 'ProfileController@watching')->name('profile.watching');
+Route::get('profile/{profile}/journal', 'JournalController@index')->name('profile.journal');
 
 /**
  * Search route
  */
-Route::get('get/search/{terms}', 'SearchController@infiniteSearch')->name('search.nextpage');
 Route::get('/search/{terms}', ['uses'=> 'SearchController@searchAll', 'as'=>'searchAll'])->name('search');
-
 
 /**
  * Authenticated middleware group
@@ -112,9 +147,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['account']], function () {
         Route::patch('account/{users}/update', 'AccountController@updateAccount')->name('account.update');
         Route::get('account/{users}', 'AccountController@manageAccount')->name('account.manage');
-
         Route::patch('account/{users}/updatePassword', 'AccountController@updatePassword')->name('password.update');
         Route::patch('account/{users}/preferences', 'AccountController@updatePreferences')->name('account.preferences.update');
+        Route::get('profile/{profile}/edit', 'ProfileController@edit')->name('profile.edit');
+        Route::patch('profile', 'ProfileController@update')->name('profile.update');
     });
 
     Route::post('account/{users}/avatar', 'AccountController@uploadAvatar')->name('account.avatar');
@@ -136,8 +172,9 @@ Route::group(['middleware' => ['auth']], function () {
      * Developer middleware group
      */
     Route::group(['middleware'=>'permission:atLeast,'.config('roles.dev-code'), 'prefix'=>'admin'], function () {
-        Route::get('session', 'AdminController@session');
-        Route::get('test', 'AdminController@test');
+        Route::get('session', 'AdminController@session')->name('admin.session');;
+        Route::get('test', 'AdminController@test')->name('admin.test');;
+        Route::get('opus', 'AdminController@opus')->name('admin.opus');
         Route::get('/', 'AdminController@index');
     });
 
@@ -148,19 +185,19 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('permissions', 'PermissionController');
         Route::resource('users', 'UserController');
         Route::resource('roles', 'RoleController');
+        Route::resource('categories', 'CategoryController');
     });
 
     /**
      * Global moderator middleware group
      */
-//    Route::group(['middleware'=>'permission:atLeast,'.config('roles.gmod-code')], function () {
+    Route::group(['middleware'=>'permission:atLeast,'.config('roles.gmod-code')], function () {
 //        Route::get('account/{users}/avatarAdmin', 'AccountController@avatarAdmin');
         Route::post('account/{users}/avatarAdmin', 'AccountController@uploadAvatarAdmin');
-//    });
+    });
 });
 
 /**
  * Home route
  */
-Route::get('get/{filter?}/{period?}', 'HomeController@nextPage')->name('home');
 Route::get('/{filter?}/{period?}', 'HomeController@home')->name('home');

@@ -16,10 +16,11 @@
                         <div class="uploader">
                             <div class="form-group">
                                 <div class="container-fluid">
-                                    <img id="preview" src="#">
+                                    <img id="preview-upload" src="#">
                                 </div>
                             </div>
                         </div>
+                        @include('opus.partials._resizeImage')
                     </div>
                 </div>
                 @include('opus._form')

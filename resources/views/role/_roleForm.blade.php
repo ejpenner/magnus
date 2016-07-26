@@ -7,4 +7,4 @@
     {!! Form::text('level', null, ['class'=>'form-control']) !!}
 </div>
 
-{!! Form::submit('Save', ['class' => 'form-control']) !!}
+{!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}

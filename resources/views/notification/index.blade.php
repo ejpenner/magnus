@@ -64,7 +64,7 @@
                                 </div>
                                 <div class="col-md-10">
                                     <div class="row">
-                                        <span class="comment-name">{{ $comment->user->name }}</span>
+                                        <span class="comment-name">{!! $comment->user->decorateUsername() !!}</span>
                                         <span class="pull-right comment-delete-notification">
                                                 {!! Form::model($comment, ['method'=>'delete', 'class'=>'delete-confirm operations', 'action'=>['NotificationController@destroy', $comment->notification_id]]) !!}
                                             <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</button>
@@ -89,11 +89,16 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-6 col-sm-12">
+    <div class="col-lg-10 col-lg-offset-1 col-sm-12">
         <div class="panel panel-default">
             <div class="panel-heading">New Favorites</div>
             <div class="panel-body">
-
+                @foreach($favoriteResults as $favorite)
+                    <div class="favorite-notification col-lg-12">
+                        <i class="fa fa-heart"></i> <a href="{{ action('ProfileController@show', $favorite->user_slug) }}">{!! Magnus::username($favorite->user_id) !!}</a> has added
+                        <a href="{{ action('OpusController@show', $favorite->opus_slug) }}">{{ $favorite->title }}</a> to their favorites
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>

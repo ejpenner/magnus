@@ -2,6 +2,8 @@
 
 namespace Magnus\Http\Requests;
 
+use Magnus\Permission;
+use Illuminate\Support\Facades\Auth;
 use Magnus\Http\Requests\Request;
 
 class GalleryRequest extends Request
@@ -13,7 +15,7 @@ class GalleryRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        return Permission::hasPermission(Auth::user(), ['user_gallery_permission', 'admin_gallery_permission']);
     }
 
     /**

@@ -17,13 +17,20 @@ class OpusSeeder extends Seeder
     public function run()
     {
         $users = User::all();
-        $galleryMax = 3;
-        $opusMax = 15;
-        $opusGalleryMax = 10;
+        $galleryMax = 1;
+        $opusMax = 10;
+        $opusGalleryMax = 5;
+
+        $opusFinalCount = $users->count() * (($galleryMax *  $opusGalleryMax) + $opusMax);
+        $count = 0;
+
+        fwrite(STDOUT, "\0337"); // save cli output position
 
         foreach($users as $user)  {
             foreach(range(1,$opusMax) as $index) {
                 factory(Opus::class)->create(['user_id'=>$user->id]);
+                $count++;
+                fwrite(STDOUT, "\0338"."\033[0;36mOpusSeeder: ".number_format(100 * ($count / $opusFinalCount), 2)."% Complete \033[0m");
             }
 
             foreach(range(1,$galleryMax) as $index) {
@@ -34,9 +41,12 @@ class OpusSeeder extends Seeder
 
                 foreach(range(1,$opusGalleryMax) as $i)
                 {
+
                     $opusG = factory(Opus::class)->create(['user_id'=>$user->id]);
 
-                    echo $opusG."\n\n";;
+                    //echo "\033[0;36m".$opusG."\033[0m\n\n";
+                    $count++;
+                    fwrite(STDOUT, "\0338"."\033[0;36mOpusSeeder: ".number_format(100 * ($count / $opusFinalCount), 2)."% Complete \033[0m");
 
                     $opusG->save();
                     $gallery->opera()->attach($opusG->id);
@@ -44,5 +54,7 @@ class OpusSeeder extends Seeder
 
             }
         }
+
+        fwrite(STDOUT, PHP_EOL);
     }
 }

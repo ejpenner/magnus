@@ -2,11 +2,10 @@
 
 namespace Magnus\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use Magnus\Http\Requests;
 use Magnus\User;
 use Magnus\Preference;
+use Magnus\Http\Requests;
+use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {

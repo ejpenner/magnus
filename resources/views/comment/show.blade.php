@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <div class="container-fluid comment" id="{{ $comment->id }}">
+        <div class="container-fluid comment" id="cid:{{ $comment->id }}">
             <div class="row">
                 <div class="col-md-2 comment-avatar">
                     <div class="text-center">

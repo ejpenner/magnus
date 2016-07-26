@@ -1,6 +1,7 @@
 @import "font-awesome/font-awesome";
 @import "bootstrap/bootstrap";
 @import "cropper/cropper";
+@import "shared/ng-table";
 @import "shared/mixins";
 @import "shared/widgets";
 @import "shared/opus";
@@ -14,11 +15,19 @@
 @newDanger: #73504a;
 @newSuccess: #6d9771;
 @newDefault: #EEE;
-
+@commentBg: rgb(197, 209, 212);
+@linkColor: #314652;
+@navbar-color:  .gradient(#191819, #000418);
 @white: #FFFFFF;
 
-@comment-highlight: #c9dfe3;
+.panel-heading {
+  .gradient(#191819, #000418) !important;
+}
 
+
+@comment-highlight: #a7d1d6;
+
+@panel-bg: @newDefault;
 @brand-primary: @newPrimary;
 @btn-default-bg: @newDefault;
 @brand-danger: @newDanger;
@@ -31,22 +40,29 @@
 
 @badge-bg: @newPrimary;
 
+html, body {
+  height: 100%;
+}
+
 .navbar-inverse {
   .gradient(#191819, #000418) !important;
 }
+
 .top-header {
   position: absolute;
   top: 180px;
   left: 0;
   width: 100%;
-  z-index: 10002;
-
+  z-index: 101;
 }
 
+.button-container {
+  position: relative;
+  z-index: 100;
+}
 .search-sort-buttons {
+  position: relative;
 }
-
-
 
 div.main-container {
   border-top: 30px;
@@ -57,6 +73,31 @@ div.main-container {
   position:fixed;
   top:0;
 }
+
+.fixed-buttons {
+  position:fixed;
+  top: 60px;
+  background-color: white;
+  padding: 5px 5px 5px 0;
+  .border-radius(5px);
+}
+
+.main {
+  position: relative;
+  width: inherit;
+  height: inherit;
+
+  .bg-gradient {
+    position: fixed;
+    height: 500px;
+    width: 100%;
+    bottom: 0;
+    z-index: -100;
+    left: 0;
+    .gradient(rgba(255, 255, 255, 0.3), #b8c3d5);
+  }
+}
+
 
 .magnus-navbar { /* Container just in case we want more than just the search input to come along */
   position: absolute;
@@ -100,13 +141,14 @@ div.message-item {
   //margin-top: 15px;
 }
 
-
 /* Add a gray background color and some padding to the footer */
 footer {
-  background-color: @gray-darker !important;
+  position: relative;
+  .gradient(#191819, #000418) !important;
   padding: 25px;
   padding-bottom: 75px !important;
   margin-top: 25px !important;
+  z-index: 20;
 }
 
 // Operations partial styling
@@ -124,9 +166,9 @@ a.avatar-link {
 }
 
 .watch-date {
-   color: #8c8c8c;
-   font-style: italic;
- }
+  color: #8c8c8c;
+  font-style: italic;
+}
 
 .optional-field {
   color: #8c8c8c;

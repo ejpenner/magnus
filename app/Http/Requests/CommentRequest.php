@@ -2,7 +2,9 @@
 
 namespace Magnus\Http\Requests;
 
+use Magnus\Permission;
 use Magnus\Http\Requests\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentRequest extends Request
 {
@@ -13,7 +15,17 @@ class CommentRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        return Permission::hasPermission(Auth::user(), ['user_comment_permission', 'admin_comment_permission']);
+    }
+
+    /**
+     * Return to the comment input area for top level comments
+     * @param array $errors
+     * @return $this
+     */
+    public function response(array $errors)
+    {
+        return redirect()->to(app('url')->previous() . '#replyTop')->withErrors($errors)->withInput();
     }
 
     /**

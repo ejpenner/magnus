@@ -110,9 +110,9 @@ class Gallery extends Model
 
     public static function makeDirectories(User $user)
     {
-        $username = strtolower($user->username);
-        File::makeDirectory(public_path('art/'.$username), 0664);
-        File::makeDirectory(public_path('art/'.$username.'/avatars'), 0664);
+        $username = strtolower($user->slug);
+        File::makeDirectory(public_path('art/'.$username), 0755);
+        File::makeDirectory(public_path().'/art/'.$username.'/avatars');
     }
     
     public function hasOpus(Opus $opus)

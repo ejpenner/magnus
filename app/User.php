@@ -3,21 +3,25 @@
 namespace Magnus;
 
 use Carbon\Carbon;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use Magnus\Helpers\Helpers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    private $artDirectory = 'art';
+    use SoftDeletes;
+
+    protected $artDirectory = 'art';
+    protected $avatarDirectory = 'avatars';
+    protected $avatarResize = '150';
 
     /**
      * The attributes that are mass assignable.
-     *
      * @var array
      */
     protected $fillable = [
@@ -28,17 +32,14 @@ class User extends Authenticatable
 
     /**
      * The attributes that should be hidden for arrays.
-     *
      * @var array
      */
     protected $hidden = [
         'password', 'remember_token',
     ];
 
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
-    private $avatarDirectory = 'avatars';
-    private $avatarResize = '150';
 
     /**
      * User has 0:M relationship with Gallery model
@@ -131,22 +132,39 @@ class User extends Authenticatable
     }
 
     /**
-     *  Return some span formatting around names for fancy CSS output
-     * @return string
+     * One user can be reported many times
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function decorateName()
+    public function reports()
     {
-        if (Role::atLeastHasRole($this, Config::get('roles.dev-code'))) {
-            return "<span class=\"username role-developer\">$this->name</span>";
-        } elseif (Role::atLeastHasRole($this, Config::get('roles.admin-code'))) {
-            return "<span class=\"username role-administrator\">$this->name</span>";
-        } elseif (Role::atLeastHasRole($this, Config::get('roles.gmod-code'))) {
-            return "<span class=\"username role-globalModerator\">$this->name</span>";
-        } elseif (Role::atLeastHasRole($this, Config::get('roles.mod-code'))) {
-            return "<span class=\"username role-moderator\">$this->name</span>";
-        } else {
-            return "<span class=\"username\">$this->name</span>";
-        }
+        return $this->hasMany('Magnus\Report', 'reported_user_id');
+    }
+
+    /**
+     * One user can file many reports
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reported()
+    {
+        return $this->hasMany('Magnus\Report', 'reporting_user_id');
+    }
+
+    /**
+     * One Admin user can handle many reports
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reportsHandled()
+    {
+        return $this->hasMany('Magnus\Report', 'admin_user_id');
+    }
+
+    /**
+     * One user can have many journal entries
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function journals()
+    {
+        return $this->hasMany('Magnus\Journal');
     }
 
     /**
@@ -175,9 +193,12 @@ class User extends Authenticatable
      * @param $action: string
      * @return bool|void
      */
-    public function hasPermission($permission)
+    public function hasPermission(array $permissions)
     {
-
+        if(Permission::hasPermission($this, $permissions)) {
+            return true;
+        }
+        return false;
     }
 
     /**

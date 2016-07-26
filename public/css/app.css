@@ -7665,7 +7665,7 @@ button.list-group-item-danger.active:focus {
 }
 .panel {
   margin-bottom: 20px;
-  background-color: #fff;
+  background-color: #EEE;
   border: 1px solid transparent;
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -9264,10 +9264,149 @@ button.close {
 .cropper-disabled .cropper-point {
   cursor: not-allowed;
 }
-span.gallery-select {
+.ng-table th {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.ng-table th.sortable {
+  cursor: pointer;
+}
+.ng-table th.sortable .sort-indicator {
+  padding-right: 18px;
   position: relative;
 }
-span.gallery-select .checkbox-vis-hidden {
+.ng-table th.sortable .sort-indicator:after,
+.ng-table th.sortable .sort-indicator:before {
+  content: "";
+  border-width: 0 4px 4px;
+  border-style: solid;
+  border-color: #000 transparent;
+  visibility: visible;
+  right: 5px;
+  top: 50%;
+  position: absolute;
+  opacity: .3;
+  margin-top: -4px;
+}
+.ng-table th.sortable .sort-indicator:before {
+  margin-top: 2px;
+  border-bottom: none;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #000;
+}
+.ng-table th.sortable .sort-indicator:hover:after,
+.ng-table th.sortable .sort-indicator:hover:before {
+  opacity: 1;
+  visibility: visible;
+}
+.ng-table th.sortable.sort-desc,
+.ng-table th.sortable.sort-asc {
+  background-color: rgba(141, 192, 219, 0.25);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+}
+.ng-table th.sortable.sort-desc .sort-indicator:after,
+.ng-table th.sortable.sort-asc .sort-indicator:after {
+  margin-top: -2px;
+}
+.ng-table th.sortable.sort-desc .sort-indicator:before,
+.ng-table th.sortable.sort-asc .sort-indicator:before {
+  visibility: hidden;
+}
+.ng-table th.sortable.sort-asc .sort-indicator:after,
+.ng-table th.sortable.sort-asc .sort-indicator:hover:after {
+  visibility: visible;
+  filter: alpha(opacity=60);
+  -khtml-opacity: 0.6;
+  -moz-opacity: 0.6;
+  opacity: 0.6;
+}
+.ng-table th.sortable.sort-desc .sort-indicator:after {
+  border-bottom: none;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #000;
+  visibility: visible;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  filter: alpha(opacity=60);
+  -khtml-opacity: 0.6;
+  -moz-opacity: 0.6;
+  opacity: 0.6;
+}
+.ng-table th.filter .input-filter {
+  margin: 0;
+  display: block;
+  width: 100%;
+  min-height: 30px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.ng-table + .pagination {
+  margin-top: 0;
+}
+@media only screen and (max-width: 800px) {
+  .ng-table-responsive td:before {
+    position: absolute;
+    padding: 8px;
+    left: 0;
+    top: 0;
+    width: 50%;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
+  }
+  .ng-table-responsive thead tr th {
+    text-align: left;
+  }
+  .ng-table-responsive thead tr.ng-table-filters th {
+    padding: 0;
+  }
+  .ng-table-responsive thead tr.ng-table-filters th form > div {
+    padding: 8px;
+  }
+  .ng-table-responsive td {
+    border: none;
+    position: relative;
+    padding-left: 50%;
+    white-space: normal;
+    text-align: left;
+  }
+  .ng-table-responsive td:before {
+    content: attr(data-title-text);
+  }
+  .ng-table-responsive,
+  .ng-table-responsive thead,
+  .ng-table-responsive tbody,
+  .ng-table-responsive th,
+  .ng-table-responsive td,
+  .ng-table-responsive tr {
+    display: block;
+  }
+}
+.favorite-notification {
+  border: solid #777777 1px;
+  padding: 2px;
+  margin: 1px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.gallery-select,
+.permission-select {
+  position: relative;
+}
+.gallery-select .checkbox-vis-hidden,
+.permission-select .checkbox-vis-hidden {
   border: 0;
   clip: rect(0 0 0 0);
   height: 1px;
@@ -9277,7 +9416,8 @@ span.gallery-select .checkbox-vis-hidden {
   position: absolute;
   width: 1px;
 }
-span.gallery-select label {
+.gallery-select label,
+.permission-select label {
   margin: 5px;
   padding: 8px;
   border: 1px solid gray;
@@ -9292,26 +9432,46 @@ span.gallery-select label {
   -moz-box-shadow: 1px 1px 1px #CCCCCC;
   box-shadow: 1px 1px 1px #CCCCCC;
 }
-span.gallery-select input:checked + label {
+.gallery-select input:checked + label,
+.permission-select input:checked + label {
   border-color: green;
   color: green;
   -webkit-box-shadow: 2px 2px 2px #888888;
   -moz-box-shadow: 2px 2px 2px #888888;
   box-shadow: 2px 2px 2px #888888;
 }
-span.gallery-select input:focus:checked + label {
+.gallery-select input:focus:checked + label,
+.permission-select input:focus:checked + label {
   border-color: green;
   color: green;
   -webkit-box-shadow: 2px 2px 2px #888888;
   -moz-box-shadow: 2px 2px 2px #888888;
   box-shadow: 2px 2px 2px #888888;
+}
+.permission-select label {
+  margin: 5px;
+  padding: 10px;
+  width: 100%;
+  border: 2px solid gray;
+  color: black;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  -webkit-box-shadow: 1px 1px 1px #CCCCCC;
+  -moz-box-shadow: 1px 1px 1px #CCCCCC;
+  box-shadow: 1px 1px 1px #CCCCCC;
 }
 div.flash-messages {
-  position: absolute;
-  top: 5%;
-  z-index: 10;
-  width: 60%;
-  min-width: 300px;
+  position: fixed;
+  font-size: larger;
+  top: 7%;
+  z-index: 102;
+  width: 400px;
+  padding: 10px;
+  left: 75%;
 }
 div.flash-messages ul {
   list-style-type: none;
@@ -9425,12 +9585,40 @@ span.role-banned {
 }
 .fullview-box {
   display: none;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
   margin-bottom: 15px;
+}
+.opus-main #opus-image {
+  width: 100%;
+  float: left;
+}
+.opus-main .opus-panel {
+  float: left;
+  width: 100%;
+}
+.opus-main .opus-sidebar {
+  float: right;
+  width: 19%;
+  height: 500px;
+  border-left: solid #829aa0 1px;
+  position: relative;
+  margin-left: 5px;
+  background: #c5d1d4;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
 }
 #fullview {
   display: none;
+  cursor: zoom-out;
+}
+#preview {
+  cursor: zoom-in;
 }
 div .thumbnail-wrap {
   position: relative;
@@ -9485,11 +9673,15 @@ div.gallery-item .vcenter {
   top: 50%;
   left: 50%;
   margin-right: -50%;
+  z-index: 4;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
+}
+div.gallery-item .vcenter a {
+  color: #314652;
 }
 .gallery-operations {
   position: absolute;
@@ -9515,11 +9707,11 @@ div.gallery-item .vcenter {
 }
 .opus-display {
   display: block;
+  width: 100%;
 }
 .opus-display .opus-show {
-  margin-left: auto;
-  margin-right: auto;
   margin-bottom: 15px;
+  max-width: 1300px;
   -webkit-box-shadow: 5px 5px 5px #888888;
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 5px 5px 5px #888888;
@@ -9537,11 +9729,13 @@ div.gallery-item .vcenter {
 }
 div.uploader {
   text-align: center;
+  margin-bottom: 10px;
 }
-div.uploader #preview {
+div.uploader #preview-upload {
   position: relative;
   max-width: 100%;
   /* This rule is very important, please do not ignore this! */
+  max-height: 400px;
   -webkit-box-shadow: 5px 5px 5px #888888;
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 5px 5px 5px #888888;
@@ -9551,12 +9745,13 @@ div.uploader #preview-edit {
   position: relative;
   max-width: 100%;
   /* This rule is very important, please do not ignore this! */
+  max-height: 400px;
   -webkit-box-shadow: 5px 5px 5px #888888;
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 5px 5px 5px #888888;
 }
 .comment {
-  background-color: #eeeeee;
+  background-color: #c5d1d4;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
@@ -9564,7 +9759,10 @@ div.uploader #preview-edit {
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
   padding: 5px;
-  margin: 1px;
+  margin: 4px;
+}
+.comment a {
+  color: #314652;
 }
 .comment .comment-name {
   font-weight: bold;
@@ -9626,7 +9824,7 @@ div.uploader #preview-edit {
   margin-bottom: 2px;
 }
 .comment:target {
-  background-color: #c9dfe3;
+  background-color: #a7d1d6;
 }
 div.gallery-sidebar {
   padding-bottom: 20px;
@@ -9645,6 +9843,19 @@ div.gallery-sidebar img {
   max-width: 200px;
   max-height: 200px;
 }
+@navbar-color :  .gradient(#191819, #000418);
+.panel-heading {
+  background-color: #191819 !important;
+  background: -webkit-gradient(linear, left top, left bottom, from(#191819), to(#000418)) !important;
+  background: -webkit-linear-gradient(top, #191819, #000418) !important;
+  background: -moz-linear-gradient(top, #191819, #000418) !important;
+  background: -ms-linear-gradient(top, #191819, #000418) !important;
+  background: -o-linear-gradient(top, #191819, #000418) !important;
+}
+html,
+body {
+  height: 100%;
+}
 .navbar-inverse {
   background-color: #191819 !important;
   background: -webkit-gradient(linear, left top, left bottom, from(#191819), to(#000418)) !important;
@@ -9658,7 +9869,14 @@ div.gallery-sidebar img {
   top: 180px;
   left: 0;
   width: 100%;
-  z-index: 10002;
+  z-index: 101;
+}
+.button-container {
+  position: relative;
+  z-index: 100;
+}
+.search-sort-buttons {
+  position: relative;
 }
 div.main-container {
   border-top: 30px;
@@ -9667,6 +9885,37 @@ div.main-container {
 .fixed {
   position: fixed;
   top: 0;
+}
+.fixed-buttons {
+  position: fixed;
+  top: 60px;
+  background-color: white;
+  padding: 5px 5px 5px 0;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.main {
+  position: relative;
+  width: inherit;
+  height: inherit;
+}
+.main .bg-gradient {
+  position: fixed;
+  height: 500px;
+  width: 100%;
+  bottom: 0;
+  z-index: -100;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.3);
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.3)), to(#b8c3d5));
+  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.3), #b8c3d5);
+  background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.3), #b8c3d5);
+  background: -ms-linear-gradient(top, rgba(255, 255, 255, 0.3), #b8c3d5);
+  background: -o-linear-gradient(top, rgba(255, 255, 255, 0.3), #b8c3d5);
 }
 .magnus-navbar {
   /* Container just in case we want more than just the search input to come along */
@@ -9700,10 +9949,17 @@ div.message-item {
 }
 /* Add a gray background color and some padding to the footer */
 footer {
-  background-color: #222222 !important;
+  position: relative;
+  background-color: #191819 !important;
+  background: -webkit-gradient(linear, left top, left bottom, from(#191819), to(#000418)) !important;
+  background: -webkit-linear-gradient(top, #191819, #000418) !important;
+  background: -moz-linear-gradient(top, #191819, #000418) !important;
+  background: -ms-linear-gradient(top, #191819, #000418) !important;
+  background: -o-linear-gradient(top, #191819, #000418) !important;
   padding: 25px;
   padding-bottom: 75px !important;
   margin-top: 25px !important;
+  z-index: 20;
 }
 .operations {
   display: inline;

@@ -2,6 +2,7 @@
 
 namespace Magnus\Http\Requests;
 
+use Magnus\Permission;
 use Magnus\Http\Requests\Request;
 
 class OpusEditRequest extends Request
@@ -13,7 +14,7 @@ class OpusEditRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        return Permission::hasPermission(Auth::user(), ['user_opus_permission', 'admin_opus_permission']);
     }
 
     /**

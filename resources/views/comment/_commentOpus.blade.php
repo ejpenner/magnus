@@ -1,9 +1,9 @@
 @include('comment._reply', ['opus'=>$opus])
-<div class="container-fluid">
+<div class="container">
     @foreach($comments as $comment)
         @if($comment->parent_id == null)
             <div class="comment-area">
-                <div class="container-fluid comment" id="cid:{{ $comment->id }}">
+                <div class="container-fluid comment anchor" id="cid:{{ $comment->id }}">
                     @if(!isset($comment->deleted) or !$comment->deleted)
                         <div class="col-md-2 comment-avatar">
                             <div class="text-center">

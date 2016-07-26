@@ -18,7 +18,7 @@ class Account
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->atLeastHasRole(Config::get('roles.admin-code')) or $request->route('users')->id == Auth::user()->id) {
+        if (Auth::check() and Auth::user()->atLeastHasRole(Config::get('roles.admin-code')) or $request->route('users')->id == Auth::user()->id) {
             return $next($request);
         } else {
             return redirect()->back()->withErrors('You are not permitted to complete that action or view that page.');
