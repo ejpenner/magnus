@@ -40,7 +40,7 @@ class Opus extends Model
      */
     public function comments()
     {
-        return $this->hasMany('Magnus\Comment');
+        return $this->morphMany('Magnus\Comment', 'commentable');
     }
 
     /**

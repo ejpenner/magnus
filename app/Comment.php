@@ -36,20 +36,24 @@ class Comment extends Model
         return $this->belongsTo('Magnus\User');
     }
 
-    public function opus()
+    public function commentable()
     {
-        return $this->belongsTo('Magnus\Opus');
+        return $this->morphTo();
     }
-    
-    public function profile()
-    {
-        return $this->belongsTo('Magnus\Profile');
-    }
+//    public function opus()
+//    {
+//        return $this->belongsTo('Magnus\Opus');
+//    }
+//
+//    public function profile()
+//    {
+//        return $this->belongsTo('Magnus\Profile');
+//    }
 
-    public function journal()
-    {
-        $this->belongsTo('Magnus\Journal');
-    }
+//    public function journal()
+//    {
+//        $this->belongsTo('Magnus\Journal');
+//    }
 
     public function childComments()
     {

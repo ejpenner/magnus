@@ -20,7 +20,7 @@ class Journal extends Model
 
     public function comments()
     {
-        return $this->hasMany('Magnus\Comments');
+        return $this->morphMany('Magnus\Comment', 'commentable');
     }
 
     public function setSlugAttribute($value)
