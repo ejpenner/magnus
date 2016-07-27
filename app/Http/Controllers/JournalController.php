@@ -16,7 +16,13 @@ class JournalController extends Controller
      */
     public function index(User $user)
     {
-        $journals = $user->journals;
+        //$journals = $user->journals->with('commentCount');
+        $journals = Journal::where('user_id', $user->id)->with('commentCount')->get();
+
+        //dd($journals->first()->commentCount);
+        $profile = $user->profile;
+
+        return view('journal.index', compact('user', 'journals', 'profile'));
     }
 
     /**

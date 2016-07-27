@@ -53,7 +53,7 @@
             {{--</div>--}}
         </div>
         <div class="col-lg-6 col-md-12">
-
+            @include('profile._journal', ['user'=>$user, 'journal' => $journal])
         </div>
     </div>
     <div class="container-fluid">

@@ -2,15 +2,12 @@
 
 namespace Magnus\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use Magnus\Favorite;
-use Magnus\Http\Requests;
-use Illuminate\Support\Facades\Auth;
 use Magnus\Opus;
 use Magnus\Comment;
-use Magnus\User;
+use Magnus\Favorite;
 use Magnus\Notification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {

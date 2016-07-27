@@ -6,6 +6,7 @@
 @import "shared/widgets";
 @import "shared/opus";
 @import "shared/comments";
+@import "shared/journal";
 @import "shared/profile";
 
 @404-image: url("/images/404/404-space.jpg");
@@ -25,7 +26,7 @@
 }
 
 
-@comment-highlight: #a7d1d6;
+@comment-highlight: #c5dbde;
 
 @panel-bg: @newDefault;
 @brand-primary: @newPrimary;
@@ -40,8 +41,12 @@
 
 @badge-bg: @newPrimary;
 
-html, body {
-  height: 100%;
+*[id]:before {
+  display: block;
+  content: " ";
+  margin-top: -250px;
+  height: 250px;
+  visibility: hidden;
 }
 
 .navbar-inverse {

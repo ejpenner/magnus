@@ -201,9 +201,9 @@ class Opus extends Model
     public function getCreatedAtAttribute($value)
     {
         if (isset(Auth::user()->timezone)) {
-            return date_format(Carbon::parse($value)->timezone(Auth::user()->timezone), 'M d, Y g:iA');
+            return Carbon::parse($value)->timezone(Auth::user()->timezone)->format('M d, Y g:i A');
         } else {
-            return date_format(Carbon::parse($value), 'F d, Y');
+            return Carbon::parse($value)->format('F d, Y');
         }
     }
 
@@ -214,12 +214,7 @@ class Opus extends Model
      */
     public function getPublishedAtAttribute($value)
     {
-//        if (isset(Auth::user()->timezone)) {
-//            return date_format(Carbon::parse($value)->timezone(Auth::user()->timezone), 'F d, Y');
-//        } else {
-//            return date_format(Carbon::parse($value), 'F d, Y');
-//        }
-        return date_format(Carbon::parse($value), 'Y');
+        return Carbon::parse($value)->format('Y');
     }
     
     /**

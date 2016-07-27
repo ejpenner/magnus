@@ -9487,6 +9487,7 @@ span.role-developer::before {
   font-size: 90%;
   position: relative;
   color: #FFFFFF;
+  font-weight: normal;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -9507,6 +9508,7 @@ span.role-administrator::before {
   font-size: 90%;
   position: relative;
   color: #FFFFFF;
+  font-weight: normal;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -9527,6 +9529,7 @@ span.role-globalModerator::before {
   font-size: 90%;
   position: relative;
   color: #FFFFFF;
+  font-weight: normal;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -9547,6 +9550,7 @@ span.role-moderator::before {
   font-size: 90%;
   position: relative;
   color: #FFFFFF;
+  font-weight: normal;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -9750,6 +9754,9 @@ div.uploader #preview-edit {
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 5px 5px 5px #888888;
 }
+#replyTop {
+  margin-top: 10px;
+}
 .comment {
   background-color: #c5d1d4;
   -webkit-border-radius: 10px;
@@ -9766,6 +9773,10 @@ div.uploader #preview-edit {
 }
 .comment .comment-name {
   font-weight: bold;
+}
+.comment .comment-avatar {
+  height: 150px;
+  line-height: 150px;
 }
 .comment .comment-avatar img {
   -webkit-border-radius: 5px;
@@ -9788,7 +9799,7 @@ div.uploader #preview-edit {
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-  min-height: 130px;
+  min-height: 135px;
 }
 .comment .comment-body .comment-date {
   padding: 5px 10px 0px 10px;
@@ -9824,7 +9835,42 @@ div.uploader #preview-edit {
   margin-bottom: 2px;
 }
 .comment:target {
-  background-color: #a7d1d6;
+  background-color: #c5dbde;
+}
+.journal-entry {
+  padding-bottom: 10px !important;
+}
+.journal-entry hr {
+  border-color: #CCC;
+}
+.journal-entry .journal-title a {
+  color: #222222;
+}
+.journal-entry .journal-body {
+  background-color: #FFFFFF;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  min-height: 50px;
+  padding: 10px;
+}
+.journal-entry .journal-details {
+  color: #8c8c8c;
+}
+.journal-entry.panel {
+  margin-bottom: 0 !important;
+}
+.journal-stats {
+  margin-bottom: 20px;
+}
+.journal-stats a {
+  font-weight: bold;
+}
+.journal-stats .journal-date {
+  font-weight: bold;
 }
 div.gallery-sidebar {
   padding-bottom: 20px;
@@ -9852,9 +9898,12 @@ div.gallery-sidebar img {
   background: -ms-linear-gradient(top, #191819, #000418) !important;
   background: -o-linear-gradient(top, #191819, #000418) !important;
 }
-html,
-body {
-  height: 100%;
+*[id]:before {
+  display: block;
+  content: " ";
+  margin-top: -250px;
+  height: 250px;
+  visibility: hidden;
 }
 .navbar-inverse {
   background-color: #191819 !important;

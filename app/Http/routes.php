@@ -119,20 +119,20 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      * Pretty url CRUD for comments
      */
-    Route::post('opus/{opus}/comment', 'CommentController@store');
-    Route::post('opus/{opus}/comment/{comment}', 'CommentController@storeChild');
+    Route::post('comment/{opus}', 'CommentController@store');
+    Route::post('comments/{comment}', 'CommentController@storeChild');
     Route::patch('comment/{comment}', 'CommentController@update');
     Route::delete('comment/{comment}', 'CommentController@destroy');
-    Route::delete('opus/{opus}/comment/{comment}', 'CommentController@destroyChild');
+    Route::delete('comment/{comment}', 'CommentController@destroyChild');
     Route::post('journal/{journal}/comment', 'CommentController@storeJournal');
-    Route::post('journal/{journal}/comment/{comment}', 'CommentController@storeChildJournal');
+    Route::post('profile/{profile}/comment', 'CommentController@storeProfile');
 
     /**
      * Notification controller and related routes
      */
     Route::get('messages', 'NotificationController@index')->name('message.center');
     Route::get('messages/{id}', 'NotificationController@destroy')->name('message.destroy');
-    Route::post('messages/{opus_id}/{comment}/{notification}', 'CommentController@storeChildRemoveNotification');
+    Route::post('messages/{comment}/{notification}', 'CommentController@storeChildRemoveNotification');
     Route::delete('messages/selected', 'NotificationController@destroySelected');
     
     /**
