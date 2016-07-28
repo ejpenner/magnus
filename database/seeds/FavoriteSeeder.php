@@ -27,7 +27,7 @@ class FavoriteSeeder extends Seeder
 
         foreach($users as $user)
         {
-            foreach(range(1,5) as $i)
+            foreach(range(1,20) as $i)
             {
                 $fav = $favorites->first();
                 $add = $fav->add($user);

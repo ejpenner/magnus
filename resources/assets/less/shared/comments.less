@@ -1,3 +1,7 @@
+#replyTop {
+  margin-top: 10px;
+}
+
 .comment {
   //border: @gray-lighter solid 2px;
   background-color: @commentBg;
@@ -14,7 +18,8 @@
   }
 
   .comment-avatar {
-    //padding: 20px;
+    height: 150px;
+    line-height: 150px;
     img {
       .border-radius(5px);
     }
@@ -29,7 +34,7 @@
   .comment-body {
     background-color: @white;
     .border-radius();
-    min-height: 130px;
+    min-height: 135px;
 
     .comment-date {
       padding: 5px 10px 0px 10px;
@@ -47,6 +52,7 @@
   .container.comment {
     margin-left: 10px;
   }
+
 }
 
 .comment-area {

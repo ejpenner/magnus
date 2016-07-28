@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProfileSeeder::class);
         $this->call(OpusSeeder::class);
         $this->call(TagSeeder::class);
+        $this->call(JournalSeeder::class);
         $this->call(CommentSeeder::class);
         $this->call(FavoriteSeeder::class);
         $this->call(NotificationSeeder::class);

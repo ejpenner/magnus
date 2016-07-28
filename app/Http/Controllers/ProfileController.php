@@ -129,11 +129,12 @@ class ProfileController extends Controller
     public function show(User $user)
     {
         $profile = $user->profile;
-        $galleries = $user->galleries()->limit(4)->orderBy('updated_at', 'desc')->get();
         $opera = $user->opera()->limit(6)->orderBy('created_at', 'desc')->get();
-        $favorites = $user->favorites()->orderBy('favorite_user.created_at', 'desc')->get();
+        $favorites = $user->favorites()->limit(6)->orderBy('favorite_user.created_at', 'desc')->get();
+        $journal = $user->journals()->orderBy('created_at', 'desc')->first();
+
         if ($user->name != null) {
-            return view('profile.show', compact('profile', 'user', 'galleries', 'opera', 'favorites'));
+            return view('profile.show', compact('profile', 'user', 'galleries', 'opera', 'favorites', 'journal'));
         } else {
             return abort(404);
         }

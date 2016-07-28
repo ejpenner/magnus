@@ -49,6 +49,7 @@ class SearchController extends Controller
         $whereClause = '';
         $tagClause = '';
         $orderUrl = 'desc';
+        $tagCount = 0;
         $periodUrl = '';
         $input = [
             'page' => $request->has('page') ? $request->input('page') : 1,
@@ -62,6 +63,7 @@ class SearchController extends Controller
                     $term = preg_replace('/@/', '', filter_var($term, FILTER_SANITIZE_STRING));
                     $tag = Tag::where('name', $term)->first();
                     array_push($tag_ids, $tag->id);
+                    $tagCount++;
                 } catch (\Exception $e) { //if $tag->id throws an error, the tag doesn't exist, add it to the term list
                     array_push($termList, filter_var($term, FILTER_SANITIZE_STRING));
                 }
@@ -119,7 +121,7 @@ class SearchController extends Controller
                     $sortUrl = strtolower($request->input('sort'));
                     break;
                 case 'popular':
-                    $sort = 'ORDER BY o.views '.$order;
+                    $sort = 'ORDER BY o.views, favorite_count '.$order;
                     $sortUrl = strtolower($request->input('sort'));
                     break;
                 case 'hot':
@@ -181,7 +183,7 @@ class SearchController extends Controller
             $periodUrl = 'null';
         }
 
-        $query = 'SELECT o.*, u.username, r.role_code, u.slug userslug, matching_tags.matched
+        $query = 'SELECT o.*, u.username, r.role_code, u.slug userslug, matching_tags.matched, IFNULL(favorite_count.count, 0) as favorite_count
                   FROM opuses o
                   INNER JOIN opus_tag ot ON o.id = ot.opus_id
                   INNER JOIN tags t ON t.id = ot.tag_id
@@ -193,7 +195,13 @@ class SearchController extends Controller
 					   FROM opuses o JOIN opus_tag ot ON o.id = ot.opus_id
 					   JOIN tags t ON ot.tag_id = t.id
 					   '. $tagClause .'
-					   GROUP BY o.id) AS matching_tags ON o.id = matching_tags.id 
+					   GROUP BY o.id
+					   HAVING COUNT(DISTINCT t.id) = ' . $tagCount . ') AS matching_tags ON o.id = matching_tags.id
+                  LEFT OUTER JOIN
+                      (SELECT favorites.opus_id, count(*) AS count 
+                       FROM favorites 
+                       JOIN favorite_user ON favorites.id = favorite_user.favorite_id 
+                       GROUP BY favorites.opus_id) as favorite_count ON o.id = favorite_count.opus_id
                   '. $whereClause .'
                   ' . $period . '
                   GROUP BY o.id, matching_tags.matched

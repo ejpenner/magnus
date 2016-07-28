@@ -99,6 +99,7 @@
                         <a href="{{ action('OpusController@show', $favorite->opus_slug) }}">{{ $favorite->title }}</a> to their favorites
                     </div>
                 @endforeach
+                {{ $favoriteResults->render() }}
             </div>
         </div>
     </div>

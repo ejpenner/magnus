@@ -1,4 +1,4 @@
-@if(Auth::check() and Auth::user()->hasPermission(['user_comment_permission', 'admin_comment_permission']))
+@if(Auth::check())
     <div class="reply-toggle container" id="replyTop">
         <button class="btn btn-primary reply-btn">Reply</button>
         <div class="container reply-form">

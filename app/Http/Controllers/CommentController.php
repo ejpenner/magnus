@@ -2,22 +2,21 @@
 
 namespace Magnus\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use Magnus\User;
 use Magnus\Opus;
 use Magnus\Comment;
+use Magnus\Journal;
 use Magnus\Notification;
 use Magnus\Http\Requests;
 use Magnus\Helpers\Direct;
-use Illuminate\Support\Facades\Auth;
+use Magnus\Http\Requests\CommentRequest;
 
 class CommentController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('comment', ['except'=>['show','index','store','storeChild','storeChildRemoveNotification']]);
+        $this->middleware('comment', ['only'=>['update', 'destroy', 'edit']]);
     }
 
     /**
@@ -27,15 +26,33 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Requests\CommentRequest $request, Opus $opus)
+    public function store(CommentRequest $request, Opus $opus)
     {
-        $comment = new Comment(['user_id'=>Auth::user()->id,'body'=>$request->input('body')]);
+        $user = $request->user();
+        $comment = new Comment(['user_id'=>$user->id,'body'=>$request->input('body')]);
         $newComment = $opus->comments()->save($comment);
 
         Notification::notifyUserNewComment($opus->user, $newComment);
 
-
         return Direct::newComment($opus, $newComment);
+    }
+
+    /**
+     * Store a new comment on a journal
+     * @param Requests\CommentRequest $request
+     * @param Journal $journal
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeJournal(CommentRequest $request, Journal $journal)
+    {
+        $user = $request->user();
+        $comment = new Comment(['user_id'=>$user->id,'body'=>$request->input('body')]);
+        $newComment = $journal->comments()->save($comment);
+        $op = $journal->user;
+
+        Notification::notifyUserNewReply($op, $user, $newComment);
+
+        return Direct::newComment($journal, $newComment);
     }
 
     /**
@@ -44,22 +61,18 @@ class CommentController extends Controller
      * @param Requests\CommentRequest $request
      * @param $profile_id
      */
-    public function storeProfile(Requests\CommentRequest $request, User $profile)
+    public function storeProfile(CommentRequest $request, User $profile)
     {
-        
+        $user = $request->user();
+        $comment = new Comment(['user_id'=>$user->id,'body'=>$request->input('body')]);
+        $newComment = $profile->comments()->save($comment);
+        $op = $profile->user;
+
+        Notification::notifyUserNewReply($op, $user, $newComment);
+
+        return Direct::newComment($profile, $newComment);
     }
 
-    /**
-     * Controller method to store replies to top-level commetns on profiles
-     * @param Requests\CommentRequest $request
-     * @param User $profile
-     * @param $comment_id
-     */
-    public function storeProfileChild(Requests\CommentRequest $request, User $profile, $comment_id)
-    {
-
-    }
-    
     /**
      * store a reply to a comment and notify the OP
      * @param Requests\CommentRequest $request
@@ -67,13 +80,10 @@ class CommentController extends Controller
      * @param $comment_id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeChild(Requests\CommentRequest $request, Opus $opus, $comment_id)
+    public function storeChild(CommentRequest $request, Opus $opus, $comment_id)
     {
-        //$opus = Opus::findOrFail($opus_id);
         $comment = Comment::findOrFail($comment_id);
-        $comment->childComments()->save(new Comment(['user_id'=>Auth::user()->id, 'opus_id'=>$opus->id, 'parent_id'=>$comment->id, 'body'=>$request->input('body')]));
-        $newComment = Comment::where('parent_id', $comment->id)->orderBy('created_at', 'desc')->first();
-
+        $newComment = $comment->childComments()->save(new Comment(['user_id'=>$request->user()->id, 'parent_id'=>$comment->id, 'body'=>$request->input('body')]));
         Notification::notifyUserNewReply($comment->user, $newComment->user, $newComment);
 
         return Direct::newComment($opus, $newComment);
@@ -88,18 +98,17 @@ class CommentController extends Controller
      * @param $comment_id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function storeChildRemoveNotification(Requests\CommentRequest $request, $opus_id, $comment_id, $notification_id)
+    public function storeChildRemoveNotification(CommentRequest $request, $comment_id, $notification_id)
     {
-        $opus = Opus::findOrFail($opus_id);
         $comment = Comment::findOrFail($comment_id);
-        $comment->childComments()->save(new Comment(['user_id'=>Auth::user()->id, 'opus_id'=>$opus->id, 'parent_id'=>$comment->id, 'body'=>$request->input('body')]));
-        $newComment = Comment::where('parent_id', $comment->id)->orderBy('created_at', 'desc')->first();
+        $newComment = $comment->childComments()->save(new Comment(['user_id'=>$request->user()->id, 'parent_id'=>$comment->id, 'body'=>$request->input('body')]));
+        //$newComment = Comment::where('parent_id', $comment->id)->orderBy('created_at', 'desc')->first();
 
         Notification::notifyUserNewReply($comment->user, $newComment->user, $newComment);
 
         if ($request->input('remove_notify')) {
             $notification = Notification::where('id', $notification_id)->first();
-            $notification->deleteNotification(Auth::user());
+            $notification->deleteNotification($request->user());
         }
 
         return Direct::route('message.center', ['success', 'Message posted!']);
@@ -135,14 +144,9 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Requests\CommentRequest $request, $id)
+    public function update(CommentRequest $request, $id)
     {
         //
-    }
-
-    public function updatedNested(Requests\CommentRequest $request, $comment_id)
-    {
-        
     }
     
     /**

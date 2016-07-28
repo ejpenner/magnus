@@ -2,7 +2,7 @@
         <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Gallery App</title>
+    <title>@yield('title') Magnus</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 

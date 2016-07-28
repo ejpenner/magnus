@@ -16,14 +16,14 @@ class NotificationSeeder extends Seeder
         $users = User::all();
         
         factory(Notification::class, 'opus', 10)->create()->each(function ($notification) use ($users) {
-            echo $notification."\n";
+            echo 'NotificationSeeder: ' . $notification."\n";
             foreach($users as $user) {
                 $user->notifications()->attach($notification->id);
             }
         });
 
         factory(Notification::class, 'comment', 10)->create()->each(function ($notification) use ($users) {
-            echo $notification."\n";
+            echo 'NotificationSeeder: ' . $notification."\n";
             foreach($users as $user) {
                 $user->notifications()->attach($notification->id);
             }

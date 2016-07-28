@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    {{ $user->username }} -
+@endsection
 @section('content')
-
     <div class="container-fluid">
         @include('profile._header', ['profile'=>$profile,'user'=>$user,'details'=>true])
         <div class="col-lg-6 col-md-12">
@@ -51,7 +53,7 @@
             {{--</div>--}}
         </div>
         <div class="col-lg-6 col-md-12">
-
+            @include('profile._journal', ['user'=>$user, 'journal' => $journal])
         </div>
     </div>
     <div class="container-fluid">

@@ -24,6 +24,6 @@ class Profile extends Model
      */
     public function comments()
     {
-        return $this->hasMany('Magnus\Comment');
+        return $this->morphyMany('Magnus\Comment', 'commentable');
     }
 }

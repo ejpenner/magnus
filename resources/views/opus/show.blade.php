@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title')
+    {{ $opus->title }} -
+@endsection
 @section('content')
     <div class="opus-main">
         <div id="opus-image">

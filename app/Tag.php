@@ -32,10 +32,10 @@ class Tag extends Model
         if ($tag_string == '' or $tag_string == null) {
             return;
         } else {
-            $tags = explode(' ', trim($tag_string));
+            $tags = explode(' ', strtolower($tag_string));
             $tagIds = [];
             foreach ($tags as $tag) {
-                $tagIds[] = Tag::firstOrCreate(['name' => strtolower($tag)])->getKey();
+                $tagIds[] = Tag::firstOrCreate(['name' => trim($tag)])->getKey();
             }
             $opus->tags()->sync($tagIds);
         }

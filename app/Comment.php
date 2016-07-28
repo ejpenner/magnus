@@ -14,9 +14,6 @@ class Comment extends Model
     protected $fillable = [
         'user_id',
         'parent_id',
-        'opus_id',
-        'journal_id',
-        'profile_id',
         'body',
         'deleted'
     ];
@@ -36,19 +33,9 @@ class Comment extends Model
         return $this->belongsTo('Magnus\User');
     }
 
-    public function opus()
+    public function commentable()
     {
-        return $this->belongsTo('Magnus\Opus');
-    }
-    
-    public function profile()
-    {
-        return $this->belongsTo('Magnus\Profile');
-    }
-
-    public function journal()
-    {
-        $this->belongsTo('Magnus\Journal');
+        return $this->morphTo();
     }
 
     public function childComments()
