@@ -25,7 +25,7 @@ $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
 
 $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
 
-    if(env('SEED_IMAGE_SOURCE', 'base') != 'dist') {
+    if(env('SEED_IMAGE_SOURCE', 'local') != 'dist') {
         $files = File::glob(base_path('resources/seed-pics/*.*'));
     } else {
         $files = File::glob(base_path('resources/heroku-deploy-seed-pics/*.*'));
@@ -65,7 +65,7 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
     $c9PathLength = 30;
     $myPathLength = 38;
 
-    if (env('SEED_IMAGE_SOURCE', 'base') != 'dist') {
+    if (env('SEED_IMAGE_SOURCE', 'local') != 'dist') {
         $pathLength = $myPathLength;
     } else {
         $pathLength = $c9PathLength;
@@ -197,5 +197,3 @@ function resize($image, $size = 250)
     }
     return $resize;
 }
-
-

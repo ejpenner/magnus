@@ -117,6 +117,10 @@
                             </td>
                             <td>
                                 <a class="btn btn-info" href="/opus/@{{ opus.slug }}/edit">Edit</a>
+                                <form class="form-inline" action="">
+                                    <input name="_method" type="hidden" value="DELETE">
+                                    {{ csrf_field() }}
+                                </form>
                             </td>
                         </tr>
                         </tbody>

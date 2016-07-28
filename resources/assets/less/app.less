@@ -28,7 +28,7 @@
 
 @comment-highlight: #c5dbde;
 
-@panel-bg: @newDefault;
+@panel-bg: rgb(245, 245, 245);
 @brand-primary: @newPrimary;
 @btn-default-bg: @newDefault;
 @brand-danger: @newDanger;
@@ -41,13 +41,13 @@
 
 @badge-bg: @newPrimary;
 
-*[id]:before {
-  display: block;
-  content: " ";
-  margin-top: -250px;
-  height: 250px;
-  visibility: hidden;
-}
+//*[id]:before {
+//  display: block;
+//  content: " ";
+//  margin-top: -250px;
+//  height: 250px;
+//  visibility: hidden;
+//}
 
 .navbar-inverse {
   .gradient(#191819, #000418) !important;
@@ -79,6 +79,13 @@ div.main-container {
   top:0;
 }
 
+ .panel-body {
+   .panel-body {
+     background-color: white;
+     .border-radius(10px);
+   }
+ }
+
 .fixed-buttons {
   position:fixed;
   top: 60px;
@@ -94,12 +101,12 @@ div.main-container {
 
   .bg-gradient {
     position: fixed;
-    height: 500px;
+    height: 400px;
     width: 100%;
     bottom: 0;
     z-index: -100;
     left: 0;
-    .gradient(rgba(255, 255, 255, 0.3), #b8c3d5);
+    .gradient(rgba(255, 255, 255, 0.3), #c5d1d4);
   }
 }
 

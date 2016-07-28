@@ -7665,7 +7665,7 @@ button.list-group-item-danger.active:focus {
 }
 .panel {
   margin-bottom: 20px;
-  background-color: #EEE;
+  background-color: #f5f5f5;
   border: 1px solid transparent;
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -9898,13 +9898,6 @@ div.gallery-sidebar img {
   background: -ms-linear-gradient(top, #191819, #000418) !important;
   background: -o-linear-gradient(top, #191819, #000418) !important;
 }
-*[id]:before {
-  display: block;
-  content: " ";
-  margin-top: -250px;
-  height: 250px;
-  visibility: hidden;
-}
 .navbar-inverse {
   background-color: #191819 !important;
   background: -webkit-gradient(linear, left top, left bottom, from(#191819), to(#000418)) !important;
@@ -9935,6 +9928,15 @@ div.main-container {
   position: fixed;
   top: 0;
 }
+.panel-body .panel-body {
+  background-color: white;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
 .fixed-buttons {
   position: fixed;
   top: 60px;
@@ -9954,17 +9956,17 @@ div.main-container {
 }
 .main .bg-gradient {
   position: fixed;
-  height: 500px;
+  height: 400px;
   width: 100%;
   bottom: 0;
   z-index: -100;
   left: 0;
   background-color: rgba(255, 255, 255, 0.3);
-  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.3)), to(#b8c3d5));
-  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.3), #b8c3d5);
-  background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.3), #b8c3d5);
-  background: -ms-linear-gradient(top, rgba(255, 255, 255, 0.3), #b8c3d5);
-  background: -o-linear-gradient(top, rgba(255, 255, 255, 0.3), #b8c3d5);
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.3)), to(#c5d1d4));
+  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.3), #c5d1d4);
+  background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.3), #c5d1d4);
+  background: -ms-linear-gradient(top, rgba(255, 255, 255, 0.3), #c5d1d4);
+  background: -o-linear-gradient(top, rgba(255, 255, 255, 0.3), #c5d1d4);
 }
 .magnus-navbar {
   /* Container just in case we want more than just the search input to come along */

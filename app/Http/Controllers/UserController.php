@@ -125,9 +125,9 @@ class UserController extends Controller
         //$user = User::findOrFail($id);
 
         if ($user->delete()) {
-            return redirect()->route('users.index')->with('success', 'User Deleted!');
+            return redirect()->route('admin.users.index')->with('success', 'User Deleted!');
         } else {
-            return redirect()->back()->withErrors(['error', 'Account Deletion Failed!']);
+            return redirect()->back()->withErrors('Account Deletion Failed!');
         }
     }
 
