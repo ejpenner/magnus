@@ -18,6 +18,7 @@ Thumbs.db
 /public/thumbnails/*
 /public/avatars/*
 /resources/seed-pics/*
+/resources/heroku-heroku-deploy-seed-pics/*
 
 !/public/images
 !/public/images/missing
