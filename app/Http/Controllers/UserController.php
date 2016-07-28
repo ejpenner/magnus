@@ -114,9 +114,9 @@ class UserController extends Controller
 
             $user->save();
 
-            return redirect()->route('users.index')->with('success', 'User updated successfully.');
+            return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
         } else {
-            return redirect()->back()->withErrors('Password does not match the confirmation');
+            //return redirect()->back()->withErrors('Password does not match the confirmation');
         }
     }
 

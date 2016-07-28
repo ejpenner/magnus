@@ -59,21 +59,29 @@ class HomeController extends Controller
 
         //$filterSegment = $this->filterSegment($request);
 
-        $opera = $this->timeFilter($this->makeSearchFilter($filter), $period)
-            ->join('users', 'users.id', '=', 'opuses.user_id')
-            ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
-            ->join('roles', 'roles.id', '=', 'user_roles.role_id')
-            ->select('opuses.title', 'opuses.thumbnail_path', 'opuses.created_at', 'opuses.updated_at', 'opuses.slug', 'roles.role_code as role_code', 'users.username', 'users.slug as userslug');
-//        $opera = Cache::remember('opera', 60, function() use ($request, $opera, $input) {
-//             return $opera->skip($this->limit($request) * ($input['page']-1))->take($this->limit($request))->get();
-//        });
+//        $opera = $this->timeFilter($this->makeSearchFilter($filter), $period)
+//            ->join('users', 'users.id', '=', 'opuses.user_id')
+//            ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
+//            ->join('roles', 'roles.id', '=', 'user_roles.role_id')
+//            ->select('opuses.title', 'opuses.thumbnail_path', 'opuses.created_at', 'opuses.updated_at', 'opuses.slug', 'roles.role_code as role_code', 'users.username', 'users.slug as userslug');
+
+        $opera = Cache::remember('opera-'.$input['page'].'-'.str_slug($filter).'-'.$period, 5, function() use ($request, $input, $filter, $period) {
+
+            $opera = $this->timeFilter($this->makeSearchFilter($filter), $period)
+                ->join('users', 'users.id', '=', 'opuses.user_id')
+                ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
+                ->join('roles', 'roles.id', '=', 'user_roles.role_id')
+                ->select('opuses.title', 'opuses.thumbnail_path', 'opuses.created_at', 'opuses.updated_at', 'opuses.slug', 'roles.role_code as role_code', 'users.username', 'users.slug as userslug');
+
+             return $opera->skip($this->limit($request) * ($input['page']-1))->take($this->limit($request))->get();
+        });
 
 
-        $opera = $opera->skip($this->limit($request) * ($input['page']-1))->take($this->limit($request))->get();
+        //$opera = $opera->skip($this->limit($request) * ($input['page']-1))->take($this->limit($request))->get();
 
         /*
-         $articles = Cache::remember('articles', 22*60, function() {
-        return Article::all();
+         $articles = Cache::remember('opus', 5, function() {
+        return Opus::all();
          });
 
         */

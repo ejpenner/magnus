@@ -9,12 +9,13 @@ use Intervention\Image\Facades\Image;
 
 $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
     $timezones = ['America/Denver', 'America/New_York', 'America/Chicago', 'America/Los_Angeles'];
+    $username = $faker->userName;
     $user = [
         'name'              => $faker->name,
         'email'             => $faker->safeEmail,
-        'username'          => $faker->userName,
+        'username'          => $username,
         'password'          => bcrypt('password'),
-        'slug'              => str_slug($faker->userName),
+        'slug'              => str_slug($username),
         'avatar'            => '', //substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
         'timezone'          => $timezones[rand(0,3)],
         'remember_token'    => str_random(10),

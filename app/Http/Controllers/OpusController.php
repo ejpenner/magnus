@@ -95,7 +95,7 @@ class OpusController extends Controller
 //        });
 
         $opus->pageview($request);
-        $comments = $opus->comments()->orderBy('created_at', 'asc')->get();
+        $comments = $opus->comments()->orderBy('created_at', 'desc')->get();
         $metadata = $opus->metadata();
         $favoriteCount =  $opus->favorite->users->count();
         $navigator = Helpers::navigator($opus->user->opera, $opus);

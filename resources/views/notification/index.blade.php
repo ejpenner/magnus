@@ -75,6 +75,16 @@
                                         <div class="comment-date">{{ $comment->created_at }}</div>
                                         <p class="comment-text">{{ $comment->body }}</p>
                                     </div>
+                                    @if($comment->parent_id != null)
+                                        <a href="{{ action('CommentController@show', $comment->parent_id) }}">Context</a>
+                                    @elseif($comment->commentable instanceOf \Magnus\Journal and $comment->parent_id == null)
+                                        <a href="{{ action('JournalController@show', [$comment->user->slug, $comment->commentable->slug]) }}">Context</a>
+                                    @elseif($comment->commentable instanceOf \Magnus\Opus and $comment->parent_id == null)
+                                        <a href="{{ action('OpusController@show', [$comment->commentable->slug]) }}">Context</a>
+                                    @else
+                                        {{--no context--}}
+                                    @endif
+
                                 </div>
                                 <div class="container">
                                     <div class="clearfix">

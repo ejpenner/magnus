@@ -522,7 +522,7 @@ class Opus extends Model
     protected function makeDirectory(User $user)
     {
         $dirName = 'art/'.strtolower($user->username).'/'.substr(microtime(), 11);
-        File::makeDirectory(public_path($dirName), 0755);
+        File::makeDirectory(public_path($dirName), 777);
         return $dirName;
     }
 

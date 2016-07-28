@@ -48,6 +48,7 @@ class SearchController extends Controller
         $termList = [];
         $whereClause = '';
         $tagClause = '';
+        $havingClause = '';
         $orderUrl = 'desc';
         $tagCount = 0;
         $periodUrl = '';
@@ -74,6 +75,7 @@ class SearchController extends Controller
 
         if (count($tag_ids) > 0) {
             $tagClause = 'WHERE ';
+            $havingClause = 'HAVING COUNT(DISTINCT t.id) = ' . $tagCount . ' ';
             foreach ($tag_ids as $i => $tag) {
                 if ($i < 1) {
                     $tagClause .=  ' t.id = ' . $tag . ' ';
@@ -196,7 +198,7 @@ class SearchController extends Controller
 					   JOIN tags t ON ot.tag_id = t.id
 					   '. $tagClause .'
 					   GROUP BY o.id
-					   HAVING COUNT(DISTINCT t.id) = ' . $tagCount . ') AS matching_tags ON o.id = matching_tags.id
+					   ' . $havingClause . ') AS matching_tags ON o.id = matching_tags.id
                   LEFT OUTER JOIN
                       (SELECT favorites.opus_id, count(*) AS count 
                        FROM favorites 

@@ -1,4 +1,4 @@
-@foreach($comment->allChildComments as $childComment)
+@foreach($comment->childComments as $childComment)
     <div class="child-comment container">
         <div class="container-fluid comment" id="cid:{{ $childComment->id }}">
             @if(!isset($childComment->deleted) or !$childComment->deleted)
@@ -7,11 +7,11 @@
                 <b>Deleted</b>
             @endif
         </div>
-        @if($childComment->allChildComments->count() >= 2)
+        @if($childComment->allChildComments->count() >= 3)
             <div>
                 <a class="btn btn-link" href="{{ action('CommentController@show', $childComment->id) }}">View More</a>
             </div>
-        @elseif($childComment->allChildComments->count() < 2)
+        @elseif($childComment->allChildComments->count() < 3)
             @include('comment._childComments', ['comment' => $childComment])
         @endif
     </div>
