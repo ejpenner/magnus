@@ -2,7 +2,9 @@
 
 namespace Magnus\Http\Requests;
 
+use Magnus\Permission;
 use Magnus\Http\Requests\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserCreateRequest extends Request
 {
@@ -13,7 +15,7 @@ class UserCreateRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        return Permission::hasPermission(Auth::user(), ['admin_user_mgmt']);
     }
 
     /**

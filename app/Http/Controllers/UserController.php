@@ -7,6 +7,7 @@ use Magnus\Role;
 use Magnus\Watch;
 use Magnus\Gallery;
 use Magnus\Profile;
+use Magnus\Preference;
 use Magnus\Permission;
 use Magnus\Notification;
 use Magnus\Http\Requests;
@@ -74,20 +75,31 @@ class UserController extends Controller
 
     public function store(Requests\UserCreateRequest $request)
     {
-        $user = new User;
+        //dd($request->all());
+//        $user = new User;
 
-        $user->username = $request->username;
-        $user->name = $request->name;
-        $user->profile_slug = str_slug($request->username, '-');
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
+//        $user->username = $request->username;
+//        $user->name = $request->name;
+//        $user->slug = str_slug($request->username);
+//        $user->email = $request->email;
+//        $user->password = bcrypt($request->password);
+//
+//        $user = $user->create();
+        $user = User::create([
+            'username' => $request->username,
+            'name'      => $request->name,
+            'slug'      => str_slug($request->username),
+            'email'     => $request->email,
+            'timezone'  => $request->timezone,
+            'password'  =>bcrypt($request->password)
+        ]);
+
         $user->roles()->attach($request->input('role_id'));
-        $user->save();
-        $user->galleries()->save(new Gallery(['main_gallery'=>1, 'name'=>'Main Gallery']));
-        Profile::create(['user_id'=>$user->id]);
+        $user->profile()->save(new Profile(['biography'=>'Not filled out yet']));
+        $user->preferences()->save(new Preference(['sex' => '', 'show_sex' => 0, 'date_of_birth' => '0000-00-00', 'show_dob' => 'none', 'per_page' => 24]));
         Gallery::makeDirectories($user);
         
-        return redirect()->route('users.index')->with('success', 'New user '. $user->name .' was created.');
+        return redirect()->route('admin.users.index')->with('success', 'New user '. $user->username .' was created.');
     }
 
     public function edit(User $user)

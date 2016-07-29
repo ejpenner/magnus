@@ -182,6 +182,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('session', 'AdminController@session')->name('admin.session');
         Route::get('test', 'AdminController@test')->name('admin.test');
         Route::get('opus', 'AdminController@opus')->name('admin.opus');
+        Route::get('flush', 'AdminController@flushCache')->name('admin.flushCache');
         Route::resource('permissions', 'PermissionController');
         Route::resource('users', 'UserController');
         Route::resource('roles', 'RoleController');

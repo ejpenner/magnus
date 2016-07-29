@@ -9,6 +9,7 @@ use Magnus\Notification;
 use Magnus\Http\Requests;
 use Magnus\Helpers\Helpers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 
 class OpusController extends Controller
@@ -90,9 +91,9 @@ class OpusController extends Controller
      */
     public function show(Request $request, Opus $opus)
     {
-//        $opus = Cache::remember($opus->slug, 60*2, function () use ($opus) {
-//            return $opus;
-//        });
+        $opus = Cache::remember('opus-'.Helpers::khash($opus->slug), 60, function () use ($opus) {
+            return $opus;
+        });
 
         $opus->pageview($request);
         $comments = $opus->comments()->orderBy('created_at', 'desc')->get();
@@ -111,9 +112,10 @@ class OpusController extends Controller
      */
     public function galleryShow(Request $request, $gallery_id, Opus $opus)
     {
-//        $opus = Cache::remember($opus->slug, 60*2, function () use ($opus) {
-//            return $opus;
-//        });
+        $opus = Cache::remember('opus-'.Helpers::khash($opus->slug), 60, function () use ($opus) {
+            return $opus;
+        });
+
         $gallery = Gallery::findOrFail($gallery_id);
         $opus->pageview($request);
         $comments = $opus->comments()->orderBy('created_at', 'asc')->get();
