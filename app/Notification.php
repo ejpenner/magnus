@@ -74,9 +74,9 @@ class Notification extends Model
         if ($this->hasOwner($user)) {
             $user->notifications()->detach($this->id);
         }
-        if ($this->users->count() == 1) {
-            $this->delete();
-        }
+//        if ($this->users->count() == 0) {
+//            $this->delete();
+//        }
     }
 
     private function hasOwner(User $user)

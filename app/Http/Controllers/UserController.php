@@ -2,17 +2,16 @@
 
 namespace Magnus\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Auth;
-
-use Magnus\Http\Requests;
 use Magnus\User;
+use Magnus\Role;
+use Magnus\Watch;
+use Magnus\Gallery;
 use Magnus\Profile;
 use Magnus\Permission;
-use Magnus\Role;
-use Magnus\Gallery;
-use Magnus\Watch;
+use Magnus\Notification;
+use Magnus\Http\Requests;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -144,13 +143,14 @@ class UserController extends Controller
      */
     public function watchUser(Request $request, User $user)
     {
-        foreach (Auth::user()->watchedUsers as $watched) {
+        foreach ($request->user()->watchedUsers as $watched) {
             if ($user->id == $watched->user_id) {
                 return redirect()->to(app('url')->previous())->withErrors('You are already watching this user!');
             }
         }
         if (Auth::user()-> id != $user->id) {
             Watch::watchUser(Auth::user(), $user, $request);
+            Notification::notifyUserNewWatch($user, $request->user());
             return redirect()->to(app('url')->previous())->with('success', 'You have added ' . $user->name . ' to your watch list!');
         } else {
             return redirect()->to(app('url')->previous())->withErrors('You can\'t watch yourself!');
