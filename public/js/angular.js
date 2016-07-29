@@ -77,6 +77,7 @@ app.factory('ScrollService', ['$http', '$location', function($http, $location, $
         params.page = this.after;
 
         var url = window.location.pathname + window.location.search; //.replace(/\?/, '&');
+        var rows = 6;
 
         console.log('Fetching content from', url);
         console.log('params', params);
@@ -88,9 +89,9 @@ app.factory('ScrollService', ['$http', '$location', function($http, $location, $
 
                 if (items.length > 0) {
                     for (var i = 0; i < items.length; i++) {
-                        if (i % 6 == 0) {
+                        if (i % rows == 0) {
                             this.items.push({
-                                row: items.slice(i, i + 6)
+                                row: items.slice(i, i + rows)
                             });
                         }
                     }

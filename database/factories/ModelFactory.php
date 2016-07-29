@@ -65,8 +65,9 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
 
     $c9PathLength = 30;
     $myPathLength = 38;
+    $myPathLength = $c9PathLength;
 
-    if (env('SEED_IMAGE_SOURCE', 'local') != 'dist') {
+    if (env('SEED_IMAGE_SOURCE', 'local') == 'dist') {
         $pathLength = $myPathLength;
     } else {
         $pathLength = $c9PathLength;
