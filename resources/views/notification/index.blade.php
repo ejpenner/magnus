@@ -6,11 +6,12 @@
         {!! Form::open(['action'=>'NotificationController@destroySelected', 'method'=>'delete']) !!}
         <div class="panel panel-default">
             <div class="panel-heading">
-                New Submissions
-                <div class="pull-right">
+                <h4 class="panel-title">New Submissions
+                    <span class="pull-right">
                     <a id="selectAllOpus" class="btn btn-info btn-xs">Select All</a>
                     <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove Selected</button>
-                </div>
+                </span>
+                </h4>
             </div>
             <div class="panel-body">
                 <div class="container-fluid">
@@ -49,7 +50,9 @@
     {!! Form::close() !!}
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default">
-            <div class="panel-heading">New Comments</div>
+            <div class="panel-heading">
+                <h4 class="panel-title">New Comments</h4>
+            </div>
             <div class="panel-body">
                 <div class="container">
                     @foreach($commentResults as $comment)
@@ -66,10 +69,10 @@
                                     <div class="row">
                                         <span class="comment-name">{!! $comment->user->decorateUsername() !!}</span>
                                         <span class="pull-right comment-delete-notification">
-                                                {!! Form::model($comment, ['method'=>'delete', 'class'=>'delete-confirm operations', 'action'=>['NotificationController@destroy', $comment->notification_id]]) !!}
+                                            {!! Form::model($comment, ['method'=>'get', 'class'=>'delete-confirm operations', 'action'=>['NotificationController@destroy', $comment->notification_id]]) !!}
                                             <button type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</button>
                                             {!! Form::close() !!}
-                                            </span>
+                                        </span>
                                     </div>
                                     <div class="comment-body">
                                         <div class="comment-date">{{ $comment->created_at }}</div>
@@ -101,12 +104,19 @@
     </div>
     <div class="col-lg-10 col-lg-offset-1 col-sm-12">
         <div class="panel panel-default">
-            <div class="panel-heading">New Favorites</div>
+            <div class="panel-heading">
+                <h4 class="panel-title">New Favorites</h4>
+            </div>
             <div class="panel-body">
                 @foreach($favoriteResults as $favorite)
                     <div class="favorite-notification col-lg-12">
                         <i class="fa fa-heart"></i> <a href="{{ action('ProfileController@show', $favorite->user_slug) }}">{!! Magnus::username($favorite->user_id) !!}</a> has added
                         <a href="{{ action('OpusController@show', $favorite->opus_slug) }}">{{ $favorite->title }}</a> to their favorites
+                        <span class="pull-right">
+                            <a href="{{ action('NotificationController@destroy', $favorite->notification_id) }}">
+                                <i class="fa fa-trash"></i> Delete
+                            </a>
+                        </span>
                     </div>
                 @endforeach
                 {{ $favoriteResults->render() }}

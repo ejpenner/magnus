@@ -9469,9 +9469,9 @@ div.flash-messages {
   font-size: larger;
   top: 7%;
   z-index: 102;
-  width: 400px;
+  width: 500px;
   padding: 10px;
-  left: 75%;
+  left: 70%;
 }
 div.flash-messages ul {
   list-style-type: none;

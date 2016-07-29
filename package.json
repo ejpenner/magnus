@@ -19,7 +19,6 @@
     "vinyl-source-stream": "*",
     "through2": "*",
     "http-stream": "*",
-    "laravel-elixir": "*",
     "laravel-elixir-phpcs": "*"
   },
   "dependencies": {
