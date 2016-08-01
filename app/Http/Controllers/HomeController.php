@@ -66,7 +66,7 @@ class HomeController extends Controller
 //            ->join('roles', 'roles.id', '=', 'user_roles.role_id')
 //            ->select('opuses.title', 'opuses.thumbnail_path', 'opuses.created_at', 'opuses.updated_at', 'opuses.slug', 'roles.role_code as role_code', 'users.username', 'users.slug as userslug');
 
-        $opera = Cache::remember('opera-'.Helpers::khash(str_slug($input['page'].$filter.$period)), 5, function() use ($request, $input, $filter, $period) {
+        $opera = Cache::remember('opera-'.md5(str_slug($input['page'].$filter.$period)), 3, function() use ($request, $input, $filter, $period) {
 
             $opera = $this->timeFilter($this->makeSearchFilter($filter), $period)
                 ->join('users', 'users.id', '=', 'opuses.user_id')

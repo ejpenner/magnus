@@ -16,10 +16,10 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $vilest = User::create(['name'=>'Eric', 'username'=>'Vilest', 'slug' => 'vilest', 'email'=>'ayy@lm.ao',
+        $vilest = User::create(['name'=>'Eric', 'username'=>'Eric', 'slug' => 'eric', 'email'=>'epenner@unomaha.edu',
             'password'=>'$2y$10$2vC4FBlXEw9jAp2mHX/I1ereZawBmX.tipKbEIfMlQo1g6VytHkQa', 'timezone'=>'America/Chicago']);
         $vilest->roles()->attach(Role::where('role_code', config('roles.dev-code'))->value('id'));
-        Magnus::makeDirectories('vilest');
+        Magnus::makeDirectories('eric');
 
         factory(User::class,20)->create()
             ->each(function($user){

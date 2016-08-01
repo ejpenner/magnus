@@ -91,9 +91,9 @@ class OpusController extends Controller
      */
     public function show(Request $request, Opus $opus)
     {
-        $opus = Cache::remember('opus-'.Helpers::khash($opus->slug), 60, function () use ($opus) {
-            return $opus;
-        });
+        // $opus = Cache::remember('opus-'.Helpers::khash($opus->slug), 60, function () use ($opus) {
+        //     return $opus;
+        // });
 
         $opus->pageview($request);
         $comments = $opus->comments()->orderBy('created_at', 'desc')->get();
@@ -112,9 +112,9 @@ class OpusController extends Controller
      */
     public function galleryShow(Request $request, $gallery_id, Opus $opus)
     {
-        $opus = Cache::remember('opus-'.Helpers::khash($opus->slug), 60, function () use ($opus) {
-            return $opus;
-        });
+        // $opus = Cache::remember(md5($opus->slug), 3, function () use ($opus) {
+        //     return $opus;
+        // });
 
         $gallery = Gallery::findOrFail($gallery_id);
         $opus->pageview($request);
@@ -153,6 +153,9 @@ class OpusController extends Controller
             $newSlug = $opus->setSlug($opus->title);
             $updatedSlug = true;
         }
+        
+        Cache::forget(md5($opus->slug));
+        
         $opus->update($request->except('image', 'published_at'));
         $opus->updateImage($opus->user, $request);
         Tag::make($opus, $request->input('tags'));
