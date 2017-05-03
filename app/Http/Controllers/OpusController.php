@@ -91,7 +91,7 @@ class OpusController extends Controller
      */
     public function show(Request $request, Opus $opus)
     {
-        $opus = Cache::remember('opus-'.Helpers::khash($opus->slug), 60, function () use ($opus) {
+        $opus = Cache::remember('opus-'.sha1($opus->slug), 60, function () use ($opus) {
             return $opus;
         });
 

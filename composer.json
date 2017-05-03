@@ -10,7 +10,8 @@
         "intervention/image": "^2.3",
         "laravelcollective/html": "5.2.*",
         "camroncade/timezone": "0.1",
-        "squizlabs/php_codesniffer": "^2.3"
+        "squizlabs/php_codesniffer": "^2.3",
+        "predis/predis": "~1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

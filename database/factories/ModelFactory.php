@@ -64,18 +64,23 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
     }
 
     $c9PathLength = 30;
-    $myPathLength = 38;
+    $myPathLength = 40;
+    $dockerPathLength = 53;
 
     if (env('SEED_IMAGE_SOURCE', 'local') != 'dist') {
         $pathLength = $myPathLength;
     } else {
         $pathLength = $c9PathLength;
     }
-    
+
+    $pathLength = 53;
+
     $image_path = substr($dest, $pathLength);
     $thumbnail_path = substr($tdest, $pathLength);
     $preview_path = substr($pdest, $pathLength);
 
+    echo "\n".$thumbnail_path."\n";
+    echo "\n".$image_path."\n";
 
     $created = Carbon::instance($faker->dateTimeBetween('-2 months', 'now'));
         $title = $faker->words(3, true);

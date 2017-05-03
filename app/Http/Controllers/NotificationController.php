@@ -55,7 +55,7 @@ class NotificationController extends Controller
                     ->where('notification_user.user_id', $user->id)
                     ->select('favorites.*', 'favorite_user.user_id', 'notification_user.notification_id as notification_id',
                             'opuses.title', 'opuses.slug as opus_slug', 'users.slug as user_slug')
-                    ->orderBy('notification_user.created_at', 'desc');
+                    ->orderBy('notification_user.created_at', 'desc')->groupBy('notification_id');
         $favoriteResults = $favorites->paginate(24, '[*]', 'activity');
 
         return view('notification.index', compact('user', 'opusResults', 'commentResults', 'favoriteResults'));
@@ -147,6 +147,8 @@ class NotificationController extends Controller
             $user = Auth::user();
             $notification = Notification::findOrFail($id);
             $notification->deleteNotification($user);
+
+            //dd($notification->users);
 
             return redirect()->to(app('url')->previous())->with('success', 'Message deleted!');
         }
