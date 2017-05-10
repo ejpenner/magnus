@@ -19,7 +19,8 @@ class CreateOpusesTable extends Migration
             $table->string('preview_path', 512);
             $table->string('directory')->nullable();
             $table->string('title', 255);
-            $table->text('comment')->nullable();
+            $table->text('comment', 1000)->nullable();
+            $table->index(['title', 'views', 'daily_views'], 'opus_index');
             $table->string('slug', 255);
             $table->integer('views')->nullable();
             $table->integer('daily_views')->nullable();
@@ -55,6 +56,9 @@ class CreateOpusesTable extends Migration
                  echo "deleted\n";
              }
         }
+        Schema::table('opuses', function (Blueprint $table) {
+            $table->dropIndex('opus_index');
+        });
 
         Schema::drop('gallery_opus');
         Schema::drop('opuses');

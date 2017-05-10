@@ -34,5 +34,7 @@ services:
         build:
             context: ./
             dockerfile: redis.docker
+        ports: ["32768:6379"]
         environment:
           - "DB_PORT=6379"
+          - "REDIS_PASSWORD=redis"
