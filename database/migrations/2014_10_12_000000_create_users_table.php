@@ -15,17 +15,18 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username');
-            $table->string('name')->nullable();
-            $table->string('slug')->nullable();
-            $table->string('directory')->nullable();
-            $table->string('avatar')->nullable();
-            $table->string('email')->unique();
+            $table->string('username', 30);
+            $table->string('name', 30)->nullable();
+            $table->string('slug', 128)->nullable();
+            $table->string('directory', 30)->nullable();
+            $table->string('avatar', 255)->nullable();
+            $table->string('email', 60)->unique();
             $table->string('password');
             $table->string('timezone')->nullable();
             $table->rememberToken()->nullable();
             $table->timestamps();
             $table->softDeletes();
+            $table->index(['username','email'], 'user_table_index');
         });
 
     }
@@ -37,14 +38,24 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        $this->deleteDirectories();
+
+        //File::cleanDirectory(public_path('art'));
+
+        Schema::drop('users');
+    }
+
+    protected function deleteDirectories() {
         $users = \Magnus\User::all();
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropIndex('user_table_index');
+        });
 
         foreach($users as $user) {
             $user->deleteAvatarFile();
             \Magnus\Helpers\Helpers::deleteDirectories($user->username);
         }
-
-        //File::cleanDirectory(public_path('art'));
-        Schema::drop('users');
     }
+
 }

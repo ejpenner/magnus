@@ -15,7 +15,8 @@ class CreateTagesTable extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->string('name')->unique();
+            $table->string('name', 60)->unique();
+            $table->index('name', 'tag_index');
         });
         
         Schema::create('opus_tag', function (Blueprint $table)
@@ -35,6 +36,12 @@ class CreateTagesTable extends Migration
      */
     public function down()
     {
+
+        Schema::table('tags', function(Blueprint $table)
+        {
+            $table->dropIndex('tag_index');
+        });
+
         Schema::drop('opus_tag');
         Schema::drop('tags');
     }
