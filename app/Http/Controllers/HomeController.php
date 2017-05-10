@@ -13,7 +13,6 @@ class HomeController extends Controller
 {
     /**
      * Create a new controller instance.
-     *
      * @return void
      */
     public function __construct()
@@ -23,7 +22,6 @@ class HomeController extends Controller
 
     /**
      * Show the application dashboard.
-     *
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -31,10 +29,8 @@ class HomeController extends Controller
         return view('home');
     }
 
-
     /**
      * The home page method
-     *
      * @param Request $request
      * @param null $filter
      * @param null $period
@@ -58,14 +54,6 @@ class HomeController extends Controller
             $input['page'] = 1;
         }
 
-        //$filterSegment = $this->filterSegment($request);
-
-//        $opera = $this->timeFilter($this->makeSearchFilter($filter), $period)
-//            ->join('users', 'users.id', '=', 'opuses.user_id')
-//            ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
-//            ->join('roles', 'roles.id', '=', 'user_roles.role_id')
-//            ->select('opuses.title', 'opuses.thumbnail_path', 'opuses.created_at', 'opuses.updated_at', 'opuses.slug', 'roles.role_code as role_code', 'users.username', 'users.slug as userslug');
-
         $opera = Cache::remember('opera-'.sha1(str_slug($input['page'].$filter.$period)), 5, function() use ($request, $input, $filter, $period) {
 
             $opera = $this->timeFilter($this->makeSearchFilter($filter), $period)
@@ -77,15 +65,6 @@ class HomeController extends Controller
              return $opera->skip($this->limit($request) * ($input['page']-1))->take($this->limit($request))->get();
         });
 
-
-        //$opera = $opera->skip($this->limit($request) * ($input['page']-1))->take($this->limit($request))->get();
-
-        /*
-         $articles = Cache::remember('opus', 5, function() {
-        return Opus::all();
-         });
-
-        */
         $opera = ['data' => $opera];
 
         return response()->json($opera);

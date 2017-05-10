@@ -167,6 +167,10 @@ class Notification extends Model
         $notify->notify($watched);
     }
 
+    public static function notifyUserPrivateMessage(User $sender, User $receiver) {
+
+    }
+
     public static function notifyUserNewActivity()
     {
 

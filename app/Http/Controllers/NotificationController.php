@@ -152,6 +152,7 @@ class NotificationController extends Controller
 
             return redirect()->to(app('url')->previous())->with('success', 'Message deleted!');
         }
+
         return redirect()->to(app('url')->previous())->withErrors('You shouldn\'t have done that');
     }
 }
