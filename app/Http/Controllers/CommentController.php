@@ -32,7 +32,7 @@ class CommentController extends Controller
         $comment = new Comment(['user_id'=>$user->id,'body'=>$request->input('body')]);
         $newComment = $opus->comments()->save($comment);
 
-        Notification::notifyUserNewComment($opus->user, $newComment);
+        Notification::notifyUserNewReply($opus->user, $user, $newComment);
 
         return Direct::newComment($opus, $newComment);
     }

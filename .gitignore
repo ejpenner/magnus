@@ -2,6 +2,7 @@
 /node_modules
 
 /public/storage
+/dockerApp/*
 !/public/css/app.css
 !/public/js/vendor.js
 !/public/js/app.js

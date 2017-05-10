@@ -74,9 +74,9 @@ class Notification extends Model
         if ($this->hasOwner($user)) {
             $user->notifications()->detach($this->id);
         }
-        if ($this->users->count() == 1) {
-            $this->delete();
-        }
+//        if ($this->users->count() == 0) {
+//            $this->delete();
+//        }
     }
 
     private function hasOwner(User $user)
@@ -165,6 +165,10 @@ class Notification extends Model
     {
         $notify = Notification::create(['handle' => 'watch', 'watcher_user_id' => $watching->id]);
         $notify->notify($watched);
+    }
+
+    public static function notifyUserPrivateMessage(User $sender, User $receiver) {
+
     }
 
     public static function notifyUserNewActivity()

@@ -172,8 +172,8 @@ Route::group(['middleware' => ['auth']], function () {
     /**
      *  User watch routes
      */
-    Route::post('users/{users}/watch', 'UserController@watchUser');
-    Route::get('users/{users}/unwatch', 'UserController@unwatchUser');
+    Route::post('users/{users}/watch', 'UserController@watchUser')->name('user.watch');
+    Route::get('users/{users}/unwatch', 'UserController@unwatchUser')->name('user.unwatch');
 
     /**
      * Developer middleware group
@@ -182,11 +182,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('session', 'AdminController@session')->name('admin.session');
         Route::get('test', 'AdminController@test')->name('admin.test');
         Route::get('opus', 'AdminController@opus')->name('admin.opus');
+        Route::get('flush', 'AdminController@flushCache')->name('admin.flushCache');
         Route::resource('permissions', 'PermissionController');
         Route::resource('users', 'UserController');
         Route::resource('roles', 'RoleController');
         Route::resource('categories', 'CategoryController');
-        Route::get('/', 'AdminController@index');
+        Route::get('/', 'AdminController@index')->name('admin.index');
     });
 
     /**

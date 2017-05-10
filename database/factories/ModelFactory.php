@@ -9,12 +9,13 @@ use Intervention\Image\Facades\Image;
 
 $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
     $timezones = ['America/Denver', 'America/New_York', 'America/Chicago', 'America/Los_Angeles'];
+    $username = $faker->userName;
     $user = [
         'name'              => $faker->name,
         'email'             => $faker->safeEmail,
-        'username'          => $faker->userName,
+        'username'          => $username,
         'password'          => bcrypt('password'),
-        'slug'              => str_slug($faker->userName),
+        'slug'              => str_slug($username),
         'avatar'            => '', //substr($faker->image($dir = public_path('avatars'), $width = 150, $height= 150), 38),
         'timezone'          => $timezones[rand(0,3)],
         'remember_token'    => str_random(10),
@@ -25,7 +26,7 @@ $factory->define(Magnus\User::class, function (Faker\Generator $faker) {
 
 $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
 
-    if(env('SEED_IMAGE_SOURCE', 'base') != 'dist') {
+    if(env('SEED_IMAGE_SOURCE', 'local') != 'dist') {
         $files = File::glob(base_path('resources/seed-pics/*.*'));
     } else {
         $files = File::glob(base_path('resources/heroku-deploy-seed-pics/*.*'));
@@ -63,18 +64,23 @@ $factory->define(Magnus\Opus::class,  function (Faker\Generator $faker){
     }
 
     $c9PathLength = 30;
-    $myPathLength = 38;
+    $myPathLength = 40;
+    $dockerPathLength = 53;
 
-    if (env('SEED_IMAGE_SOURCE', 'base') != 'dist') {
+    if (env('SEED_IMAGE_SOURCE', 'local') != 'dist') {
         $pathLength = $myPathLength;
     } else {
         $pathLength = $c9PathLength;
     }
-    
+
+    $pathLength = 53;
+
     $image_path = substr($dest, $pathLength);
     $thumbnail_path = substr($tdest, $pathLength);
     $preview_path = substr($pdest, $pathLength);
 
+    echo "\n".$thumbnail_path."\n";
+    echo "\n".$image_path."\n";
 
     $created = Carbon::instance($faker->dateTimeBetween('-2 months', 'now'));
         $title = $faker->words(3, true);
@@ -197,5 +203,3 @@ function resize($image, $size = 250)
     }
     return $resize;
 }
-
-

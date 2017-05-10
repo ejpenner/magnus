@@ -14,9 +14,11 @@
 </div>
 
 <div class="form-group">
-    @foreach($user->roles as $role)
-            
-    @endforeach
+    @if(isset($user->roles))
+        @foreach($user->roles as $role)
+            {{ $role->name }}
+        @endforeach
+    @endif
 </div>
 
 <div class="form-group">

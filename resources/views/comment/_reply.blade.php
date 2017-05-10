@@ -1,6 +1,6 @@
 @if(Auth::check())
     <div class="reply-toggle container" id="replyTop">
-        <button class="btn btn-primary reply-btn">Reply</button>
+        <button class="btn btn-primary btn-lg reply-btn">Reply</button>
         <div class="container reply-form">
             <div>
                 {!! Form::open(['action'=>['CommentController@store', $opus->slug], 'method'=>'post']) !!}

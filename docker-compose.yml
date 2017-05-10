@@ -1,0 +1,40 @@
+version: '2'
+services:
+    app:
+        build:
+            context: ./
+            dockerfile: app.docker
+        volumes:
+            - ./://var/www
+        links:
+            - database
+            - redis
+        environment:
+            - "DB_PORT=3306"
+            - "DB_HOST=database"
+    web:
+        build:
+            context: ./
+            dockerfile: web.docker
+        volumes:
+            - ./://var/www
+        ports:
+            - "8080:80"
+        links:
+            - app
+
+    database:
+        image: mysql:5.6
+        environment:
+            - "MYSQL_ROOT_PASSWORD=secret"
+            - "MYSQL_DATABASE=gallery"
+        ports:
+            - "33061:3306"
+    redis:
+        build:
+            context: ./
+            dockerfile: redis.docker
+        ports: ["32768:6379"]
+        environment:
+          - "DB_PORT=6379"
+          - "REDIS_PASSWORD=redis"

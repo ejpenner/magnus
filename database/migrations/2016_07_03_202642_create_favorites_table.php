@@ -16,8 +16,8 @@ class CreateFavoritesTable extends Migration
             $table->increments('id');
             $table->integer('opus_id')->unsigned();
             $table->integer('collection_id')->unsigned()->nullable();
-            $table->timestamps();
             $table->foreign('opus_id')->references('id')->on('opuses')->onDelete('cascade');
+            $table->timestamps();
         });
 
         Schema::create('favorite_user', function (Blueprint $table) {
@@ -29,6 +29,7 @@ class CreateFavoritesTable extends Migration
         });
 
         Schema::table('notifications', function (Blueprint $table){
+            $table->index(['favorite_id'], 'favorite_notification_index');
             $table->foreign('favorite_id')->references('id')->on('favorites')->onDelete('cascade');
         });
     }
@@ -42,7 +43,9 @@ class CreateFavoritesTable extends Migration
     {
         Schema::table('notifications', function (Blueprint $table){
             $table->dropForeign('notifications_favorite_id_foreign');
+            $table->dropIndex('favorite_notification_index');
         });
+
         Schema::drop('favorite_user');
         Schema::drop('favorites');
     }

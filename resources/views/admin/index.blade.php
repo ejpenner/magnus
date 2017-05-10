@@ -12,6 +12,7 @@
                 <li><a href="{{ action('AdminController@opus') }}">Opus Lookup</a></li>
                 <li><a href="{{ action('AdminController@session') }}">Session Dump</a></li>
                 <li><a href="{{ action('RoleController@index') }}">User Roles</a></li>
+                <li><a href="{{ action('AdminController@flushCache') }}">Flush Cache</a></li>
             </ul>
         </div>
     </div>

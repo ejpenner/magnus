@@ -105,6 +105,11 @@
                             </td>
                             <td>
                                 <a class="btn btn-info" href="@{{ pathname + '/' + user.slug }}/edit">Edit</a>
+                                <form method="POST" class="form-inline" action="@{{ pathname + '/' + user.slug }}">
+                                    <input name="_method" type="hidden" value="DELETE">
+                                    {{ csrf_field() }}
+                                    <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i> Delete</button>
+                                </form>
                             </td>
                         </tr>
                         </tbody>

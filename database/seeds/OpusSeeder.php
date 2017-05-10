@@ -18,7 +18,7 @@ class OpusSeeder extends Seeder
     {
         $users = User::all();
         $galleryMax = 1;
-        $opusMax = 10;
+        $opusMax = 3;
         $opusGalleryMax = 5;
 
         $opusFinalCount = $users->count() * (($galleryMax *  $opusGalleryMax) + $opusMax);

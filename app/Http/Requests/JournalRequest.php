@@ -15,7 +15,7 @@ class JournalRequest extends Request
      */
     public function authorize()
     {
-        return true; //Permission::hasPermission(Auth::user(), ['user_journal_permission', 'admin_journal_permission']);
+        return Permission::hasPermission(Auth::user(), ['user_journal_permission', 'admin_journal_permission']);
     }
 
     /**

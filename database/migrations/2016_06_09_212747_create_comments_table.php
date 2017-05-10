@@ -15,12 +15,9 @@ class CreateCommentsTable extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            //$table->integer('opus_id')->unsigned()->nullable();;
             $table->string('commentable_type');
             $table->integer('commentable_id')->unsigned();
             $table->integer('parent_id')->unsigned()->nullable();
-            //$table->integer('profile_id')->unsigned()->nullable();
-            //$table->integer('journal_id')->unsigned()->nullable();
             $table->boolean('deleted')->nullable();
             $table->text('body');
             $table->timestamps();
@@ -28,11 +25,7 @@ class CreateCommentsTable extends Migration
         });
 
         Schema::table('comments', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users');
-            //$table->foreign('opus_id')->references('id')->on('opuses')->onDelete('cascade');
-            //$table->foreign('parent_id')->references('id')->on('comments')->onDelete('cascade');
-            //$table->foreign('profile_id')->references('id')->on('profiles')->onDelete('cascade');
-            //$table->foreign('journal_id')->references('id')->on('journals')->onDelete('cascade');
+            $table->foreign('user_id','fk_comments_user_id')->references('id')->on('users');
         });
     }
 
@@ -43,6 +36,10 @@ class CreateCommentsTable extends Migration
      */
     public function down()
     {
+        Schema::table('comments', function($table)
+        {
+            $table->dropForeign('fk_comments_user_id');
+        });
         Schema::drop('comments');
     }
 }

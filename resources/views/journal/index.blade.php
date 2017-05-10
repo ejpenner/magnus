@@ -3,6 +3,9 @@
 @section('content')
     @include('profile._header', ['profile'=>$profile,'user'=>$user,'details'=>false])
     <div class="col-lg-6 col-lg-offset-3">
+        <div class="text-center" style="margin-bottom: 10px;">
+            <a class="btn btn-primary btn-lg" href="{{ action('JournalController@create') }}"><i class="fa fa-plus"></i> New Journal Entry</a>
+        </div>
         @foreach($journals as $journal)
             @include('journal._entry', ['journal' => $journal, 'user'=>$user])
             <div class="journal-stats">

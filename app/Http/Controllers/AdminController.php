@@ -2,13 +2,9 @@
 
 namespace Magnus\Http\Controllers;
 
-use Magnus\Opus;
-use Magnus\Permission;
-use Magnus\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Cache;
 
 class AdminController extends Controller
 {
@@ -74,6 +70,12 @@ class AdminController extends Controller
         $opus = DB::select($rawQuery);
 
         return response()->json(['data' => $opus]);
+    }
+
+    public function flushCache() {
+        Cache::flush();
+
+        return redirect()->back()->with('message', 'Cache flushed!');
     }
 
     public function test()

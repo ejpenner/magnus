@@ -12,6 +12,7 @@ class CreateOpusesTable extends Migration
      */
     public function up()
     {
+
         Schema::create('opuses', function (Blueprint $table) {
             $table->increments('id');
             $table->string('image_path', 512);
@@ -26,6 +27,7 @@ class CreateOpusesTable extends Migration
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
+            $table->index(['title', 'views', 'daily_views'], 'opus_index');
         });
 
         Schema::table('opuses', function (Blueprint $table) {
@@ -48,15 +50,23 @@ class CreateOpusesTable extends Migration
      */
     public function down()
     {
-        $opuses = Opus::all();
+        $this->deleteAllOpus();
 
-        foreach ($opuses as $opus) {
-             if($opus->deleteImages()) {
-                 echo "deleted\n";
-             }
-        }
+        Schema::table('opuses', function (Blueprint $table) {
+            $table->dropIndex('opus_index');
+        });
 
         Schema::drop('gallery_opus');
         Schema::drop('opuses');
+    }
+
+    protected function deleteAllOpus() {
+        $opuses = Opus::all();
+
+        foreach ($opuses as $opus) {
+            if($opus->deleteImages()) {
+                echo "deleted\n";
+            }
+        }
     }
 }

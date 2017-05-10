@@ -168,6 +168,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Relation for user conversations
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function conversations() {
+        return $this->belongsToMany('Magnus\Conversations', 'conversation_user');
+    }
+
+    /**
+     * Relation for a user's private messages
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function privateMessages() {
+        return $this->hasMany('Magnus\PrivateMessages');
+    }
+
+    /**
      *  Return some span formatting around usernames for fancy CSS output
      * @return string
      */

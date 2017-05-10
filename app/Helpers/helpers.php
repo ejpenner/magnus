@@ -300,4 +300,24 @@ class Helpers
         return $galleryNav;
     }
 
+    /**
+     * Small sample convert crc32 to character map
+     * Based upon http://www.php.net/manual/en/function.crc32.php#105703
+     * (Modified to now use all characters from $map)
+     * (Modified to be 32-bit PHP safe)
+     */
+    public static function khash($data)
+    {
+        static $map = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $hash = bcadd(sprintf('%u',crc32($data)) , 0x100000000);
+        $str = "";
+        do
+        {
+            $str = $map[bcmod($hash, 62) ] . $str;
+            $hash = bcdiv($hash, 62);
+        }
+        while ($hash >= 1);
+        return $str;
+    }
+
 }

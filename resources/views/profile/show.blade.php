@@ -9,7 +9,7 @@
         <div class="col-lg-6 col-md-12">
             <div class="panel panel-default profile-opus-panel"> {{-- opus panel --}}
                 <div class="panel-heading">
-                    Recent Submissions
+                    <h4 class="panel-title">Recent Submissions</h4>
                 </div>
                 <div class="panel-body">
                     <div class="gallery-container">
@@ -25,7 +25,7 @@
 
             <div class="panel panel-default profile-favorites-panel"> {{-- favorites panel --}}
                 <div class="panel-heading">
-                    Favorites
+                    <h4 class="panel-title">Favorites</h4>
                 </div>
                 <div class="panel-body">
                     <div class="col-md-12 gallery-container">
@@ -60,8 +60,9 @@
         <div class="col-lg-6 col-md-12">
             <div class="panel panel-default"> {{-- Watching panel --}}
                 <div class="panel-heading">
-                    Watching
+                    <h4 class="panel-title">Watching
                     <a class="btn btn-xs btn-primary btn-lg pull-right" href="{{ action('ProfileController@watching', $user->slug) }}">Full list</a>
+                    </h4>
                 </div>
                 <div class="panel-body">
                     <ul>
@@ -75,8 +76,9 @@
         <div class="col-lg-6 col-md-12">
             <div class="panel panel-default"> {{-- watchers panel --}}
                 <div class="panel-heading">
-                    Watchers
+                    <h4 class="panel-title">Watchers
                     <a class="btn btn-xs btn-primary btn-lg pull-right" href="{{ action('ProfileController@watchers', $user->slug) }}">Full list</a>
+                    </h4>
                 </div>
                 <div class="panel-body">
                     <ul>
