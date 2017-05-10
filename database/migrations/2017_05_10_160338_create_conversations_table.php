@@ -24,7 +24,10 @@ class CreateConversationsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->index('user_id', 'conversation_user_user_id_index');
+            $table->integer('conversation_id')->unsigned();
+            $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
+
+            $table->index(['user_id','conversation_id'], 'conversation_user_user_id_index');
             $table->timestamps();
         });
     }

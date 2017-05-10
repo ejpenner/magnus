@@ -26,13 +26,10 @@ class CreatePrivateMessagesTable extends Migration
         Schema::table('private_messages', function($table)
         {
             // FKs
-            $table->integer('conversation_id')->unsigned();
-            $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
-
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->index(['conversation_id','user_id'], 'private_message_index');
+            $table->index(['user_id'], 'private_message_index');
         });
 
     }
