@@ -11,6 +11,17 @@ use Illuminate\Support\Facades\Config;
 //Route::model('journal', 'Journal');
 
 /**
+ * Route Bindings for Private Messages
+ */
+Route::bind('conversation', function ($value, $route) {
+    return \Magnus\Conversation::where('id', '=', $value)->firstOrFail();
+});
+
+Route::bind('message', function ($value, $route) {
+    return \Magnus\PrivateMessage::where('id', '=', $value)->firstOrFail();
+});
+
+/**
  * Binds {opus} to the opus model slug
  */
 Route::bind('opus', function ($value, $route) {
@@ -159,6 +170,7 @@ Route::group(['middleware' => ['auth']], function () {
      * Journal routes
      */
     Route::get('journal/new', 'JournalController@create')->name('journal.create');
+    Route::get('journal/{journal}/edit', 'JournalController@edit')->name('journal.edit');
     Route::post('journal/store', 'JournalController@store')->name('journal.store');
     Route::patch('journal/{journal}', 'JournalController@update')->name('journal.update');
     Route::delete('journal/{journal}', 'JournalController@delete')->name('journal.delete');
@@ -174,6 +186,20 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::post('users/{users}/watch', 'UserController@watchUser')->name('user.watch');
     Route::get('users/{users}/unwatch', 'UserController@unwatchUser')->name('user.unwatch');
+
+    /**
+     * Coversation routes
+     */
+    Route::get('conversations', 'ConversationController@index')->name('conversation.index');
+    Route::get('conversations/new', 'ConversationController@create')->name('conversation.create');
+    Route::get('conversations/{conversation}', 'ConversationController@show')->name('conversation.show');
+    Route::delete('conversations/{conversation}', 'ConversationController@destroy');
+    Route::post('conversations/{conversation}/add', 'ConversationController@addUser')->name('conversation.addUsers');
+    Route::delete('conversations/{conversation}/remove', 'ConversationController@removeUser')->name('conversation.removeUsers');
+    Route::post('conversations/{conversation}', 'ConversationController@addMessage')->name('conversation.addMessage');
+    Route::get('conversations/{conversation}/message/{message}/edit', 'ConversationController@editMessage')->name('conversation.editMessage');
+    Route::patch('conversations/{conversation}/message/{message}', 'ConversationController@updateMessage')->name('conversation.updateMessage');
+    Route::delete('conversations/{conversation}/message/{message}', 'ConversationController@removeMessage')->name('conversation.removeMessage');
 
     /**
      * Developer middleware group

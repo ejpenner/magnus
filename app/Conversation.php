@@ -20,8 +20,12 @@ class Conversation extends Model
         $this->hasMany('Magnus\PrivateMessage', 'private_message_id');
     }
 
-    public function addReply(PrivateMessage $message) {
+    public function addMessage(PrivateMessage $message) {
         $this->messages()->save($message);
+    }
+
+    public function removeMessage(PrivateMessage $message) {
+        $message->delete();
     }
 
     public function addUser(User $user) {

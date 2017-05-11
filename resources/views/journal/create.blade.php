@@ -18,7 +18,7 @@
                             <li class="list-group-item">
                                 {{ $journal->title }}
                                 <span class="pull-right">
-                                    <a class="btn btn-xs btn-info" href="">Edit</a>
+                                    <a class="btn btn-xs btn-info" href="{{ action('JournalController@edit', ['journal' => $journal->slug]) }}">Edit</a>
                                 </span>
                             </li>
                         @endforeach

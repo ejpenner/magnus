@@ -41,12 +41,6 @@ class CreatePrivateMessagesTable extends Migration
      */
     public function down()
     {
-        Schema::table('private_messages', function($table)
-        {
-            //$table->dropForeign(['user_id','conversation_id']); // Drop foreign key 'user_id' from 'posts' table
-            //$table->dropIndex('private_message_index'); // Drop basic index in 'state' from 'geo' table
-        });
-
         Schema::drop('private_messages');
     }
 }

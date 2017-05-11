@@ -11,5 +11,10 @@
         <div class="journal-body">
             <p>{{ $journal->parsedBody }}</p>
         </div>
+        @if(Auth::check() && Magnus::isOwnerOrHasRole($journal, config('roles.globalMod')))
+            <div class="pull-right">
+                <a class="btn btn-info btn-sm" href="{{ action('JournalController@edit', $journal->slug) }}">Edit</a>
+            </div>
+        @endif
     </div>
 </div>

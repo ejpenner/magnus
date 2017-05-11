@@ -112,7 +112,7 @@ class OpusController extends Controller
      */
     public function galleryShow(Request $request, $gallery_id, Opus $opus)
     {
-        $opus = Cache::remember('opus-'.Helpers::khash($opus->slug), 60, function () use ($opus) {
+        $opus = Cache::remember('opus-'.sha1($opus->slug), 60, function () use ($opus) {
             return $opus;
         });
 
@@ -148,6 +148,7 @@ class OpusController extends Controller
     {
         $updatedSlug = false;
         $newSlug = "";
+        Cache::forget('opus-'.sha1($opus->slug));
 
         if ($request->input('title') != $opus->title) {
             $newSlug = $opus->setSlug($opus->title);

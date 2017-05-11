@@ -71,7 +71,8 @@ class JournalController extends Controller
      */
     public function edit(Journal $journal)
     {
-        //
+        $journals = $journal->user->journals;
+        return view('journal.edit', compact('journal', 'journals'));
     }
 
     /**
@@ -83,7 +84,11 @@ class JournalController extends Controller
      */
     public function update(JournalRequest $request, Journal $journal)
     {
-        //
+        $journal->parsedBody = $request->input('rawBody');
+        $journal->slug = $request->input('title');
+        $journal->update();
+
+        return redirect()->route('profile.journal.index', [$request->user()->slug])->with('success', 'Journal updated successfully!');
     }
 
     /**
