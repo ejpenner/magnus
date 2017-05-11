@@ -192,14 +192,18 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::get('conversations', 'ConversationController@index')->name('conversation.index');
     Route::get('conversations/new', 'ConversationController@create')->name('conversation.create');
-    Route::get('conversations/{conversation}', 'ConversationController@show')->name('conversation.show');
-    Route::delete('conversations/{conversation}', 'ConversationController@destroy');
-    Route::post('conversations/{conversation}/add', 'ConversationController@addUser')->name('conversation.addUsers');
-    Route::delete('conversations/{conversation}/remove', 'ConversationController@removeUser')->name('conversation.removeUsers');
-    Route::post('conversations/{conversation}', 'ConversationController@addMessage')->name('conversation.addMessage');
-    Route::get('conversations/{conversation}/message/{message}/edit', 'ConversationController@editMessage')->name('conversation.editMessage');
-    Route::patch('conversations/{conversation}/message/{message}', 'ConversationController@updateMessage')->name('conversation.updateMessage');
-    Route::delete('conversations/{conversation}/message/{message}', 'ConversationController@removeMessage')->name('conversation.removeMessage');
+
+    Route::group(['middleware' => 'privateMessage'], function() {
+        Route::get('conversations/{conversation}', 'ConversationController@show')->name('conversation.show');
+        Route::delete('conversations/{conversation}', 'ConversationController@destroy');
+        Route::post('conversations/{conversation}/add', 'ConversationController@addUser')->name('conversation.addUsers');
+        Route::delete('conversations/{conversation}/remove', 'ConversationController@removeUser')->name('conversation.removeUsers');
+        Route::post('conversations/{conversation}', 'ConversationController@addMessage')->name('conversation.addMessage');
+        Route::get('conversations/{conversation}/message/{message}/edit', 'ConversationController@editMessage')->name('conversation.editMessage');
+        Route::patch('conversations/{conversation}/message/{message}', 'ConversationController@updateMessage')->name('conversation.updateMessage');
+        Route::delete('conversations/{conversation}/message/{message}', 'ConversationController@removeMessage')->name('conversation.removeMessage');
+    });
+
 
     /**
      * Developer middleware group

@@ -18,7 +18,9 @@ class ConversationController extends Controller
 
     public function show(Request $request, Conversation $conversation) {}
 
-    public function destroy(Request $request, Conversation $conversation) {}
+    public function destroy(Request $request, Conversation $conversation) {
+
+    }
 
     public function addMessage(Request $request, Conversation $conversation) {
         $message = new PrivateMessage($request->all());

@@ -35,4 +35,13 @@ class Conversation extends Model
     public function removeUser(User $user) {
         $this->users()->detach($user);
     }
+
+    public function isUserMember(User $user) {
+        foreach ($this->users as $member) {
+            if ($user->id == $member) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

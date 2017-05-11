@@ -53,6 +53,7 @@ class Kernel extends HttpKernel
         'account'   => \Magnus\Http\Middleware\Account::class,
         'gallery'   => \Magnus\Http\Middleware\GalleryManagement::class,
         'comment'   => \Magnus\Http\Middleware\CommentManagement::class,
-        'opus'      => \Magnus\Http\Middleware\OpusManagement::class
+        'opus'      => \Magnus\Http\Middleware\OpusManagement::class,
+        'privateMessage' => \Magnus\Http\Middleware\ConversationManagement::class,
     ];
 }
